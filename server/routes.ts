@@ -304,6 +304,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user._id.toString();
       const taskData = insertTaskSchema.parse(req.body);
+  // Convert date string to Date object if provided
+  if (taskData.dueDate) {
+    taskData.dueDate = new Date(taskData.dueDate);
+  }
       
       const task = await storage.createTask(userId, taskData);
       res.status(201).json(task);
@@ -365,6 +369,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user._id.toString();
       const transactionData = insertTransactionSchema.parse(req.body);
+    // Convert date string to Date object if provided
+    if (transactionData.date) {
+      transactionData.date = new Date(transactionData.date);
+    }
       
       const transaction = await storage.createTransaction(userId, transactionData);
       res.status(201).json(transaction);

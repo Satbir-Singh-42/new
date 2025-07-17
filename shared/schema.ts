@@ -354,7 +354,7 @@ export const insertTaskSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   category: z.string().default("general"),
-  dueDate: z.date().optional(),
+  dueDate: z.string().optional(),
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   priority: z.string().default("medium"),
@@ -367,7 +367,7 @@ export const insertTransactionSchema = z.object({
   category: z.string(),
   type: z.string(),
   description: z.string().optional(),
-  date: z.date().optional(),
+  date: z.string().optional(),
   isRecurring: z.boolean().default(false),
   recurringPeriod: z.string().optional(),
 });
@@ -377,7 +377,7 @@ export const insertGoalSchema = z.object({
   description: z.string().optional(),
   targetAmount: z.number(),
   currentAmount: z.number().default(0),
-  targetDate: z.date().optional(),
+  targetDate: z.union([z.string(), z.date()]).transform((val) => typeof val === 'string' ? new Date(val) : val).optional(),
   category: z.string(),
 });
 
