@@ -1,10 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
-import MongoStore from "connect-mongo";
+import MemoryStore from "memorystore";
 import { storage } from "./storage";
 import { authenticate, optionalAuth, hashPassword, comparePassword, generateToken, type AuthenticatedRequest } from "./auth";
-import { connectDB } from "./db";
+import { connectDB, getMongodUri } from "./db";
 import { z } from "zod";
 import {
   insertTaskSchema,
@@ -23,17 +23,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Session configuration
   const sessionSecret = process.env.SESSION_SECRET || "change-this-secret-in-production";
-  const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/face2finance";
+  const MemoryStoreSession = MemoryStore(session);
   
   app.use(session({
     secret: sessionSecret,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: mongoUri,
+    store: new MemoryStoreSession({
+      checkPeriod: 86400000 // prune expired entries every 24h
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // Set to false for development
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },

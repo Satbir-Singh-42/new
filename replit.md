@@ -24,24 +24,25 @@ The frontend follows a mobile-first design approach with a component-based archi
 ### Backend Architecture
 The backend is built using Node.js with Express.js and follows RESTful API principles:
 - **Express.js** server with TypeScript for type safety
-- **Session-based authentication** using Replit's OpenID Connect integration
+- **JWT-based authentication** with bcrypt password hashing
+- **Session management** using memory store for development
 - **Middleware-based architecture** for request logging, error handling, and authentication
 - **Modular route organization** with separate route handlers for different feature areas
 - **Database abstraction layer** through a storage interface pattern
 
 ### Data Storage Solutions
-The application uses PostgreSQL as the primary database with Drizzle ORM for type-safe database operations:
-- **Neon Database** (PostgreSQL) for cloud-hosted data persistence
-- **Drizzle ORM** with PostgreSQL dialect for schema management and queries
+The application uses MongoDB as the primary database with Mongoose ODM for data modeling:
+- **MongoDB** with in-memory server for development
+- **Mongoose ODM** for schema validation and document modeling
 - **Type-safe schema definitions** shared between frontend and backend
-- **Database migrations** managed through Drizzle Kit
+- **Flexible document structure** for complex data types
 
 ### Authentication and Authorization
-User authentication is handled through Replit's integrated authentication system:
-- **OpenID Connect (OIDC)** integration with Replit's identity provider
-- **Passport.js** strategy for handling OIDC authentication flow
-- **Session management** using PostgreSQL-backed session storage
-- **Mandatory user storage** interface for Replit Auth compatibility
+User authentication is handled through a standard JWT-based system:
+- **JWT tokens** for stateless authentication
+- **bcrypt** for secure password hashing
+- **Session storage** using memory-based store for development
+- **Standard login/register/logout** endpoints
 
 ## Key Components
 
@@ -96,16 +97,19 @@ User authentication is handled through Replit's integrated authentication system
 ## External Dependencies
 
 ### Third-Party Services
-- **Neon Database** for PostgreSQL hosting
-- **Replit Authentication** for user identity management
+- **MongoDB** for document-based data storage
+- **Standard authentication** using JWT tokens
 - **Replit Infrastructure** for application hosting and deployment
 
 ### NPM Dependencies
-- **@neondatabase/serverless** for database connectivity
+- **mongoose** for MongoDB object modeling
+- **mongodb-memory-server** for in-memory development database
 - **@radix-ui** component primitives for accessible UI
-- **drizzle-orm** and **drizzle-kit** for database operations
 - **@tanstack/react-query** for server state management
 - **zod** for runtime type validation and schema parsing
+- **bcryptjs** for password hashing
+- **jsonwebtoken** for JWT authentication
+- **express-session** and **memorystore** for session management
 
 ### Development Tools
 - **TypeScript** for static type checking
@@ -118,14 +122,14 @@ User authentication is handled through Replit's integrated authentication system
 ### Development Environment
 - **Vite development server** with hot module replacement
 - **Express server** running in development mode with request logging
-- **Database migrations** applied automatically via Drizzle Kit
+- **In-memory MongoDB** for development database
 - **Environment variables** for database connections and authentication secrets
 
 ### Production Deployment
 - **Vite build process** generates optimized static assets
 - **ESBuild bundling** creates single Node.js bundle for backend
 - **Static file serving** through Express for frontend assets
-- **Session storage** using PostgreSQL with connect-pg-simple
+- **Session storage** using memory store for development
 - **Environment-based configuration** for database URLs and authentication
 
 ### Build Process

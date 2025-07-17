@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, Shield, ArrowLeft, Check } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Landing() {
   const [currentScreen, setCurrentScreen] = useState("splash");
@@ -14,6 +16,11 @@ export default function Landing() {
   const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [signupData, setSignupData] = useState({ email: "", password: "", firstName: "", lastName: "" });
+  
+  const { login, register, isLoggingIn, isRegistering } = useAuth();
+  const { toast } = useToast();
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length <= 1) {
@@ -99,7 +106,12 @@ export default function Landing() {
             <form className="space-y-4">
               <div>
                 <Label className="text-sm text-gray-600 mb-2 block">Enter your username or phone number</Label>
-                <Input type="text" placeholder="lazy@gmail.com" />
+                <Input 
+                  type="email" 
+                  placeholder="lazy@gmail.com" 
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                />
               </div>
               
               <div>
@@ -109,6 +121,8 @@ export default function Landing() {
                     type={showPassword ? "text" : "password"} 
                     placeholder="Password@1234567890"
                     className="pr-10"
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({...loginData, password: e.target.value})}
                   />
                   <Button
                     type="button"
@@ -136,9 +150,23 @@ export default function Landing() {
               <Button 
                 type="button" 
                 className="w-full bg-primary hover:bg-purple-600"
-                onClick={() => window.location.href = "/api/login"}
+                onClick={async () => {
+                  try {
+                    await login(loginData);
+                    toast({ title: "Success", description: "Logged in successfully!" });
+                    // Redirect to dashboard or home
+                    window.location.href = "/dashboard";
+                  } catch (error: any) {
+                    toast({ 
+                      title: "Login Failed", 
+                      description: error.message || "Please check your credentials",
+                      variant: "destructive"
+                    });
+                  }
+                }}
+                disabled={isLoggingIn}
               >
-                LOG IN
+                {isLoggingIn ? "LOGGING IN..." : "LOG IN"}
               </Button>
             </form>
 
