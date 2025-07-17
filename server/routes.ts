@@ -535,6 +535,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User profile routes
+  app.get('/api/user/profile', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(user);
+    } catch (error: any) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  app.put('/api/user/profile', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const userData = updateUserSchema.parse(req.body);
+      
+      const updatedUser = await storage.updateUser(userId, userData);
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(updatedUser);
+    } catch (error: any) {
+      console.error('Error updating user profile:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: 'Invalid input',
+          errors: error.errors 
+        });
+      }
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  // Onboarding API endpoints
+  app.patch('/api/onboarding', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const updateData = req.body;
+      
+      const updatedUser = await storage.updateUser(userId, updateData);
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(updatedUser);
+    } catch (error: any) {
+      console.error('Error updating onboarding:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
   // Health check
   app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });

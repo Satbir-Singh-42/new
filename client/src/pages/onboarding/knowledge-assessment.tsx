@@ -11,7 +11,11 @@ export default function KnowledgeAssessment() {
 
   const updateOnboardingMutation = useMutation({
     mutationFn: async (data: { knowledgeLevel: string }) => {
-      return await apiRequest("PATCH", "/api/onboarding", data);
+      const response = await apiRequest("/api/onboarding", {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      });
+      return response.json();
     },
     onSuccess: () => {
       setLocation("/onboarding/goal");
