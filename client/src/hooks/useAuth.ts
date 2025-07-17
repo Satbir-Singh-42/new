@@ -15,7 +15,7 @@ export function useAuth() {
         method: "POST",
         body: JSON.stringify(credentials),
       });
-      return response;
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
@@ -28,7 +28,7 @@ export function useAuth() {
         method: "POST",
         body: JSON.stringify(userData),
       });
-      return response;
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
@@ -40,7 +40,7 @@ export function useAuth() {
       const response = await apiRequest("/api/auth/logout", {
         method: "POST",
       });
-      return response;
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });

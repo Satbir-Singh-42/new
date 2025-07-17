@@ -151,11 +151,19 @@ export default function Landing() {
                 type="button" 
                 className="w-full bg-primary hover:bg-purple-600"
                 onClick={async () => {
+                  if (!loginData.email || !loginData.password) {
+                    toast({ 
+                      title: "Validation Error", 
+                      description: "Please fill in all fields",
+                      variant: "destructive"
+                    });
+                    return;
+                  }
                   try {
                     await login(loginData);
                     toast({ title: "Success", description: "Logged in successfully!" });
                     // Redirect to dashboard or home
-                    window.location.href = "/dashboard";
+                    window.location.href = "/";
                   } catch (error: any) {
                     toast({ 
                       title: "Login Failed", 
