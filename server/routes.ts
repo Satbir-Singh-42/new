@@ -1,7 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { authenticate, optionalAuth, hashPassword, comparePassword, generateToken, type AuthenticatedRequest } from "./auth";
+import { connectDB } from "./db";
 import { z } from "zod";
 import {
   insertTaskSchema,
@@ -9,21 +12,146 @@ import {
   insertGoalSchema,
   insertCalculatorHistorySchema,
   insertQuizAttemptSchema,
+  insertUserSchema,
+  updateUserSchema,
+  loginSchema,
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+  // Connect to MongoDB
+  await connectDB();
+
+  // Session configuration
+  const sessionSecret = process.env.SESSION_SECRET || "change-this-secret-in-production";
+  const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/face2finance";
+  
+  app.use(session({
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: mongoUri,
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    },
+  }));
 
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.post('/api/auth/register', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
+      const userData = insertUserSchema.parse(req.body);
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(userData.email);
+      if (existingUser) {
+        return res.status(400).json({ message: "User already exists" });
       }
-      res.json(user);
+
+      // Hash password
+      const hashedPassword = await hashPassword(userData.password);
+      
+      // Create user
+      const user = await storage.createUser({
+        ...userData,
+        password: hashedPassword,
+      });
+
+      // Generate token
+      const token = generateToken(user._id.toString());
+      
+      // Store token in session
+      (req.session as any).token = token;
+      (req.session as any).userId = user._id.toString();
+
+      res.status(201).json({
+        user: {
+          id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          language: user.language,
+          onboardingCompleted: user.onboardingCompleted,
+        },
+        token,
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
+      res.status(500).json({ message: "Registration failed" });
+    }
+  });
+
+  app.post('/api/auth/login', async (req, res) => {
+    try {
+      const { email, password } = loginSchema.parse(req.body);
+      
+      // Find user
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Check password
+      const isValid = await comparePassword(password, user.password);
+      if (!isValid) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      // Generate token
+      const token = generateToken(user._id.toString());
+      
+      // Store token in session
+      (req.session as any).token = token;
+      (req.session as any).userId = user._id.toString();
+
+      res.json({
+        user: {
+          id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          language: user.language,
+          onboardingCompleted: user.onboardingCompleted,
+        },
+        token,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
+  app.post('/api/auth/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "Logout failed" });
+      }
+      res.json({ message: "Logged out successfully" });
+    });
+  });
+
+  app.get('/api/auth/user', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const user = req.user;
+      res.json({
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        language: user.language,
+        onboardingCompleted: user.onboardingCompleted,
+        dailyGoal: user.dailyGoal,
+        knowledgeLevel: user.knowledgeLevel,
+        ageGroup: user.ageGroup,
+      });
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
@@ -31,12 +159,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Onboarding routes
-  app.patch('/api/onboarding', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/onboarding', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const updates = req.body;
+      const userId = req.user._id.toString();
+      const updates = updateUserSchema.parse(req.body);
       
-      const user = await storage.updateUserOnboarding(userId, {
+      const user = await storage.updateUser(userId, {
         ...updates,
         onboardingCompleted: true,
       });
@@ -44,14 +172,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(user);
     } catch (error) {
       console.error("Error updating onboarding:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
       res.status(500).json({ message: "Failed to update onboarding" });
     }
   });
 
   // Progress routes
-  app.get('/api/progress', isAuthenticated, async (req: any, res) => {
+  app.get('/api/progress', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user._id.toString();
       const progress = await storage.getUserProgress(userId);
       res.json(progress);
     } catch (error) {
@@ -61,10 +192,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Learning module routes
-  app.get('/api/modules', isAuthenticated, async (req: any, res) => {
+  app.get('/api/modules', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
       const { category } = req.query;
-      const modules = await storage.getLearningModules(category as string);
+      const modules = category 
+        ? await storage.getLearningModulesByCategory(category as string)
+        : await storage.getLearningModules();
       res.json(modules);
     } catch (error) {
       console.error("Error fetching modules:", error);
@@ -72,9 +205,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/lessons', isAuthenticated, async (req: any, res) => {
+  app.get('/api/lessons', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user._id.toString();
       const lessons = await storage.getUserLessons(userId);
       res.json(lessons);
     } catch (error) {
@@ -83,36 +216,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/lessons/:moduleId/progress', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/lessons/:moduleId', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const moduleId = parseInt(req.params.moduleId);
-      const { progress } = req.body;
+      const userId = req.user._id.toString();
+      const { moduleId } = req.params;
+      const updates = req.body;
       
-      const lesson = await storage.updateLessonProgress(userId, moduleId, progress);
-      
-      // Update user progress
-      if (progress === 100) {
-        const userProgress = await storage.getUserProgress(userId);
-        if (userProgress) {
-          await storage.updateUserProgress(userId, {
-            lessonsCompleted: (userProgress.lessonsCompleted || 0) + 1,
-          });
-        }
-      }
-      
+      const lesson = await storage.updateUserLesson(userId, moduleId, updates);
       res.json(lesson);
     } catch (error) {
-      console.error("Error updating lesson progress:", error);
-      res.status(500).json({ message: "Failed to update lesson progress" });
+      console.error("Error updating lesson:", error);
+      res.status(500).json({ message: "Failed to update lesson" });
     }
   });
 
   // Quiz routes
-  app.get('/api/quizzes', isAuthenticated, async (req: any, res) => {
+  app.get('/api/quizzes', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const { category } = req.query;
-      const quizzes = await storage.getQuizzes(category as string);
+      const quizzes = await storage.getQuizzes();
       res.json(quizzes);
     } catch (error) {
       console.error("Error fetching quizzes:", error);
@@ -120,77 +241,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/quizzes/:id', isAuthenticated, async (req: any, res) => {
+  app.get('/api/quizzes/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const quizId = parseInt(req.params.id);
-      const quiz = await storage.getQuizById(quizId);
+      const { id } = req.params;
+      const quiz = await storage.getQuizById(id);
       if (!quiz) {
         return res.status(404).json({ message: "Quiz not found" });
       }
-      res.json(quiz);
+      
+      const questions = await storage.getQuizQuestions(id);
+      res.json({ ...quiz.toObject(), questions });
     } catch (error) {
       console.error("Error fetching quiz:", error);
       res.status(500).json({ message: "Failed to fetch quiz" });
     }
   });
 
-  app.get('/api/quizzes/:id/questions', isAuthenticated, async (req: any, res) => {
+  app.post('/api/quiz-attempts', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const quizId = parseInt(req.params.id);
-      const questions = await storage.getQuizQuestions(quizId);
-      res.json(questions);
-    } catch (error) {
-      console.error("Error fetching quiz questions:", error);
-      res.status(500).json({ message: "Failed to fetch quiz questions" });
-    }
-  });
-
-  app.post('/api/quiz-attempts', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const validatedData = insertQuizAttemptSchema.parse(req.body);
+      const userId = req.user._id.toString();
+      const attemptData = insertQuizAttemptSchema.parse(req.body);
       
-      const attempt = await storage.createQuizAttempt(userId, validatedData.quizId);
-      res.json(attempt);
+      const attempt = await storage.createQuizAttempt({
+        ...attemptData,
+        userId,
+      });
+      
+      res.status(201).json(attempt);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: error.errors });
-      }
       console.error("Error creating quiz attempt:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
       res.status(500).json({ message: "Failed to create quiz attempt" });
     }
   });
 
-  app.patch('/api/quiz-attempts/:id', isAuthenticated, async (req: any, res) => {
+  app.get('/api/quiz-attempts', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const attemptId = parseInt(req.params.id);
-      const updates = req.body;
-      
-      const attempt = await storage.updateQuizAttempt(attemptId, updates);
-      
-      // Update user progress if quiz completed
-      if (updates.completed) {
-        const userId = req.user.claims.sub;
-        const userProgress = await storage.getUserProgress(userId);
-        if (userProgress) {
-          await storage.updateUserProgress(userId, {
-            quizzesAttempted: (userProgress.quizzesAttempted || 0) + 1,
-            totalPoints: (userProgress.totalPoints || 0) + (updates.score || 0),
-          });
-        }
-      }
-      
-      res.json(attempt);
-    } catch (error) {
-      console.error("Error updating quiz attempt:", error);
-      res.status(500).json({ message: "Failed to update quiz attempt" });
-    }
-  });
-
-  app.get('/api/quiz-attempts', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const attempts = await storage.getUserQuizAttempts(userId);
+      const userId = req.user._id.toString();
+      const attempts = await storage.getQuizAttempts(userId);
       res.json(attempts);
     } catch (error) {
       console.error("Error fetching quiz attempts:", error);
@@ -199,10 +289,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Task routes
-  app.get('/api/tasks', isAuthenticated, async (req: any, res) => {
+  app.get('/api/tasks', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const tasks = await storage.getUserTasks(userId);
+      const userId = req.user._id.toString();
+      const tasks = await storage.getTasks(userId);
       res.json(tasks);
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -210,28 +300,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/tasks', isAuthenticated, async (req: any, res) => {
+  app.post('/api/tasks', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const validatedTask = insertTaskSchema.parse(req.body);
+      const userId = req.user._id.toString();
+      const taskData = insertTaskSchema.parse(req.body);
       
-      const task = await storage.createTask(userId, validatedTask);
-      res.json(task);
+      const task = await storage.createTask(userId, taskData);
+      res.status(201).json(task);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid task data", errors: error.errors });
-      }
       console.error("Error creating task:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
       res.status(500).json({ message: "Failed to create task" });
     }
   });
 
-  app.patch('/api/tasks/:id', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/tasks/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const taskId = parseInt(req.params.id);
+      const { id } = req.params;
       const updates = req.body;
       
-      const task = await storage.updateTask(taskId, updates);
+      const task = await storage.updateTask(id, updates);
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      
       res.json(task);
     } catch (error) {
       console.error("Error updating task:", error);
@@ -239,10 +333,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/tasks/:id', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/tasks/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const taskId = parseInt(req.params.id);
-      await storage.deleteTask(taskId);
+      const { id } = req.params;
+      const deleted = await storage.deleteTask(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      
       res.json({ message: "Task deleted successfully" });
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -251,10 +350,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Transaction routes
-  app.get('/api/transactions', isAuthenticated, async (req: any, res) => {
+  app.get('/api/transactions', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const transactions = await storage.getUserTransactions(userId);
+      const userId = req.user._id.toString();
+      const transactions = await storage.getTransactions(userId);
       res.json(transactions);
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -262,27 +361,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/transactions', isAuthenticated, async (req: any, res) => {
+  app.post('/api/transactions', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const validatedTransaction = insertTransactionSchema.parse(req.body);
+      const userId = req.user._id.toString();
+      const transactionData = insertTransactionSchema.parse(req.body);
       
-      const transaction = await storage.createTransaction(userId, validatedTransaction);
-      res.json(transaction);
+      const transaction = await storage.createTransaction(userId, transactionData);
+      res.status(201).json(transaction);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid transaction data", errors: error.errors });
-      }
       console.error("Error creating transaction:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
       res.status(500).json({ message: "Failed to create transaction" });
     }
   });
 
-  // Goal routes
-  app.get('/api/goals', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/transactions/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const goals = await storage.getUserGoals(userId);
+      const { id } = req.params;
+      const updates = req.body;
+      
+      const transaction = await storage.updateTransaction(id, updates);
+      if (!transaction) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+      
+      res.json(transaction);
+    } catch (error) {
+      console.error("Error updating transaction:", error);
+      res.status(500).json({ message: "Failed to update transaction" });
+    }
+  });
+
+  app.delete('/api/transactions/:id', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteTransaction(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Transaction not found" });
+      }
+      
+      res.json({ message: "Transaction deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+      res.status(500).json({ message: "Failed to delete transaction" });
+    }
+  });
+
+  // Financial goals routes
+  app.get('/api/goals', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const goals = await storage.getFinancialGoals(userId);
       res.json(goals);
     } catch (error) {
       console.error("Error fetching goals:", error);
@@ -290,37 +422,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/goals', isAuthenticated, async (req: any, res) => {
+  app.post('/api/goals', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const validatedGoal = insertGoalSchema.parse(req.body);
+      const userId = req.user._id.toString();
+      const goalData = insertGoalSchema.parse(req.body);
       
-      const goal = await storage.createGoal(userId, validatedGoal);
-      
-      // Update user progress
-      const userProgress = await storage.getUserProgress(userId);
-      if (userProgress) {
-        await storage.updateUserProgress(userId, {
-          goalsTracked: (userProgress.goalsTracked || 0) + 1,
-        });
-      }
-      
-      res.json(goal);
+      const goal = await storage.createFinancialGoal(userId, goalData);
+      res.status(201).json(goal);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid goal data", errors: error.errors });
-      }
       console.error("Error creating goal:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
       res.status(500).json({ message: "Failed to create goal" });
     }
   });
 
-  app.patch('/api/goals/:id', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/goals/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const goalId = parseInt(req.params.id);
+      const { id } = req.params;
       const updates = req.body;
       
-      const goal = await storage.updateGoal(goalId, updates);
+      const goal = await storage.updateFinancialGoal(id, updates);
+      if (!goal) {
+        return res.status(404).json({ message: "Goal not found" });
+      }
+      
       res.json(goal);
     } catch (error) {
       console.error("Error updating goal:", error);
@@ -328,11 +455,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Notification routes
-  app.get('/api/notifications', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/goals/:id', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const notifications = await storage.getUserNotifications(userId);
+      const { id } = req.params;
+      const deleted = await storage.deleteFinancialGoal(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ message: "Goal not found" });
+      }
+      
+      res.json({ message: "Goal deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting goal:", error);
+      res.status(500).json({ message: "Failed to delete goal" });
+    }
+  });
+
+  // Notifications routes
+  app.get('/api/notifications', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const notifications = await storage.getNotifications(userId);
       res.json(notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -340,10 +483,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/notifications/:id/read', isAuthenticated, async (req: any, res) => {
+  app.patch('/api/notifications/:id/read', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const notificationId = parseInt(req.params.id);
-      await storage.markNotificationRead(notificationId);
+      const { id } = req.params;
+      const updated = await storage.markNotificationAsRead(id);
+      
+      if (!updated) {
+        return res.status(404).json({ message: "Notification not found" });
+      }
+      
       res.json({ message: "Notification marked as read" });
     } catch (error) {
       console.error("Error marking notification as read:", error);
@@ -351,28 +499,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Calculator routes
-  app.post('/api/calculator-history', isAuthenticated, async (req: any, res) => {
+  // Calculator history routes
+  app.get('/api/calculator-history', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const validatedHistory = insertCalculatorHistorySchema.parse(req.body);
-      
-      const history = await storage.saveCalculatorHistory(userId, validatedHistory);
-      res.json(history);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid calculator data", errors: error.errors });
-      }
-      console.error("Error saving calculator history:", error);
-      res.status(500).json({ message: "Failed to save calculator history" });
-    }
-  });
-
-  app.get('/api/calculator-history', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { type } = req.query;
-      const history = await storage.getUserCalculatorHistory(userId, type as string);
+      const userId = req.user._id.toString();
+      const history = await storage.getCalculatorHistory(userId);
       res.json(history);
     } catch (error) {
       console.error("Error fetching calculator history:", error);
@@ -380,6 +511,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  const httpServer = createServer(app);
-  return httpServer;
+  app.post('/api/calculator-history', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const historyData = insertCalculatorHistorySchema.parse(req.body);
+      
+      const history = await storage.createCalculatorHistory(userId, historyData);
+      res.status(201).json(history);
+    } catch (error) {
+      console.error("Error creating calculator history:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create calculator history" });
+    }
+  });
+
+  // Health check
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  });
+
+  const server = createServer(app);
+  return server;
 }

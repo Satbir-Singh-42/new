@@ -1,378 +1,303 @@
 import {
-  users,
-  userProgress,
-  learningModules,
-  userLessons,
-  quizzes,
-  quizQuestions,
-  quizAttempts,
-  tasks,
-  transactions,
-  financialGoals,
-  notifications,
-  calculatorHistory,
-  type User,
+  User,
+  UserProgress,
+  LearningModule,
+  UserLesson,
+  Quiz,
+  QuizQuestion,
+  QuizAttempt,
+  Task,
+  Transaction,
+  FinancialGoal,
+  Notification,
+  CalculatorHistory,
+  type IUser,
+  type IUserProgress,
+  type ILearningModule,
+  type IUserLesson,
+  type IQuiz,
+  type IQuizQuestion,
+  type IQuizAttempt,
+  type ITask,
+  type ITransaction,
+  type IFinancialGoal,
+  type INotification,
+  type ICalculatorHistory,
   type UpsertUser,
-  type UserProgress,
-  type LearningModule,
-  type UserLesson,
-  type Quiz,
-  type QuizQuestion,
-  type QuizAttempt,
-  type Task,
+  type UpdateUser,
   type InsertTask,
-  type Transaction,
   type InsertTransaction,
-  type FinancialGoal,
   type InsertGoal,
-  type Notification,
-  type CalculatorHistory,
   type InsertCalculatorHistory,
 } from "@shared/schema";
-import { db } from "./db";
-import { eq, desc, and, gte, lte, sql } from "drizzle-orm";
 
 export interface IStorage {
-  // User operations (mandatory for Replit Auth)
-  getUser(id: string): Promise<User | undefined>;
-  upsertUser(user: UpsertUser): Promise<User>;
-  updateUserOnboarding(userId: string, data: Partial<User>): Promise<User>;
-  
-  // Progress operations
-  getUserProgress(userId: string): Promise<UserProgress | undefined>;
-  updateUserProgress(userId: string, updates: Partial<UserProgress>): Promise<UserProgress>;
-  
-  // Learning operations
-  getLearningModules(category?: string): Promise<LearningModule[]>;
-  getUserLessons(userId: string): Promise<UserLesson[]>;
-  updateLessonProgress(userId: string, moduleId: number, progress: number): Promise<UserLesson>;
-  completLesson(userId: string, moduleId: number): Promise<UserLesson>;
-  
-  // Quiz operations
-  getQuizzes(category?: string): Promise<Quiz[]>;
-  getQuizById(id: number): Promise<Quiz | undefined>;
-  getQuizQuestions(quizId: number): Promise<QuizQuestion[]>;
-  createQuizAttempt(userId: string, quizId: number): Promise<QuizAttempt>;
-  updateQuizAttempt(attemptId: number, updates: Partial<QuizAttempt>): Promise<QuizAttempt>;
-  getUserQuizAttempts(userId: string): Promise<QuizAttempt[]>;
-  
-  // Task operations
-  getUserTasks(userId: string): Promise<Task[]>;
-  createTask(userId: string, task: InsertTask): Promise<Task>;
-  updateTask(taskId: number, updates: Partial<Task>): Promise<Task>;
-  deleteTask(taskId: number): Promise<void>;
-  
-  // Transaction operations
-  getUserTransactions(userId: string): Promise<Transaction[]>;
-  createTransaction(userId: string, transaction: InsertTransaction): Promise<Transaction>;
-  getTransactionsByDateRange(userId: string, startDate: Date, endDate: Date): Promise<Transaction[]>;
-  
-  // Goal operations
-  getUserGoals(userId: string): Promise<FinancialGoal[]>;
-  createGoal(userId: string, goal: InsertGoal): Promise<FinancialGoal>;
-  updateGoal(goalId: number, updates: Partial<FinancialGoal>): Promise<FinancialGoal>;
-  
-  // Notification operations
-  getUserNotifications(userId: string): Promise<Notification[]>;
-  markNotificationRead(notificationId: number): Promise<void>;
-  createNotification(userId: string, title: string, message: string, type?: string): Promise<Notification>;
-  
-  // Calculator operations
-  saveCalculatorHistory(userId: string, history: InsertCalculatorHistory): Promise<CalculatorHistory>;
-  getUserCalculatorHistory(userId: string, type?: string): Promise<CalculatorHistory[]>;
-}
-
-export class DatabaseStorage implements IStorage {
   // User operations
-  async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+  createUser(user: UpsertUser): Promise<IUser>;
+  getUserById(id: string): Promise<IUser | null>;
+  getUserByEmail(email: string): Promise<IUser | null>;
+  updateUser(id: string, updates: UpdateUser): Promise<IUser | null>;
+  deleteUser(id: string): Promise<boolean>;
+
+  // User progress operations
+  getUserProgress(userId: string): Promise<IUserProgress | null>;
+  updateUserProgress(userId: string, progress: Partial<IUserProgress>): Promise<IUserProgress | null>;
+
+  // Learning module operations
+  getLearningModules(): Promise<ILearningModule[]>;
+  getLearningModuleById(id: string): Promise<ILearningModule | null>;
+  getLearningModulesByCategory(category: string): Promise<ILearningModule[]>;
+
+  // User lesson operations
+  getUserLessons(userId: string): Promise<IUserLesson[]>;
+  getUserLesson(userId: string, moduleId: string): Promise<IUserLesson | null>;
+  updateUserLesson(userId: string, moduleId: string, updates: Partial<IUserLesson>): Promise<IUserLesson | null>;
+
+  // Quiz operations
+  getQuizzes(): Promise<IQuiz[]>;
+  getQuizById(id: string): Promise<IQuiz | null>;
+  getQuizQuestions(quizId: string): Promise<IQuizQuestion[]>;
+  
+  // Quiz attempt operations
+  createQuizAttempt(attempt: Partial<IQuizAttempt>): Promise<IQuizAttempt>;
+  getQuizAttempts(userId: string): Promise<IQuizAttempt[]>;
+  updateQuizAttempt(id: string, updates: Partial<IQuizAttempt>): Promise<IQuizAttempt | null>;
+
+  // Task operations
+  getTasks(userId: string): Promise<ITask[]>;
+  getTaskById(id: string): Promise<ITask | null>;
+  createTask(userId: string, task: InsertTask): Promise<ITask>;
+  updateTask(id: string, updates: Partial<ITask>): Promise<ITask | null>;
+  deleteTask(id: string): Promise<boolean>;
+
+  // Transaction operations
+  getTransactions(userId: string): Promise<ITransaction[]>;
+  getTransactionById(id: string): Promise<ITransaction | null>;
+  createTransaction(userId: string, transaction: InsertTransaction): Promise<ITransaction>;
+  updateTransaction(id: string, updates: Partial<ITransaction>): Promise<ITransaction | null>;
+  deleteTransaction(id: string): Promise<boolean>;
+
+  // Financial goal operations
+  getFinancialGoals(userId: string): Promise<IFinancialGoal[]>;
+  getFinancialGoalById(id: string): Promise<IFinancialGoal | null>;
+  createFinancialGoal(userId: string, goal: InsertGoal): Promise<IFinancialGoal>;
+  updateFinancialGoal(id: string, updates: Partial<IFinancialGoal>): Promise<IFinancialGoal | null>;
+  deleteFinancialGoal(id: string): Promise<boolean>;
+
+  // Notification operations
+  getNotifications(userId: string): Promise<INotification[]>;
+  createNotification(userId: string, notification: Partial<INotification>): Promise<INotification>;
+  markNotificationAsRead(id: string): Promise<boolean>;
+  deleteNotification(id: string): Promise<boolean>;
+
+  // Calculator history operations
+  getCalculatorHistory(userId: string): Promise<ICalculatorHistory[]>;
+  createCalculatorHistory(userId: string, history: InsertCalculatorHistory): Promise<ICalculatorHistory>;
+  deleteCalculatorHistory(id: string): Promise<boolean>;
+}
+
+export class MongoStorage implements IStorage {
+  // User operations
+  async createUser(userData: UpsertUser): Promise<IUser> {
+    const user = new User(userData);
+    return await user.save();
   }
 
-  async upsertUser(userData: UpsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(userData)
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
-          ...userData,
-          updatedAt: new Date(),
-        },
-      })
-      .returning();
-    return user;
+  async getUserById(id: string): Promise<IUser | null> {
+    return await User.findById(id).exec();
   }
 
-  async updateUserOnboarding(userId: string, data: Partial<User>): Promise<User> {
-    const [user] = await db
-      .update(users)
-      .set({ ...data, updatedAt: new Date() })
-      .where(eq(users.id, userId))
-      .returning();
-    return user;
+  async getUserByEmail(email: string): Promise<IUser | null> {
+    return await User.findOne({ email }).exec();
   }
 
-  // Progress operations
-  async getUserProgress(userId: string): Promise<UserProgress | undefined> {
-    const [progress] = await db.select().from(userProgress).where(eq(userProgress.userId, userId));
-    
+  async updateUser(id: string, updates: UpdateUser): Promise<IUser | null> {
+    return await User.findByIdAndUpdate(id, { ...updates, updatedAt: new Date() }, { new: true }).exec();
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const result = await User.findByIdAndDelete(id).exec();
+    return result !== null;
+  }
+
+  // User progress operations
+  async getUserProgress(userId: string): Promise<IUserProgress | null> {
+    let progress = await UserProgress.findOne({ userId }).exec();
     if (!progress) {
-      // Create initial progress record
-      const [newProgress] = await db
-        .insert(userProgress)
-        .values({ userId })
-        .returning();
-      return newProgress;
+      progress = new UserProgress({ userId });
+      await progress.save();
     }
-    
     return progress;
   }
 
-  async updateUserProgress(userId: string, updates: Partial<UserProgress>): Promise<UserProgress> {
-    const [progress] = await db
-      .update(userProgress)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(userProgress.userId, userId))
-      .returning();
-    return progress;
+  async updateUserProgress(userId: string, progressData: Partial<IUserProgress>): Promise<IUserProgress | null> {
+    return await UserProgress.findOneAndUpdate(
+      { userId },
+      { ...progressData, updatedAt: new Date() },
+      { new: true, upsert: true }
+    ).exec();
   }
 
-  // Learning operations
-  async getLearningModules(category?: string): Promise<LearningModule[]> {
-    let query = db.select().from(learningModules).where(eq(learningModules.isActive, true));
-    
-    if (category) {
-      query = query.where(eq(learningModules.category, category));
-    }
-    
-    return await query;
+  // Learning module operations
+  async getLearningModules(): Promise<ILearningModule[]> {
+    return await LearningModule.find({ isActive: true }).exec();
   }
 
-  async getUserLessons(userId: string): Promise<UserLesson[]> {
-    return await db.select().from(userLessons).where(eq(userLessons.userId, userId));
+  async getLearningModuleById(id: string): Promise<ILearningModule | null> {
+    return await LearningModule.findById(id).exec();
   }
 
-  async updateLessonProgress(userId: string, moduleId: number, progress: number): Promise<UserLesson> {
-    const [lesson] = await db
-      .insert(userLessons)
-      .values({
-        userId,
-        moduleId,
-        progress,
-        lastAccessed: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: [userLessons.userId, userLessons.moduleId],
-        set: {
-          progress,
-          lastAccessed: new Date(),
-        },
-      })
-      .returning();
-    return lesson;
+  async getLearningModulesByCategory(category: string): Promise<ILearningModule[]> {
+    return await LearningModule.find({ category, isActive: true }).exec();
   }
 
-  async completLesson(userId: string, moduleId: number): Promise<UserLesson> {
-    const [lesson] = await db
-      .update(userLessons)
-      .set({
-        completed: true,
-        progress: 100,
-        completedAt: new Date(),
-      })
-      .where(and(eq(userLessons.userId, userId), eq(userLessons.moduleId, moduleId)))
-      .returning();
-    return lesson;
+  // User lesson operations
+  async getUserLessons(userId: string): Promise<IUserLesson[]> {
+    return await UserLesson.find({ userId }).exec();
+  }
+
+  async getUserLesson(userId: string, moduleId: string): Promise<IUserLesson | null> {
+    return await UserLesson.findOne({ userId, moduleId }).exec();
+  }
+
+  async updateUserLesson(userId: string, moduleId: string, updates: Partial<IUserLesson>): Promise<IUserLesson | null> {
+    return await UserLesson.findOneAndUpdate(
+      { userId, moduleId },
+      { ...updates, lastAccessed: new Date() },
+      { new: true, upsert: true }
+    ).exec();
   }
 
   // Quiz operations
-  async getQuizzes(category?: string): Promise<Quiz[]> {
-    let query = db.select().from(quizzes).where(eq(quizzes.isActive, true));
-    
-    if (category) {
-      query = query.where(eq(quizzes.category, category));
-    }
-    
-    return await query;
+  async getQuizzes(): Promise<IQuiz[]> {
+    return await Quiz.find({ isActive: true }).exec();
   }
 
-  async getQuizById(id: number): Promise<Quiz | undefined> {
-    const [quiz] = await db.select().from(quizzes).where(eq(quizzes.id, id));
-    return quiz;
+  async getQuizById(id: string): Promise<IQuiz | null> {
+    return await Quiz.findById(id).exec();
   }
 
-  async getQuizQuestions(quizId: number): Promise<QuizQuestion[]> {
-    return await db
-      .select()
-      .from(quizQuestions)
-      .where(eq(quizQuestions.quizId, quizId))
-      .orderBy(quizQuestions.orderIndex);
+  async getQuizQuestions(quizId: string): Promise<IQuizQuestion[]> {
+    return await QuizQuestion.find({ quizId }).sort({ orderIndex: 1 }).exec();
   }
 
-  async createQuizAttempt(userId: string, quizId: number): Promise<QuizAttempt> {
-    const [attempt] = await db
-      .insert(quizAttempts)
-      .values({
-        userId,
-        quizId,
-        score: 0,
-        totalQuestions: 0,
-        correctAnswers: 0,
-      })
-      .returning();
-    return attempt;
+  // Quiz attempt operations
+  async createQuizAttempt(attemptData: Partial<IQuizAttempt>): Promise<IQuizAttempt> {
+    const attempt = new QuizAttempt(attemptData);
+    return await attempt.save();
   }
 
-  async updateQuizAttempt(attemptId: number, updates: Partial<QuizAttempt>): Promise<QuizAttempt> {
-    const [attempt] = await db
-      .update(quizAttempts)
-      .set(updates)
-      .where(eq(quizAttempts.id, attemptId))
-      .returning();
-    return attempt;
+  async getQuizAttempts(userId: string): Promise<IQuizAttempt[]> {
+    return await QuizAttempt.find({ userId }).sort({ startedAt: -1 }).exec();
   }
 
-  async getUserQuizAttempts(userId: string): Promise<QuizAttempt[]> {
-    return await db
-      .select()
-      .from(quizAttempts)
-      .where(eq(quizAttempts.userId, userId))
-      .orderBy(desc(quizAttempts.startedAt));
+  async updateQuizAttempt(id: string, updates: Partial<IQuizAttempt>): Promise<IQuizAttempt | null> {
+    return await QuizAttempt.findByIdAndUpdate(id, updates, { new: true }).exec();
   }
 
   // Task operations
-  async getUserTasks(userId: string): Promise<Task[]> {
-    return await db
-      .select()
-      .from(tasks)
-      .where(eq(tasks.userId, userId))
-      .orderBy(desc(tasks.createdAt));
+  async getTasks(userId: string): Promise<ITask[]> {
+    return await Task.find({ userId }).sort({ createdAt: -1 }).exec();
   }
 
-  async createTask(userId: string, task: InsertTask): Promise<Task> {
-    const [newTask] = await db
-      .insert(tasks)
-      .values({ ...task, userId })
-      .returning();
-    return newTask;
+  async getTaskById(id: string): Promise<ITask | null> {
+    return await Task.findById(id).exec();
   }
 
-  async updateTask(taskId: number, updates: Partial<Task>): Promise<Task> {
-    const [task] = await db
-      .update(tasks)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(tasks.id, taskId))
-      .returning();
-    return task;
+  async createTask(userId: string, taskData: InsertTask): Promise<ITask> {
+    const task = new Task({ ...taskData, userId });
+    return await task.save();
   }
 
-  async deleteTask(taskId: number): Promise<void> {
-    await db.delete(tasks).where(eq(tasks.id, taskId));
+  async updateTask(id: string, updates: Partial<ITask>): Promise<ITask | null> {
+    return await Task.findByIdAndUpdate(id, { ...updates, updatedAt: new Date() }, { new: true }).exec();
+  }
+
+  async deleteTask(id: string): Promise<boolean> {
+    const result = await Task.findByIdAndDelete(id).exec();
+    return result !== null;
   }
 
   // Transaction operations
-  async getUserTransactions(userId: string): Promise<Transaction[]> {
-    return await db
-      .select()
-      .from(transactions)
-      .where(eq(transactions.userId, userId))
-      .orderBy(desc(transactions.date));
+  async getTransactions(userId: string): Promise<ITransaction[]> {
+    return await Transaction.find({ userId }).sort({ date: -1 }).exec();
   }
 
-  async createTransaction(userId: string, transaction: InsertTransaction): Promise<Transaction> {
-    const [newTransaction] = await db
-      .insert(transactions)
-      .values({ ...transaction, userId })
-      .returning();
-    return newTransaction;
+  async getTransactionById(id: string): Promise<ITransaction | null> {
+    return await Transaction.findById(id).exec();
   }
 
-  async getTransactionsByDateRange(userId: string, startDate: Date, endDate: Date): Promise<Transaction[]> {
-    return await db
-      .select()
-      .from(transactions)
-      .where(
-        and(
-          eq(transactions.userId, userId),
-          gte(transactions.date, startDate),
-          lte(transactions.date, endDate)
-        )
-      )
-      .orderBy(desc(transactions.date));
+  async createTransaction(userId: string, transactionData: InsertTransaction): Promise<ITransaction> {
+    const transaction = new Transaction({ ...transactionData, userId });
+    return await transaction.save();
   }
 
-  // Goal operations
-  async getUserGoals(userId: string): Promise<FinancialGoal[]> {
-    return await db
-      .select()
-      .from(financialGoals)
-      .where(eq(financialGoals.userId, userId))
-      .orderBy(desc(financialGoals.createdAt));
+  async updateTransaction(id: string, updates: Partial<ITransaction>): Promise<ITransaction | null> {
+    return await Transaction.findByIdAndUpdate(id, updates, { new: true }).exec();
   }
 
-  async createGoal(userId: string, goal: InsertGoal): Promise<FinancialGoal> {
-    const [newGoal] = await db
-      .insert(financialGoals)
-      .values({ ...goal, userId })
-      .returning();
-    return newGoal;
+  async deleteTransaction(id: string): Promise<boolean> {
+    const result = await Transaction.findByIdAndDelete(id).exec();
+    return result !== null;
   }
 
-  async updateGoal(goalId: number, updates: Partial<FinancialGoal>): Promise<FinancialGoal> {
-    const [goal] = await db
-      .update(financialGoals)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(financialGoals.id, goalId))
-      .returning();
-    return goal;
+  // Financial goal operations
+  async getFinancialGoals(userId: string): Promise<IFinancialGoal[]> {
+    return await FinancialGoal.find({ userId }).sort({ createdAt: -1 }).exec();
+  }
+
+  async getFinancialGoalById(id: string): Promise<IFinancialGoal | null> {
+    return await FinancialGoal.findById(id).exec();
+  }
+
+  async createFinancialGoal(userId: string, goalData: InsertGoal): Promise<IFinancialGoal> {
+    const goal = new FinancialGoal({ ...goalData, userId });
+    return await goal.save();
+  }
+
+  async updateFinancialGoal(id: string, updates: Partial<IFinancialGoal>): Promise<IFinancialGoal | null> {
+    return await FinancialGoal.findByIdAndUpdate(id, { ...updates, updatedAt: new Date() }, { new: true }).exec();
+  }
+
+  async deleteFinancialGoal(id: string): Promise<boolean> {
+    const result = await FinancialGoal.findByIdAndDelete(id).exec();
+    return result !== null;
   }
 
   // Notification operations
-  async getUserNotifications(userId: string): Promise<Notification[]> {
-    return await db
-      .select()
-      .from(notifications)
-      .where(eq(notifications.userId, userId))
-      .orderBy(desc(notifications.createdAt));
+  async getNotifications(userId: string): Promise<INotification[]> {
+    return await Notification.find({ userId }).sort({ createdAt: -1 }).exec();
   }
 
-  async markNotificationRead(notificationId: number): Promise<void> {
-    await db
-      .update(notifications)
-      .set({ read: true })
-      .where(eq(notifications.id, notificationId));
+  async createNotification(userId: string, notificationData: Partial<INotification>): Promise<INotification> {
+    const notification = new Notification({ ...notificationData, userId });
+    return await notification.save();
   }
 
-  async createNotification(userId: string, title: string, message: string, type: string = "info"): Promise<Notification> {
-    const [notification] = await db
-      .insert(notifications)
-      .values({ userId, title, message, type })
-      .returning();
-    return notification;
+  async markNotificationAsRead(id: string): Promise<boolean> {
+    const result = await Notification.findByIdAndUpdate(id, { read: true }, { new: true }).exec();
+    return result !== null;
   }
 
-  // Calculator operations
-  async saveCalculatorHistory(userId: string, history: InsertCalculatorHistory): Promise<CalculatorHistory> {
-    const [newHistory] = await db
-      .insert(calculatorHistory)
-      .values({ ...history, userId })
-      .returning();
-    return newHistory;
+  async deleteNotification(id: string): Promise<boolean> {
+    const result = await Notification.findByIdAndDelete(id).exec();
+    return result !== null;
   }
 
-  async getUserCalculatorHistory(userId: string, type?: string): Promise<CalculatorHistory[]> {
-    let query = db
-      .select()
-      .from(calculatorHistory)
-      .where(eq(calculatorHistory.userId, userId));
-    
-    if (type) {
-      query = query.where(eq(calculatorHistory.calculatorType, type));
-    }
-    
-    return await query.orderBy(desc(calculatorHistory.createdAt));
+  // Calculator history operations
+  async getCalculatorHistory(userId: string): Promise<ICalculatorHistory[]> {
+    return await CalculatorHistory.find({ userId }).sort({ createdAt: -1 }).exec();
+  }
+
+  async createCalculatorHistory(userId: string, historyData: InsertCalculatorHistory): Promise<ICalculatorHistory> {
+    const history = new CalculatorHistory({ ...historyData, userId });
+    return await history.save();
+  }
+
+  async deleteCalculatorHistory(id: string): Promise<boolean> {
+    const result = await CalculatorHistory.findByIdAndDelete(id).exec();
+    return result !== null;
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MongoStorage();
