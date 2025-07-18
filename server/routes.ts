@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import MemoryStore from "memorystore";
 import { storage } from "./storage";
 import { authenticate, optionalAuth, hashPassword, comparePassword, generateToken, type AuthenticatedRequest } from "./auth";
@@ -21,6 +22,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Connect to MongoDB
   await connectDB();
 
+  // Cookie parser middleware
+  app.use(cookieParser());
+  
   // Session configuration
   const sessionSecret = process.env.SESSION_SECRET || "change-this-secret-in-production";
   const MemoryStoreSession = MemoryStore(session);

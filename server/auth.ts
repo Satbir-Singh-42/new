@@ -29,7 +29,12 @@ export interface AuthenticatedRequest extends Request {
 
 export const authenticate = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.header("Authorization")?.replace("Bearer ", "") || req.session?.token;
+    // Try to get token from Authorization header, session, or authToken cookie
+    let token = req.header("Authorization")?.replace("Bearer ", "") || req.session?.token;
+    
+    if (!token && req.cookies?.authToken) {
+      token = req.cookies.authToken;
+    }
     
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
@@ -45,13 +50,19 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
     req.user = user;
     next();
   } catch (error) {
+    console.error("Authentication error:", error);
     res.status(401).json({ message: "Invalid token" });
   }
 };
 
 export const optionalAuth = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.header("Authorization")?.replace("Bearer ", "") || req.session?.token;
+    // Try to get token from Authorization header, session, or authToken cookie
+    let token = req.header("Authorization")?.replace("Bearer ", "") || req.session?.token;
+    
+    if (!token && req.cookies?.authToken) {
+      token = req.cookies.authToken;
+    }
     
     if (token) {
       const decoded = verifyToken(token);
