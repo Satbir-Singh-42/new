@@ -377,10 +377,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user._id.toString();
       const updates = updateUserSchema.parse(req.body);
       
-      const user = await storage.updateUser(userId, {
-        ...updates,
-        onboardingCompleted: true,
-      });
+      // Only set onboardingCompleted to true if explicitly provided in the request
+      const userUpdates = { ...updates };
+      
+      const user = await storage.updateUser(userId, userUpdates);
       
       res.json(user);
     } catch (error) {

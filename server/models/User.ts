@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema<User>({
   phone: { type: String },
   passwordHash: { type: String, required: true },
   language: { type: String, enum: ['en', 'hi', 'pa'], default: 'en' },
-  onboardingCompleted: { type: Boolean, default: false },
+  onboardingCompleted: { type: Boolean, default: false, required: false },
   knowledgeLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'] },
   dailyGoal: { type: Number, min: 5, max: 120 },
   ageGroup: { type: String, enum: ['18-25', '26-35', '36-45', '46-55', '55+'] },

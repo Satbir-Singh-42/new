@@ -61,6 +61,7 @@ function Router() {
           <Route path="/onboarding/knowledge" component={KnowledgeAssessment} />
           <Route path="/onboarding/goal" component={DailyGoal} />
           <Route path="/onboarding/age" component={AgeSelection} />
+          <Route path="/onboarding/*" component={LanguageSelection} />
         </>
       ) : (
         <>
@@ -79,6 +80,8 @@ function Router() {
           <Route path="/lessons" component={LessonsScreen} />
           <Route path="/notifications" component={NotificationsScreen} />
           <Route path="/ai-chat" component={AIChatScreen} />
+          <Route path="/transactions" component={TransactionsScreen} />
+          <Route path="/transactions/add" component={AddTransaction} />
         </>
       )}
       <Route component={NotFound} />

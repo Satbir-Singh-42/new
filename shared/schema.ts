@@ -205,7 +205,12 @@ export const insertNotificationSchema = notificationSchema.omit({
 
 // Additional legacy schema exports for compatibility
 export const insertGoalSchema = insertFinancialGoalSchema;
-export const updateUserSchema = userSchema.partial();
+export const updateUserSchema = userSchema.omit({ 
+  _id: true, 
+  createdAt: true, 
+  updatedAt: true, 
+  passwordHash: true 
+}).partial();
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
