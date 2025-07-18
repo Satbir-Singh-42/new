@@ -14,10 +14,13 @@ import QuizScreen from "@/pages/quiz/quiz-screen";
 import CalculatorsScreen from "@/pages/calculators/calculators-screen";
 import BudgetCalculator from "@/pages/calculators/budget-calculator";
 import TaxCalculator from "@/pages/calculators/tax-calculator";
+import EMICalculator from "@/pages/calculators/emi-calculator";
+import InvestmentCalculator from "@/pages/calculators/investment-calculator";
 import TasksScreen from "@/pages/tasks/tasks-screen";
 import CreateTask from "@/pages/tasks/create-task";
 import ProfileScreen from "@/pages/profile/profile-screen";
 import TransactionsScreen from "@/pages/transactions/transactions-screen";
+import AddTransaction from "@/pages/transactions/add-transaction";
 import LessonsScreen from "@/pages/lessons/lessons-screen";
 import NotificationsScreen from "@/pages/notifications/notifications-screen";
 import { useAuth } from "@/hooks/useAuth";
@@ -57,10 +60,13 @@ function Router() {
           <Route path="/calculators" component={CalculatorsScreen} />
           <Route path="/calculators/budget" component={BudgetCalculator} />
           <Route path="/calculators/tax" component={TaxCalculator} />
+          <Route path="/calculators/emi" component={EMICalculator} />
+          <Route path="/calculators/investment" component={InvestmentCalculator} />
           <Route path="/tasks" component={TasksScreen} />
           <Route path="/tasks/create" component={CreateTask} />
           <Route path="/profile" component={ProfileScreen} />
           <Route path="/transactions" component={TransactionsScreen} />
+          <Route path="/transactions/add" component={AddTransaction} />
           <Route path="/lessons" component={LessonsScreen} />
           <Route path="/notifications" component={NotificationsScreen} />
         </>
