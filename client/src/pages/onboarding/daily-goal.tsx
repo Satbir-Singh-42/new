@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function DailyGoal() {
   const [selectedGoal, setSelectedGoal] = useState(15);
@@ -18,6 +18,8 @@ export default function DailyGoal() {
       return response.json();
     },
     onSuccess: () => {
+      // Invalidate the user query to refresh user data
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       setLocation("/onboarding/age");
     }
   });
