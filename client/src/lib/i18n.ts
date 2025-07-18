@@ -8,8 +8,9 @@ export interface Translation {
   tasks: string;
   profile: string;
   calculators: string;
-  transactions: string;
+  games: string;
   notifications: string;
+  settings: string;
   
   // Dashboard
   welcome: string;
@@ -107,8 +108,9 @@ const translations: Record<Language, Translation> = {
     tasks: 'Tasks',
     profile: 'Profile',
     calculators: 'Calculators',
-    transactions: 'Transactions',
+    games: 'Games',
     notifications: 'Notifications',
+    settings: 'Settings',
     
     // Dashboard
     welcome: 'Welcome to Face2Finance',
@@ -205,8 +207,9 @@ const translations: Record<Language, Translation> = {
     tasks: 'कार्य',
     profile: 'प्रोफ़ाइल',
     calculators: 'कैलकुलेटर',
-    transactions: 'लेन-देन',
+    games: 'गेम्स',
     notifications: 'सूचनाएं',
+    settings: 'सेटिंग्स',
     
     // Dashboard
     welcome: 'Face2Finance में आपका स्वागत है',
@@ -303,8 +306,9 @@ const translations: Record<Language, Translation> = {
     tasks: 'ਕੰਮ',
     profile: 'ਪ੍ਰੋਫਾਈਲ',
     calculators: 'ਕੈਲਕੁਲੇਟਰ',
-    transactions: 'ਲੈਣ-ਦੇਣ',
+    games: 'ਗੇਮਸ',
     notifications: 'ਸੂਚਨਾਵਾਂ',
+    settings: 'ਸੈਟਿੰਗਸ',
     
     // Dashboard
     welcome: 'Face2Finance ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ',

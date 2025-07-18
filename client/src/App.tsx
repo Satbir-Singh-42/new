@@ -25,6 +25,9 @@ import AddTransaction from "@/pages/transactions/add-transaction";
 import LessonsScreen from "@/pages/lessons/lessons-screen";
 import NotificationsScreen from "@/pages/notifications/notifications-screen";
 import AIChatScreen from "@/pages/ai-chat/ai-chat-screen";
+import GamesScreen from "@/pages/games/games-screen";
+import SettingsScreen from "@/pages/settings/settings-screen";
+import AIWidget from "@/components/ai-widget";
 import { useAuth } from "@/hooks/useAuth";
 
 function Router() {
@@ -71,8 +74,8 @@ function Router() {
           <Route path="/tasks" component={TasksScreen} />
           <Route path="/tasks/create" component={CreateTask} />
           <Route path="/profile" component={ProfileScreen} />
-          <Route path="/transactions" component={TransactionsScreen} />
-          <Route path="/transactions/add" component={AddTransaction} />
+          <Route path="/games" component={GamesScreen} />
+          <Route path="/settings" component={SettingsScreen} />
           <Route path="/lessons" component={LessonsScreen} />
           <Route path="/notifications" component={NotificationsScreen} />
           <Route path="/ai-chat" component={AIChatScreen} />
@@ -83,15 +86,24 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const { isAuthenticated, user } = useAuth();
+  
+  return (
+    <div className="max-w-md mx-auto bg-white min-h-screen relative overflow-hidden">
+      <Toaster />
+      <Router />
+      {isAuthenticated && user?.onboardingCompleted && <AIWidget />}
+    </div>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <TooltipProvider>
-          <div className="max-w-md mx-auto bg-white min-h-screen relative overflow-hidden">
-            <Toaster />
-            <Router />
-          </div>
+          <AppContent />
         </TooltipProvider>
       </LanguageProvider>
     </QueryClientProvider>

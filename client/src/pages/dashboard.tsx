@@ -76,13 +76,7 @@ export default function Dashboard() {
       color: "bg-pink-100 text-pink-600",
       link: "/profile?tab=goals"
     },
-    {
-      id: "ai-chat",
-      name: t.aiAssistant,
-      icon: MessageSquare,
-      color: "bg-purple-100 text-purple-600",
-      link: "/ai-chat"
-    },
+
   ];
 
   const progressCards = [

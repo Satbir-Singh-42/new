@@ -1,4 +1,4 @@
-import { Home, PlayCircle, Calendar, CreditCard, User } from "lucide-react";
+import { Home, PlayCircle, Calendar, Gamepad2, User } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -27,10 +27,10 @@ export default function BottomNavigation() {
       active: location === "/tasks"
     },
     {
-      icon: CreditCard,
-      label: t.transactions,
-      path: "/transactions",
-      active: location === "/transactions"
+      icon: Gamepad2,
+      label: t.games,
+      path: "/games",
+      active: location === "/games"
     },
     {
       icon: User,

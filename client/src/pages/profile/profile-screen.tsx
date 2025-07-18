@@ -2,14 +2,16 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { User, TrendingUp, Target, Shield, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { User, TrendingUp, Target, Shield, HelpCircle, LogOut, ChevronRight, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
+import { useLanguage } from "@/hooks/useLanguage";
 import MobileHeader from "@/components/mobile-header";
 import BottomNavigation from "@/components/bottom-navigation";
 
 export default function ProfileScreen() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   
   const { data: progress } = useQuery({
@@ -49,13 +51,10 @@ export default function ProfileScreen() {
       onClick: () => setLocation("/profile?tab=goals")
     },
     {
-      icon: Shield,
-      title: "Security & Settings",
+      icon: Settings,
+      title: t.settings,
       description: "Privacy and account settings",
-      onClick: () => {
-        // TODO: Implement security settings
-        alert("Security Settings feature coming soon!");
-      }
+      onClick: () => setLocation("/settings")
     },
     {
       icon: HelpCircle,
