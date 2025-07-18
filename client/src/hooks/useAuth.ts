@@ -18,7 +18,10 @@ export function useAuth() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Force a page reload to ensure cookies are properly set
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      }, 100);
     },
   });
 
@@ -37,7 +40,10 @@ export function useAuth() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Force a page reload to ensure cookies are properly set
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      }, 100);
     },
   });
 

@@ -492,7 +492,9 @@ export default function Landing() {
                   phoneNumber: signupData.phoneNumber,
                 });
                 
-                setSuccessModalOpen(true);
+                toast({ title: "Success", description: "Account created successfully!" });
+                // Redirect directly to onboarding after successful signup
+                window.location.href = "/onboarding/language";
               } catch (error: any) {
                 toast({ 
                   title: "Registration Failed", 
