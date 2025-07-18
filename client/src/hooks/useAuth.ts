@@ -32,7 +32,7 @@ export function useAuth() {
       password: string; 
       firstName?: string; 
       lastName?: string;
-      phoneNumber?: string;
+      phone?: string;
     }) => {
       const response = await apiRequest("/api/auth/register", {
         method: "POST",

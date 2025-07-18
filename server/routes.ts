@@ -181,22 +181,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.post('/api/auth/register', async (req, res) => {
     try {
-      const userData = insertUserSchema.parse(req.body);
+      // Parse the basic required fields manually to handle missing username
+      const { email, password, firstName, lastName, phone } = req.body;
+      
+      if (!email || !password || !firstName || !lastName) {
+        return res.status(400).json({ 
+          message: "Missing required fields", 
+          errors: [
+            { path: ['email'], message: 'Email is required' },
+            { path: ['password'], message: 'Password is required' },
+            { path: ['firstName'], message: 'First name is required' },
+            { path: ['lastName'], message: 'Last name is required' }
+          ]
+        });
+      }
       
       // Check if user already exists
-      const existingUser = await storage.getUserByEmail(userData.email);
+      const existingUser = await storage.getUserByEmail(email);
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
       }
 
+      // Generate username from email (before @ symbol)
+      const username = email.split('@')[0];
+
       // Hash password
-      const hashedPassword = await hashPassword(userData.password);
-      
+      const hashedPassword = await hashPassword(password);
+
+      // Create user data with all required fields
+      const userData = {
+        email,
+        username,
+        firstName,
+        lastName,
+        phone: phone || undefined,
+        passwordHash: hashedPassword,
+        language: 'en' as const,
+        onboardingCompleted: false,
+        totalPoints: 0,
+      };
+
       // Create user
-      const user = await storage.createUser({
-        ...userData,
-        password: hashedPassword,
-      });
+      const user = await storage.createUser(userData);
 
       // Generate token
       const token = generateToken(user._id.toString());
@@ -244,7 +270,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Check password
-      const isValid = await comparePassword(password, user.password);
+      const isValid = await comparePassword(password, user.passwordHash);
       if (!isValid) {
         return res.status(401).json({ message: "Invalid credentials" });
       }

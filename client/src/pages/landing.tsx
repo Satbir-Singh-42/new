@@ -489,7 +489,7 @@ export default function Landing() {
                   password: signupData.password,
                   firstName: signupData.firstName,
                   lastName: signupData.lastName,
-                  phoneNumber: signupData.phoneNumber,
+                  phone: signupData.phoneNumber,
                 });
                 
                 toast({ title: "Success", description: "Account created successfully!" });
