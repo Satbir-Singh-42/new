@@ -118,16 +118,9 @@ export default function LessonsScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader />
+      <MobileHeader showBackButton={true} title="Lessons" />
       
       <div className="bg-primary text-white p-6">
-        <Button 
-          variant="ghost" 
-          className="mb-4 text-white hover:bg-white/20"
-          onClick={() => setLocation("/")}
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
         <h2 className="text-xl font-semibold">Ready To Learn?</h2>
         <p className="text-sm opacity-90 mt-2">Smart tutorials, fraud types, or finance tips</p>
       </div>

@@ -124,7 +124,7 @@ export default function SettingsScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader />
+      <MobileHeader showBackButton={true} title="Settings" />
       
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-b-3xl">

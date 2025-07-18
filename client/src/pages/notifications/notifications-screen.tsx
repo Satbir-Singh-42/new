@@ -144,17 +144,11 @@ export default function NotificationsScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader />
+      <MobileHeader showBackButton={true} title="Notifications" />
       
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <Button 
-            variant="ghost" 
-            onClick={() => setLocation("/")}
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <h2 className="text-lg font-semibold">Notifications</h2>
+          <h2 className="text-lg font-semibold">Your Notifications</h2>
           <Button 
             variant="ghost" 
             onClick={clearAllNotifications}

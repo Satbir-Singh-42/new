@@ -82,15 +82,9 @@ export default function CreateTask() {
 
   return (
     <div className="min-h-screen bg-primary text-white">
+      <MobileHeader showBackButton={true} title="Create Task" onBackClick={() => setLocation("/tasks")} />
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
-          <Button 
-            variant="ghost" 
-            className="text-white hover:bg-white/20"
-            onClick={() => setLocation("/tasks")}
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
           <h2 className="text-lg font-semibold">Create a Task</h2>
           <Button 
             variant="ghost" 

@@ -75,12 +75,9 @@ export default function ProfileScreen() {
   if (currentTab === 'edit') {
     return (
       <div className="min-h-screen bg-gray-50">
-        <MobileHeader />
+        <MobileHeader showBackButton={true} title="Edit Profile" onBackClick={() => setLocation("/profile")} />
         <div className="p-6">
           <div className="flex items-center mb-6">
-            <Button variant="ghost" onClick={() => setLocation("/profile")} className="mr-4">
-              ← Back
-            </Button>
             <h2 className="text-2xl font-semibold">Edit Profile</h2>
           </div>
           <Card>
@@ -101,12 +98,9 @@ export default function ProfileScreen() {
   if (currentTab === 'help') {
     return (
       <div className="min-h-screen bg-gray-50">
-        <MobileHeader />
+        <MobileHeader showBackButton={true} title="Help & Support" onBackClick={() => setLocation("/profile")} />
         <div className="p-6">
           <div className="flex items-center mb-6">
-            <Button variant="ghost" onClick={() => setLocation("/profile")} className="mr-4">
-              ← Back
-            </Button>
             <h2 className="text-2xl font-semibold">Help & Feedback</h2>
           </div>
           <Card>
@@ -138,7 +132,7 @@ export default function ProfileScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader />
+      <MobileHeader showBackButton={true} title="Profile" />
       
       <div className="p-6">
         <div className="text-center mb-8">

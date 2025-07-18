@@ -185,7 +185,7 @@ export default function GamesScreen() {
   if (gameState === "menu") {
     return (
       <div className="min-h-screen bg-gray-50">
-        <MobileHeader />
+        <MobileHeader showBackButton={true} title="Games" />
         
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-b-3xl">
@@ -269,19 +269,11 @@ export default function GamesScreen() {
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500">
-        <MobileHeader />
+        <MobileHeader showBackButton={true} title="Playing Game" onBackClick={resetGame} />
         
         {/* Header */}
         <div className="text-white p-6">
           <div className="flex items-center justify-between mb-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20"
-              onClick={resetGame}
-            >
-              ← Back
-            </Button>
             <div className="text-center">
               <div className="text-sm opacity-90">Question {currentQuestion + 1} of {currentGame.questions.length}</div>
               <div className="text-lg font-bold">{currentGame.title}</div>
@@ -371,7 +363,7 @@ export default function GamesScreen() {
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500">
-        <MobileHeader />
+        <MobileHeader showBackButton={true} title="Game Results" onBackClick={resetGame} />
         
         <div className="text-white p-6 text-center">
           <div className="mb-8">

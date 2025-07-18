@@ -60,17 +60,9 @@ export default function TasksScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader />
+      <MobileHeader showBackButton={true} title="Tasks" />
       
       <div className="p-6">
-        <Button 
-          variant="ghost" 
-          className="mb-6"
-          onClick={() => setLocation("/")}
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </Button>
-        
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold">{currentMonth}</h2>
           <Link href="/tasks/create">
