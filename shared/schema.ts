@@ -13,7 +13,7 @@ export const userSchema = z.object({
   onboardingCompleted: z.boolean().default(false),
   knowledgeLevel: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
   dailyGoal: z.number().min(5).max(120).optional(),
-  ageGroup: z.enum(['18-25', '26-35', '36-45', '46-55', '55+']).optional(),
+  ageGroup: z.enum(['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+']).optional(),
   totalPoints: z.number().default(0),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),

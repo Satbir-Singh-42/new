@@ -29,53 +29,60 @@ export default function AgeSelection() {
 
   const ageGroups = [
     { 
-      range: "From 13 to 17 years old", 
+      range: "13-17", 
+      displayName: "From 13 to 17 years old",
       icon: User, 
       color: "bg-gradient-to-r from-green-400 to-green-500",
       description: "Student life"
     },
     { 
-      range: "18 to 24 years old", 
+      range: "18-24", 
+      displayName: "18 to 24 years old",
       icon: Users, 
       color: "bg-gradient-to-r from-blue-400 to-blue-500",
       description: "College & early career"
     },
     { 
-      range: "25 to 34 years old", 
+      range: "25-34", 
+      displayName: "25 to 34 years old",
       icon: Briefcase, 
       color: "bg-gradient-to-r from-purple-400 to-purple-500",
       description: "Career building"
     },
     { 
-      range: "35 to 44 years old", 
+      range: "35-44", 
+      displayName: "35 to 44 years old",
       icon: Award, 
       color: "bg-gradient-to-r from-pink-400 to-pink-500",
       description: "Prime earning years"
     },
     { 
-      range: "45 to 54 years old", 
+      range: "45-54", 
+      displayName: "45 to 54 years old",
       icon: User, 
       color: "bg-gradient-to-r from-indigo-400 to-indigo-500",
       description: "Pre-retirement planning"
     },
     { 
-      range: "55 to 64 years old", 
+      range: "55-64", 
+      displayName: "55 to 64 years old",
       icon: Users, 
       color: "bg-gradient-to-r from-teal-400 to-teal-500",
       description: "Retirement preparation"
     },
     { 
       range: "65+", 
+      displayName: "65+ years old",
       icon: Award, 
       color: "bg-gradient-to-r from-orange-400 to-orange-500",
       description: "Retirement & legacy"
     }
   ];
 
-  const handleAgeSelect = (ageGroup: string) => {
-    setSelectedAge(ageGroup);
+  const handleAgeSelect = (range: string) => {
+    setSelectedAge(range);
     updateOnboardingMutation.mutate({ 
-      ageGroup, 
+      ageGroup: range, 
       onboardingCompleted: true 
     });
   };
@@ -121,7 +128,7 @@ export default function AgeSelection() {
                   <ageGroup.icon className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-800">{ageGroup.range}</h3>
+                  <h3 className="font-semibold text-gray-800">{ageGroup.displayName}</h3>
                   <p className="text-gray-600 text-sm">{ageGroup.description}</p>
                 </div>
               </div>
