@@ -6,6 +6,12 @@ Face2Finance is a comprehensive financial literacy education platform built as a
 
 ## Recent Changes (July 18, 2025)
 
+✅ **DEMO LOGIN BUTTON ADDED**: Added convenient demo access to login page
+- **Demo Button**: Added "TRY DEMO" button on login page for quick app access
+- **Demo Account**: Automatically creates demo user (demo@face2finance.com) if doesn't exist
+- **Auto-Login**: Seamlessly logs in with demo credentials for instant app testing
+- **User Experience**: Improved onboarding for new users and evaluators
+
 ✅ **REPLIT MIGRATION COMPLETED**: Successfully migrated from Replit Agent to standard Replit environment
 - **Package Installation**: All required dependencies properly installed and configured
 - **Workflow Setup**: Express server and Vite development server running seamlessly

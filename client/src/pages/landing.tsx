@@ -184,6 +184,51 @@ export default function Landing() {
               >
                 {isLoggingIn ? "LOGGING IN..." : "LOG IN"}
               </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline"
+                className="w-full mt-3 border-primary text-primary hover:bg-primary hover:text-white"
+                onClick={async () => {
+                  try {
+                    // Use demo credentials
+                    await login({
+                      email: "demo@face2finance.com",
+                      password: "demo123"
+                    });
+                    toast({ 
+                      title: "Demo Login", 
+                      description: "Welcome to Face2Finance demo!",
+                    });
+                    window.location.href = "/";
+                  } catch (error: any) {
+                    // If demo user doesn't exist, create one
+                    try {
+                      await register({
+                        email: "demo@face2finance.com",
+                        password: "demo123",
+                        firstName: "Demo",
+                        lastName: "User",
+                        phone: "+1234567890"
+                      });
+                      toast({ 
+                        title: "Demo Account Created", 
+                        description: "Demo account created and logged in!",
+                      });
+                      window.location.href = "/";
+                    } catch (registerError: any) {
+                      toast({ 
+                        title: "Demo Failed", 
+                        description: registerError.message || "Demo login failed",
+                        variant: "destructive"
+                      });
+                    }
+                  }
+                }}
+                disabled={isLoggingIn}
+              >
+                {isLoggingIn ? "CREATING DEMO..." : "TRY DEMO"}
+              </Button>
             </form>
 
             <div className="text-center mt-4">
