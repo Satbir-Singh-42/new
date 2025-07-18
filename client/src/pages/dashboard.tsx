@@ -19,6 +19,14 @@ export default function Dashboard() {
     queryKey: ["/api/progress"],
   });
 
+  const { data: modules = [] } = useQuery({
+    queryKey: ["/api/modules/"],
+  });
+
+  const { data: quizzes = [] } = useQuery({
+    queryKey: ["/api/quizzes"],
+  });
+
   const categories = [
     {
       id: "budgeting",
@@ -102,20 +110,13 @@ export default function Dashboard() {
     },
   ];
 
-  const featuredModules = [
-    {
-      title: "OTP Scam Explainer",
-      rating: 4.8,
-      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=120",
-      link: "/lessons/otp-scam"
-    },
-    {
-      title: "Debt Card Fraud Tips",
-      rating: 4.8,
-      image: "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=120",
-      link: "/lessons/card-fraud"
-    },
-  ];
+  // Get featured modules from database
+  const featuredModules = modules.slice(0, 4).map(module => ({
+    title: module.title,
+    rating: 4.8,
+    image: `https://images.unsplash.com/photo-${module.category === 'fraud' ? '1563013544-824ae1b704d3' : '1556742393-d75f468bfcb0'}?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=120`,
+    link: `/lessons/${module._id}`
+  }));
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -125,8 +126,8 @@ export default function Dashboard() {
       <div className="bg-gradient-to-r from-primary to-purple-600 text-white p-6 rounded-b-3xl">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <p className="text-sm opacity-90">Monday</p>
-            <h2 className="text-lg font-semibold">25 October</h2>
+            <p className="text-sm opacity-90">{new Date().toLocaleDateString('en-US', { weekday: 'long' })}</p>
+            <h2 className="text-lg font-semibold">{new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long' })}</h2>
           </div>
           <div className="flex items-center space-x-3">
             <Link href="/notifications">
@@ -180,35 +181,22 @@ export default function Dashboard() {
         </div>
         
         <div className="space-y-4 mb-4">
-          <Card className="shadow-sm border border-gray-100">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-white" />
+          {modules.slice(0, 2).map((module, index) => (
+            <Card key={module._id} className="shadow-sm border border-gray-100">
+              <CardContent className="p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium">{module.title}</h4>
+                    <p className="text-gray-500 text-sm">{module.category} • {module.duration} min</p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-gray-400" />
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-medium">Design Changes</h4>
-                  <p className="text-gray-500 text-sm">3 Days ago</p>
-                </div>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-sm border border-gray-100">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium">Design Changes</h4>
-                  <p className="text-gray-500 text-sm">1 Day ago</p>
-                </div>
-                <ChevronRight className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
 

@@ -9,7 +9,7 @@ import BottomNavigation from "@/components/bottom-navigation";
 
 export default function GamesScreen() {
   const { t } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [currentGame, setCurrentGame] = useState(null);
   const [gameState, setGameState] = useState("menu"); // menu, playing, results
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -133,17 +133,7 @@ export default function GamesScreen() {
     }
   ];
 
-  const categories = [
-    { id: "all", name: "All Games", count: games.length },
-    { id: "budgeting", name: "Budgeting", count: games.filter(g => g.category === "budgeting").length },
-    { id: "security", name: "Security", count: games.filter(g => g.category === "security").length },
-    { id: "investing", name: "Investing", count: games.filter(g => g.category === "investing").length },
-    { id: "savings", name: "Savings", count: games.filter(g => g.category === "savings").length },
-  ];
-
-  const filteredGames = selectedCategory === "all" 
-    ? games 
-    : games.filter(game => game.category === selectedCategory);
+  const filteredGames = games;
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -211,28 +201,7 @@ export default function GamesScreen() {
           </div>
         </div>
 
-        {/* Categories */}
-        <div className="px-6 -mt-4 relative z-10">
-          <div className="flex space-x-3 overflow-x-auto pb-4">
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                className={`whitespace-nowrap ${
-                  selectedCategory === category.id
-                    ? "bg-purple-600 text-white"
-                    : "bg-white border-gray-200"
-                }`}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-                <Badge variant="secondary" className="ml-2">
-                  {category.count}
-                </Badge>
-              </Button>
-            ))}
-          </div>
-        </div>
+
 
         {/* Games Grid */}
         <div className="px-6 mt-6 mb-20">

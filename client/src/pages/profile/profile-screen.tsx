@@ -14,6 +14,10 @@ export default function ProfileScreen() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   
+  // Get URL parameters to handle different tabs
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentTab = urlParams.get('tab') || 'main';
+  
   const { data: progress } = useQuery({
     queryKey: ["/api/progress"],
   });
@@ -34,8 +38,8 @@ export default function ProfileScreen() {
       title: "Edit Profile",
       description: "Update your personal information",
       onClick: () => {
-        // TODO: Implement edit profile
-        alert("Edit Profile feature coming soon!");
+        // Navigate to edit profile section
+        setLocation("/profile?tab=edit");
       }
     },
     {
@@ -61,11 +65,76 @@ export default function ProfileScreen() {
       title: "Help & Feedback",
       description: "Get support and share feedback",
       onClick: () => {
-        // TODO: Implement help & feedback
-        alert("Help & Feedback feature coming soon!");
+        // Navigate to help section
+        setLocation("/profile?tab=help");
       }
     },
   ];
+
+  // Handle different tab views
+  if (currentTab === 'edit') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <MobileHeader />
+        <div className="p-6">
+          <div className="flex items-center mb-6">
+            <Button variant="ghost" onClick={() => setLocation("/profile")} className="mr-4">
+              ← Back
+            </Button>
+            <h2 className="text-2xl font-semibold">Edit Profile</h2>
+          </div>
+          <Card>
+            <CardContent className="p-6">
+              <p className="text-center text-gray-600 py-8">
+                Profile editing functionality will be available soon. 
+                <br />
+                Contact support for profile updates.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+        <BottomNavigation />
+      </div>
+    );
+  }
+
+  if (currentTab === 'help') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <MobileHeader />
+        <div className="p-6">
+          <div className="flex items-center mb-6">
+            <Button variant="ghost" onClick={() => setLocation("/profile")} className="mr-4">
+              ← Back
+            </Button>
+            <h2 className="text-2xl font-semibold">Help & Feedback</h2>
+          </div>
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold mb-4">Need Help?</h3>
+                <p className="text-gray-600 mb-6">
+                  We're here to help you succeed with your financial learning journey.
+                </p>
+                <div className="space-y-4">
+                  <Button className="w-full" onClick={() => window.open('mailto:support@face2finance.com')}>
+                    Contact Support
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => setLocation("/settings")}>
+                    App Settings
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => setLocation("/")}>
+                    Back to Dashboard
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <BottomNavigation />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
