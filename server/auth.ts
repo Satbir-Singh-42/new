@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { User } from "@shared/schema";
+import { UserModel } from "./models/User";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this-in-production";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
@@ -41,7 +41,7 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
     }
 
     const decoded = verifyToken(token);
-    const user = await User.findById(decoded.userId).select("-password");
+    const user = await UserModel.findById(decoded.userId).select("-passwordHash");
     
     if (!user) {
       return res.status(401).json({ message: "User not found" });
@@ -66,7 +66,7 @@ export const optionalAuth = async (req: AuthenticatedRequest, res: Response, nex
     
     if (token) {
       const decoded = verifyToken(token);
-      const user = await User.findById(decoded.userId).select("-password");
+      const user = await UserModel.findById(decoded.userId).select("-passwordHash");
       req.user = user;
     }
     

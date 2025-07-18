@@ -1,17 +1,18 @@
 import {
-  LearningModule,
-  Quiz,
-  QuizQuestion,
-  Notification,
+  type LearningModule,
+  type Quiz,
+  type QuizQuestion,
+  type Notification,
   type ILearningModule,
   type IQuiz,
   type IQuizQuestion,
 } from "@shared/schema";
+import { LearningModuleModel, QuizModel } from "./models";
 
 export async function seedDatabase() {
   try {
     // Check if data already exists
-    const existingModules = await LearningModule.countDocuments();
+    const existingModules = await LearningModuleModel.countDocuments();
     if (existingModules > 0) {
       console.log("Seed data already exists, skipping...");
       return;
@@ -91,7 +92,7 @@ export async function seedDatabase() {
       }
     ];
 
-    const createdModules = await LearningModule.insertMany(modules);
+    const createdModules = await LearningModuleModel.insertMany(modules);
     console.log(`Created ${createdModules.length} learning modules`);
 
     // Create quizzes
@@ -118,7 +119,7 @@ export async function seedDatabase() {
       }
     ];
 
-    const createdQuizzes = await Quiz.insertMany(quizzes);
+    const createdQuizzes = await QuizModel.insertMany(quizzes);
     console.log(`Created ${createdQuizzes.length} quizzes`);
 
     // Create quiz questions
