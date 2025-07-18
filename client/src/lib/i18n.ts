@@ -42,11 +42,13 @@ export interface Translation {
   // Onboarding
   selectLanguage: string;
   knowledgeLevel: string;
+  knowledgeAssessment: string;
   beginner: string;
   intermediate: string;
   advanced: string;
   dailyGoal: string;
   ageGroup: string;
+  ageSelection: string;
   
   // Calculators
   budgetCalculator: string;
@@ -142,11 +144,13 @@ const translations: Record<Language, Translation> = {
     // Onboarding
     selectLanguage: 'Select Language',
     knowledgeLevel: 'Knowledge Level',
+    knowledgeAssessment: 'Knowledge Assessment',
     beginner: 'Beginner',
     intermediate: 'Intermediate',
     advanced: 'Advanced',
-    dailyGoal: 'Daily Goal (minutes)',
+    dailyGoal: 'Daily Goal',
     ageGroup: 'Age Group',
+    ageSelection: 'Age Selection',
     
     // Calculators
     budgetCalculator: 'Budget Calculator',
@@ -241,11 +245,13 @@ const translations: Record<Language, Translation> = {
     // Onboarding
     selectLanguage: 'भाषा चुनें',
     knowledgeLevel: 'ज्ञान स्तर',
+    knowledgeAssessment: 'ज्ञान मूल्यांकन',
     beginner: 'शुरुआती',
     intermediate: 'मध्यम',
     advanced: 'उन्नत',
-    dailyGoal: 'दैनिक लक्ष्य (मिनट)',
+    dailyGoal: 'दैनिक लक्ष्य',
     ageGroup: 'आयु समूह',
+    ageSelection: 'आयु चयन',
     
     // Calculators
     budgetCalculator: 'बजट कैलकुलेटर',
@@ -340,11 +346,13 @@ const translations: Record<Language, Translation> = {
     // Onboarding
     selectLanguage: 'ਭਾਸ਼ਾ ਚੁਣੋ',
     knowledgeLevel: 'ਗਿਆਨ ਪੱਧਰ',
+    knowledgeAssessment: 'ਗਿਆਨ ਮੁਲਾਂਕਣ',
     beginner: 'ਸ਼ੁਰੂਆਤੀ',
     intermediate: 'ਮੱਧਮ',
     advanced: 'ਉੱਨਤ',
-    dailyGoal: 'ਰੋਜ਼ਾਨਾ ਟੀਚਾ (ਮਿੰਟ)',
+    dailyGoal: 'ਰੋਜ਼ਾਨਾ ਟੀਚਾ',
     ageGroup: 'ਉਮਰ ਸਮੂਹ',
+    ageSelection: 'ਉਮਰ ਚੋਣ',
     
     // Calculators
     budgetCalculator: 'ਬਜਟ ਕੈਲਕੁਲੇਟਰ',
