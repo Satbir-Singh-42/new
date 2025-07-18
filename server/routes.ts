@@ -348,7 +348,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Learning module routes
+  // Learning module routes (public access for testing)
+  app.get('/api/learning-modules', async (req, res) => {
+    try {
+      const { category } = req.query;
+      const modules = category 
+        ? await storage.getLearningModulesByCategory(category as string)
+        : await storage.getLearningModules();
+      res.json(modules);
+    } catch (error) {
+      console.error("Error fetching modules:", error);
+      res.status(500).json({ message: "Failed to fetch modules" });
+    }
+  });
+
+  // Learning module routes (authenticated)
   app.get('/api/modules', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
       const { category } = req.query;
