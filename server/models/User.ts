@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema<User>({
   onboardingCompleted: { type: Boolean, default: false, required: false },
   knowledgeLevel: { type: String, enum: ['beginner', 'intermediate', 'advanced'] },
   dailyGoal: { type: Number, min: 5, max: 120 },
-  ageGroup: { type: String, enum: ['18-25', '26-35', '36-45', '46-55', '55+'] },
+  ageGroup: { type: String, enum: ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'] },
   totalPoints: { type: Number, default: 0 },
 }, {
   timestamps: true,
