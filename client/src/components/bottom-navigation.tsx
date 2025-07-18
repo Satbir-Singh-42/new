@@ -1,38 +1,40 @@
 import { Home, PlayCircle, Calendar, CreditCard, User } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function BottomNavigation() {
   const [location] = useLocation();
+  const { t } = useLanguage();
 
   const navItems = [
     {
       icon: Home,
-      label: "Home",
+      label: t.dashboard,
       path: "/",
       active: location === "/"
     },
     {
       icon: PlayCircle,
-      label: "Lessons",
+      label: t.lessons,
       path: "/lessons",
       active: location === "/lessons"
     },
     {
       icon: Calendar,
-      label: "Tasks",
+      label: t.tasks,
       path: "/tasks",
       active: location === "/tasks"
     },
     {
       icon: CreditCard,
-      label: "Money",
+      label: t.transactions,
       path: "/transactions",
       active: location === "/transactions"
     },
     {
       icon: User,
-      label: "Profile",
+      label: t.profile,
       path: "/profile",
       active: location === "/profile"
     },

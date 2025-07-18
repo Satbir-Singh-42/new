@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Bell, Search, Calculator, PiggyBank, Shield, Lock, Lightbulb, Target, ChevronRight, MessageSquare } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import ProgressCard from "@/components/progress-card";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   
   const { data: progress } = useQuery({
     queryKey: ["/api/progress"],
