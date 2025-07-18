@@ -170,10 +170,8 @@ export default function Landing() {
                   try {
                     await login(loginData);
                     toast({ title: "Success", description: "Logged in successfully!" });
-                    // Force a reload to ensure authentication state is properly updated
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 500);
+                    // Redirect to home page which will trigger authentication check
+                    window.location.href = "/";
                   } catch (error: any) {
                     toast({ 
                       title: "Login Failed", 
@@ -495,10 +493,8 @@ export default function Landing() {
                 });
                 
                 toast({ title: "Success", description: "Account created successfully!" });
-                // Force a reload to ensure authentication state is properly updated
-                setTimeout(() => {
-                  window.location.reload();
-                }, 500);
+                // Redirect to home page which will trigger authentication check
+                window.location.href = "/";
               } catch (error: any) {
                 toast({ 
                   title: "Registration Failed", 

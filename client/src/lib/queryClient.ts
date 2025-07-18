@@ -7,20 +7,28 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-// Helper function to get auth token from cookie
+// Helper function to get auth token from cookie or localStorage
 function getAuthToken(): string | null {
   if (typeof document === 'undefined') return null;
   
+  // First try localStorage (more reliable)
+  const localToken = localStorage.getItem('authToken');
+  if (localToken) {
+    return localToken;
+  }
+  
+  // Fallback to cookies
   const cookies = document.cookie.split(';');
   for (const cookie of cookies) {
     const [name, value] = cookie.trim().split('=');
     if (name === 'authToken') {
       const token = decodeURIComponent(value);
-      console.log('Found authToken:', token ? 'present' : 'missing');
+      // Store in localStorage for future use
+      localStorage.setItem('authToken', token);
       return token;
     }
   }
-  console.log('No authToken found in cookies:', document.cookie);
+  
   return null;
 }
 

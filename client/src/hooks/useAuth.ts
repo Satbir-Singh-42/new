@@ -17,11 +17,12 @@ export function useAuth() {
       });
       return response.json();
     },
-    onSuccess: () => {
-      // Force a page reload to ensure cookies are properly set
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-      }, 100);
+    onSuccess: (data) => {
+      // Store token in localStorage for more reliable access
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+      }
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
     },
   });
 
@@ -39,11 +40,12 @@ export function useAuth() {
       });
       return response.json();
     },
-    onSuccess: () => {
-      // Force a page reload to ensure cookies are properly set
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-      }, 100);
+    onSuccess: (data) => {
+      // Store token in localStorage for more reliable access
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+      }
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
     },
   });
 
@@ -55,6 +57,8 @@ export function useAuth() {
       return response.json();
     },
     onSuccess: () => {
+      // Clear token from localStorage
+      localStorage.removeItem('authToken');
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
     },
   });
