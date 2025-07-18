@@ -23,6 +23,7 @@ import TransactionsScreen from "@/pages/transactions/transactions-screen";
 import AddTransaction from "@/pages/transactions/add-transaction";
 import LessonsScreen from "@/pages/lessons/lessons-screen";
 import NotificationsScreen from "@/pages/notifications/notifications-screen";
+import AIChatScreen from "@/pages/ai-chat/ai-chat-screen";
 import { useAuth } from "@/hooks/useAuth";
 
 function Router() {
@@ -69,6 +70,7 @@ function Router() {
           <Route path="/transactions/add" component={AddTransaction} />
           <Route path="/lessons" component={LessonsScreen} />
           <Route path="/notifications" component={NotificationsScreen} />
+          <Route path="/ai-chat" component={AIChatScreen} />
         </>
       )}
       <Route component={NotFound} />

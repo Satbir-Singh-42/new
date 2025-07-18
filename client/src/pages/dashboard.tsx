@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Bell, Search, Calculator, PiggyBank, Shield, Lock, Lightbulb, Target, ChevronRight } from "lucide-react";
+import { Bell, Search, Calculator, PiggyBank, Shield, Lock, Lightbulb, Target, ChevronRight, MessageSquare } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -73,6 +73,13 @@ export default function Dashboard() {
       icon: Target,
       color: "bg-pink-100 text-pink-600",
       link: "/profile?tab=goals"
+    },
+    {
+      id: "ai-chat",
+      name: "AI Assistant",
+      icon: MessageSquare,
+      color: "bg-purple-100 text-purple-600",
+      link: "/ai-chat"
     },
   ];
 

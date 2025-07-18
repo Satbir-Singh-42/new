@@ -39,6 +39,141 @@ export async function registerRoutes(app: Express): Promise<Server> {
     },
   }));
 
+  // AI Chat routes
+  app.post('/api/ai/chat/session', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { title } = req.body;
+      const userId = req.userId!;
+      
+      // Create new chat session (stored in memory for now)
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      res.json({
+        sessionId,
+        title: title || 'New Chat',
+        createdAt: new Date()
+      });
+    } catch (error) {
+      console.error('Error creating chat session:', error);
+      res.status(500).json({ message: "Failed to create chat session" });
+    }
+  });
+
+  app.post('/api/ai/chat/message', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const { sessionId, message } = req.body;
+      const userId = req.userId!;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ 
+          message: "AI service is not configured. Please provide an OpenAI API key." 
+        });
+      }
+
+      // Import AI service
+      const { aiService } = await import('./ai-service');
+      
+      // Get user context for better responses
+      const user = await storage.getUserById(userId);
+      const userContext = {
+        dailyGoal: user?.dailyGoal,
+        knowledgeLevel: user?.knowledgeLevel,
+        ageGroup: user?.ageGroup,
+        recentLessons: 0, // Would be calculated from user progress
+        activeGoals: 0 // Would be calculated from active goals
+      };
+
+      // Generate AI response
+      const response = await aiService.generateResponse([
+        { role: 'user', content: message }
+      ], userContext);
+
+      res.json({
+        sessionId,
+        response,
+        timestamp: new Date()
+      });
+    } catch (error: any) {
+      console.error('Error processing chat message:', error);
+      res.status(500).json({ 
+        message: error.message || "Failed to process message" 
+      });
+    }
+  });
+
+  app.get('/api/ai/financial-advice', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.userId!;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ 
+          message: "AI service is not configured" 
+        });
+      }
+
+      // Get user's financial data
+      const [transactions, goals] = await Promise.all([
+        storage.getTransactions(userId),
+        storage.getFinancialGoals(userId)
+      ]);
+
+      const transactionsSummary = transactions.reduce((acc, t) => {
+        if (t.type === 'income') acc.income += t.amount;
+        if (t.type === 'expense') acc.expenses += t.amount;
+        return acc;
+      }, { income: 0, expenses: 0 });
+
+      const userFinancialData = {
+        income: transactionsSummary.income,
+        expenses: transactionsSummary.expenses,
+        savings: transactionsSummary.income - transactionsSummary.expenses,
+        goals: goals,
+        debts: 0 // Would be calculated from debt transactions
+      };
+
+      const { aiService } = await import('./ai-service');
+      const advice = await aiService.generateFinancialAdvice(userFinancialData);
+
+      res.json({
+        advice,
+        financialSummary: userFinancialData,
+        generatedAt: new Date()
+      });
+    } catch (error: any) {
+      console.error('Error generating financial advice:', error);
+      res.status(500).json({ 
+        message: error.message || "Failed to generate financial advice" 
+      });
+    }
+  });
+
+  app.get('/api/ai/budget-suggestions', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.userId!;
+      
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(503).json({ 
+          message: "AI service is not configured" 
+        });
+      }
+
+      const transactions = await storage.getTransactions(userId);
+      const { aiService } = await import('./ai-service');
+      const suggestions = await aiService.generateBudgetSuggestions(transactions);
+
+      res.json({
+        suggestions,
+        basedOnTransactions: transactions.length,
+        generatedAt: new Date()
+      });
+    } catch (error: any) {
+      console.error('Error generating budget suggestions:', error);
+      res.status(500).json({ 
+        message: error.message || "Failed to generate budget suggestions" 
+      });
+    }
+  });
+
   // Auth routes
   app.post('/api/auth/register', async (req, res) => {
     try {
