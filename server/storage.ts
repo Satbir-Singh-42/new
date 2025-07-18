@@ -38,6 +38,7 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<IUser | null>;
   updateUser(id: string, updates: UpdateUser): Promise<IUser | null>;
   deleteUser(id: string): Promise<boolean>;
+  clearAllUsers(): Promise<void>;
 
   // User progress operations
   getUserProgress(userId: string): Promise<IUserProgress | null>;
@@ -118,6 +119,18 @@ export class MongoStorage implements IStorage {
   async deleteUser(id: string): Promise<boolean> {
     const result = await User.findByIdAndDelete(id).exec();
     return result !== null;
+  }
+
+  async clearAllUsers(): Promise<void> {
+    await User.deleteMany({}).exec();
+    await UserProgress.deleteMany({}).exec();
+    await UserLesson.deleteMany({}).exec();
+    await QuizAttempt.deleteMany({}).exec();
+    await Task.deleteMany({}).exec();
+    await Transaction.deleteMany({}).exec();
+    await FinancialGoal.deleteMany({}).exec();
+    await Notification.deleteMany({}).exec();
+    await CalculatorHistory.deleteMany({}).exec();
   }
 
   // User progress operations

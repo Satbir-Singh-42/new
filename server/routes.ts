@@ -200,6 +200,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store token in session
       (req.session as any).token = token;
       (req.session as any).userId = user._id.toString();
+      
+      // Also set as cookie for client access
+      res.cookie('authToken', token, {
+        httpOnly: false, // Allow client access
+        secure: false, // Set to true in production with HTTPS
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        sameSite: 'lax'
+      });
 
       res.status(201).json({
         user: {
@@ -243,6 +251,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store token in session
       (req.session as any).token = token;
       (req.session as any).userId = user._id.toString();
+      
+      // Also set as cookie for client access
+      res.cookie('authToken', token, {
+        httpOnly: false, // Allow client access
+        secure: false, // Set to true in production with HTTPS
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        sameSite: 'lax'
+      });
 
       res.json({
         user: {
@@ -269,6 +285,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (err) {
         return res.status(500).json({ message: "Logout failed" });
       }
+      // Clear the auth cookie
+      res.clearCookie('authToken');
       res.json({ message: "Logged out successfully" });
     });
   });
@@ -650,6 +668,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error marking notification as read:", error);
       res.status(500).json({ message: "Failed to mark notification as read" });
+    }
+  });
+
+  // Development helper endpoint to clear all users
+  app.post('/api/clear-users', async (req, res) => {
+    try {
+      await storage.clearAllUsers();
+      res.json({ message: "All users cleared successfully" });
+    } catch (error) {
+      console.error("Error clearing users:", error);
+      res.status(500).json({ message: "Failed to clear users" });
     }
   });
 
