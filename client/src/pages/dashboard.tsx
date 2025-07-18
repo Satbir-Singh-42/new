@@ -22,63 +22,63 @@ export default function Dashboard() {
   const categories = [
     {
       id: "budgeting",
-      name: "Budgeting",
+      name: t.budgeting,
       icon: Calculator,
       color: "bg-blue-100 text-blue-600",
       link: "/lessons?category=budgeting"
     },
     {
       id: "savings",
-      name: "Saving & Investment",
+      name: t.savings,
       icon: PiggyBank,
       color: "bg-green-100 text-green-600",
       link: "/lessons?category=savings"
     },
     {
       id: "fraud",
-      name: "Cyber Fraud Types",
+      name: t.fraud,
       icon: Shield,
       color: "bg-orange-100 text-orange-600",
       link: "/lessons?category=fraud"
     },
     {
       id: "privacy",
-      name: "Data Privacy & Protection",
+      name: t.privacy,
       icon: Lock,
       color: "bg-blue-100 text-blue-600",
       link: "/lessons?category=privacy"
     },
     {
       id: "calculators",
-      name: "Calculators",
+      name: t.calculators,
       icon: Calculator,
       color: "bg-red-100 text-red-600",
       link: "/calculators"
     },
     {
       id: "tips",
-      name: "Tips",
+      name: t.tips,
       icon: Lightbulb,
       color: "bg-yellow-100 text-yellow-600",
       link: "/lessons?category=tips"
     },
     {
       id: "quiz",
-      name: "Quiz",
+      name: t.quiz,
       icon: Target,
       color: "bg-green-100 text-green-600",
       link: "/quiz"
     },
     {
       id: "goals",
-      name: "Goals",
+      name: t.goals,
       icon: Target,
       color: "bg-pink-100 text-pink-600",
       link: "/profile?tab=goals"
     },
     {
       id: "ai-chat",
-      name: "AI Assistant",
+      name: t.aiAssistant,
       icon: MessageSquare,
       color: "bg-purple-100 text-purple-600",
       link: "/ai-chat"
@@ -149,7 +149,7 @@ export default function Dashboard() {
         </div>
         <div>
           <h1 className="text-xl font-bold mb-1">Hi, {user?.firstName || "User"}</h1>
-          <p className="text-sm opacity-90">Welcome to Face2Finance</p>
+          <p className="text-sm opacity-90">{t.welcome}</p>
         </div>
       </div>
 
@@ -160,7 +160,7 @@ export default function Dashboard() {
             <div className="flex items-center space-x-3">
               <Search className="h-5 w-5 text-gray-400" />
               <Input 
-                placeholder="Search tutorials, fraud types, or finance tips..." 
+                placeholder={t.searchPlaceholder}
                 className="border-0 focus-visible:ring-0 p-0"
               />
             </div>
@@ -170,14 +170,14 @@ export default function Dashboard() {
 
       {/* Categories Grid */}
       <div className="px-6 mt-6">
-        <h3 className="text-lg font-semibold mb-4">Top Categories</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.topCategories}</h3>
         <CategoryGrid categories={categories} />
       </div>
 
       {/* Progress Section */}
       <div className="px-6 mt-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Progress</h3>
+          <h3 className="text-lg font-semibold">{t.progress}</h3>
           <Link href="/profile?tab=progress">
             <Button variant="ghost" className="text-primary text-sm font-medium p-0">
               More
@@ -220,7 +220,7 @@ export default function Dashboard() {
 
       {/* Monthly Preview Cards */}
       <div className="px-6 mt-6">
-        <h3 className="text-lg font-semibold mb-4">Monthly Preview</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.monthlyPreview}</h3>
         <div className="grid grid-cols-2 gap-4">
           {progressCards.map((card, index) => (
             <ProgressCard key={index} {...card} />
@@ -230,7 +230,7 @@ export default function Dashboard() {
 
       {/* Featured Modules */}
       <div className="px-6 mt-6 mb-20">
-        <h3 className="text-lg font-semibold mb-4">Featured Modules Lessons</h3>
+        <h3 className="text-lg font-semibold mb-4">{t.featuredLessons}</h3>
         <div className="grid grid-cols-2 gap-4">
           {featuredModules.map((module, index) => (
             <Link key={index} href={module.link}>

@@ -34,7 +34,6 @@ export const useLanguageState = () => {
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    setTranslations(getTranslations(lang));
     
     // Store in localStorage
     if (typeof window !== 'undefined') {
