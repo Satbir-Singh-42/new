@@ -14,8 +14,58 @@ export default function NotificationsScreen() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: notifications = [], isLoading } = useQuery({
+  // Mock notifications data since we don't have a notifications API endpoint yet
+  const mockNotifications = [
+    {
+      id: 1,
+      title: "New Lesson Available",
+      message: "Check out our new lesson on 'Understanding Credit Cards'",
+      type: "lesson",
+      read: false,
+      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
+      actionUrl: "/lessons"
+    },
+    {
+      id: 2,
+      title: "Quiz Reminder",
+      message: "Don't forget to complete the Financial Literacy Quiz!",
+      type: "course",
+      read: false,
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+      actionUrl: "/quiz"
+    },
+    {
+      id: 3,
+      title: "Daily Tip",
+      message: "💡 Try the 50/30/20 budgeting rule to manage your finances better",
+      type: "tip",
+      read: true,
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
+      actionUrl: "/calculators/budget"
+    },
+    {
+      id: 4,
+      title: "Goal Progress",
+      message: "You're 80% closer to your savings goal! Keep it up!",
+      type: "community",
+      read: false,
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
+      actionUrl: "/tasks"
+    },
+    {
+      id: 5,
+      title: "Profile Update",
+      message: "Your profile information has been updated successfully",
+      type: "system",
+      read: true,
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
+      actionUrl: "/profile"
+    }
+  ];
+
+  const { data: notifications = mockNotifications, isLoading } = useQuery({
     queryKey: ["/api/notifications"],
+    queryFn: () => Promise.resolve(mockNotifications),
   });
 
   const markAsReadMutation = useMutation({
@@ -61,9 +111,10 @@ export default function NotificationsScreen() {
     }
   };
 
-  const handleNotificationClick = (notification: Notification) => {
+  const handleNotificationClick = (notification: any) => {
     if (!notification.read) {
-      markAsReadMutation.mutate(notification.id);
+      // In a real app, this would update the database
+      console.log('Marking notification as read:', notification.id);
     }
     
     // Navigate to action URL if available
@@ -126,7 +177,7 @@ export default function NotificationsScreen() {
           </Card>
         ) : (
           <div className="space-y-4 mb-20">
-            {notifications.map((notification: Notification) => {
+            {notifications.map((notification: any) => {
               const IconComponent = getNotificationIcon(notification.type);
               const iconColor = getNotificationColor(notification.type);
               
@@ -147,7 +198,7 @@ export default function NotificationsScreen() {
                         <h4 className="font-medium text-sm mb-1">{notification.title}</h4>
                         <p className="text-sm text-gray-800 mb-1 line-clamp-2">{notification.message}</p>
                         <p className="text-xs text-gray-500">
-                          {new Date(notification.createdAt).toLocaleDateString('en-US', {
+                          {new Date(notification.timestamp).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
                             year: 'numeric',

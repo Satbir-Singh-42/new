@@ -30,6 +30,16 @@ export default function LessonsScreen() {
     { id: "tips", name: "Tips" },
   ];
 
+  // Get filtered modules from database
+  const filteredModules = selectedCategory === "all" 
+    ? modules 
+    : modules.filter(module => module.category === selectedCategory);
+
+  const getUserProgress = (moduleId: string) => {
+    const userLesson = userLessons.find(lesson => lesson.moduleId === moduleId);
+    return userLesson ? userLesson.progress : 0;
+  };
+
   const featuredModules = [
     {
       id: 1,
@@ -144,12 +154,12 @@ export default function LessonsScreen() {
           </div>
         </div>
 
-        {/* Featured Lessons Grid */}
+        {/* Real Database Modules Grid */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          {featuredModules.map((module) => (
-            <Card key={module.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+          {filteredModules.slice(0, 6).map((module) => (
+            <Card key={module._id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
               <img 
-                src={module.image} 
+                src={`https://images.unsplash.com/photo-${module.category === 'fraud' ? '1563013544-824ae1b704d3' : '1554224155-6726b3ff858f'}?auto=format&fit=crop&w=200&h=120`}
                 alt={module.title}
                 className="w-full h-24 object-cover"
               />
@@ -158,55 +168,85 @@ export default function LessonsScreen() {
                 <p className="text-xs text-gray-500">{module.description}</p>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-xs text-gray-500">{module.category}</span>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                    <Play className="w-3 h-3" />
-                  </Button>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-xs text-gray-500">{module.duration}min</span>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <Play className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Featured Modules Section */}
-        <h3 className="text-lg font-semibold mb-4">Featured Modules Lessons</h3>
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          {specialModules.map((module, index) => (
-            <Card key={index} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-              <img 
-                src={module.image} 
-                alt={module.title}
-                className="w-full h-24 object-cover"
-              />
-              <CardContent className="p-3">
-                <div className="flex items-center space-x-1 mb-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                  <span className="text-xs text-gray-500">{module.rating}</span>
-                </div>
-                <h4 className="font-medium text-sm">{module.title}</h4>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Continue Learning Section */}
-        <h3 className="text-lg font-semibold mb-4">Continue Learning</h3>
-        <div className="grid grid-cols-2 gap-4 mb-20">
-          {specialModules.map((module, index) => (
-            <Card key={`continue-${index}`} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-              <img 
-                src={module.image} 
-                alt={module.title}
-                className="w-full h-24 object-cover"
-              />
-              <CardContent className="p-3">
-                <h4 className="font-medium text-sm">{module.title}</h4>
                 <div className="w-full bg-gray-200 rounded-full h-1 mt-2">
                   <div 
                     className="bg-primary h-1 rounded-full transition-all duration-300"
-                    style={{ width: `${Math.random() * 100}%` }}
+                    style={{ width: `${getUserProgress(module._id)}%` }}
                   ></div>
                 </div>
               </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Popular Modules Section */}
+        <h3 className="text-lg font-semibold mb-4">Popular Lessons</h3>
+        <div className="grid grid-cols-1 gap-4 mb-6">
+          {modules.slice(0, 3).map((module) => (
+            <Card key={module._id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex">
+                <img 
+                  src={`https://images.unsplash.com/photo-${module.category === 'fraud' ? '1563013544-824ae1b704d3' : '1554224155-6726b3ff858f'}?auto=format&fit=crop&w=80&h=80`}
+                  alt={module.title}
+                  className="w-20 h-20 object-cover"
+                />
+                <CardContent className="p-3 flex-1">
+                  <div className="flex items-center space-x-1 mb-1">
+                    <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                    <span className="text-xs text-gray-500">4.8</span>
+                  </div>
+                  <h4 className="font-medium text-sm mb-1">{module.title}</h4>
+                  <p className="text-xs text-gray-500 mb-2">{module.category} • {module.duration} min</p>
+                  <div className="w-full bg-gray-200 rounded-full h-1">
+                    <div 
+                      className="bg-primary h-1 rounded-full transition-all duration-300"
+                      style={{ width: `${getUserProgress(module._id)}%` }}
+                    ></div>
+                  </div>
+                </CardContent>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* All Modules Section */}
+        <h3 className="text-lg font-semibold mb-4">All Lessons</h3>
+        <div className="grid grid-cols-1 gap-4 mb-20">
+          {filteredModules.map((module) => (
+            <Card key={module._id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex">
+                <img 
+                  src={`https://images.unsplash.com/photo-${module.category === 'fraud' ? '1563013544-824ae1b704d3' : '1554224155-6726b3ff858f'}?auto=format&fit=crop&w=80&h=80`}
+                  alt={module.title}
+                  className="w-20 h-20 object-cover"
+                />
+                <CardContent className="p-3 flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="font-medium text-sm">{module.title}</h4>
+                    <div className="flex items-center space-x-1">
+                      <BookOpen className="w-3 h-3 text-gray-400" />
+                      <span className="text-xs text-gray-500">{module.duration}min</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-2">{module.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500 capitalize">{module.category}</span>
+                    <div className="w-20 bg-gray-200 rounded-full h-1">
+                      <div 
+                        className="bg-primary h-1 rounded-full transition-all duration-300"
+                        style={{ width: `${getUserProgress(module._id)}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </div>
             </Card>
           ))}
         </div>
