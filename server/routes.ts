@@ -491,6 +491,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post('/api/notifications', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+      const userId = req.user._id.toString();
+      const notification = await storage.createNotification(userId, req.body);
+      res.status(201).json(notification);
+    } catch (error) {
+      console.error("Error creating notification:", error);
+      res.status(500).json({ message: "Failed to create notification" });
+    }
+  });
+
   app.patch('/api/notifications/:id/read', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
       const { id } = req.params;
@@ -539,7 +550,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/user/profile', authenticate, async (req: AuthenticatedRequest, res) => {
     try {
       const userId = req.user._id.toString();
-      const user = await storage.getUser(userId);
+      const user = await storage.getUserById(userId);
       
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
