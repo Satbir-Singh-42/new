@@ -178,6 +178,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Health check endpoint
+  app.get('/api/health', async (req, res) => {
+    try {
+      const dbUri = await getMongodUri();
+      const learningModules = await storage.getLearningModules();
+      const quizzes = await storage.getQuizzes();
+      
+      res.json({
+        status: 'healthy',
+        database: {
+          connected: true,
+          uri: dbUri.includes('mongodb://') ? 'connected' : 'not connected',
+        },
+        collections: {
+          learningModules: learningModules.length,
+          quizzes: quizzes.length,
+        },
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+      });
+    } catch (error) {
+      console.error('Health check failed:', error);
+      res.status(500).json({
+        status: 'unhealthy',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   // Auth routes
   app.post('/api/auth/register', async (req, res) => {
     try {
