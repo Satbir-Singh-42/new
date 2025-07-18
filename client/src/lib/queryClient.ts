@@ -15,9 +15,12 @@ function getAuthToken(): string | null {
   for (const cookie of cookies) {
     const [name, value] = cookie.trim().split('=');
     if (name === 'authToken') {
-      return decodeURIComponent(value);
+      const token = decodeURIComponent(value);
+      console.log('Found authToken:', token ? 'present' : 'missing');
+      return token;
     }
   }
+  console.log('No authToken found in cookies:', document.cookie);
   return null;
 }
 

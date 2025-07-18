@@ -47,7 +47,10 @@ function Router() {
   return (
     <Switch>
       {!isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/onboarding/*" component={Landing} />
+        </>
       ) : !user?.onboardingCompleted ? (
         <>
           <Route path="/" component={LanguageSelection} />
