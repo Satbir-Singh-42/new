@@ -17,7 +17,15 @@ export default function Landing() {
   const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [signupData, setSignupData] = useState({ email: "", password: "", firstName: "", lastName: "" });
+  const [signupData, setSignupData] = useState({ 
+    email: "", 
+    password: "", 
+    confirmPassword: "",
+    firstName: "", 
+    lastName: "",
+    phoneNumber: "",
+    agreeToTerms: false
+  });
   
   const { login, register, isLoggingIn, isRegistering } = useAuth();
   const { toast } = useToast();
@@ -307,17 +315,28 @@ export default function Landing() {
               <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8 text-white" />
               </div>
-              <DialogTitle className="mb-2">Password reset successful!</DialogTitle>
-              <p className="text-gray-600 text-sm mb-6">You can now login with your new password</p>
+              <DialogTitle className="mb-2">
+                {currentScreen === "resetPassword" ? "Password reset successful!" : "Account created successfully!"}
+              </DialogTitle>
+              <p className="text-gray-600 text-sm mb-6">
+                {currentScreen === "resetPassword" 
+                  ? "You can now login with your new password" 
+                  : "Complete your onboarding to get personalized financial tips"}
+              </p>
               
               <Button 
                 className="w-full"
                 onClick={() => {
                   setSuccessModalOpen(false);
-                  setCurrentScreen("login");
+                  if (currentScreen === "resetPassword") {
+                    setCurrentScreen("login");
+                  } else {
+                    // Redirect to onboarding
+                    window.location.href = "/onboarding/language";
+                  }
                 }}
               >
-                Proceed
+                {currentScreen === "resetPassword" ? "Proceed" : "CONTINUE"}
               </Button>
             </div>
           </DialogContent>
@@ -337,13 +356,44 @@ export default function Landing() {
 
         <form className="space-y-4 mb-6">
           <div>
-            <Label className="text-sm text-gray-600 mb-2 block">Name</Label>
-            <Input type="text" placeholder="Design With Ketyojy" />
+            <Label className="text-sm text-gray-600 mb-2 block">Email</Label>
+            <Input 
+              type="email" 
+              placeholder="example@gmail.com"
+              value={signupData.email}
+              onChange={(e) => setSignupData({...signupData, email: e.target.value})}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-sm text-gray-600 mb-2 block">First Name</Label>
+              <Input 
+                type="text" 
+                placeholder="John"
+                value={signupData.firstName}
+                onChange={(e) => setSignupData({...signupData, firstName: e.target.value})}
+              />
+            </div>
+            <div>
+              <Label className="text-sm text-gray-600 mb-2 block">Last Name</Label>
+              <Input 
+                type="text" 
+                placeholder="Doe"
+                value={signupData.lastName}
+                onChange={(e) => setSignupData({...signupData, lastName: e.target.value})}
+              />
+            </div>
           </div>
           
           <div>
             <Label className="text-sm text-gray-600 mb-2 block">Phone Number</Label>
-            <Input type="tel" placeholder="+91 787885505" />
+            <Input 
+              type="tel" 
+              placeholder="+91 787885505"
+              value={signupData.phoneNumber}
+              onChange={(e) => setSignupData({...signupData, phoneNumber: e.target.value})}
+            />
           </div>
           
           <div>
@@ -353,6 +403,8 @@ export default function Landing() {
                 type={showPassword ? "text" : "password"} 
                 placeholder="***"
                 className="pr-10"
+                value={signupData.password}
+                onChange={(e) => setSignupData({...signupData, password: e.target.value})}
               />
               <Button
                 type="button"
@@ -373,6 +425,8 @@ export default function Landing() {
                 type={showConfirmPassword ? "text" : "password"} 
                 placeholder="***"
                 className="pr-10"
+                value={signupData.confirmPassword}
+                onChange={(e) => setSignupData({...signupData, confirmPassword: e.target.value})}
               />
               <Button
                 type="button"
@@ -387,7 +441,11 @@ export default function Landing() {
           </div>
 
           <div className="flex items-start space-x-2">
-            <Checkbox id="terms" />
+            <Checkbox 
+              id="terms" 
+              checked={signupData.agreeToTerms}
+              onCheckedChange={(checked) => setSignupData({...signupData, agreeToTerms: !!checked})}
+            />
             <Label htmlFor="terms" className="text-sm text-gray-600">
               Agree with <span className="text-primary">terms & conditions</span>
             </Label>
@@ -396,9 +454,56 @@ export default function Landing() {
           <Button 
             type="button" 
             className="w-full"
-            onClick={() => window.location.href = "/api/login"}
+            onClick={async () => {
+              // Validation
+              if (!signupData.email || !signupData.password || !signupData.firstName || !signupData.lastName) {
+                toast({ 
+                  title: "Validation Error", 
+                  description: "Please fill in all required fields",
+                  variant: "destructive"
+                });
+                return;
+              }
+              
+              if (signupData.password !== signupData.confirmPassword) {
+                toast({ 
+                  title: "Validation Error", 
+                  description: "Passwords do not match",
+                  variant: "destructive"
+                });
+                return;
+              }
+              
+              if (!signupData.agreeToTerms) {
+                toast({ 
+                  title: "Validation Error", 
+                  description: "Please agree to terms and conditions",
+                  variant: "destructive"
+                });
+                return;
+              }
+
+              try {
+                await register({
+                  email: signupData.email,
+                  password: signupData.password,
+                  firstName: signupData.firstName,
+                  lastName: signupData.lastName,
+                  phoneNumber: signupData.phoneNumber,
+                });
+                
+                setSuccessModalOpen(true);
+              } catch (error: any) {
+                toast({ 
+                  title: "Registration Failed", 
+                  description: error.message || "Please try again",
+                  variant: "destructive"
+                });
+              }
+            }}
+            disabled={isRegistering}
           >
-            SIGN UP
+            {isRegistering ? "CREATING ACCOUNT..." : "SIGN UP"}
           </Button>
         </form>
 

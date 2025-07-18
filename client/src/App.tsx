@@ -51,6 +51,7 @@ function Router() {
       ) : !user?.onboardingCompleted ? (
         <>
           <Route path="/" component={LanguageSelection} />
+          <Route path="/onboarding/language" component={LanguageSelection} />
           <Route path="/onboarding/knowledge" component={KnowledgeAssessment} />
           <Route path="/onboarding/goal" component={DailyGoal} />
           <Route path="/onboarding/age" component={AgeSelection} />
