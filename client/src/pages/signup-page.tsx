@@ -448,7 +448,6 @@ export default function SignupPage() {
                         className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("address")}
                       />
-                      <p className="text-xs text-gray-500">For energy grid mapping</p>
                       {errors.address && (
                         <p className="text-sm text-red-600">{errors.address.message}</p>
                       )}
@@ -481,7 +480,6 @@ export default function SignupPage() {
                         className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("solarCapacity")}
                       />
-                      <p className="text-xs text-gray-500">8kW typical residential capacity</p>
                       {errors.solarCapacity && (
                         <p className="text-sm text-red-600">{errors.solarCapacity.message}</p>
                       )}
@@ -498,7 +496,6 @@ export default function SignupPage() {
                         className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("batteryCapacity")}
                       />
-                      <p className="text-xs text-gray-500">Tesla Powerwall 2 = 13.5 kWh</p>
                       {errors.batteryCapacity && (
                         <p className="text-sm text-red-600">{errors.batteryCapacity.message}</p>
                       )}
