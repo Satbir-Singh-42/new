@@ -298,7 +298,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-medium text-green-700 mb-1">Network Generation</h3>
                     <p className="text-2xl font-bold text-green-800" data-testid="text-total-generation">
-                      {networkAnalytics?.network?.totalGenerationCapacity || "42.5 kW"}
+                      {networkAnalytics?.network?.totalGenerationCapacity || "0 kW"}
                     </p>
                     <p className="text-xs text-green-600">Solar capacity online</p>
                   </div>
@@ -313,7 +313,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-medium text-blue-700 mb-1">Energy Trades</h3>
                     <p className="text-2xl font-bold text-blue-800" data-testid="text-active-trades">
-                      {networkAnalytics?.trading?.totalTrades || energyTrades.length || "12"}
+                      {networkAnalytics?.trading?.totalTrades || (energyTrades as EnergyTrade[]).length || 0}
                     </p>
                     <p className="text-xs text-blue-600">Active exchanges</p>
                   </div>
@@ -328,7 +328,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-medium text-purple-700 mb-1">Average Price</h3>
                     <p className="text-2xl font-bold text-purple-800" data-testid="text-average-price">
-                      ₹{networkAnalytics?.trading?.averagePrice || "0.14"}/kWh
+                      ₹{networkAnalytics?.trading?.averagePrice || "0.00"}/kWh
                     </p>
                     <p className="text-xs text-purple-600">Current market rate</p>
                   </div>
@@ -343,7 +343,7 @@ export default function Dashboard() {
                   <div>
                     <h3 className="text-sm font-medium text-orange-700 mb-1">Carbon Saved</h3>
                     <p className="text-2xl font-bold text-orange-800" data-testid="text-carbon-saved">
-                      {networkAnalytics?.trading?.carbonSaved || "128"} kg
+                      {networkAnalytics?.trading?.carbonSaved || "0"} kg
                     </p>
                     <p className="text-xs text-orange-600">CO₂ avoided today</p>
                   </div>
@@ -355,7 +355,7 @@ export default function Dashboard() {
             </div>
 
             {/* Live Market Data */}
-            {marketData && (
+            {marketData ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="p-6">
                   <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -369,7 +369,7 @@ export default function Dashboard() {
                         <p className="text-sm text-green-600">Available for trading</p>
                       </div>
                       <p className="text-xl font-bold text-green-800" data-testid="text-current-supply">
-                        {marketData.supply || "28.4"} kWh
+                        {marketData?.supply ?? "No data"} {marketData?.supply ? "kWh" : ""}
                       </p>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
@@ -378,7 +378,7 @@ export default function Dashboard() {
                         <p className="text-sm text-blue-600">Energy needed now</p>
                       </div>
                       <p className="text-xl font-bold text-blue-800" data-testid="text-current-demand">
-                        {marketData.demand || "31.7"} kWh
+                        {marketData?.demand ?? "No data"} {marketData?.demand ? "kWh" : ""}
                       </p>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
@@ -387,7 +387,7 @@ export default function Dashboard() {
                         <p className="text-sm text-purple-600">Network balance score</p>
                       </div>
                       <p className="text-xl font-bold text-purple-800" data-testid="text-grid-stability">
-                        {marketData.gridStability || "94"}%
+                        {marketData?.gridStability ?? "No data"}{marketData?.gridStability ? "%" : ""}
                       </p>
                     </div>
                   </div>
@@ -404,31 +404,40 @@ export default function Dashboard() {
                       <div className="flex items-center gap-2">
                         <Sun className="h-4 w-4 text-yellow-500" />
                         <span className="font-medium" data-testid="text-weather-condition">
-                          {marketData.weather?.condition || "Sunny"}
+                          {marketData?.weather?.condition || "No data"}
                         </span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Temperature</span>
                       <span className="font-medium" data-testid="text-temperature">
-                        {marketData.weather?.temperature || "24"}°C
+                        {marketData?.weather?.temperature ? `${marketData.weather.temperature}°C` : "No data"}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Solar Efficiency</span>
                       <span className="font-medium text-green-600" data-testid="text-solar-efficiency">
-                        {marketData.weather?.efficiency || "96"}%
+                        {marketData?.weather?.efficiency ? `${marketData.weather.efficiency}%` : "No data"}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
                         className="bg-yellow-500 h-2 rounded-full transition-all duration-300" 
-                        style={{ width: `${marketData.weather?.efficiency || 96}%` }}
+                        style={{ width: `${marketData?.weather?.efficiency || 0}%` }}
                       ></div>
                     </div>
                   </div>
                 </Card>
               </div>
+            ) : (
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-4 text-center text-gray-500">
+                  No Market Data Available
+                </h3>
+                <p className="text-center text-gray-400">
+                  Real-time market data will appear here when households are connected and trading energy.
+                </p>
+              </Card>
             )}
 
             {/* Network Health */}
@@ -439,10 +448,10 @@ export default function Dashboard() {
                   Connected Households
                 </h3>
                 <p className="text-3xl font-bold text-primary" data-testid="text-total-households">
-                  {networkAnalytics?.network?.totalHouseholds || "47"}
+                  {networkAnalytics?.network?.totalHouseholds || 0}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {networkAnalytics?.network?.activeHouseholds || "42"} currently active
+                  {networkAnalytics?.network?.activeHouseholds || 0} currently active
                 </p>
               </Card>
               
@@ -452,10 +461,10 @@ export default function Dashboard() {
                   Battery Storage
                 </h3>
                 <p className="text-3xl font-bold text-green-600" data-testid="text-battery-capacity">
-                  {networkAnalytics?.network?.totalStorageCapacity || "285"} kWh
+                  {networkAnalytics?.network?.totalStorageCapacity || "0"} kWh
                 </p>
                 <p className="text-sm text-gray-600">
-                  {networkAnalytics?.network?.storageUtilization || "67"}% utilization
+                  {networkAnalytics?.network?.storageUtilization || "0"}% utilization
                 </p>
               </Card>
               
@@ -465,10 +474,10 @@ export default function Dashboard() {
                   Network Efficiency
                 </h3>
                 <p className="text-3xl font-bold text-blue-600" data-testid="text-network-efficiency">
-                  {networkAnalytics?.efficiency?.networkEfficiency || "91"}%
+                  {networkAnalytics?.efficiency?.networkEfficiency || "0"}%
                 </p>
                 <p className="text-sm text-gray-600">
-                  Avg. distance: {networkAnalytics?.efficiency?.averageDistance || "2.3"} km
+                  Avg. distance: {networkAnalytics?.efficiency?.averageDistance || "0"} km
                 </p>
               </Card>
             </div>
