@@ -731,7 +731,7 @@ export default function Dashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
               <Plus className="h-5 w-5" />
-              Create Energy Trade Offer
+              Create Energy Trade
             </DialogTitle>
           </DialogHeader>
           
@@ -742,18 +742,39 @@ export default function Dashboard() {
                 name="tradeType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Trade Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-trade-type" className="w-full">
-                          <SelectValue placeholder="Select trade type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="sell">Sell Energy (I have surplus)</SelectItem>
-                        <SelectItem value="buy">Buy Energy (I need power)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>What do you want to do?</FormLabel>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div 
+                        className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                          field.value === 'sell' 
+                            ? 'border-green-500 bg-green-50 text-green-900' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => field.onChange('sell')}
+                        data-testid="option-have-energy"
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">⚡</div>
+                          <div className="font-semibold">I HAVE</div>
+                          <div className="text-xs">Surplus Energy</div>
+                        </div>
+                      </div>
+                      <div 
+                        className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                          field.value === 'buy' 
+                            ? 'border-blue-500 bg-blue-50 text-blue-900' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => field.onChange('buy')}
+                        data-testid="option-need-energy"
+                      >
+                        <div className="text-center">
+                          <div className="text-2xl mb-2">🔋</div>
+                          <div className="font-semibold">I NEED</div>
+                          <div className="text-xs">Extra Power</div>
+                        </div>
+                      </div>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -764,13 +785,23 @@ export default function Dashboard() {
                 name="energyAmount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Energy Amount (kWh)</FormLabel>
+                    <FormLabel>
+                      {form.watch("tradeType") === "sell" 
+                        ? "How much energy do you have? (kWh)" 
+                        : form.watch("tradeType") === "buy"
+                        ? "How much energy do you need? (kWh)"
+                        : "Energy Amount (kWh)"}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.1"
                         min="0.1"
-                        placeholder="e.g., 5.5"
+                        placeholder={form.watch("tradeType") === "sell" 
+                          ? "e.g., 5.5 (surplus to sell)" 
+                          : form.watch("tradeType") === "buy"
+                          ? "e.g., 3.2 (power needed)"
+                          : "e.g., 5.5"}
                         data-testid="input-energy-amount"
                         className="w-full"
                         {...field}
@@ -787,13 +818,23 @@ export default function Dashboard() {
                 name="pricePerKwh"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price per kWh (₹)</FormLabel>
+                    <FormLabel>
+                      {form.watch("tradeType") === "sell" 
+                        ? "Selling price per kWh (₹)" 
+                        : form.watch("tradeType") === "buy"
+                        ? "Maximum price you'll pay per kWh (₹)"
+                        : "Price per kWh (₹)"}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
                         step="0.01"
                         min="0.01"
-                        placeholder="e.g., 4.50"
+                        placeholder={form.watch("tradeType") === "sell" 
+                          ? "e.g., 4.50 (your asking price)" 
+                          : form.watch("tradeType") === "buy"
+                          ? "e.g., 5.00 (max you'll pay)"
+                          : "e.g., 4.50"}
                         data-testid="input-price-per-kwh"
                         className="w-full"
                         {...field}
@@ -821,7 +862,13 @@ export default function Dashboard() {
                   className="flex-1 w-full"
                   data-testid="button-submit-trade"
                 >
-                  {createTradeMutation.isPending ? "Creating..." : "Create Trade"}
+                  {createTradeMutation.isPending 
+                    ? "Creating..." 
+                    : form.watch("tradeType") === "sell"
+                    ? "List Energy for Sale"
+                    : form.watch("tradeType") === "buy"
+                    ? "Post Energy Request"
+                    : "Create Trade"}
                 </Button>
               </div>
             </form>
