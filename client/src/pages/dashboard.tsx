@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
@@ -12,7 +12,7 @@ import ValidationCard from "@/components/validation-card";
 import { SimulationDashboard } from "@/components/simulation-dashboard";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<'energy-dashboard' | 'energy-trading' | 'ml-simulation'>('energy-dashboard');
+  const [activeTab, setActiveTab] = useState<'energy-dashboard' | 'energy-trading' | 'simulation'>('energy-dashboard');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showValidationCard, setShowValidationCard] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
@@ -27,8 +27,8 @@ export default function Dashboard() {
       setActiveTab('energy-trading');
     } else if (tab === 'energy-dashboard') {
       setActiveTab('energy-dashboard');
-    } else if (tab === 'ml-simulation') {
-      setActiveTab('ml-simulation');
+    } else if (tab === 'simulation') {
+      setActiveTab('simulation');
     }
   }, []);
 
@@ -116,23 +116,23 @@ export default function Dashboard() {
                   : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
               }`}
             >
-              <Search className="inline mr-1 sm:mr-2" size={16} />
+              <TrendingUp className="inline mr-1 sm:mr-2" size={16} />
               <span>Energy</span>
               <span className="hidden sm:inline"> Trading</span>
             </button>
             <button
               onClick={() => {
-                setActiveTab('ml-simulation');
-                window.history.pushState({}, '', '/?tab=ml-simulation');
+                setActiveTab('simulation');
+                window.history.pushState({}, '', '/?tab=simulation');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base ${
-                activeTab === 'ml-simulation'
+                activeTab === 'simulation'
                   ? 'text-primary border-b-2 border-primary bg-blue-50'
                   : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
               }`}
             >
-              <Bot className="inline mr-1 sm:mr-2" size={16} />
+              <Activity className="inline mr-1 sm:mr-2" size={16} />
               <span>ML</span>
               <span className="hidden sm:inline"> Simulation</span>
             </button>
@@ -246,7 +246,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {activeTab === 'ml-simulation' && (
+        {activeTab === 'simulation' && (
           <SimulationDashboard />
         )}
       </main>

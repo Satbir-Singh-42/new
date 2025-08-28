@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { CloudSun, Menu, LogOut, User, Home, Search, MessageCircle, HelpCircle, Database } from 'lucide-react';
+import { CloudSun, Menu, LogOut, User, Home, TrendingUp, HelpCircle, Database, Activity } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 
 interface NavbarProps {
   currentPage?: 'dashboard' | 'about' | 'chat' | 'storage' | 'login' | 'signup';
-  activeTab?: 'energy-dashboard' | 'energy-trading';
-  onTabChange?: (tab: 'energy-dashboard' | 'energy-trading') => void;
+  activeTab?: 'energy-dashboard' | 'energy-trading' | 'simulation';
+  onTabChange?: (tab: 'energy-dashboard' | 'energy-trading' | 'simulation') => void;
 }
 
 export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarProps) {
@@ -80,11 +80,11 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
               </Link>
             )}
 
-            <Link href="/chat">
+            <Link href="/?tab=simulation">
               <button className={`transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                currentPage === 'chat' ? 'text-primary font-medium' : 'text-secondary-custom hover:text-primary'
+                activeTab === 'simulation' ? 'text-primary font-medium' : 'text-secondary-custom hover:text-primary'
               }`}>
-                AI Assistant
+                ML Simulation
               </button>
             </Link>
 
@@ -161,7 +161,7 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
                               : 'text-secondary-custom hover:bg-gray-100'
                           }`}
                         >
-                          <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Energy Trading</span>
                         </button>
                       </>
@@ -175,7 +175,7 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
                         </Link>
                         <Link href="/?tab=energy-trading">
                           <Button variant="outline" className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation" onClick={() => setIsMenuOpen(false)}>
-                            <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+                            <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                             <span>Energy Trading</span>
                           </Button>
                         </Link>
@@ -196,11 +196,11 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
                   )}
                   
                   <div className="flex flex-col space-y-3 sm:space-y-4">
-                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">AI Services</h3>
-                    <Link href="/chat">
-                      <Button variant={currentPage === 'chat' ? 'default' : 'outline'} className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation" onClick={() => setIsMenuOpen(false)}>
-                        <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span>AI Assistant</span>
+                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">ML Platform</h3>
+                    <Link href="/?tab=simulation">
+                      <Button variant={activeTab === 'simulation' ? 'default' : 'outline'} className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation" onClick={() => setIsMenuOpen(false)}>
+                        <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>ML Simulation</span>
                       </Button>
                     </Link>
                   </div>

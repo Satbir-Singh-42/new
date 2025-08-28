@@ -16,7 +16,13 @@ import {
   TrendingUp,
   Activity,
   BarChart3,
-  Gauge
+  Gauge,
+  ArrowRightLeft,
+  DollarSign,
+  Leaf,
+  Users,
+  Network,
+  Workflow
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -402,7 +408,7 @@ export function SimulationDashboard() {
                 disabled={loading || !simulationStatus?.isRunning}
                 className="w-full flex items-center gap-2"
               >
-                <Zap className="h-4 w-4" />
+                <AlertTriangle className="h-4 w-4" />
                 Simulate Random Outage
               </Button>
               {simulationStatus?.activeOutages && simulationStatus.activeOutages.length > 0 && (
@@ -511,7 +517,7 @@ export function SimulationDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Gauge className="h-5 w-5" />
+              <BarChart3 className="h-5 w-5" />
               ML Optimization Engine
             </CardTitle>
           </CardHeader>
