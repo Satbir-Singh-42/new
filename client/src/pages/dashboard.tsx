@@ -599,10 +599,11 @@ export default function Dashboard() {
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-lg">₹{offer.pricePerKwh}/kWh</p>
-                            <Button size="sm" className="mt-2" data-testid={`button-buy-${offer.id}`}>
-                              <ExternalLink className="h-3 w-3 mr-1" />
-                              Buy
-                            </Button>
+                            <div className="mt-2 text-sm">
+                              <p className="text-gray-600 font-medium">Contact Details:</p>
+                              <p className="text-xs text-gray-500">📞 Contact seller for energy trade</p>
+                              <p className="text-xs text-gray-500">📍 Location: State/District</p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -638,10 +639,11 @@ export default function Dashboard() {
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-lg">₹{request.pricePerKwh}/kWh</p>
-                            <Button size="sm" variant="outline" className="mt-2" data-testid={`button-sell-${request.id}`}>
-                              <ExternalLink className="h-3 w-3 mr-1" />
-                              Sell
-                            </Button>
+                            <div className="mt-2 text-sm">
+                              <p className="text-gray-600 font-medium">Contact Details:</p>
+                              <p className="text-xs text-gray-500">📞 Contact buyer for energy trade</p>
+                              <p className="text-xs text-gray-500">📍 Location: State/District</p>
+                            </div>
                           </div>
                         </div>
                       </div>

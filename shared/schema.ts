@@ -7,6 +7,9 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
+  phone: text("phone"),
+  state: text("state"),
+  district: text("district"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -61,6 +64,9 @@ export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   email: true,
   password: true,
+  phone: true,
+  state: true,
+  district: true,
 });
 
 export const loginSchema = z.object({
@@ -75,6 +81,15 @@ export const signupSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
   confirmPassword: z.string().min(1, "Please confirm your password"),
+  // Contact information
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  state: z.string().min(1, "State is required"),
+  district: z.string().min(1, "District is required"),
+  // Household information
+  householdName: z.string().min(1, "Household name is required"),
+  address: z.string().min(1, "Address is required"),
+  solarCapacity: z.coerce.number().min(1000, "Solar capacity must be at least 1000 watts"),
+  batteryCapacity: z.coerce.number().min(1, "Battery capacity must be at least 1 kWh"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],

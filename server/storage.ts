@@ -24,6 +24,7 @@ export interface IStorage {
   getHouseholdsByUser(userId: number): Promise<Household[]>;
   getHousehold(id: number): Promise<Household | undefined>;
   updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined>;
+  getHouseholdsWithUsers(): Promise<(Household & { user: Pick<User, 'phone' | 'state' | 'district'> })[]>;
   createEnergyReading(reading: InsertEnergyReading): Promise<EnergyReading>;
   getEnergyReadingsByHousehold(householdId: number, limit?: number): Promise<EnergyReading[]>;
   createEnergyTrade(trade: InsertEnergyTrade): Promise<EnergyTrade>;
@@ -140,6 +141,24 @@ export class MemStorage implements IStorage {
 
   async getHousehold(id: number): Promise<Household | undefined> {
     return this.households.get(id);
+  }
+
+  async getHouseholdsWithUsers(): Promise<(Household & { user: Pick<User, 'phone' | 'state' | 'district'> })[]> {
+    const householdsWithUsers = [];
+    for (const household of this.households.values()) {
+      const user = this.users.get(household.userId);
+      if (user) {
+        householdsWithUsers.push({
+          ...household,
+          user: {
+            phone: user.phone,
+            state: user.state,
+            district: user.district,
+          }
+        });
+      }
+    }
+    return householdsWithUsers;
   }
 
   async updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined> {
@@ -443,6 +462,45 @@ export class DatabaseStorage implements IStorage {
     return household || undefined;
   }
 
+  async getHouseholdsWithUsers(): Promise<(Household & { user: Pick<User, 'phone' | 'state' | 'district'> })[]> {
+    const db = await this.getDb();
+    const result = await db
+      .select({
+        id: households.id,
+        userId: households.userId,
+        name: households.name,
+        address: households.address,
+        solarCapacity: households.solarCapacity,
+        batteryCapacity: households.batteryCapacity,
+        currentBatteryLevel: households.currentBatteryLevel,
+        coordinates: households.coordinates,
+        createdAt: households.createdAt,
+        userPhone: users.phone,
+        userState: users.state,
+        userDistrict: users.district,
+      })
+      .from(households)
+      .innerJoin(users, eq(households.userId, users.id))
+      .orderBy(desc(households.createdAt));
+
+    return result.map(row => ({
+      id: row.id,
+      userId: row.userId,
+      name: row.name,
+      address: row.address,
+      solarCapacity: row.solarCapacity,
+      batteryCapacity: row.batteryCapacity,
+      currentBatteryLevel: row.currentBatteryLevel,
+      coordinates: row.coordinates,
+      createdAt: row.createdAt,
+      user: {
+        phone: row.userPhone,
+        state: row.userState,
+        district: row.userDistrict,
+      }
+    }));
+  }
+
   async listHouseholds(): Promise<Household[]> {
     const db = await this.getDb();
     return await db.select().from(households).orderBy(desc(households.createdAt));
@@ -713,6 +771,18 @@ class HybridStorage implements IStorage {
       }
     }
     return await this.memoryStorage.updateHousehold(id, updates);
+  }
+
+  async getHouseholdsWithUsers(): Promise<(Household & { user: Pick<User, 'phone' | 'state' | 'district'> })[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.getHouseholdsWithUsers();
+      } catch (error) {
+        console.warn('Database getHouseholdsWithUsers failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.getHouseholdsWithUsers();
   }
 
   async listHouseholds(): Promise<Household[]> {

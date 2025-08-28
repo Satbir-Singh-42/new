@@ -93,7 +93,7 @@ export function setupAuth(app: Express) {
 
   app.post("/api/register", async (req, res, next) => {
     try {
-      const { username, email, password } = req.body;
+      const { username, email, password, phone, state, district, householdName, address, solarCapacity, batteryCapacity } = req.body;
 
       // Check if user already exists
       const existingUser = await storage.getUserByEmail(email);
@@ -112,6 +112,20 @@ export function setupAuth(app: Express) {
         username,
         email,
         password: hashedPassword,
+        phone,
+        state,
+        district,
+      });
+
+      // Create household for the new user
+      const household = await storage.createHousehold({
+        userId: user.id,
+        name: householdName,
+        address,
+        solarCapacity: parseInt(solarCapacity),
+        batteryCapacity: parseInt(batteryCapacity),
+        currentBatteryLevel: 75, // Start with 75% battery
+        coordinates: null, // Will be set later via geolocation
       });
 
       // Auto-login after registration
@@ -119,7 +133,8 @@ export function setupAuth(app: Express) {
         if (err) return next(err);
         res.status(201).json({ 
           success: true, 
-          user: { id: user.id, username: user.username, email: user.email } 
+          user: { id: user.id, username: user.username, email: user.email },
+          household: { id: household.id, name: household.name, address: household.address }
         });
       });
     } catch (error) {

@@ -466,6 +466,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get households with user contact information for trading
+  app.get("/api/households-with-users", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const householdsWithUsers = await storage.getHouseholdsWithUsers();
+      res.json(householdsWithUsers);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch households with users", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
   app.get("/api/energy-trades/:householdId", async (req, res) => {
     try {
       const householdId = parseInt(req.params.householdId);

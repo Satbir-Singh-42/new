@@ -86,7 +86,6 @@ export default function LoginPage() {
 
   return (
     <>
-      <Navbar currentPage="login" />
       
       {/* Validation Card - Positioned lower below navbar */}
       {showValidationCard && (

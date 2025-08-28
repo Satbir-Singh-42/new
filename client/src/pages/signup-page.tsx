@@ -116,7 +116,6 @@ export default function SignupPage() {
 
   return (
     <>
-      <Navbar currentPage="signup" />
       
       {/* Validation Card - Positioned lower below navbar */}
       {showValidationCard && (
@@ -138,7 +137,7 @@ export default function SignupPage() {
         <div className="hidden md:flex flex-col justify-center space-y-6 p-6 lg:p-8 order-1">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
-              Join SolarScope AI
+              Join SolarSense AI
             </h1>
             <div className="space-y-4">
               <p className="text-xl text-gray-800 font-medium leading-relaxed">
@@ -311,6 +310,132 @@ export default function SignupPage() {
                   {errors.confirmPassword && (
                     <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
                   )}
+                </div>
+
+                {/* Contact Information Section */}
+                <div className="pt-2 border-t border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-3">Contact & Location</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      {...register("phone")}
+                    />
+                    {errors.phone && (
+                      <p className="text-sm text-red-600">{errors.phone.message}</p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="state" className="text-sm font-medium text-gray-700">
+                        State
+                      </Label>
+                      <Input
+                        id="state"
+                        type="text"
+                        placeholder="Your state"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        {...register("state")}
+                      />
+                      {errors.state && (
+                        <p className="text-sm text-red-600">{errors.state.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="district" className="text-sm font-medium text-gray-700">
+                        District
+                      </Label>
+                      <Input
+                        id="district"
+                        type="text"
+                        placeholder="Your district"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        {...register("district")}
+                      />
+                      {errors.district && (
+                        <p className="text-sm text-red-600">{errors.district.message}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Household Information Section */}
+                <div className="pt-2 border-t border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-3">Household Information</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="householdName" className="text-sm font-medium text-gray-700">
+                      Household Name
+                    </Label>
+                    <Input
+                      id="householdName"
+                      type="text"
+                      placeholder="e.g., Smith Family Home"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      {...register("householdName")}
+                    />
+                    {errors.householdName && (
+                      <p className="text-sm text-red-600">{errors.householdName.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="address" className="text-sm font-medium text-gray-700">
+                      Address
+                    </Label>
+                    <Input
+                      id="address"
+                      type="text"
+                      placeholder="Enter your home address"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      {...register("address")}
+                    />
+                    {errors.address && (
+                      <p className="text-sm text-red-600">{errors.address.message}</p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="solarCapacity" className="text-sm font-medium text-gray-700">
+                        Solar Capacity (W)
+                      </Label>
+                      <Input
+                        id="solarCapacity"
+                        type="number"
+                        placeholder="5000"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        {...register("solarCapacity")}
+                      />
+                      {errors.solarCapacity && (
+                        <p className="text-sm text-red-600">{errors.solarCapacity.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="batteryCapacity" className="text-sm font-medium text-gray-700">
+                        Battery (kWh)
+                      </Label>
+                      <Input
+                        id="batteryCapacity"
+                        type="number"
+                        placeholder="10"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        {...register("batteryCapacity")}
+                      />
+                      {errors.batteryCapacity && (
+                        <p className="text-sm text-red-600">{errors.batteryCapacity.message}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <Button
