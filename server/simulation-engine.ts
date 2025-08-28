@@ -2,10 +2,130 @@ import { MLEnergyEngine, WeatherCondition, OutageResponse } from './ml-engine';
 import { Household, EnergyReading, EnergyTrade } from '../shared/schema';
 import { IStorage } from './storage';
 
+// Separate simulation data context - isolated from real operational data
+class SimulationDataContext {
+  private households: Household[] = [];
+  private energyReadings: EnergyReading[] = [];
+  private energyTrades: EnergyTrade[] = [];
+  private nextHouseholdId = 1000; // Start simulation IDs at 1000 to avoid conflicts
+  private nextReadingId = 10000;
+  private nextTradeId = 10000;
+
+  // Initialize with demo households for simulation only
+  initializeDemoHouseholds(): void {
+    this.households = [
+      {
+        id: this.nextHouseholdId++,
+        name: 'Solar Pioneers (Demo)',
+        address: 'Simulation District A',
+        solarCapacity: 8500,
+        batteryCapacity: 15,
+        currentBatteryLevel: 80,
+        isOnline: true,
+        userId: 999 // Mark as simulation data with special user ID
+      },
+      {
+        id: this.nextHouseholdId++,
+        name: 'Green Energy Hub (Demo)',
+        address: 'Simulation District B',
+        solarCapacity: 12000,
+        batteryCapacity: 20,
+        currentBatteryLevel: 80,
+        isOnline: true,
+        userId: 999
+      },
+      {
+        id: this.nextHouseholdId++,
+        name: 'Community Center (Demo)',
+        address: 'Simulation Commercial Zone',
+        solarCapacity: 25000,
+        batteryCapacity: 40,
+        currentBatteryLevel: 75,
+        isOnline: true,
+        userId: 999
+      },
+      {
+        id: this.nextHouseholdId++,
+        name: 'Eco Apartments (Demo)',
+        address: 'Simulation District C',
+        solarCapacity: 6000,
+        batteryCapacity: 10,
+        currentBatteryLevel: 70,
+        isOnline: true,
+        userId: 999
+      },
+      {
+        id: this.nextHouseholdId++,
+        name: 'Smart Home Alpha (Demo)',
+        address: 'Simulation District A',
+        solarCapacity: 10000,
+        batteryCapacity: 18,
+        currentBatteryLevel: 78,
+        isOnline: true,
+        userId: 999
+      }
+    ];
+  }
+
+  getHouseholds(): Household[] {
+    return this.households;
+  }
+
+  updateHousehold(id: number, updates: Partial<Household>): void {
+    const household = this.households.find(h => h.id === id);
+    if (household) {
+      Object.assign(household, updates);
+    }
+  }
+
+  addEnergyReading(reading: Omit<EnergyReading, 'id' | 'timestamp'>): void {
+    this.energyReadings.push({
+      id: this.nextReadingId++,
+      ...reading,
+      timestamp: new Date()
+    });
+    
+    // Keep only recent readings to prevent memory bloat
+    if (this.energyReadings.length > 1000) {
+      this.energyReadings = this.energyReadings.slice(-500);
+    }
+  }
+
+  addEnergyTrade(trade: Omit<EnergyTrade, 'id' | 'createdAt' | 'status' | 'completedAt'>): void {
+    this.energyTrades.push({
+      id: this.nextTradeId++,
+      ...trade,
+      createdAt: new Date(),
+      status: 'completed',
+      completedAt: new Date()
+    });
+    
+    // Keep only recent trades to prevent memory bloat
+    if (this.energyTrades.length > 500) {
+      this.energyTrades = this.energyTrades.slice(-250);
+    }
+  }
+
+  getRecentTrades(limit: number = 50): EnergyTrade[] {
+    return this.energyTrades.slice(-limit);
+  }
+
+  getRecentReadings(limit: number = 100): EnergyReading[] {
+    return this.energyReadings.slice(-limit);
+  }
+
+  clearAll(): void {
+    this.households = [];
+    this.energyReadings = [];
+    this.energyTrades = [];
+  }
+}
+
 // Real-time simulation engine for live demonstrations
 export class SimulationEngine {
   private mlEngine: MLEnergyEngine;
   private storage: IStorage;
+  private simulationData: SimulationDataContext;
   private simulationInterval: NodeJS.Timeout | null = null;
   private weatherSimulator: WeatherSimulator;
   private outageSimulator: OutageSimulator;
@@ -13,6 +133,7 @@ export class SimulationEngine {
 
   constructor(storage: IStorage) {
     this.storage = storage;
+    this.simulationData = new SimulationDataContext();
     this.mlEngine = new MLEnergyEngine();
     this.weatherSimulator = new WeatherSimulator();
     this.outageSimulator = new OutageSimulator();
@@ -25,8 +146,8 @@ export class SimulationEngine {
     this.isRunning = true;
     console.log('🚀 Starting SolarSense live simulation...');
     
-    // Initialize demo households if none exist
-    await this.initializeDemoNetwork();
+    // Initialize demo households in isolated simulation context
+    this.simulationData.initializeDemoHouseholds();
     
     // Start main simulation loop
     this.simulationInterval = setInterval(async () => {
@@ -34,6 +155,7 @@ export class SimulationEngine {
     }, 10000); // Update every 10 seconds for live demo
     
     console.log('✅ Live simulation started - updating every 10 seconds');
+    console.log(`📊 Simulation running with ${this.simulationData.getHouseholds().length} demo households (isolated from real data)`);
   }
 
   // Stop simulation
@@ -59,9 +181,9 @@ export class SimulationEngine {
   // Trigger weather change for demonstration
   async triggerWeatherChange(condition: WeatherCondition['condition']): Promise<WeatherCondition> {
     const newWeather = this.weatherSimulator.setWeather(condition);
-    console.log(`🌤️ Weather changed to: ${condition}`);
+    console.log(`🌤️ Simulation weather changed to: ${condition} (isolated from real-time dashboard)`);
     
-    // Immediately run optimization with new weather
+    // Immediately run optimization with new weather in simulation context
     await this.runSimulationCycle();
     
     return newWeather;
@@ -70,20 +192,20 @@ export class SimulationEngine {
   // Trigger power outage simulation
   async triggerOutage(householdIds: number[] = []): Promise<OutageResponse> {
     if (householdIds.length === 0) {
-      // Random outage affecting 20-30% of network
-      const allHouseholds = await this.storage.listHouseholds();
+      // Random outage affecting 20-30% of simulation network
+      const allHouseholds = this.simulationData.getHouseholds();
       const outageCount = Math.floor(allHouseholds.length * 0.2) + Math.floor(Math.random() * allHouseholds.length * 0.1);
       householdIds = this.selectRandomHouseholds(allHouseholds, outageCount);
     }
 
-    const response = await this.outageSimulator.simulateOutage(householdIds, await this.storage.listHouseholds());
+    const response = await this.outageSimulator.simulateOutage(householdIds, this.simulationData.getHouseholds());
     
-    console.log(`⚡ Outage simulation: ${householdIds.length} households affected`);
+    console.log(`⚡ Simulation outage: ${householdIds.length} demo households affected (isolated from real data)`);
     console.log(`🔋 Community resilience score: ${response.communityResilience.toFixed(2)}`);
     
-    // Update household statuses
+    // Update household statuses in simulation context only
     for (const householdId of householdIds) {
-      await this.storage.updateHousehold(householdId, { 
+      this.simulationData.updateHousehold(householdId, { 
         isOnline: false
       });
     }
@@ -94,32 +216,32 @@ export class SimulationEngine {
   // Restore power after outage
   async restorePower(householdIds: number[]): Promise<void> {
     for (const householdId of householdIds) {
-      await this.storage.updateHousehold(householdId, { 
+      this.simulationData.updateHousehold(householdId, { 
         isOnline: true 
       });
     }
     
     this.outageSimulator.clearOutage(householdIds);
-    console.log(`🔌 Power restored to ${householdIds.length} households`);
+    console.log(`🔌 Simulation power restored to ${householdIds.length} demo households`);
   }
 
   // Main simulation cycle
   private async runSimulationCycle(): Promise<void> {
     try {
-      const households = await this.storage.listHouseholds();
+      const households = this.simulationData.getHouseholds();
       const currentWeather = this.weatherSimulator.getCurrentWeather();
       
-      // Run ML optimization
+      // Run ML optimization on simulation households
       const optimization = this.mlEngine.optimizeEnergyDistribution(households, currentWeather);
       
-      // Generate energy readings for each household
-      await this.generateEnergyReadings(households, currentWeather);
+      // Generate energy readings for simulation households
+      this.generateEnergyReadings(households, currentWeather);
       
-      // Execute optimal trades
-      await this.executeTrades(optimization.tradingPairs, optimization.prices);
+      // Execute optimal trades in simulation context
+      this.executeTrades(optimization.tradingPairs, optimization.prices);
       
-      // Update battery levels based on strategy
-      await this.updateBatteryLevels(households, optimization.batteryStrategy);
+      // Update battery levels based on strategy in simulation context
+      this.updateBatteryLevels(households, optimization.batteryStrategy);
       
       // Log key metrics
       this.logSimulationMetrics(optimization, currentWeather);
@@ -129,7 +251,7 @@ export class SimulationEngine {
     }
   }
 
-  private async generateEnergyReadings(households: Household[], weather: WeatherCondition): Promise<void> {
+  private generateEnergyReadings(households: Household[], weather: WeatherCondition): void {
     const currentTime = new Date();
     const hour = currentTime.getHours();
     
@@ -152,11 +274,12 @@ export class SimulationEngine {
         temperature: Math.round(weather.temperature)
       };
       
-      await this.storage.createEnergyReading(reading);
+      // Add to simulation context instead of real database
+      this.simulationData.addEnergyReading(reading);
     }
   }
 
-  private async executeTrades(tradingPairs: any[], prices: Map<number, number>): Promise<void> {
+  private executeTrades(tradingPairs: any[], prices: Map<number, number>): void {
     for (const pair of tradingPairs) {
       const price = prices.get(pair.supplierId) || 0.12;
       const totalCost = pair.energyAmount * price;
@@ -166,14 +289,17 @@ export class SimulationEngine {
         buyerHouseholdId: pair.demanderId,
         energyAmount: Math.round(pair.energyAmount * 1000), // Convert to Wh
         pricePerKwh: Math.round(price * 100), // Convert to cents
-        tradeType: 'surplus_sale'
+        tradeType: 'surplus_sale' as const,
+        createdAt: new Date(),
+        completedAt: new Date()
       };
       
-      await this.storage.createEnergyTrade(trade);
+      // Add to simulation context instead of real database
+      this.simulationData.addEnergyTrade(trade);
     }
   }
 
-  private async updateBatteryLevels(households: Household[], batteryStrategy: any): Promise<void> {
+  private updateBatteryLevels(households: Household[], batteryStrategy: any): void {
     for (const household of households) {
       const strategy = batteryStrategy.strategies[household.id];
       let newBatteryLevel = household.currentBatteryLevel || 0;
@@ -195,73 +321,27 @@ export class SimulationEngine {
       }
       
       if (newBatteryLevel !== household.currentBatteryLevel) {
-        await this.storage.updateHousehold(household.id, { 
+        // Update in simulation context instead of real database
+        this.simulationData.updateHousehold(household.id, { 
           currentBatteryLevel: newBatteryLevel 
         });
       }
     }
   }
 
-  private async initializeDemoNetwork(): Promise<void> {
-    const existingHouseholds = await this.storage.listHouseholds();
-    
-    if (existingHouseholds.length === 0) {
-      console.log('🏠 Initializing demo network with sample households...');
-      
-      const demoHouseholds = [
-        {
-          name: 'Solar Pioneers',
-          address: 'Residential District A',
-          solarCapacity: 8500, // watts
-          batteryCapacity: 15, // kWh
-          currentBatteryLevel: 80, // 80%
-          isOnline: true,
-          userId: 1
-        },
-        {
-          name: 'Green Energy Hub',
-          address: 'Residential District B', 
-          solarCapacity: 12000, // watts
-          batteryCapacity: 20, // kWh
-          currentBatteryLevel: 80, // 80%
-          isOnline: true,
-          userId: 1
-        },
-        {
-          name: 'Community Center',
-          address: 'Commercial Zone',
-          solarCapacity: 25000, // watts
-          batteryCapacity: 40, // kWh
-          currentBatteryLevel: 75, // 75%
-          isOnline: true,
-          userId: 1
-        },
-        {
-          name: 'Eco Apartments',
-          address: 'Residential District C',
-          solarCapacity: 6000, // watts
-          batteryCapacity: 10, // kWh
-          currentBatteryLevel: 70, // 70%
-          isOnline: true,
-          userId: 1
-        },
-        {
-          name: 'Smart Home Alpha',
-          address: 'Residential District A',
-          solarCapacity: 10000, // watts
-          batteryCapacity: 18, // kWh
-          currentBatteryLevel: 78, // 78%
-          isOnline: true,
-          userId: 1
-        }
-      ];
-
-      for (const household of demoHouseholds) {
-        await this.storage.createHousehold(household);
-      }
-      
-      console.log(`✅ Created ${demoHouseholds.length} demo households`);
-    }
+  // Get simulation-specific data (not mixed with real operational data)
+  getSimulationData(): {
+    households: Household[];
+    recentTrades: EnergyTrade[];
+    recentReadings: EnergyReading[];
+    weather: WeatherCondition;
+  } {
+    return {
+      households: this.simulationData.getHouseholds(),
+      recentTrades: this.simulationData.getRecentTrades(20),
+      recentReadings: this.simulationData.getRecentReadings(50),
+      weather: this.weatherSimulator.getCurrentWeather()
+    };
   }
 
   private selectRandomHouseholds(households: Household[], count: number): number[] {
