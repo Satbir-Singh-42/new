@@ -219,9 +219,28 @@ export default function Dashboard() {
     createTradeMutation.mutate(tradeData);
   };
 
+  // Filter states
+  const [offerFilter, setOfferFilter] = useState<'all' | 'cheapest' | 'biggest'>('all');
+  const [requestFilter, setRequestFilter] = useState<'all' | 'cheapest' | 'biggest'>('all');
+  const [selectedTradeForDetails, setSelectedTradeForDetails] = useState<EnergyTrade | null>(null);
+  const [showContactDialog, setShowContactDialog] = useState(false);
+
   // Separate offers and requests
-  const energyOffers = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'sell' && trade.status === 'pending');
-  const energyRequests = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'buy' && trade.status === 'pending');
+  let energyOffers = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'sell' && trade.status === 'pending');
+  let energyRequests = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'buy' && trade.status === 'pending');
+
+  // Apply filters
+  if (offerFilter === 'cheapest') {
+    energyOffers = energyOffers.sort((a, b) => a.pricePerKwh - b.pricePerKwh);
+  } else if (offerFilter === 'biggest') {
+    energyOffers = energyOffers.sort((a, b) => b.energyAmount - a.energyAmount);
+  }
+
+  if (requestFilter === 'cheapest') {
+    energyRequests = energyRequests.sort((a, b) => b.pricePerKwh - a.pricePerKwh);
+  } else if (requestFilter === 'biggest') {
+    energyRequests = energyRequests.sort((a, b) => b.energyAmount - a.energyAmount);
+  }
 
   // Check URL parameters on component mount
   useEffect(() => {
@@ -608,10 +627,21 @@ export default function Dashboard() {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-green-600" />
-                  Available Energy Offers ({energyOffers.length})
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-green-600" />
+                    Available Energy Offers ({energyOffers.length})
+                  </h3>
+                  <select 
+                    value={offerFilter} 
+                    onChange={(e) => setOfferFilter(e.target.value as 'all' | 'cheapest' | 'biggest')}
+                    className="text-sm border border-gray-300 rounded px-2 py-1"
+                  >
+                    <option value="all">All Offers</option>
+                    <option value="cheapest">Cheapest First</option>
+                    <option value="biggest">Biggest Power</option>
+                  </select>
+                </div>
                 <div className="space-y-3">
                   {tradesLoading ? (
                     <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
@@ -630,10 +660,18 @@ export default function Dashboard() {
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-lg">₹{offer.pricePerKwh}/kWh</p>
-                            <div className="mt-2 text-sm">
-                              <p className="text-gray-600 font-medium">Contact Details:</p>
-                              <p className="text-xs text-gray-500">📞 Contact seller for energy trade</p>
-                              <p className="text-xs text-gray-500">📍 Location: State/District</p>
+                            <div className="mt-2">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => {
+                                  setSelectedTradeForDetails(offer);
+                                  setShowContactDialog(true);
+                                }}
+                                className="text-xs"
+                              >
+                                View Details
+                              </Button>
                             </div>
                           </div>
                         </div>
@@ -648,10 +686,21 @@ export default function Dashboard() {
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <ArrowRightLeft className="h-5 w-5 text-blue-600" />
-                  Energy Demand Requests ({energyRequests.length})
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <ArrowRightLeft className="h-5 w-5 text-blue-600" />
+                    Energy Demand Requests ({energyRequests.length})
+                  </h3>
+                  <select 
+                    value={requestFilter} 
+                    onChange={(e) => setRequestFilter(e.target.value as 'all' | 'cheapest' | 'biggest')}
+                    className="text-sm border border-gray-300 rounded px-2 py-1"
+                  >
+                    <option value="all">All Requests</option>
+                    <option value="cheapest">Highest Price</option>
+                    <option value="biggest">Biggest Power</option>
+                  </select>
+                </div>
                 <div className="space-y-3">
                   {tradesLoading ? (
                     <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
@@ -670,10 +719,18 @@ export default function Dashboard() {
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-lg">₹{request.pricePerKwh}/kWh</p>
-                            <div className="mt-2 text-sm">
-                              <p className="text-gray-600 font-medium">Contact Details:</p>
-                              <p className="text-xs text-gray-500">📞 Contact buyer for energy trade</p>
-                              <p className="text-xs text-gray-500">📍 Location: State/District</p>
+                            <div className="mt-2">
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                onClick={() => {
+                                  setSelectedTradeForDetails(request);
+                                  setShowContactDialog(true);
+                                }}
+                                className="text-xs"
+                              >
+                                View Details
+                              </Button>
                             </div>
                           </div>
                         </div>
@@ -890,6 +947,69 @@ export default function Dashboard() {
               </div>
             </form>
           </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Details Dialog */}
+      <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
+        <DialogContent className="w-[95vw] max-w-md mx-auto my-8 max-h-[90vh] overflow-y-auto z-50">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
+              <MessageCircle className="h-5 w-5" />
+              Contact Details
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedTradeForDetails && (
+            <div className="space-y-4 pt-4">
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-semibold mb-2">
+                  {selectedTradeForDetails.tradeType === 'sell' ? 'Energy Offer' : 'Energy Request'}
+                </h4>
+                <p><strong>Amount:</strong> {selectedTradeForDetails.energyAmount} kWh</p>
+                <p><strong>Price:</strong> ₹{selectedTradeForDetails.pricePerKwh}/kWh</p>
+                <p><strong>Total Value:</strong> ₹{(selectedTradeForDetails.energyAmount * selectedTradeForDetails.pricePerKwh).toFixed(2)}</p>
+                <p><strong>Created:</strong> {new Date(selectedTradeForDetails.createdAt).toLocaleString()}</p>
+              </div>
+              
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-semibold mb-2">💌 Express Interest</h4>
+                <p className="text-sm text-gray-600 mb-3">
+                  Click below to send an automated email expressing your interest in this trade. 
+                  Your contact details will be shared with the other party.
+                </p>
+                <Button 
+                  className="w-full" 
+                  onClick={() => {
+                    // Send interest email
+                    const subject = `Energy Trade Interest - ${selectedTradeForDetails.energyAmount} kWh`;
+                    const body = `Hello,\n\nI am interested in your energy ${selectedTradeForDetails.tradeType === 'sell' ? 'offer' : 'request'} of ${selectedTradeForDetails.energyAmount} kWh at ₹${selectedTradeForDetails.pricePerKwh}/kWh.\n\nPlease contact me if you are available and interested to proceed with this trade.\n\nBest regards,\n${user?.username || 'Energy Trader'}`;
+                    
+                    // Open email client
+                    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+                    
+                    toast({
+                      title: "Email Opened",
+                      description: "Your email client has been opened with a pre-filled message. Send it to express your interest!",
+                    });
+                    setShowContactDialog(false);
+                  }}
+                  data-testid="button-send-interest"
+                >
+                  📧 Send Interest Email
+                </Button>
+              </div>
+              
+              <div className="p-4 bg-yellow-50 rounded-lg">
+                <h4 className="font-semibold mb-2">📍 Location & Contact</h4>
+                <p className="text-sm text-gray-600">
+                  <strong>Area:</strong> Local District/State<br/>
+                  <strong>Contact:</strong> Details shared upon mutual interest<br/>
+                  <strong>Safety:</strong> All trades are verified through SolarSense platform
+                </p>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
