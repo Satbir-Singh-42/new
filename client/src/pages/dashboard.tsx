@@ -393,16 +393,16 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[95vw] max-w-md mx-auto my-8 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
               <Plus className="h-5 w-5" />
               Create Energy Trade Offer
             </DialogTitle>
           </DialogHeader>
           
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-4">
               <FormField
                 control={form.control}
                 name="tradeType"
@@ -411,7 +411,7 @@ export default function Dashboard() {
                     <FormLabel>Trade Type</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger data-testid="select-trade-type">
+                        <SelectTrigger data-testid="select-trade-type" className="w-full">
                           <SelectValue placeholder="Select trade type" />
                         </SelectTrigger>
                       </FormControl>
@@ -438,6 +438,7 @@ export default function Dashboard() {
                         min="0.1"
                         placeholder="e.g., 5.5"
                         data-testid="input-energy-amount"
+                        className="w-full"
                         {...field}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                       />
@@ -460,6 +461,7 @@ export default function Dashboard() {
                         min="0.01"
                         placeholder="e.g., 4.50"
                         data-testid="input-price-per-kwh"
+                        className="w-full"
                         {...field}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                       />
@@ -469,12 +471,12 @@ export default function Dashboard() {
                 )}
               />
 
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-6">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowCreateTradeDialog(false)}
-                  className="flex-1"
+                  className="flex-1 w-full"
                   data-testid="button-cancel-trade"
                 >
                   Cancel
@@ -482,7 +484,7 @@ export default function Dashboard() {
                 <Button
                   type="submit"
                   disabled={createTradeMutation.isPending}
-                  className="flex-1"
+                  className="flex-1 w-full"
                   data-testid="button-submit-trade"
                 >
                   {createTradeMutation.isPending ? "Creating..." : "Create Trade"}
