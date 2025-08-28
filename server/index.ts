@@ -133,7 +133,7 @@ export async function startProductionServer() {
   // Setup static file serving for production
   serveStatic(app);
   
-  const port = process.env.PORT || 10000;
+  const port = parseInt(process.env.PORT || '10000', 10);
   const host = '0.0.0.0';
   
   server.listen(port, host, () => {
