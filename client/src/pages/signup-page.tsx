@@ -185,16 +185,6 @@ export default function SignupPage() {
               </div>
             </div>
 
-            {/* Demo Credentials */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-semibold text-blue-800 mb-2">🔑 Quick Demo Access</h4>
-              <div className="space-y-1 text-xs text-blue-700">
-                <div className="bg-white p-2 rounded border">
-                  <p><strong>demo@solarsense.com</strong> / <strong>demo123</strong></p>
-                  <p className="text-blue-600">Explore full features with sample 8kW solar setup</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Signup Form */}
