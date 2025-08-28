@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { CloudSun, Menu, LogOut, User, Home, TrendingUp, HelpCircle, Database, Activity } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { CloudSun, Menu, LogOut, User, Home, TrendingUp, HelpCircle, Database, Activity, Bell, Settings, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 
 interface NavbarProps {
@@ -97,15 +98,64 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
             </Link>
             
             {user ? (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => logoutMutation.mutate()}
-                className="flex items-center gap-2 bg-white hover:bg-red-50 text-red-600 border-red-200 hover:border-red-300 transition-all duration-300 ease-in-out transform active:scale-95"
-              >
-                <LogOut size={16} />
-                Logout
-              </Button>
+              <div className="flex items-center gap-3">
+                {/* Notifications */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="relative bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 border-gray-300 hover:border-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+                  <Bell size={18} />
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </Button>
+                
+                {/* Settings */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 border-gray-300 hover:border-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+                  <Settings size={18} />
+                </Button>
+                
+                {/* Profile Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2 bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 border-gray-300 hover:border-blue-400 transition-all duration-300 ease-in-out transform hover:scale-105"
+                    >
+                      <User size={16} />
+                      <span className="hidden sm:inline">{user.username}</span>
+                      <ChevronDown size={14} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="w-full cursor-pointer">
+                        <User size={16} className="mr-2" />
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Settings size={16} className="mr-2" />
+                      Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Bell size={16} className="mr-2" />
+                      Notifications
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => logoutMutation.mutate()}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
+                    >
+                      <LogOut size={16} className="mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             ) : (
               <Link href="/login">
                 <button className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all duration-300 ease-in-out transform hover:scale-105">
