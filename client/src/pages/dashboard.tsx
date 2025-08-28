@@ -46,10 +46,7 @@ export default function Dashboard() {
 
   // Create trade mutation
   const createTradeMutation = useMutation({
-    mutationFn: (data: any) => apiRequest('/api/energy-trades', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
+    mutationFn: (data: any) => apiRequest('/api/energy-trades', 'POST', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
       setShowCreateTradeDialog(false);
@@ -93,8 +90,8 @@ export default function Dashboard() {
   };
 
   // Separate offers and requests
-  const energyOffers = energyTrades.filter((trade: EnergyTrade) => trade.tradeType === 'sell' && trade.status === 'pending');
-  const energyRequests = energyTrades.filter((trade: EnergyTrade) => trade.tradeType === 'buy' && trade.status === 'pending');
+  const energyOffers = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'sell' && trade.status === 'pending');
+  const energyRequests = (energyTrades as EnergyTrade[]).filter((trade: EnergyTrade) => trade.tradeType === 'buy' && trade.status === 'pending');
 
   // Check URL parameters on component mount
   useEffect(() => {

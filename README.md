@@ -1,78 +1,86 @@
-# SolarScope AI
+# SolarSense: Intelligent Energy Solutions for a Sustainable Future
 
-> **AI-Powered Solar Panel Analysis Platform**
+**Decentralized. Resilient. Equitable.**
 
-Professional full-stack web application leveraging Google Gemini AI for comprehensive solar panel analysis, featuring dynamic installation planning, intelligent fault detection, user authentication with PostgreSQL storage, PDF report generation, and expert AI consultation with mobile-responsive design. Optimized for API efficiency and streamlined codebase.
+SolarSense is an AI-powered decentralized energy trading platform that connects households with solar panels into a smart grid network. It intelligently manages energy flow, prevents grid overload, and ensures fair distribution—keeping the lights on even in challenging conditions.
 
-![SolarScope AI](https://img.shields.io/badge/AI-Powered-blue)
+![SolarSense](https://img.shields.io/badge/Energy-Trading-green)
+![AI-Powered](https://img.shields.io/badge/AI-Powered-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 ![Express](https://img.shields.io/badge/Express.js-404D59?logo=express)
 ![Google AI](https://img.shields.io/badge/Google_AI-Gemini-orange)
 
-## 🌟 Overview
+## 🏠 Problem Statement
 
-SolarScope AI is an AI-powered solar panel analysis platform that leverages Google Gemini AI to provide two main services:
-1. **Installation Planning**: Analyzes rooftop images to recommend optimal solar panel placement
-2. **Fault Detection**: Identifies defects and performance issues in existing solar panel installations
+Energy grids are struggling with:
+- Peak loads and unpredictable demand
+- Unequal access to power
+- Grid failures during outages and extreme weather
+- Inefficient energy distribution systems
 
-The application is built as a full-stack web application with a React frontend and Express.js backend, designed for deployment with PostgreSQL database integration.
+## ⚡ Our Solution
 
-## Features
+SolarSense creates a decentralized energy trading network where:
+- Households with solar panels share excess energy
+- AI automatically matches energy suppliers with demanders
+- Community resilience is maintained during grid outages
+- Fair pricing through intelligent market mechanisms
 
-### 🔍 Installation Planning
-- **AI-Powered Roof Analysis**: Analyze rooftop images to determine optimal solar panel placement
-- **Dynamic Calculations**: Real-time calculations for coverage, power output, and efficiency
-- **Market-Standard Metrics**: Accurate calculations using industry-standard panel specifications
-- **Professional PDF Reports**: Generate detailed installation reports with technical specifications
+## 🚀 Key Features
 
-### 🛠️ Fault Detection
-- **Advanced Defect Recognition**: Detect cracks, delamination, hot spots, and other panel defects
-- **Severity Classification**: Categorize issues by severity (Critical, High, Medium, Low)
-- **AI-Generated Recommendations**: Specific maintenance plans based on detected faults
-- **Comprehensive Reporting**: Detailed fault analysis with professional PDF exports
+### 1. Machine Learning Engine
+- **Predictive Energy Generation**: ML algorithms predict solar output based on weather patterns
+- **Demand Forecasting**: Advanced algorithms predict energy demand using time-of-day and household patterns
+- **Intelligent Trading**: Automated matching of energy suppliers and demanders based on proximity and capacity
+- **Battery Optimization**: ML-driven charge/discharge strategies for maximum grid stability
 
-### 💬 AI Chat Assistant
-- **Real-time Solar Expertise**: Get instant answers about solar technology and best practices
-- **Context-Aware Responses**: Intelligent responses based on your analysis history
-- **Professional Formatting**: Clean, formatted responses with technical accuracy
-- **Persistent Chat History**: Conversations saved during your session
+### 2. Live Demonstration Platform
+- **Real-time Simulation**: Updates every 10 seconds with live energy trading operations
+- **Weather Adaptation**: Interactive weather controls (sunny → cloudy → rainy → stormy) show immediate impact
+- **Outage Simulation**: Power outage testing with automatic resilience scoring and recovery planning
+- **ML Optimization Dashboard**: Real-time display of trading pairs, grid stability, and AI recommendations
 
-### 👤 User Authentication
-- **Optional Authentication**: Use the platform without registration or create an account for enhanced features
-- **Secure Data Storage**: Password hashing with bcrypt and secure session management
-- **Personal Analysis History**: Save and review your past analyses (authenticated users only)
-- **Cross-Device Sync**: Access your data from any device with your account
+### 3. Energy Trading Marketplace
+- **Create Trade Offers**: Post buy/sell orders for energy
+- **Live Marketplace**: Browse available energy offers and requests
+- **Automatic Matching**: AI pairs compatible trades instantly
+- **Real-time Updates**: Data refreshes every 10 seconds
+- **Fair Pricing**: Market-based pricing around ₹4.50/kWh
 
-## Technology Stack
+### 4. Advanced Analytics
+- **Network Monitoring**: Real-time tracking of households, generation capacity, and storage utilization
+- **Trading Analytics**: Energy trade volumes, pricing, and carbon savings tracking
+- **Efficiency Metrics**: Network efficiency, average trade distance, and optimization performance
+- **Resilience Scoring**: Community response to grid outages
+
+## 🛠 Technology Stack
 
 ### Frontend
-- **React 18** - Modern UI framework with hooks and functional components
-- **TypeScript** - Type-safe development with enhanced IDE support
-- **Vite** - Fast build tool and development server
-- **Tailwind CSS** - Utility-first CSS framework for responsive design
-- **shadcn/ui** - High-quality component library built on Radix UI
-- **TanStack Query** - Server state management and caching
-- **Wouter** - Lightweight client-side routing
-- **React Hook Form** - Efficient form handling with validation
-- **Framer Motion** - Smooth animations and transitions
+- **React 18** with Vite build system
+- **TypeScript** for type safety
+- **Tailwind CSS** for responsive styling
+- **shadcn/ui** components for consistent UI
+- **Wouter** for client-side routing
+- **TanStack Query** for data fetching and caching
+- **React Hook Form** with Zod validation
+- **Framer Motion** for animations
 
 ### Backend
-- **Node.js** - Server-side JavaScript runtime
-- **Express.js** - Web application framework
-- **TypeScript** - Type-safe server development
-- **Google Gemini AI** - Advanced AI for image analysis and chat
-- **PostgreSQL** - Robust relational database
-- **Drizzle ORM** - Type-safe database queries and migrations
-- **Passport.js** - Authentication middleware
-- **Multer** - File upload handling
-- **bcrypt** - Password hashing and security
+- **Express.js** server with TypeScript
+- **PostgreSQL** with Drizzle ORM
+- **Passport.js** for authentication
+- **bcryptjs** for password hashing
+- **Express Sessions** with secure storage
+- **CORS** configuration for security
+- **Memory storage fallback** for development
 
-### Development Tools
-- **ESBuild** - Fast JavaScript bundler
-- **Drizzle Kit** - Database migration and schema management
-- **Cross-env** - Cross-platform environment variable management
-- **tsx** - TypeScript execution for development
+### AI & ML
+- **Google Generative AI** for chat assistance
+- **Custom ML algorithms** for energy prediction
+- **Weather-based forecasting** for solar generation
+- **Demand prediction** using time-of-day patterns
+- **Battery optimization strategies**
 
 ## Architecture
 
@@ -98,9 +106,9 @@ The application is built as a full-stack web application with a React frontend a
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18 or higher
-- PostgreSQL database
-- Google Gemini AI API key
+- Node.js 20+ installed
+- PostgreSQL database (optional - memory storage available)
+- Environment variables configured
 
 ### Installation
 
