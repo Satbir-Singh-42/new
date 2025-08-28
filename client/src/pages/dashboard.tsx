@@ -48,11 +48,15 @@ export default function Dashboard() {
         if (cachedLocation) {
           setUserLocation(cachedLocation);
         } else {
-          // Only show location request for authenticated users after a brief delay
+          // Silently request location for weather data without showing UI
           if (user) {
-            setTimeout(() => {
-              setShowLocationRequest(true);
-            }, 1000);
+            try {
+              const location = await locationService.getCurrentLocation(true);
+              setUserLocation(location);
+            } catch (error) {
+              // Silently fail - user won't see location request dialog
+              console.log('Location access not available, using general weather data');
+            }
           }
         }
       }
@@ -65,19 +69,12 @@ export default function Dashboard() {
   const handleLocationGranted = (location: UserLocation) => {
     setUserLocation(location);
     setShowLocationRequest(false);
-    toast({
-      title: "Location Access Granted",
-      description: location.city ? `Showing data for ${location.city}, ${location.state}` : "Location-based features enabled",
-    });
+    // No toast notification - silent operation
   };
 
   const handleLocationDenied = () => {
     setShowLocationRequest(false);
-    toast({
-      title: "Location Access Denied",
-      description: "You'll see general market data instead of localized information",
-      variant: "default",
-    });
+    // No toast notification - silent operation
   };
 
   // Fetch ONLY real user energy trades - no synthetic/fake data
@@ -271,26 +268,6 @@ export default function Dashboard() {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 px-2 max-w-4xl mx-auto">
               Decentralized energy trading platform for a sustainable future
             </p>
-            {userLocation && (
-              <div className="flex items-center justify-center gap-1 mt-3 text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full" data-testid="text-user-location">
-                <MapPin className="h-4 w-4" />
-                <span>Serving {userLocation.city ? `${userLocation.city}, ${userLocation.state}` : `${userLocation.latitude.toFixed(2)}, ${userLocation.longitude.toFixed(2)}`}</span>
-              </div>
-            )}
-            {!userLocation && user && locationService.isGeolocationSupported() && (
-              <div className="mt-3">
-                <Button 
-                  onClick={() => setShowLocationRequest(true)}
-                  variant="outline"
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-                  size="sm"
-                  data-testid="button-request-location"
-                >
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Get Local Energy Data
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       </section>
