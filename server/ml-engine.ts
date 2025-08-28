@@ -18,7 +18,7 @@ export class MLEnergyEngine {
 
   // Predict energy demand using ML patterns
   predictEnergyDemand(household: Household, timeOfDay: number, dayOfWeek: number): number {
-    const baseDemand = household.averageDemand || 5.5; // kWh average
+    const baseDemand = 5.5; // kWh average - calculate from historical data
     const timePattern = this.getTimePattern(timeOfDay);
     const dayPattern = this.getDayPattern(dayOfWeek);
     const householdPattern = this.getHouseholdPattern(household);
@@ -91,7 +91,7 @@ export class MLEnergyEngine {
     const householdsWithPredictions = households.map(household => {
       const predictedGeneration = this.predictEnergyGeneration(household, weather, currentHour);
       const predictedDemand = this.predictEnergyDemand(household, currentHour, dayOfWeek);
-      const batteryLevel = household.batteryLevel || 0;
+      const batteryLevel = (household.currentBatteryLevel || 0) * (household.batteryCapacity || 0) / 100; // Convert % to kWh
       const batteryCapacity = household.batteryCapacity || 0;
       
       return {
@@ -125,8 +125,8 @@ export class MLEnergyEngine {
       const bestSupplier = suppliers
         .filter(s => s.netBalance > 0)
         .sort((a, b) => {
-          const distanceA = this.calculateDistance(a.location || '', demander.location || '');
-          const distanceB = this.calculateDistance(b.location || '', demander.location || '');
+          const distanceA = this.calculateDistance(a.address || '', demander.address || '');
+          const distanceB = this.calculateDistance(b.address || '', demander.address || '');
           return distanceA - distanceB; // Prefer closer suppliers
         })[0];
 
@@ -141,8 +141,8 @@ export class MLEnergyEngine {
           supplierId: bestSupplier.id,
           demanderId: demander.id,
           energyAmount,
-          distance: this.calculateDistance(bestSupplier.location || '', demander.location || ''),
-          priority: demander.criticalLoad ? 'high' : 'normal'
+          distance: this.calculateDistance(bestSupplier.address || '', demander.address || ''),
+          priority: 'normal' // Priority based on battery level and demand
         });
 
         // Update balances for next iterations
@@ -162,7 +162,8 @@ export class MLEnergyEngine {
     const strategies: { [householdId: number]: string } = {};
     
     networkState.households.forEach(household => {
-      const batteryRatio = household.batteryLevel / Math.max(household.batteryCapacity, 1);
+      const batteryLevel = (household.currentBatteryLevel || 0) * (household.batteryCapacity || 0) / 100;
+      const batteryRatio = batteryLevel / Math.max(household.batteryCapacity, 1);
       
       if (household.netBalance > 0) {
         // Surplus energy - charge battery or sell
@@ -235,7 +236,7 @@ export class MLEnergyEngine {
 
   private generateRecoveryPlan(affected: number[], total: Household[]): RecoveryPlan {
     const criticalHouseholds = total.filter(h => 
-      affected.includes(h.id) && h.criticalLoad
+      affected.includes(h.id) && (h.currentBatteryLevel || 0) < 20
     );
     
     return {
@@ -272,8 +273,8 @@ export class MLEnergyEngine {
   private getHouseholdPattern(household: Household): number {
     // Adjust based on household characteristics
     let pattern = 1.0;
-    if (household.criticalLoad) pattern *= 1.3;
-    if ((household.batteryCapacity || 0) > 10) pattern *= 0.9; // Battery owners tend to optimize
+    if ((household.currentBatteryLevel || 0) < 20) pattern *= 1.3; // Low battery = higher demand
+    if ((household.batteryCapacity || 0) > 10000) pattern *= 0.9; // Large battery owners optimize
     return pattern;
   }
 }

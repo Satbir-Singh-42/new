@@ -84,8 +84,7 @@ export class SimulationEngine {
     // Update household statuses
     for (const householdId of householdIds) {
       await this.storage.updateHousehold(householdId, { 
-        isOnline: false,
-        lastOutage: new Date()
+        isOnline: false
       });
     }
 
@@ -146,13 +145,11 @@ export class SimulationEngine {
       
       const reading = {
         householdId: household.id,
-        timestamp: currentTime,
-        energyGenerated: Math.max(0, generation + generationVariance),
-        energyConsumed: Math.max(0, consumption + consumptionVariance),
-        batteryLevel: household.batteryLevel || 0,
-        gridExport: Math.max(0, generation - consumption),
-        gridImport: Math.max(0, consumption - generation),
-        weather: weather.condition
+        solarGeneration: Math.max(0, Math.round((generation + generationVariance) * 1000)), // Convert to watts
+        energyConsumption: Math.max(0, Math.round((consumption + consumptionVariance) * 1000)), // Convert to watts
+        batteryLevel: household.currentBatteryLevel || 0,
+        weatherCondition: weather.condition,
+        temperature: Math.round(weather.temperature)
       };
       
       await this.storage.createEnergyReading(reading);
@@ -165,16 +162,11 @@ export class SimulationEngine {
       const totalCost = pair.energyAmount * price;
       
       const trade = {
-        sellerId: pair.supplierId,
-        buyerId: pair.demanderId,
-        energyAmount: pair.energyAmount,
-        pricePerKwh: price,
-        totalAmount: totalCost,
-        status: 'completed',
-        timestamp: new Date(),
-        distance: pair.distance,
-        efficiency: Math.max(0.85, 1 - (pair.distance / 1000)), // Efficiency decreases with distance
-        carbonSaved: pair.energyAmount * 0.45 // kg CO2 saved vs grid electricity
+        sellerHouseholdId: pair.supplierId,
+        buyerHouseholdId: pair.demanderId,
+        energyAmount: Math.round(pair.energyAmount * 1000), // Convert to Wh
+        pricePerKwh: Math.round(price * 100), // Convert to cents
+        tradeType: 'surplus_sale'
       };
       
       await this.storage.createEnergyTrade(trade);
@@ -184,7 +176,7 @@ export class SimulationEngine {
   private async updateBatteryLevels(households: Household[], batteryStrategy: any): Promise<void> {
     for (const household of households) {
       const strategy = batteryStrategy.strategies[household.id];
-      let newBatteryLevel = household.batteryLevel || 0;
+      let newBatteryLevel = household.currentBatteryLevel || 0;
       const maxCapacity = household.batteryCapacity || 0;
       
       if (!household.isOnline || maxCapacity === 0) continue;
@@ -202,9 +194,9 @@ export class SimulationEngine {
           break;
       }
       
-      if (newBatteryLevel !== household.batteryLevel) {
+      if (newBatteryLevel !== household.currentBatteryLevel) {
         await this.storage.updateHousehold(household.id, { 
-          batteryLevel: newBatteryLevel 
+          currentBatteryLevel: newBatteryLevel 
         });
       }
     }
@@ -219,56 +211,46 @@ export class SimulationEngine {
       const demoHouseholds = [
         {
           name: 'Solar Pioneers',
-          location: 'Residential District A',
-          solarCapacity: 8.5,
-          batteryCapacity: 15.0,
-          batteryLevel: 12.0,
-          averageDemand: 6.2,
-          criticalLoad: true,
+          address: 'Residential District A',
+          solarCapacity: 8500, // watts
+          batteryCapacity: 15, // kWh
+          currentBatteryLevel: 80, // 80%
           isOnline: true,
           userId: 1
         },
         {
           name: 'Green Energy Hub',
-          location: 'Residential District B', 
-          solarCapacity: 12.0,
-          batteryCapacity: 20.0,
-          batteryLevel: 16.0,
-          averageDemand: 8.5,
-          criticalLoad: false,
+          address: 'Residential District B', 
+          solarCapacity: 12000, // watts
+          batteryCapacity: 20, // kWh
+          currentBatteryLevel: 80, // 80%
           isOnline: true,
           userId: 1
         },
         {
           name: 'Community Center',
-          location: 'Commercial Zone',
-          solarCapacity: 25.0,
-          batteryCapacity: 40.0,
-          batteryLevel: 30.0,
-          averageDemand: 15.2,
-          criticalLoad: true,
+          address: 'Commercial Zone',
+          solarCapacity: 25000, // watts
+          batteryCapacity: 40, // kWh
+          currentBatteryLevel: 75, // 75%
           isOnline: true,
           userId: 1
         },
         {
           name: 'Eco Apartments',
-          location: 'Residential District C',
-          solarCapacity: 6.0,
-          batteryCapacity: 10.0,
-          batteryLevel: 7.0,
-          averageDemand: 4.8,
-          criticalLoad: false,
+          address: 'Residential District C',
+          solarCapacity: 6000, // watts
+          batteryCapacity: 10, // kWh
+          currentBatteryLevel: 70, // 70%
           isOnline: true,
           userId: 1
         },
         {
           name: 'Smart Home Alpha',
-          location: 'Residential District A',
-          solarCapacity: 10.0,
-          batteryCapacity: 18.0,
-          batteryLevel: 14.0,
-          averageDemand: 7.1,
-          criticalLoad: false,
+          address: 'Residential District A',
+          solarCapacity: 10000, // watts
+          batteryCapacity: 18, // kWh
+          currentBatteryLevel: 78, // 78%
           isOnline: true,
           userId: 1
         }
