@@ -103,10 +103,10 @@ export default function SignupPage() {
 
   // If user is already authenticated, redirect to dashboard (but not during registration process)
   useEffect(() => {
-    if (user && !registerMutation.isLoading && !registerMutation.isError && !registerMutation.isSuccess) {
+    if (user && !registerMutation.isPending && !registerMutation.isError && !registerMutation.isSuccess) {
       setLocation("/");
     }
-  }, [user, setLocation, registerMutation.isLoading, registerMutation.isError, registerMutation.isSuccess]);
+  }, [user, setLocation, registerMutation.isPending, registerMutation.isError, registerMutation.isSuccess]);
 
   const onSubmit = (data: SignupForm) => {
     registerMutation.mutate(data);

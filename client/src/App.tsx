@@ -30,9 +30,9 @@ function Router() {
     <>
       <ScrollToTop />
       <Switch>
-        <Route path="/" component={Dashboard} />
+        <ProtectedRoute path="/" component={Dashboard} />
         <Route path="/about" component={About} />
-        <Route path="/chat" component={Chat} />
+        <ProtectedRoute path="/chat" component={Chat} />
         <ProtectedRoute path="/storage" component={StoragePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignupPage} />

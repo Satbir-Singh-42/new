@@ -19,7 +19,7 @@ type AuthContextType = {
   logoutMutation: UseMutationResult<void, Error, void>;
   registerMutation: UseMutationResult<any, Error, z.infer<typeof signupSchema>>;
   healthStatus: HealthStatus | null;
-  checkHealth: () => Promise<void>;
+  checkHealth: () => Promise<HealthStatus | void>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);

@@ -839,7 +839,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         simulationContext: {
           weather: simulationData.weather,
           householdCount: simulationData.households.length,
-          activeHouseholds: simulationData.households.filter(h => h.isOnline).length
+          activeHouseholds: simulationData.households.filter((h: any) => h.isOnline).length
         }
       });
     } catch (error) {

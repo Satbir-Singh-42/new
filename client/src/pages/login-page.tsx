@@ -72,10 +72,10 @@ export default function LoginPage() {
 
   // If user is already authenticated, redirect to dashboard (but not during login process)
   useEffect(() => {
-    if (user && !loginMutation.isLoading && !loginMutation.isError && !loginMutation.isSuccess) {
+    if (user && !loginMutation.isPending && !loginMutation.isError && !loginMutation.isSuccess) {
       setLocation("/");
     }
-  }, [user, setLocation, loginMutation.isLoading, loginMutation.isError, loginMutation.isSuccess]);
+  }, [user, setLocation, loginMutation.isPending, loginMutation.isError, loginMutation.isSuccess]);
 
   const onSubmit = (data: LoginForm) => {
     setShowValidationCard(false); // Hide any existing validation card
