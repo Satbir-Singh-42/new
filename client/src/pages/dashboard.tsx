@@ -468,13 +468,20 @@ export default function Dashboard() {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Solar Efficiency</span>
-                      <span className="font-medium text-green-600" data-testid="text-solar-efficiency">
-                        {marketData?.weather?.efficiency ? `${marketData.weather.efficiency}%` : "No data"}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className={`font-medium ${marketData?.weather?.efficiency === 0 ? 'text-gray-500' : 'text-green-600'}`} data-testid="text-solar-efficiency">
+                          {marketData?.weather?.efficiency !== undefined ? `${marketData.weather.efficiency}%` : "No data"}
+                        </span>
+                        {marketData?.weather?.efficiency === 0 && (
+                          <span className="text-xs text-gray-500">(Night - No Solar)</span>
+                        )}
+                      </div>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
-                        className="bg-yellow-500 h-2 rounded-full transition-all duration-300" 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          marketData?.weather?.efficiency === 0 ? 'bg-gray-400' : 'bg-yellow-500'
+                        }`}
                         style={{ width: `${marketData?.weather?.efficiency || 0}%` }}
                       ></div>
                     </div>
