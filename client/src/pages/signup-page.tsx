@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "@shared/schema";
 import { z } from "zod";
 import { CloudSun, Mail, Lock, User, UserPlus, Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import ValidationCard from "@/components/validation-card";
@@ -129,19 +130,19 @@ export default function SignupPage() {
         </div>
       )}
       
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 via-white to-blue-50 p-3 sm:p-4 md:p-6" style={{ paddingTop: '5rem' }}>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-3 sm:p-4 md:p-6" style={{ paddingTop: '5rem' }}>
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-center">
 
 
         {/* Left side - Hero Section */}
         <div className="hidden md:flex flex-col justify-center space-y-6 p-6 lg:p-8 order-1">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Join SolarSense AI
             </h1>
             <div className="space-y-4">
               <p className="text-xl text-gray-800 font-medium leading-relaxed">
-                <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent font-semibold">
+                <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent font-semibold">
                   Energy Trading & Simulation Platform
                 </span>
               </p>
@@ -206,7 +207,7 @@ export default function SignupPage() {
           <Card className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
             <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
               <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
-                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full">
+                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
                   <CloudSun className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
               </div>
@@ -229,7 +230,7 @@ export default function SignupPage() {
                       id="username"
                       type="text"
                       placeholder="Choose a username"
-                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("username")}
                     />
                   </div>
@@ -248,7 +249,7 @@ export default function SignupPage() {
                       id="email"
                       type="email"
                       placeholder="Enter your email"
-                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("email")}
                     />
                   </div>
@@ -267,7 +268,7 @@ export default function SignupPage() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Create a password"
-                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("password", {
                         onChange: handlePasswordChange
                       })}
@@ -300,7 +301,7 @@ export default function SignupPage() {
                       id="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm your password"
-                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("confirmPassword")}
                     />
                     <button
@@ -318,11 +319,6 @@ export default function SignupPage() {
 
                 {/* Trading Profile Section */}
                 <div className="pt-2 border-t border-gray-200">
-                  <div className="mb-3 bg-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
-                    <h4 className="text-sm font-semibold text-orange-800 mb-1">🔒 Real Trading Profile</h4>
-                    <p className="text-xs text-orange-700">This information will be used for actual energy trades. Enter real details for verification.</p>
-                  </div>
-                  
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
                       Phone Number <span className="text-red-500">*</span>
@@ -331,7 +327,7 @@ export default function SignupPage() {
                       id="phone"
                       type="tel"
                       placeholder="+1-555-0123 (for trade verification)"
-                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("phone")}
                     />
                     {errors.phone && (
@@ -348,7 +344,7 @@ export default function SignupPage() {
                         id="state"
                         type="text"
                         placeholder="e.g., California"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("state")}
                       />
                       {errors.state && (
@@ -364,7 +360,7 @@ export default function SignupPage() {
                         id="district"
                         type="text"
                         placeholder="e.g., Los Angeles"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("district")}
                       />
                       {errors.district && (
@@ -376,11 +372,6 @@ export default function SignupPage() {
 
                 {/* Solar System Configuration */}
                 <div className="pt-2 border-t border-gray-200">
-                  <div className="mb-3 bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
-                    <h4 className="text-sm font-semibold text-green-800 mb-1">🏠 Solar System Details</h4>
-                    <p className="text-xs text-green-700">Enter actual specifications of your solar installation for accurate trading calculations.</p>
-                  </div>
-                  
                   <div className="space-y-2">
                     <Label htmlFor="householdName" className="text-sm font-medium text-gray-700">
                       Household Name <span className="text-red-500">*</span>
@@ -389,7 +380,7 @@ export default function SignupPage() {
                       id="householdName"
                       type="text"
                       placeholder="e.g., Smith Family Solar Home"
-                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("householdName")}
                     />
                     {errors.householdName && (
@@ -405,7 +396,7 @@ export default function SignupPage() {
                       id="address"
                       type="text"
                       placeholder="123 Solar Street, City, State (for energy grid mapping)"
-                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                      className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("address")}
                     />
                     {errors.address && (
@@ -422,7 +413,7 @@ export default function SignupPage() {
                         id="solarCapacity"
                         type="number"
                         placeholder="8000 (8kW typical)"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("solarCapacity")}
                       />
                       {errors.solarCapacity && (
@@ -438,7 +429,7 @@ export default function SignupPage() {
                         id="batteryCapacity"
                         type="number"
                         placeholder="15 (Tesla Powerwall)"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         {...register("batteryCapacity")}
                       />
                       {errors.batteryCapacity && (
@@ -446,19 +437,34 @@ export default function SignupPage() {
                       )}
                     </div>
                   </div>
-                  
-                  <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                    <p className="text-xs text-blue-800">
-                      💡 <strong>Note:</strong> Accurate system specifications ensure fair energy pricing and optimal trade matching. 
-                      Your data is used for simulation and real trading calculations.
-                    </p>
+                </div>
+
+                {/* Data Accuracy Confirmation */}
+                <div className="pt-2 border-t border-gray-200">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="dataAccuracyConfirmed"
+                      {...register("dataAccuracyConfirmed")}
+                      data-testid="checkbox-data-accuracy"
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <Label
+                        htmlFor="dataAccuracyConfirmed"
+                        className="text-sm font-medium text-gray-700 cursor-pointer"
+                      >
+                        I confirm that all the details provided are accurate and understand that actions will be taken based on this information <span className="text-red-500">*</span>
+                      </Label>
+                    </div>
                   </div>
+                  {errors.dataAccuracyConfirmed && (
+                    <p className="text-sm text-red-600 mt-2">{errors.dataAccuracyConfirmed.message}</p>
+                  )}
                 </div>
 
                 <Button
                   type="submit"
                   disabled={registerMutation.isPending}
-                  className="w-full h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl touch-manipulation"
+                  className="w-full h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl touch-manipulation"
                 >
                   {registerMutation.isPending ? (
                     <>
@@ -474,7 +480,7 @@ export default function SignupPage() {
                   <p className="text-xs sm:text-sm text-gray-600">
                     Already have an account?{" "}
                     <Link href="/login">
-                      <span className="text-cyan-600 hover:text-cyan-800 font-medium cursor-pointer transition-colors duration-200">
+                      <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer transition-colors duration-200">
                         Sign in here
                       </span>
                     </Link>

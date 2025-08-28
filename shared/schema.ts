@@ -90,6 +90,10 @@ export const signupSchema = z.object({
   address: z.string().min(1, "Address is required"),
   solarCapacity: z.coerce.number().min(1000, "Solar capacity must be at least 1000 watts"),
   batteryCapacity: z.coerce.number().min(1, "Battery capacity must be at least 1 kWh"),
+  // Data accuracy confirmation
+  dataAccuracyConfirmed: z.boolean().refine((val) => val === true, {
+    message: "You must confirm that the provided details are accurate",
+  }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
