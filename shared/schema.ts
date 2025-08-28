@@ -10,17 +10,40 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const analyses = pgTable("analyses", {
+export const households = pgTable("households", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id"),
-  sessionId: text("session_id"), // For non-authenticated users
-  userSequenceNumber: integer("user_sequence_number").notNull().default(1), // User-specific serial number
-  type: text("type").notNull(), // 'installation' or 'fault-detection'
-  imagePath: text("image_path").notNull(),
-  results: jsonb("results").notNull(),
-  originalImageUrl: text("original_image_url"),
-  analysisImageUrl: text("analysis_image_url"),
+  userId: integer("user_id").notNull(),
+  name: text("name").notNull(),
+  address: text("address").notNull(),
+  solarCapacity: integer("solar_capacity_watts").notNull(), // in watts
+  batteryCapacity: integer("battery_capacity_kwh").notNull(), // in kWh
+  currentBatteryLevel: integer("current_battery_percent").notNull().default(50), // 0-100
+  isOnline: boolean("is_online").notNull().default(true),
+  coordinates: jsonb("coordinates"), // {lat, lng}
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const energyReadings = pgTable("energy_readings", {
+  id: serial("id").primaryKey(),
+  householdId: integer("household_id").notNull(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  solarGeneration: integer("solar_generation_watts").notNull(), // current solar generation in watts
+  energyConsumption: integer("energy_consumption_watts").notNull(), // current consumption in watts
+  batteryLevel: integer("battery_level_percent").notNull(), // 0-100
+  weatherCondition: text("weather_condition"), // 'sunny', 'cloudy', 'rainy', etc.
+  temperature: integer("temperature_celsius"),
+});
+
+export const energyTrades = pgTable("energy_trades", {
+  id: serial("id").primaryKey(),
+  sellerHouseholdId: integer("seller_household_id").notNull(),
+  buyerHouseholdId: integer("buyer_household_id"),
+  energyAmount: integer("energy_amount_kwh").notNull(), // in kWh
+  pricePerKwh: integer("price_per_kwh_cents").notNull(), // price in cents
+  status: text("status").notNull().default('pending'), // 'pending', 'completed', 'cancelled'
+  tradeType: text("trade_type").notNull(), // 'surplus_sale', 'emergency_request', 'scheduled'
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
 });
 
 export const chatMessages = pgTable("chat_messages", {
@@ -30,7 +53,7 @@ export const chatMessages = pgTable("chat_messages", {
   username: text("username").notNull(),
   message: text("message").notNull(),
   type: text("type").notNull().default('user'), // 'user', 'system', 'ai'
-  category: text("category").default('general'), // 'installation', 'maintenance', 'fault', 'general'
+  category: text("category").default('general'), // 'energy', 'trading', 'optimization', 'general'
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -57,15 +80,31 @@ export const signupSchema = z.object({
   path: ["confirmPassword"],
 });
 
-export const insertAnalysisSchema = createInsertSchema(analyses).pick({
+export const insertHouseholdSchema = createInsertSchema(households).pick({
   userId: true,
-  sessionId: true,
-  userSequenceNumber: true,
-  type: true,
-  imagePath: true,
-  results: true,
-  originalImageUrl: true,
-  analysisImageUrl: true,
+  name: true,
+  address: true,
+  solarCapacity: true,
+  batteryCapacity: true,
+  currentBatteryLevel: true,
+  coordinates: true,
+});
+
+export const insertEnergyReadingSchema = createInsertSchema(energyReadings).pick({
+  householdId: true,
+  solarGeneration: true,
+  energyConsumption: true,
+  batteryLevel: true,
+  weatherCondition: true,
+  temperature: true,
+});
+
+export const insertEnergyTradeSchema = createInsertSchema(energyTrades).pick({
+  sellerHouseholdId: true,
+  buyerHouseholdId: true,
+  energyAmount: true,
+  pricePerKwh: true,
+  tradeType: true,
 });
 
 export const insertChatMessageSchema = createInsertSchema(chatMessages).pick({
@@ -79,8 +118,12 @@ export const insertChatMessageSchema = createInsertSchema(chatMessages).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
-export type InsertAnalysis = z.infer<typeof insertAnalysisSchema>;
-export type Analysis = typeof analyses.$inferSelect;
+export type InsertHousehold = z.infer<typeof insertHouseholdSchema>;
+export type Household = typeof households.$inferSelect;
+export type InsertEnergyReading = z.infer<typeof insertEnergyReadingSchema>;
+export type EnergyReading = typeof energyReadings.$inferSelect;
+export type InsertEnergyTrade = z.infer<typeof insertEnergyTradeSchema>;
+export type EnergyTrade = typeof energyTrades.$inferSelect;
 export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
 export type ChatMessage = typeof chatMessages.$inferSelect;
 

@@ -47,7 +47,7 @@ export default function AIChatWidget() {
     return [
       {
         id: 1,
-        message: "Hello! I'm your AI assistant ready to help with solar panel questions. Ask about installation planning, fault detection, or maintenance tips.",
+        message: "Hello! I'm your SolarSense AI assistant ready to help with energy trading and optimization. Ask about energy flow, trading strategies, or grid management.",
         sender: 'ai',
         timestamp: new Date()
       }

@@ -1,4 +1,4 @@
-import { analyses, users, chatMessages, type User, type InsertUser, type Analysis, type InsertAnalysis, type ChatMessage, type InsertChatMessage } from "@shared/schema";
+import { households, energyReadings, energyTrades, users, chatMessages, type User, type InsertUser, type Household, type InsertHousehold, type EnergyReading, type InsertEnergyReading, type EnergyTrade, type InsertEnergyTrade, type ChatMessage, type InsertChatMessage } from "@shared/schema";
 import { eq, desc, count, ne, and } from "drizzle-orm";
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -20,10 +20,16 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  createAnalysis(analysis: InsertAnalysis): Promise<Analysis>;
-  getAnalysesByUser(userId: number): Promise<Analysis[]>;
-  getAnalysesBySession(sessionId: string): Promise<Analysis[]>;
-  getAnalysis(id: number): Promise<Analysis | undefined>;
+  createHousehold(household: InsertHousehold): Promise<Household>;
+  getHouseholdsByUser(userId: number): Promise<Household[]>;
+  getHousehold(id: number): Promise<Household | undefined>;
+  updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined>;
+  createEnergyReading(reading: InsertEnergyReading): Promise<EnergyReading>;
+  getEnergyReadingsByHousehold(householdId: number, limit?: number): Promise<EnergyReading[]>;
+  createEnergyTrade(trade: InsertEnergyTrade): Promise<EnergyTrade>;
+  getEnergyTrades(limit?: number): Promise<EnergyTrade[]>;
+  getEnergyTradesByHousehold(householdId: number, limit?: number): Promise<EnergyTrade[]>;
+  updateEnergyTradeStatus(id: number, status: string): Promise<EnergyTrade | undefined>;
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getChatMessages(limit?: number): Promise<ChatMessage[]>;
   getChatMessagesByUser(userId: number, limit?: number): Promise<ChatMessage[]>;
@@ -35,19 +41,27 @@ export interface IStorage {
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
-  private analyses: Map<number, Analysis>;
+  private households: Map<number, Household>;
+  private energyReadings: Map<number, EnergyReading>;
+  private energyTrades: Map<number, EnergyTrade>;
   private chatMessages: Map<number, ChatMessage>;
   private currentUserId: number;
-  private currentAnalysisId: number;
+  private currentHouseholdId: number;
+  private currentEnergyReadingId: number;
+  private currentEnergyTradeId: number;
   private currentChatMessageId: number;
   public sessionStore: any;
 
   constructor() {
     this.users = new Map();
-    this.analyses = new Map();
+    this.households = new Map();
+    this.energyReadings = new Map();
+    this.energyTrades = new Map();
     this.chatMessages = new Map();
     this.currentUserId = 1;
-    this.currentAnalysisId = 1;
+    this.currentHouseholdId = 1;
+    this.currentEnergyReadingId = 1;
+    this.currentEnergyTradeId = 1;
     this.currentChatMessageId = 1;
     
     // Initialize memory session store
@@ -103,49 +117,100 @@ export class MemStorage implements IStorage {
     return user;
   }
 
-  async createAnalysis(insertAnalysis: InsertAnalysis): Promise<Analysis> {
-    const id = this.currentAnalysisId++;
-    
-    // Get the next sequence number for this user and type
-    let nextSequenceNumber = 1;
-    if (insertAnalysis.userId) {
-      const userAnalyses = Array.from(this.analyses.values())
-        .filter(a => a.userId === insertAnalysis.userId && a.type === insertAnalysis.type)
-        .sort((a, b) => b.userSequenceNumber - a.userSequenceNumber);
-      
-      if (userAnalyses.length > 0) {
-        nextSequenceNumber = userAnalyses[0].userSequenceNumber + 1;
-      }
-    }
-    
-    const analysis: Analysis = {
-      ...insertAnalysis,
-      id,
-      userSequenceNumber: nextSequenceNumber,
-      originalImageUrl: insertAnalysis.originalImageUrl || null,
-      analysisImageUrl: insertAnalysis.analysisImageUrl || null,
-      createdAt: new Date(),
-      userId: insertAnalysis.userId ?? null,
-      sessionId: insertAnalysis.sessionId ?? null,
+  async createHousehold(insertHousehold: InsertHousehold): Promise<Household> {
+    const id = this.currentHouseholdId++;
+    const household: Household = { 
+      ...insertHousehold, 
+      id, 
+      isOnline: true,
+      currentBatteryLevel: insertHousehold.currentBatteryLevel || 50,
+      coordinates: insertHousehold.coordinates || null,
+      createdAt: new Date() 
     };
-    this.analyses.set(id, analysis);
-    return analysis;
+    this.households.set(id, household);
+    return household;
   }
 
-  async getAnalysesByUser(userId: number): Promise<Analysis[]> {
-    return Array.from(this.analyses.values()).filter(
-      (analysis) => analysis.userId === userId,
+  async getHouseholdsByUser(userId: number): Promise<Household[]> {
+    return Array.from(this.households.values()).filter(
+      (household) => household.userId === userId,
     );
   }
 
-  async getAnalysesBySession(sessionId: string): Promise<Analysis[]> {
-    return Array.from(this.analyses.values()).filter(
-      (analysis) => analysis.sessionId === sessionId,
-    );
+  async getHousehold(id: number): Promise<Household | undefined> {
+    return this.households.get(id);
   }
 
-  async getAnalysis(id: number): Promise<Analysis | undefined> {
-    return this.analyses.get(id);
+  async updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined> {
+    const household = this.households.get(id);
+    if (!household) return undefined;
+    
+    const updated = { ...household, ...updates };
+    this.households.set(id, updated);
+    return updated;
+  }
+
+  async createEnergyReading(insertReading: InsertEnergyReading): Promise<EnergyReading> {
+    const id = this.currentEnergyReadingId++;
+    const reading: EnergyReading = { 
+      ...insertReading, 
+      id, 
+      timestamp: new Date(),
+      weatherCondition: insertReading.weatherCondition || null,
+      temperature: insertReading.temperature || null,
+    };
+    this.energyReadings.set(id, reading);
+    return reading;
+  }
+
+  async getEnergyReadingsByHousehold(householdId: number, limit: number = 50): Promise<EnergyReading[]> {
+    const readings = Array.from(this.energyReadings.values())
+      .filter(reading => reading.householdId === householdId)
+      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    
+    return readings.slice(0, limit);
+  }
+
+  async createEnergyTrade(insertTrade: InsertEnergyTrade): Promise<EnergyTrade> {
+    const id = this.currentEnergyTradeId++;
+    const trade: EnergyTrade = { 
+      ...insertTrade, 
+      id, 
+      status: 'pending',
+      createdAt: new Date(),
+      completedAt: null,
+      buyerHouseholdId: insertTrade.buyerHouseholdId || null,
+    };
+    this.energyTrades.set(id, trade);
+    return trade;
+  }
+
+  async getEnergyTrades(limit: number = 50): Promise<EnergyTrade[]> {
+    const trades = Array.from(this.energyTrades.values())
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    
+    return trades.slice(0, limit);
+  }
+
+  async getEnergyTradesByHousehold(householdId: number, limit: number = 50): Promise<EnergyTrade[]> {
+    const trades = Array.from(this.energyTrades.values())
+      .filter(trade => trade.sellerHouseholdId === householdId || trade.buyerHouseholdId === householdId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    
+    return trades.slice(0, limit);
+  }
+
+  async updateEnergyTradeStatus(id: number, status: string): Promise<EnergyTrade | undefined> {
+    const trade = this.energyTrades.get(id);
+    if (!trade) return undefined;
+    
+    const updated = { 
+      ...trade, 
+      status, 
+      completedAt: status === 'completed' ? new Date() : trade.completedAt 
+    };
+    this.energyTrades.set(id, updated);
+    return updated;
   }
 
   async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
@@ -190,13 +255,6 @@ export class MemStorage implements IStorage {
   }
 
   async clearSessionData(sessionId: string): Promise<void> {
-    // Remove analyses for this session
-    for (const [id, analysis] of this.analyses.entries()) {
-      if (analysis.sessionId === sessionId) {
-        this.analyses.delete(id);
-      }
-    }
-    
     // Remove chat messages for this session  
     for (const [id, message] of this.chatMessages.entries()) {
       if (message.sessionId === sessionId) {
@@ -215,10 +273,14 @@ export class MemStorage implements IStorage {
     // Reset user ID counter to 2
     this.currentUserId = 2;
     
-    // Also clear all analyses and chat messages to start fresh
-    this.analyses.clear();
+    // Also clear all energy data and chat messages to start fresh
+    this.households.clear();
+    this.energyReadings.clear();
+    this.energyTrades.clear();
     this.chatMessages.clear();
-    this.currentAnalysisId = 1;
+    this.currentHouseholdId = 1;
+    this.currentEnergyReadingId = 1;
+    this.currentEnergyTradeId = 1;
     this.currentChatMessageId = 1;
   }
 
@@ -344,62 +406,83 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async createAnalysis(insertAnalysis: InsertAnalysis): Promise<Analysis> {
+  async createHousehold(insertHousehold: InsertHousehold): Promise<Household> {
     const db = await this.getDb();
-    
-    // Calculate the next sequence number for this user and type
-    let nextSequenceNumber = 1;
-    if (insertAnalysis.userId) {
-      const userAnalyses = await db
-        .select()
-        .from(analyses)
-        .where(and(eq(analyses.userId, insertAnalysis.userId), eq(analyses.type, insertAnalysis.type)))
-        .orderBy(desc(analyses.userSequenceNumber));
-      
-      if (userAnalyses.length > 0) {
-        nextSequenceNumber = userAnalyses[0].userSequenceNumber + 1;
-      }
-    }
-    
-    const analysisData = {
-      ...insertAnalysis,
-      userSequenceNumber: nextSequenceNumber,
-    };
-    
-    const [analysis] = await db
-      .insert(analyses)
-      .values(analysisData)
-      .returning();
-    return analysis;
+    const [household] = await db.insert(households).values(insertHousehold).returning();
+    return household;
   }
 
-  async getAnalysesByUser(userId: number): Promise<Analysis[]> {
+  async getHouseholdsByUser(userId: number): Promise<Household[]> {
     try {
       const db = await this.getDb();
       return await db
         .select()
-        .from(analyses)
-        .where(eq(analyses.userId, userId))
-        .orderBy(desc(analyses.createdAt));
+        .from(households)
+        .where(eq(households.userId, userId))
+        .orderBy(desc(households.createdAt));
     } catch (error) {
-      console.error('Database getAnalysesByUser error:', error);
+      console.error('Database getHouseholdsByUser error:', error);
       throw error;
     }
   }
 
-  async getAnalysesBySession(sessionId: string): Promise<Analysis[]> {
+  async getHousehold(id: number): Promise<Household | undefined> {
+    const db = await this.getDb();
+    const [household] = await db.select().from(households).where(eq(households.id, id));
+    return household || undefined;
+  }
+
+  async updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined> {
+    const db = await this.getDb();
+    const [household] = await db.update(households).set(updates).where(eq(households.id, id)).returning();
+    return household || undefined;
+  }
+
+  async createEnergyReading(insertReading: InsertEnergyReading): Promise<EnergyReading> {
+    const db = await this.getDb();
+    const [reading] = await db.insert(energyReadings).values(insertReading).returning();
+    return reading;
+  }
+
+  async getEnergyReadingsByHousehold(householdId: number, limit: number = 50): Promise<EnergyReading[]> {
     const db = await this.getDb();
     return await db
       .select()
-      .from(analyses)
-      .where(eq(analyses.sessionId, sessionId))
-      .orderBy(desc(analyses.createdAt));
+      .from(energyReadings)
+      .where(eq(energyReadings.householdId, householdId))
+      .orderBy(desc(energyReadings.timestamp))
+      .limit(limit);
   }
 
-  async getAnalysis(id: number): Promise<Analysis | undefined> {
+  async createEnergyTrade(insertTrade: InsertEnergyTrade): Promise<EnergyTrade> {
     const db = await this.getDb();
-    const [analysis] = await db.select().from(analyses).where(eq(analyses.id, id));
-    return analysis || undefined;
+    const [trade] = await db.insert(energyTrades).values(insertTrade).returning();
+    return trade;
+  }
+
+  async getEnergyTrades(limit: number = 50): Promise<EnergyTrade[]> {
+    const db = await this.getDb();
+    return await db
+      .select()
+      .from(energyTrades)
+      .orderBy(desc(energyTrades.createdAt))
+      .limit(limit);
+  }
+
+  async getEnergyTradesByHousehold(householdId: number, limit: number = 50): Promise<EnergyTrade[]> {
+    const db = await this.getDb();
+    return await db
+      .select()
+      .from(energyTrades)
+      .where(eq(energyTrades.sellerHouseholdId, householdId))
+      .orderBy(desc(energyTrades.createdAt))
+      .limit(limit);
+  }
+
+  async updateEnergyTradeStatus(id: number, status: string): Promise<EnergyTrade | undefined> {
+    const db = await this.getDb();
+    const [trade] = await db.update(energyTrades).set({ status }).where(eq(energyTrades.id, id)).returning();
+    return trade || undefined;
   }
 
   async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
@@ -449,8 +532,6 @@ export class DatabaseStorage implements IStorage {
 
   async clearSessionData(sessionId: string): Promise<void> {
     const db = await this.getDb();
-    // Remove analyses for this session
-    await db.delete(analyses).where(eq(analyses.sessionId, sessionId));
     // Remove chat messages for this session
     await db.delete(chatMessages).where(eq(chatMessages.sessionId, sessionId));
   }
@@ -459,8 +540,10 @@ export class DatabaseStorage implements IStorage {
     const db = await this.getDb();
     // Delete all users (including testing user to recreate with proper password hash)
     await db.delete(users);
-    // Clear all analyses and chat messages
-    await db.delete(analyses);
+    // Clear all energy data and chat messages
+    await db.delete(households);
+    await db.delete(energyReadings);
+    await db.delete(energyTrades);
     await db.delete(chatMessages);
     
     // Recreate testing user with proper scrypt password hash

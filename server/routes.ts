@@ -5,13 +5,12 @@ import path from "path";
 import * as fs from 'fs';
 import * as os from 'os';
 import { storage } from "./storage";
-import { insertAnalysisSchema, insertChatMessageSchema, users, analyses, chatMessages } from "@shared/schema";
+import { insertHouseholdSchema, insertEnergyReadingSchema, insertEnergyTradeSchema, insertChatMessageSchema, users, households, energyReadings, energyTrades, chatMessages } from "@shared/schema";
 import { eq } from "drizzle-orm";
-import { analyzeInstallationWithAI, analyzeFaultsWithAI } from "./ai-service";
 import { setupAuth } from "./auth";
 
-// AI Chat service function with conversation history
-async function generateSolarAdvice(message: string, conversationHistory: string[] = []): Promise<{ response: string; category: string }> {
+// AI Energy optimization service function with conversation history  
+async function generateEnergyAdvice(message: string, conversationHistory: string[] = []): Promise<{ response: string; category: string }> {
   try {
     const { GoogleGenAI } = await import("@google/genai");
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || "" });
@@ -21,19 +20,19 @@ async function generateSolarAdvice(message: string, conversationHistory: string[
       ? `\nCONVERSATION HISTORY:\n${conversationHistory.slice(-6).join('\n')}\n` // Last 6 messages for context
       : '';
 
-    const solarAdvicePrompt = `
-    You are SolarScope AI, a solar panel expert. Provide SHORT, practical advice (max 60 words).
+    const energyAdvicePrompt = `
+    You are SolarSense AI, an energy trading and optimization expert. Provide SHORT, practical advice (max 60 words).
 
-    EXPERTISE: installation, fault detection, maintenance, performance, ROI calculations, safety, Indian helplines.
+    EXPERTISE: decentralized energy trading, smart grid optimization, battery management, weather-adaptive systems, energy demand prediction, fair distribution algorithms.
 
-    INDIAN HELPLINES:
-    - MNRE: 1800-180-3333
-    - SECI: 011-2436-0707  
-    - Solar Mission: 1800-11-3003
-    - BEE: 1800-11-2722
-    - PM Surya Ghar: 1800-11-4455
+    RESPONSE FORMAT: {"response": "brief advice", "category": "energy|trading|optimization|weather|general"}
 
-    RESPONSE FORMAT: {"response": "brief advice", "category": "installation|fault|maintenance|performance|general|helpline"}
+    FOCUS AREAS:
+    - Energy flow optimization between households
+    - Battery charging/discharging strategies
+    - Weather impact on solar generation
+    - Fair energy distribution during peak demand
+    - Energy trading opportunities
 
     ${historyContext}
 
@@ -65,7 +64,7 @@ async function generateSolarAdvice(message: string, conversationHistory: string[
     try {
       const result = JSON.parse(cleanedText);
       return {
-        response: result.response || "I'm here to help with solar panel questions. Could you please provide more details about what you'd like to know?",
+        response: result.response || "I'm here to help with energy trading and optimization questions. Could you please provide more details about what you'd like to know?",
         category: result.category || "general"
       };
     } catch (parseError) {
@@ -199,7 +198,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ 
       status: overallStatus, 
       timestamp: new Date().toISOString(),
-      service: "SolarScope AI",
+      service: "SolarSense AI",
       version: "1.0.0",
       ai: {
         status: aiStatus,
@@ -286,7 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Check if tables exist and get user count
       const userCountResult = await db.select().from(users);
-      const analysisCountResult = await db.select().from(analyses);
+      const householdCountResult = await db.select().from(households);
       const chatCountResult = await db.select().from(chatMessages);
       
       // Get sample users (without passwords)
@@ -301,7 +300,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: "connected",
         tables: {
           users: userCountResult.length,
-          analyses: analysisCountResult.length,
+          households: householdCountResult.length,
           chatMessages: chatCountResult.length
         },
         sampleUsers,
@@ -361,261 +360,202 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Image validation endpoint
-  app.post("/api/validate-image", upload.single('image'), async (req: MulterRequest, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ error: "No image file provided" });
-      }
-
-      const { type } = req.body;
-      const tempFilePath = saveBufferToTemp(req.file.buffer, req.file.originalname || 'image.jpg');
-
-      try {
-        // Basic file validation
-        if (!fs.existsSync(tempFilePath)) {
-          return res.status(400).json({ error: "Failed to process uploaded image" });
-        }
-
-        const stats = fs.statSync(tempFilePath);
-        const fileSizeInMB = stats.size / (1024 * 1024);
-        
-        // Check file size (max 20MB)
-        if (fileSizeInMB > 20) {
-          return res.status(400).json({ 
-            error: `Image size ${fileSizeInMB.toFixed(2)}MB exceeds 20MB limit` 
-          });
-        }
-
-        // Check if it's a valid image file
-        const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/tiff', 'image/webp'];
-        if (!validImageTypes.includes(req.file.mimetype)) {
-          return res.status(400).json({ 
-            error: "Invalid image format. Please upload JPG, PNG, or TIFF files." 
-          });
-        }
-
-        // Use AI classification to validate image content
-        try {
-          const { classifyImage } = await import("./ai-service");
-          const isValid = await classifyImage(tempFilePath, type === 'installation' ? 'rooftop' : 'solar-panel');
-          
-          if (isValid) {
-            res.json({
-              isValid: true,
-              message: "Image validated successfully"
-            });
-          } else {
-            res.status(400).json({
-              error: type === 'installation' 
-                ? "Invalid image for installation analysis. Please upload a rooftop or building image."
-                : "Invalid image for fault detection. Please upload an image showing solar panels or photovoltaic equipment."
-            });
-          }
-        } catch (aiError) {
-          console.error('AI classification error:', aiError);
-          // Fallback to basic validation if AI fails
-          res.json({
-            isValid: true,
-            message: "Image validated successfully (basic validation)"
-          });
-        }
-        
-      } catch (error) {
-        console.error('Image validation error:', error);
-        res.status(400).json({ 
-          error: error instanceof Error ? error.message : "Image validation failed" 
-        });
-      } finally {
-        // Clean up temp file
-        try {
-          fs.unlinkSync(tempFilePath);
-        } catch (e) {
-          console.error('Error cleaning up temp file:', e);
-        }
-      }
-    } catch (error) {
-      console.error('Image validation error:', error);
-      res.status(500).json({ error: "Internal server error during image validation" });
-    }
-  });
-
-  // AI analysis endpoints
-  app.post("/api/ai/analyze-installation", async (req, res) => {
-    try {
-      const { imagePath } = req.body;
-      const results = await analyzeInstallationWithAI(imagePath);
-      res.json(results);
-    } catch (error) {
-      res.status(500).json({ message: "AI analysis failed", error: error instanceof Error ? error.message : "Unknown error" });
-    }
-  });
-
-  app.post("/api/ai/analyze-faults", async (req, res) => {
-    try {
-      const { imagePath } = req.body;
-      const results = await analyzeFaultsWithAI(imagePath);
-      res.json(results);
-    } catch (error) {
-      res.status(500).json({ message: "AI analysis failed", error: error instanceof Error ? error.message : "Unknown error" });
-    }
-  });
-
-  // Upload image and analyze for installation planning
-  app.post("/api/analyze/installation", upload.single('image'), async (req: MulterRequest, res) => {
-    try {
-      console.log('Received installation analysis request');
-      console.log('File:', req.file);
-      console.log('Body:', req.body);
-      
-      if (!req.file) {
-        console.error('No file uploaded');
-        return res.status(400).json({ message: "No image uploaded" });
-      }
-
-      // Save buffer to temporary file for AI analysis
-      const imagePath = saveBufferToTemp(req.file.buffer, req.file.originalname || 'image.jpg');
-      const userId = req.user ? req.user.id : null; // Use authenticated user's ID or null for non-authenticated
-      const sessionId = req.user ? null : req.sessionID; // Use session ID for non-authenticated users
-      
-      // Extract roof input parameters
-      const roofInput = {
-        roofSize: req.body.roofSize ? parseInt(req.body.roofSize) : undefined,
-        roofShape: req.body.roofShape || 'auto-detect',
-        panelSize: req.body.panelSize || 'auto-optimize'
-      };
-
-      console.log('Starting installation analysis for:', imagePath);
-
-      // Real AI analysis with roof input
-      const results = await analyzeInstallationWithAI(imagePath, roofInput);
-
-      console.log('Installation analysis completed successfully');
-
-      // Store analysis result in database (for both authenticated and non-authenticated users)
-      let analysis = null;
-      try {
-        analysis = await storage.createAnalysis({
-          userId,
-          sessionId,
-          type: 'installation',
-          imagePath,
-          results,
-        });
-        if (userId) {
-          console.log('Analysis stored successfully for user:', userId);
-        } else {
-          console.log('Analysis stored successfully for session:', sessionId);
-        }
-      } catch (dbError) {
-        console.warn('Database storage failed, continuing with AI results:', dbError);
-        // Continue without database storage - AI analysis was successful
-      }
-
-      res.json({ analysis, results });
-    } catch (error) {
-      console.error('Installation analysis error:', error);
-      res.status(500).json({ message: "Analysis failed", error: error instanceof Error ? error.message : "Unknown error" });
-    }
-  });
-
-  // Upload image and analyze for fault detection
-  app.post("/api/analyze/fault-detection", upload.single('image'), async (req: MulterRequest, res) => {
-    try {
-      console.log('Received fault detection request');
-      console.log('File:', req.file);
-      console.log('Body:', req.body);
-      
-      if (!req.file) {
-        console.error('No file uploaded');
-        return res.status(400).json({ message: "No image uploaded" });
-      }
-
-      // Save buffer to temporary file for AI analysis
-      const imagePath = saveBufferToTemp(req.file.buffer, req.file.originalname || 'image.jpg');
-      const userId = req.user ? req.user.id : null; // Use authenticated user's ID or null for non-authenticated
-      const sessionId = req.user ? null : req.sessionID; // Use session ID for non-authenticated users
-
-      console.log('Starting AI fault analysis for:', imagePath);
-
-      // Real AI analysis
-      const results = await analyzeFaultsWithAI(imagePath, req.file.originalname);
-
-      console.log('AI fault analysis completed:', results);
-
-      // Store analysis result in database (for both authenticated and non-authenticated users)
-      let analysis = null;
-      try {
-        analysis = await storage.createAnalysis({
-          userId,
-          sessionId,
-          type: 'fault-detection',
-          imagePath,
-          results,
-        });
-        if (userId) {
-          console.log('Fault analysis stored successfully for user:', userId);
-        } else {
-          console.log('Fault analysis stored successfully for session:', sessionId);
-        }
-      } catch (dbError) {
-        console.warn('Database storage failed, continuing with AI results:', dbError);
-        // Continue without database storage - AI analysis was successful
-      }
-
-      res.json({ analysis, results });
-    } catch (error) {
-      console.error('Fault detection error:', error);
-      res.status(500).json({ message: "Analysis failed", error: error instanceof Error ? error.message : "Unknown error" });
-    }
-  });
-
-  // Get current user's analyses (requires authentication)
-  app.get("/api/analyses", async (req, res) => {
+  // Household management endpoints
+  app.post("/api/households", async (req, res) => {
     try {
       if (!req.user) {
         return res.status(401).json({ error: "Authentication required" });
       }
       
-      const analyses = await storage.getAnalysesByUser(req.user.id);
-      res.json(analyses);
+      const validation = insertHouseholdSchema.safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ error: validation.error.issues });
+      }
+      
+      const householdData = { ...validation.data, userId: req.user.id };
+      const household = await storage.createHousehold(householdData);
+      res.json(household);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch analyses", error: error instanceof Error ? error.message : "Unknown error" });
+      res.status(500).json({ error: "Failed to create household", details: error instanceof Error ? error.message : "Unknown error" });
     }
   });
 
-  // Get analyses for current session (for non-authenticated users)
-  app.get("/api/analyses/session", async (req, res) => {
+  app.get("/api/households", async (req, res) => {
     try {
-      const analyses = await storage.getAnalysesBySession(req.sessionID);
-      res.json(analyses);
+      if (!req.user) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+      
+      const households = await storage.getHouseholdsByUser(req.user.id);
+      res.json(households);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch session analyses", error: error instanceof Error ? error.message : "Unknown error" });
+      res.status(500).json({ error: "Failed to fetch households", details: error instanceof Error ? error.message : "Unknown error" });
     }
   });
 
-  // Get user analyses by userId (for compatibility)
-  app.get("/api/analyses/:userId", async (req, res) => {
-    try {
-      const userId = parseInt(req.params.userId);
-      const analyses = await storage.getAnalysesByUser(userId);
-      res.json(analyses);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch analyses", error: error instanceof Error ? error.message : "Unknown error" });
-    }
-  });
-
-  // Get specific analysis
-  app.get("/api/analysis/:id", async (req, res) => {
+  app.get("/api/households/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const analysis = await storage.getAnalysis(id);
-      if (!analysis) {
-        return res.status(404).json({ message: "Analysis not found" });
+      const household = await storage.getHousehold(id);
+      if (!household) {
+        return res.status(404).json({ error: "Household not found" });
       }
-      res.json(analysis);
+      res.json(household);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch analysis", error: error instanceof Error ? error.message : "Unknown error" });
+      res.status(500).json({ error: "Failed to fetch household", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  app.patch("/api/households/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updates = req.body;
+      const household = await storage.updateHousehold(id, updates);
+      if (!household) {
+        return res.status(404).json({ error: "Household not found" });
+      }
+      res.json(household);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update household", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  // Energy reading endpoints
+  app.post("/api/energy-readings", async (req, res) => {
+    try {
+      const validation = insertEnergyReadingSchema.safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ error: validation.error.issues });
+      }
+      
+      const reading = await storage.createEnergyReading(validation.data);
+      res.json(reading);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create energy reading", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  app.get("/api/energy-readings/:householdId", async (req, res) => {
+    try {
+      const householdId = parseInt(req.params.householdId);
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const readings = await storage.getEnergyReadingsByHousehold(householdId, limit);
+      res.json(readings);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch energy readings", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  // Energy trading endpoints
+  app.post("/api/energy-trades", async (req, res) => {
+    try {
+      const validation = insertEnergyTradeSchema.safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ error: validation.error.issues });
+      }
+      
+      const trade = await storage.createEnergyTrade(validation.data);
+      res.json(trade);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create energy trade", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  app.get("/api/energy-trades", async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const trades = await storage.getEnergyTrades(limit);
+      res.json(trades);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch energy trades", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  app.get("/api/energy-trades/:householdId", async (req, res) => {
+    try {
+      const householdId = parseInt(req.params.householdId);
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const trades = await storage.getEnergyTradesByHousehold(householdId, limit);
+      res.json(trades);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch household trades", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  app.patch("/api/energy-trades/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      const trade = await storage.updateEnergyTradeStatus(id, status);
+      if (!trade) {
+        return res.status(404).json({ error: "Energy trade not found" });
+      }
+      res.json(trade);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update trade status", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  // AI optimization endpoint for energy flow
+  app.post("/api/optimize-energy-flow", async (req, res) => {
+    try {
+      const { households, weatherCondition, demandForecast } = req.body;
+      
+      // Generate energy optimization advice using AI
+      const optimizationPrompt = `
+        Analyze energy flow optimization for ${households?.length || 0} households.
+        Weather: ${weatherCondition || 'sunny'}
+        Demand forecast: ${demandForecast || 'normal'}
+        
+        Provide energy distribution strategy and trading recommendations.
+      `;
+      
+      const advice = await generateEnergyAdvice(optimizationPrompt);
+      
+      res.json({
+        optimization: advice,
+        recommendations: {
+          energyFlow: "Optimized based on current conditions",
+          tradingOpportunities: "Check surplus energy availability",
+          batteryStrategy: "Charge during low demand, discharge during peak"
+        }
+      });
+    } catch (error) {
+      console.error('Energy optimization error:', error);
+      res.status(500).json({ error: "Energy optimization failed", details: error instanceof Error ? error.message : "Unknown error" });
+    }
+  });
+
+  // Energy dashboard endpoint
+  app.get("/api/energy-dashboard", async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Authentication required" });
+      }
+      
+      const households = await storage.getHouseholdsByUser(req.user.id);
+      const allTrades = await storage.getEnergyTrades(20);
+      
+      // Get recent energy readings for user's households
+      const energyReadings = [];
+      for (const household of households) {
+        const readings = await storage.getEnergyReadingsByHousehold(household.id, 10);
+        energyReadings.push(...readings);
+      }
+      
+      res.json({
+        households,
+        recentTrades: allTrades.slice(0, 10),
+        energyReadings: energyReadings.slice(0, 20),
+        summary: {
+          totalHouseholds: households.length,
+          activeTrades: allTrades.filter(t => t.status === 'pending').length,
+          totalEnergyProduced: energyReadings.reduce((sum, r) => sum + (r.energyGenerated || 0), 0),
+          totalEnergyConsumed: energyReadings.reduce((sum, r) => sum + (r.energyConsumed || 0), 0)
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch dashboard data", details: error instanceof Error ? error.message : "Unknown error" });
     }
   });
 

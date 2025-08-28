@@ -7,8 +7,8 @@ import { useAuth } from '@/hooks/use-auth';
 
 interface NavbarProps {
   currentPage?: 'dashboard' | 'about' | 'chat' | 'storage' | 'login' | 'signup';
-  activeTab?: 'installation' | 'fault-detection';
-  onTabChange?: (tab: 'installation' | 'fault-detection') => void;
+  activeTab?: 'energy-dashboard' | 'energy-trading';
+  onTabChange?: (tab: 'energy-dashboard' | 'energy-trading') => void;
 }
 
 export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarProps) {
@@ -25,7 +25,7 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
                 <CloudSun className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                SolarScope AI
+                SolarSense
               </span>
             </div>
           </Link>
@@ -35,36 +35,36 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
             {currentPage === 'dashboard' ? (
               <>
                 <button 
-                  onClick={() => onTabChange?.('installation')}
+                  onClick={() => onTabChange?.('energy-dashboard')}
                   className={`transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                    activeTab === 'installation' 
+                    activeTab === 'energy-dashboard' 
                       ? 'text-primary font-medium' 
                       : 'text-secondary-custom hover:text-primary'
                   }`}
                 >
-                  Installation Planning
+                  Energy Dashboard
                 </button>
                 <button 
-                  onClick={() => onTabChange?.('fault-detection')}
+                  onClick={() => onTabChange?.('energy-trading')}
                   className={`transition-all duration-300 ease-in-out transform hover:scale-105 ${
-                    activeTab === 'fault-detection' 
+                    activeTab === 'energy-trading' 
                       ? 'text-primary font-medium' 
                       : 'text-secondary-custom hover:text-primary'
                   }`}
                 >
-                  Fault Detection
+                  Energy Trading
                 </button>
               </>
             ) : (
               <>
-                <Link href="/?tab=installation">
+                <Link href="/?tab=energy-dashboard">
                   <button className="text-secondary-custom hover:text-primary transition-all duration-300 ease-in-out transform hover:scale-105">
-                    Installation Planning
+                    Energy Dashboard
                   </button>
                 </Link>
-                <Link href="/?tab=fault-detection">
+                <Link href="/?tab=energy-trading">
                   <button className="text-secondary-custom hover:text-primary transition-all duration-300 ease-in-out transform hover:scale-105">
-                    Fault Detection
+                    Energy Trading
                   </button>
                 </Link>
               </>
@@ -126,57 +126,57 @@ export default function Navbar({ currentPage, activeTab, onTabChange }: NavbarPr
               </SheetTrigger>
               <SheetContent side="right" className="w-[280px] sm:w-[320px] md:w-[400px] p-0 overflow-y-auto">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                <SheetDescription className="sr-only">Main navigation menu for SolarScope AI</SheetDescription>
+                <SheetDescription className="sr-only">Main navigation menu for SolarSense</SheetDescription>
                 <nav className="flex flex-col space-y-4 sm:space-y-6 p-4 sm:p-6 mt-4 sm:mt-8">
                   <div className="flex flex-col space-y-3 sm:space-y-4">
-                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">Analysis Tools</h3>
+                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">Energy Platform</h3>
                     {currentPage === 'dashboard' && onTabChange ? (
                       <>
                         <button
                           onClick={() => {
-                            onTabChange('installation');
-                            window.history.pushState({}, '', '/?tab=installation');
+                            onTabChange('energy-dashboard');
+                            window.history.pushState({}, '', '/?tab=energy-dashboard');
                             setIsMenuOpen(false);
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
-                            activeTab === 'installation'
+                            activeTab === 'energy-dashboard'
                               ? 'bg-primary text-white'
                               : 'text-secondary-custom hover:bg-gray-100'
                           }`}
                         >
                           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
-                          <span>Installation Planning</span>
+                          <span>Energy Dashboard</span>
                         </button>
                         <button
                           onClick={() => {
-                            onTabChange('fault-detection');
-                            window.history.pushState({}, '', '/?tab=fault-detection');
+                            onTabChange('energy-trading');
+                            window.history.pushState({}, '', '/?tab=energy-trading');
                             setIsMenuOpen(false);
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                           }}
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
-                            activeTab === 'fault-detection'
+                            activeTab === 'energy-trading'
                               ? 'bg-primary text-white'
                               : 'text-secondary-custom hover:bg-gray-100'
                           }`}
                         >
                           <Search className="w-4 h-4 sm:w-5 sm:h-5" />
-                          <span>Fault Detection</span>
+                          <span>Energy Trading</span>
                         </button>
                       </>
                     ) : (
                       <>
-                        <Link href="/?tab=installation">
+                        <Link href="/?tab=energy-dashboard">
                           <Button variant="outline" className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation" onClick={() => setIsMenuOpen(false)}>
                             <Home className="w-4 h-4 sm:w-5 sm:h-5" />
-                            <span>Installation Planning</span>
+                            <span>Energy Dashboard</span>
                           </Button>
                         </Link>
-                        <Link href="/?tab=fault-detection">
+                        <Link href="/?tab=energy-trading">
                           <Button variant="outline" className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation" onClick={() => setIsMenuOpen(false)}>
                             <Search className="w-4 h-4 sm:w-5 sm:h-5" />
-                            <span>Fault Detection</span>
+                            <span>Energy Trading</span>
                           </Button>
                         </Link>
                       </>
