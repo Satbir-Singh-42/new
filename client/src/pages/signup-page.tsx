@@ -130,10 +130,75 @@ export default function SignupPage() {
       )}
       
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-3 sm:p-4 md:p-6" style={{ paddingTop: '3.75rem' }}>
-        <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-center">
+        <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-start">
+
+          {/* Left side - Benefits Section */}
+          <div className="flex flex-col justify-start space-y-4 sm:space-y-6 p-4 sm:p-6 lg:p-8 order-1 md:order-1">
+            <div className="space-y-3 sm:space-y-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                Join the Energy Revolution
+              </h1>
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
+                Connect with neighbors, trade solar energy, and help build a sustainable future with AI-powered grid optimization.
+              </p>
+            </div>
+
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-start space-x-3">
+                <div className="p-1.5 sm:p-2 bg-green-100 rounded-full mt-1">
+                  <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Real Energy Trading</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">Trade surplus solar energy directly with verified households in your area</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Grid Simulation & Testing</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">Test energy scenarios with AI-powered simulations before implementing</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full mt-1">
+                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">AI Energy Optimization</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">Get personalized recommendations to maximize your solar investment</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
+                  <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Secure & Transparent</h3>
+                  <p className="text-xs sm:text-sm text-gray-600">All transactions are secure with transparent pricing and verified participants</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Demo Credentials */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <h4 className="text-sm font-semibold text-blue-800 mb-2">🔑 Quick Demo Access</h4>
+              <div className="space-y-1 text-xs text-blue-700">
+                <div className="bg-white p-2 rounded border">
+                  <p><strong>demo@solarsense.com</strong> / <strong>demo123</strong></p>
+                  <p className="text-blue-600">Explore full features with sample 8kW solar setup</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Signup Form */}
-          <div className="flex justify-center md:justify-end order-2 md:order-1">
+          <div className="flex justify-center md:justify-start order-2 md:order-2">
             <Card className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
               <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
                 <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
@@ -421,71 +486,6 @@ export default function SignupPage() {
                 </form>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Right side - Benefits Section */}
-          <div className="hidden md:flex flex-col justify-center space-y-4 sm:space-y-6 p-4 sm:p-6 lg:p-8 order-1 md:order-2">
-            <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                Join the Energy Revolution
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
-                Connect with neighbors, trade solar energy, and help build a sustainable future with AI-powered grid optimization.
-              </p>
-            </div>
-
-            <div className="space-y-3 sm:space-y-4">
-              <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-green-100 rounded-full mt-1">
-                  <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Real Energy Trading</h3>
-                  <p className="text-xs sm:text-sm text-gray-600">Trade surplus solar energy directly with verified households in your area</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Grid Simulation & Testing</h3>
-                  <p className="text-xs sm:text-sm text-gray-600">Test energy scenarios with AI-powered simulations before implementing</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full mt-1">
-                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">AI Energy Optimization</h3>
-                  <p className="text-xs sm:text-sm text-gray-600">Get personalized recommendations to maximize your solar investment</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                  <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">Secure & Transparent</h3>
-                  <p className="text-xs sm:text-sm text-gray-600">All transactions are secure with transparent pricing and verified participants</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Demo Credentials */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-semibold text-blue-800 mb-2">🔑 Quick Demo Access</h4>
-              <div className="space-y-1 text-xs text-blue-700">
-                <div className="bg-white p-2 rounded border">
-                  <p><strong>demo@solarsense.com</strong> / <strong>demo123</strong></p>
-                  <p className="text-blue-600">Explore full features with sample 8kW solar setup</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
