@@ -795,17 +795,17 @@ export default function Dashboard() {
                     <FormControl>
                       <Input
                         type="number"
-                        step="0.1"
-                        min="0.1"
+                        step="1"
+                        min="1"
                         placeholder={form.watch("tradeType") === "sell" 
-                          ? "e.g., 5.5 (surplus to sell)" 
+                          ? "e.g., 5 (surplus to sell)" 
                           : form.watch("tradeType") === "buy"
-                          ? "e.g., 3.2 (power needed)"
-                          : "e.g., 5.5"}
+                          ? "e.g., 3 (power needed)"
+                          : "e.g., 5"}
                         data-testid="input-energy-amount"
                         className="w-full"
                         {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -820,25 +820,26 @@ export default function Dashboard() {
                   <FormItem>
                     <FormLabel>
                       {form.watch("tradeType") === "sell" 
-                        ? "Selling price per kWh (₹)" 
+                        ? "Selling price per kWh (paise)" 
                         : form.watch("tradeType") === "buy"
-                        ? "Maximum price you'll pay per kWh (₹)"
-                        : "Price per kWh (₹)"}
+                        ? "Maximum price you'll pay per kWh (paise)"
+                        : "Price per kWh (paise)"}
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
-                        step="0.01"
-                        min="0.01"
+                        step="1"
+                        min="1"
+                        max="9999"
                         placeholder={form.watch("tradeType") === "sell" 
-                          ? "e.g., 4.50 (your asking price)" 
+                          ? "e.g., 450 (₹4.50 per kWh)" 
                           : form.watch("tradeType") === "buy"
-                          ? "e.g., 5.00 (max you'll pay)"
-                          : "e.g., 4.50"}
+                          ? "e.g., 500 (₹5.00 per kWh)"
+                          : "e.g., 450"}
                         data-testid="input-price-per-kwh"
                         className="w-full"
                         {...field}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                       />
                     </FormControl>
                     <FormMessage />
