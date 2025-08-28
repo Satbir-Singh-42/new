@@ -161,7 +161,7 @@ export default function Dashboard() {
 
   // Create trade mutation
   const createTradeMutation = useMutation({
-    mutationFn: (data: any) => apiRequest('/api/energy-trades', 'POST', data),
+    mutationFn: (data: any) => apiRequest('POST', '/api/energy-trades', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
       setShowCreateTradeDialog(false);
