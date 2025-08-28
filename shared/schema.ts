@@ -74,9 +74,33 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+// List of common temporary/disposable email domains
+const tempEmailDomains = [
+  '10minutemail.com', '10minutemail.net', 'guerrillamail.com', 'guerrillamail.org',
+  'guerrillamail.net', 'guerrillamail.biz', 'guerrillamail.de', 'guerrillamailblock.com',
+  'sharklasers.com', 'grr.la', 'guerrillamailblock.com', 'pokemail.net', 'spam4.me',
+  'tempmail.org', 'tempail.com', 'temp-mail.org', 'yopmail.com', 'yopmail.fr',
+  'yopmail.net', 'cool.fr.nf', 'jetable.fr.nf', 'nospam.ze.tc', 'nomail.xl.cx',
+  'mega.zik.dj', 'speed.1s.fr', 'courriel.fr.nf', 'moncourrier.fr.nf', 'monemail.fr.nf',
+  'monmail.fr.nf', 'mailinator.com', 'mailinator.net', 'mailinator.org', 'mailinator2.com',
+  'mailinator.gq', 'safetymail.info', 'throwaway.email', 'fakemailgenerator.com',
+  'trashmail.com', 'trashmail.org', 'trashmail.net', 'trashmail.ws', 'trashmailer.com',
+  'temporaryemail.net', 'temporaryforwarding.com', '20minutemail.com', 'emailondeck.com',
+  'maildrop.cc', 'tempinbox.com', 'tempemailaddress.com', 'tempemail.com', 'tempmailaddress.com',
+  'getairmail.com', 'airmail.cc', 'mytrashmail.com', 'mintemail.com', 'spamgourmet.com',
+  'mailcatch.com', 'mohmal.com', 'nada.email', 'getnada.com', 'dispostable.com',
+  'emailfake.com', 'emailto.de', 'emkei.cz', 'fake-mail.ml', 'fakemail.net',
+  'getnada.com', 'incognitomail.org', 'inboxkitten.com', 'mailnesia.com'
+];
+
 export const signupSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string()
+    .email("Please enter a valid email address")
+    .refine((email) => {
+      const domain = email.split('@')[1]?.toLowerCase();
+      return !tempEmailDomains.includes(domain);
+    }, "Please use a valid personal or business email address. Temporary email addresses are not allowed."),
   password: z.string()
     .min(8, "Password must be at least 8 characters")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
