@@ -45,9 +45,9 @@ export default function About() {
           animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">About SolarScope AI</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">About SolarSense AI</h2>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-2 sm:px-4 lg:px-0 leading-relaxed">
-            Advanced AI-powered solar panel analysis platform with intelligent chat assistant for installation planning, fault detection, and expert consultation
+            Advanced AI-powered energy trading platform with intelligent optimization for decentralized energy distribution, battery management, and sustainable power networks
           </p>
         </motion.div>
 
@@ -67,11 +67,11 @@ export default function About() {
           </CardHeader>
           <CardContent className="pt-0 px-4 sm:px-6">
             <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
-              SolarScope AI leverages Google Gemini AI and advanced computer vision to provide dynamic, 
-              image-specific solar panel analysis. Our platform uses intelligent boundary detection and adaptive 
-              algorithms to analyze each rooftop individually, ensuring accurate panel placement recommendations 
-              based on actual roof characteristics rather than fixed patterns. Combined with comprehensive fault 
-              detection and an expert AI chat assistant, we deliver professional-grade solar consulting services.
+              SolarSense AI leverages Google Gemini AI and advanced optimization algorithms to provide dynamic, 
+              household-specific energy trading recommendations. Our platform uses intelligent energy flow detection and adaptive 
+              algorithms to optimize each household's energy generation, storage, and trading individually, ensuring efficient 
+              energy distribution based on real-time demand and supply patterns. Combined with comprehensive battery management 
+              and an expert AI chat assistant, we deliver professional-grade decentralized energy solutions.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
               <motion.div 

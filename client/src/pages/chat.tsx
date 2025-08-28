@@ -142,7 +142,7 @@ export default function Chat() {
     // Add greeting message for first-time users
     return [{
       id: 1,
-      message: "Hello! I'm your SolarScope AI assistant. I'm here to help you with solar panel installation planning, fault detection, maintenance guidance, and performance optimization. How can I assist you today?",
+      message: "Hello! I'm your SolarSense AI assistant. I'm here to help you with energy trading, household energy optimization, battery management, and decentralized energy distribution. How can I assist you today?",
       sender: 'ai',
       timestamp: new Date(),
       category: 'greeting'

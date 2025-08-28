@@ -505,7 +505,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(chatMessages)
-      .where(eq(chatMessages.userId, null))
+      .where(eq(chatMessages.userId, 0))
       .orderBy(desc(chatMessages.createdAt))
       .limit(limit);
   }
@@ -553,8 +553,8 @@ export class DatabaseStorage implements IStorage {
   // Helper method to get current storage status
   getStorageStatus(): { type: 'database' | 'memory'; available: boolean } {
     return {
-      type: this.isDatabaseAvailable ? 'database' : 'memory',
-      available: this.isDatabaseAvailable
+      type: 'database',
+      available: true
     };
   }
 }
@@ -591,7 +591,7 @@ class HybridStorage implements IStorage {
       
       // Test database connection with timeout
       const connectionTest = Promise.race([
-        this.databaseStorage.getDb().then(db => db.execute('SELECT 1')),
+        this.databaseStorage.getUser(1),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 5000))
       ]);
       
@@ -657,40 +657,124 @@ class HybridStorage implements IStorage {
     return await this.memoryStorage.createUser(user);
   }
 
-  async createAnalysis(analysis: InsertAnalysis): Promise<Analysis> {
+  async createHousehold(household: InsertHousehold): Promise<Household> {
     if (this.isDatabaseAvailable && this.databaseStorage) {
       try {
-        return await this.databaseStorage.createAnalysis(analysis);
+        return await this.databaseStorage.createHousehold(household);
       } catch (error) {
-        console.warn('Database createAnalysis failed, falling back to memory:', error);
+        console.warn('Database createHousehold failed, falling back to memory:', error);
         this.isDatabaseAvailable = false;
       }
     }
-    return await this.memoryStorage.createAnalysis(analysis);
+    return await this.memoryStorage.createHousehold(household);
   }
 
-  async getAnalysesByUser(userId: number): Promise<Analysis[]> {
+  async getHouseholdsByUser(userId: number): Promise<Household[]> {
     if (this.isDatabaseAvailable && this.databaseStorage) {
       try {
-        return await this.databaseStorage.getAnalysesByUser(userId);
+        return await this.databaseStorage.getHouseholdsByUser(userId);
       } catch (error) {
-        console.warn('Database getAnalysesByUser failed, falling back to memory:', error);
+        console.warn('Database getHouseholdsByUser failed, falling back to memory:', error);
         this.isDatabaseAvailable = false;
       }
     }
-    return await this.memoryStorage.getAnalysesByUser(userId);
+    return await this.memoryStorage.getHouseholdsByUser(userId);
   }
 
-  async getAnalysis(id: number): Promise<Analysis | undefined> {
+  async getHousehold(id: number): Promise<Household | undefined> {
     if (this.isDatabaseAvailable && this.databaseStorage) {
       try {
-        return await this.databaseStorage.getAnalysis(id);
+        return await this.databaseStorage.getHousehold(id);
       } catch (error) {
-        console.warn('Database getAnalysis failed, falling back to memory:', error);
+        console.warn('Database getHousehold failed, falling back to memory:', error);
         this.isDatabaseAvailable = false;
       }
     }
-    return await this.memoryStorage.getAnalysis(id);
+    return await this.memoryStorage.getHousehold(id);
+  }
+
+  async updateHousehold(id: number, updates: Partial<Household>): Promise<Household | undefined> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.updateHousehold(id, updates);
+      } catch (error) {
+        console.warn('Database updateHousehold failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.updateHousehold(id, updates);
+  }
+
+  async createEnergyReading(reading: InsertEnergyReading): Promise<EnergyReading> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.createEnergyReading(reading);
+      } catch (error) {
+        console.warn('Database createEnergyReading failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.createEnergyReading(reading);
+  }
+
+  async getEnergyReadingsByHousehold(householdId: number, limit?: number): Promise<EnergyReading[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.getEnergyReadingsByHousehold(householdId, limit);
+      } catch (error) {
+        console.warn('Database getEnergyReadingsByHousehold failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.getEnergyReadingsByHousehold(householdId, limit);
+  }
+
+  async createEnergyTrade(trade: InsertEnergyTrade): Promise<EnergyTrade> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.createEnergyTrade(trade);
+      } catch (error) {
+        console.warn('Database createEnergyTrade failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.createEnergyTrade(trade);
+  }
+
+  async getEnergyTrades(limit?: number): Promise<EnergyTrade[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.getEnergyTrades(limit);
+      } catch (error) {
+        console.warn('Database getEnergyTrades failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.getEnergyTrades(limit);
+  }
+
+  async getEnergyTradesByHousehold(householdId: number, limit?: number): Promise<EnergyTrade[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.getEnergyTradesByHousehold(householdId, limit);
+      } catch (error) {
+        console.warn('Database getEnergyTradesByHousehold failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.getEnergyTradesByHousehold(householdId, limit);
+  }
+
+  async updateEnergyTradeStatus(id: number, status: string): Promise<EnergyTrade | undefined> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.updateEnergyTradeStatus(id, status);
+      } catch (error) {
+        console.warn('Database updateEnergyTradeStatus failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.updateEnergyTradeStatus(id, status);
   }
 
   async createChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
@@ -729,17 +813,7 @@ class HybridStorage implements IStorage {
     return await this.memoryStorage.getChatMessagesByUser(userId, limit);
   }
 
-  async getAnalysesBySession(sessionId: string): Promise<Analysis[]> {
-    if (this.isDatabaseAvailable && this.databaseStorage) {
-      try {
-        return await this.databaseStorage.getAnalysesBySession(sessionId);
-      } catch (error) {
-        console.warn('Database getAnalysesBySession failed, falling back to memory:', error);
-        this.isDatabaseAvailable = false;
-      }
-    }
-    return await this.memoryStorage.getAnalysesBySession(sessionId);
-  }
+
 
   async getChatMessagesBySession(sessionId: string, limit: number = 50): Promise<ChatMessage[]> {
     if (this.isDatabaseAvailable && this.databaseStorage) {

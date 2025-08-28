@@ -42,12 +42,7 @@ async function generateEnergyAdvice(message: string, conversationHistory: string
 
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: [solarAdvicePrompt],
-      generationConfig: {
-        maxOutputTokens: 150, // Limit tokens for efficiency
-        temperature: 0.3, // Balanced for accuracy and speed
-        topP: 0.8, // Optimized response diversity
-      }
+      contents: [{ parts: [{ text: energyAdvicePrompt }] }]
     });
 
     const responseText = response.text;
@@ -89,7 +84,7 @@ interface MulterRequest extends Request {
 // Helper function to save buffer to temporary file for AI analysis with cleanup
 function saveBufferToTemp(buffer: Buffer, filename: string): string {
   const tempDir = os.tmpdir();
-  const tempPath = path.join(tempDir, `solarscope-${Date.now()}-${filename}`);
+  const tempPath = path.join(tempDir, `solarsense-${Date.now()}-${filename}`);
   fs.writeFileSync(tempPath, buffer);
   
   // Schedule cleanup after 10 minutes to prevent disk space issues
@@ -550,8 +545,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         summary: {
           totalHouseholds: households.length,
           activeTrades: allTrades.filter(t => t.status === 'pending').length,
-          totalEnergyProduced: energyReadings.reduce((sum, r) => sum + (r.energyGenerated || 0), 0),
-          totalEnergyConsumed: energyReadings.reduce((sum, r) => sum + (r.energyConsumed || 0), 0)
+          totalEnergyProduced: energyReadings.reduce((sum, r) => sum + (r.solarGeneration || 0), 0),
+          totalEnergyConsumed: energyReadings.reduce((sum, r) => sum + (r.energyConsumption || 0), 0)
         }
       });
     } catch (error) {
@@ -644,8 +639,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.warn('Failed to store user message in database:', dbError);
       }
 
-      // Use Google AI to generate solar panel advice with conversation history
-      const aiResponse = await generateSolarAdvice(message.trim(), conversationHistory || []);
+      // Use Google AI to generate energy optimization advice with conversation history
+      const aiResponse = await generateEnergyAdvice(message.trim(), conversationHistory || []);
       
       // Store AI response in database (for both authenticated and non-authenticated users)
       let aiMessage = null;
