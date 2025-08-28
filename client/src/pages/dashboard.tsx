@@ -21,10 +21,10 @@ import { useAuth } from "@/hooks/use-auth";
 import Navbar from "@/components/navbar";
 import ValidationCard from "@/components/validation-card";
 import { SimulationDashboard } from "@/components/simulation-dashboard";
-import { LiveDemoDashboard } from "@/components/live-demo-dashboard";
+
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<'energy-dashboard' | 'energy-trading' | 'simulation' | 'live-demo'>('energy-dashboard');
+  const [activeTab, setActiveTab] = useState<'energy-dashboard' | 'energy-trading' | 'simulation'>('energy-dashboard');
   const [refreshing, setRefreshing] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showValidationCard, setShowValidationCard] = useState(false);
@@ -274,22 +274,7 @@ export default function Dashboard() {
               <span>ML</span>
               <span className="hidden sm:inline"> Simulation</span>
             </button>
-            <button
-              onClick={() => {
-                setActiveTab('live-demo');
-                window.history.pushState({}, '', '/?tab=live-demo');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base ${
-                activeTab === 'live-demo'
-                  ? 'text-primary border-b-2 border-primary bg-blue-50'
-                  : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
-              }`}
-            >
-              <Zap className="inline mr-1 sm:mr-2" size={16} />
-              <span>Live</span>
-              <span className="hidden sm:inline"> Demo</span>
-            </button>
+
           </div>
         </div>
       </div>
@@ -646,20 +631,7 @@ export default function Dashboard() {
           <SimulationDashboard />
         )}
 
-        {activeTab === 'live-demo' && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Live Energy Management Demonstration
-              </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-                Experience real-time automatic energy flow management, weather adaptation, 
-                and power outage response in our decentralized energy network
-              </p>
-            </div>
-            <LiveDemoDashboard />
-          </div>
-        )}
+
       </main>
 
       {/* AI Chat Widget */}
