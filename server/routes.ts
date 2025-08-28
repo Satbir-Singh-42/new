@@ -918,7 +918,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           totalTrades: allTrades.length,
           totalEnergyTraded: `${allTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
           averagePrice: `${allTrades.length > 0 ? 
-            (allTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / allTrades.length).toFixed(2) : 0}/kWh`,
+            (allTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / allTrades.length).toFixed(2) : '0.00'}`,
           carbonSaved: `${(allTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)}`
         },
         efficiency: {
@@ -1083,9 +1083,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         trading: {
           totalTrades: realTrades.length,
           totalEnergyTraded: `${realTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
-          averagePrice: `$${realTrades.length > 0 ? 
-            (realTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / realTrades.length).toFixed(3) : 0}/kWh`,
-          carbonSaved: `${(realTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)} kg CO₂` // 0.45kg CO2 per kWh
+          averagePrice: `${realTrades.length > 0 ? 
+            (realTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / realTrades.length).toFixed(2) : '0.00'}`,
+          carbonSaved: `${(realTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)}` // 0.45kg CO2 per kWh
         },
         efficiency: {
           averageDistance: `${realTrades.length > 0 ?
