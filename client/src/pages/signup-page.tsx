@@ -5,12 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link, useLocation } from "wouter";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "@shared/schema";
 import { z } from "zod";
 import { CloudSun, Mail, Lock, User, UserPlus, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import Navbar from "@/components/navbar";
 import ValidationCard from "@/components/validation-card";
@@ -53,6 +54,7 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
@@ -340,12 +342,68 @@ export default function SignupPage() {
                       <Label htmlFor="state" className="text-sm font-medium text-gray-700">
                         State <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="state"
-                        type="text"
-                        placeholder="e.g., California"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                        {...register("state")}
+                      <Controller
+                        name="state"
+                        control={control}
+                        render={({ field }) => (
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <SelectTrigger className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+                              <SelectValue placeholder="Select your state" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Alabama">Alabama</SelectItem>
+                              <SelectItem value="Alaska">Alaska</SelectItem>
+                              <SelectItem value="Arizona">Arizona</SelectItem>
+                              <SelectItem value="Arkansas">Arkansas</SelectItem>
+                              <SelectItem value="California">California</SelectItem>
+                              <SelectItem value="Colorado">Colorado</SelectItem>
+                              <SelectItem value="Connecticut">Connecticut</SelectItem>
+                              <SelectItem value="Delaware">Delaware</SelectItem>
+                              <SelectItem value="Florida">Florida</SelectItem>
+                              <SelectItem value="Georgia">Georgia</SelectItem>
+                              <SelectItem value="Hawaii">Hawaii</SelectItem>
+                              <SelectItem value="Idaho">Idaho</SelectItem>
+                              <SelectItem value="Illinois">Illinois</SelectItem>
+                              <SelectItem value="Indiana">Indiana</SelectItem>
+                              <SelectItem value="Iowa">Iowa</SelectItem>
+                              <SelectItem value="Kansas">Kansas</SelectItem>
+                              <SelectItem value="Kentucky">Kentucky</SelectItem>
+                              <SelectItem value="Louisiana">Louisiana</SelectItem>
+                              <SelectItem value="Maine">Maine</SelectItem>
+                              <SelectItem value="Maryland">Maryland</SelectItem>
+                              <SelectItem value="Massachusetts">Massachusetts</SelectItem>
+                              <SelectItem value="Michigan">Michigan</SelectItem>
+                              <SelectItem value="Minnesota">Minnesota</SelectItem>
+                              <SelectItem value="Mississippi">Mississippi</SelectItem>
+                              <SelectItem value="Missouri">Missouri</SelectItem>
+                              <SelectItem value="Montana">Montana</SelectItem>
+                              <SelectItem value="Nebraska">Nebraska</SelectItem>
+                              <SelectItem value="Nevada">Nevada</SelectItem>
+                              <SelectItem value="New Hampshire">New Hampshire</SelectItem>
+                              <SelectItem value="New Jersey">New Jersey</SelectItem>
+                              <SelectItem value="New Mexico">New Mexico</SelectItem>
+                              <SelectItem value="New York">New York</SelectItem>
+                              <SelectItem value="North Carolina">North Carolina</SelectItem>
+                              <SelectItem value="North Dakota">North Dakota</SelectItem>
+                              <SelectItem value="Ohio">Ohio</SelectItem>
+                              <SelectItem value="Oklahoma">Oklahoma</SelectItem>
+                              <SelectItem value="Oregon">Oregon</SelectItem>
+                              <SelectItem value="Pennsylvania">Pennsylvania</SelectItem>
+                              <SelectItem value="Rhode Island">Rhode Island</SelectItem>
+                              <SelectItem value="South Carolina">South Carolina</SelectItem>
+                              <SelectItem value="South Dakota">South Dakota</SelectItem>
+                              <SelectItem value="Tennessee">Tennessee</SelectItem>
+                              <SelectItem value="Texas">Texas</SelectItem>
+                              <SelectItem value="Utah">Utah</SelectItem>
+                              <SelectItem value="Vermont">Vermont</SelectItem>
+                              <SelectItem value="Virginia">Virginia</SelectItem>
+                              <SelectItem value="Washington">Washington</SelectItem>
+                              <SelectItem value="West Virginia">West Virginia</SelectItem>
+                              <SelectItem value="Wisconsin">Wisconsin</SelectItem>
+                              <SelectItem value="Wyoming">Wyoming</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
                       />
                       {errors.state && (
                         <p className="text-sm text-red-600">{errors.state.message}</p>
@@ -356,12 +414,69 @@ export default function SignupPage() {
                       <Label htmlFor="district" className="text-sm font-medium text-gray-700">
                         District <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="district"
-                        type="text"
-                        placeholder="e.g., Los Angeles"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                        {...register("district")}
+                      <Controller
+                        name="district"
+                        control={control}
+                        render={({ field }) => (
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <SelectTrigger className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+                              <SelectValue placeholder="Select your district" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Los Angeles">Los Angeles</SelectItem>
+                              <SelectItem value="New York City">New York City</SelectItem>
+                              <SelectItem value="Chicago">Chicago</SelectItem>
+                              <SelectItem value="Houston">Houston</SelectItem>
+                              <SelectItem value="Phoenix">Phoenix</SelectItem>
+                              <SelectItem value="Philadelphia">Philadelphia</SelectItem>
+                              <SelectItem value="San Antonio">San Antonio</SelectItem>
+                              <SelectItem value="San Diego">San Diego</SelectItem>
+                              <SelectItem value="Dallas">Dallas</SelectItem>
+                              <SelectItem value="San Jose">San Jose</SelectItem>
+                              <SelectItem value="Austin">Austin</SelectItem>
+                              <SelectItem value="Jacksonville">Jacksonville</SelectItem>
+                              <SelectItem value="Fort Worth">Fort Worth</SelectItem>
+                              <SelectItem value="Columbus">Columbus</SelectItem>
+                              <SelectItem value="Charlotte">Charlotte</SelectItem>
+                              <SelectItem value="San Francisco">San Francisco</SelectItem>
+                              <SelectItem value="Indianapolis">Indianapolis</SelectItem>
+                              <SelectItem value="Seattle">Seattle</SelectItem>
+                              <SelectItem value="Denver">Denver</SelectItem>
+                              <SelectItem value="Washington DC">Washington DC</SelectItem>
+                              <SelectItem value="Boston">Boston</SelectItem>
+                              <SelectItem value="El Paso">El Paso</SelectItem>
+                              <SelectItem value="Nashville">Nashville</SelectItem>
+                              <SelectItem value="Detroit">Detroit</SelectItem>
+                              <SelectItem value="Oklahoma City">Oklahoma City</SelectItem>
+                              <SelectItem value="Portland">Portland</SelectItem>
+                              <SelectItem value="Las Vegas">Las Vegas</SelectItem>
+                              <SelectItem value="Memphis">Memphis</SelectItem>
+                              <SelectItem value="Louisville">Louisville</SelectItem>
+                              <SelectItem value="Baltimore">Baltimore</SelectItem>
+                              <SelectItem value="Milwaukee">Milwaukee</SelectItem>
+                              <SelectItem value="Albuquerque">Albuquerque</SelectItem>
+                              <SelectItem value="Tucson">Tucson</SelectItem>
+                              <SelectItem value="Fresno">Fresno</SelectItem>
+                              <SelectItem value="Sacramento">Sacramento</SelectItem>
+                              <SelectItem value="Kansas City">Kansas City</SelectItem>
+                              <SelectItem value="Mesa">Mesa</SelectItem>
+                              <SelectItem value="Virginia Beach">Virginia Beach</SelectItem>
+                              <SelectItem value="Atlanta">Atlanta</SelectItem>
+                              <SelectItem value="Colorado Springs">Colorado Springs</SelectItem>
+                              <SelectItem value="Omaha">Omaha</SelectItem>
+                              <SelectItem value="Raleigh">Raleigh</SelectItem>
+                              <SelectItem value="Miami">Miami</SelectItem>
+                              <SelectItem value="Long Beach">Long Beach</SelectItem>
+                              <SelectItem value="Oakland">Oakland</SelectItem>
+                              <SelectItem value="Minneapolis">Minneapolis</SelectItem>
+                              <SelectItem value="Tampa">Tampa</SelectItem>
+                              <SelectItem value="Cleveland">Cleveland</SelectItem>
+                              <SelectItem value="Wichita">Wichita</SelectItem>
+                              <SelectItem value="Arlington">Arlington</SelectItem>
+                              <SelectItem value="New Orleans">New Orleans</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
                       />
                       {errors.district && (
                         <p className="text-sm text-red-600">{errors.district.message}</p>
