@@ -567,8 +567,16 @@ export default function Dashboard() {
         
         {activeTab === 'energy-trading' && (
           <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Energy Trading Marketplace</h2>
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <h2 className="text-2xl font-bold">Energy Trading Marketplace</h2>
+                  <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                    🔒 REAL TRADES
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">Live energy trading with verified households. Contact details shared upon trade agreement.</p>
+              </div>
               <Button onClick={() => setShowCreateTradeDialog(true)} data-testid="button-create-trade">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Trade Offer
@@ -687,7 +695,21 @@ export default function Dashboard() {
         )}
 
         {activeTab === 'simulation' && (
-          <SimulationDashboard />
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-2xl font-bold">Energy Grid Simulation</h2>
+              <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                🧪 SIMULATION MODE
+              </div>
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-6">
+              <p className="text-sm text-blue-800">
+                <strong>Simulation Environment:</strong> Test energy scenarios, optimize battery usage, and explore "what-if" situations. 
+                This data is separate from your real trading profile.
+              </p>
+            </div>
+            <SimulationDashboard />
+          </div>
         )}
 
 

@@ -141,25 +141,29 @@ export default function SignupPage() {
             </h1>
             <div className="space-y-4">
               <p className="text-xl text-gray-800 font-medium leading-relaxed">
-                Transform your solar projects with{" "}
                 <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent font-semibold">
-                  cutting-edge AI technology
+                  Energy Trading & Simulation Platform
                 </span>
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Get started with intelligent analysis and optimization tools
+                Join the decentralized energy marketplace. Trade surplus solar energy with neighbors and simulate grid scenarios.
               </p>
+              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                <p className="text-sm text-blue-800 font-medium">
+                  🔑 Demo Access: Use <strong>demo@solarsense.com</strong> / <strong>demo123</strong> to explore features instantly
+                </p>
+              </div>
             </div>
           </div>
 
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+              <div className="p-1.5 sm:p-2 bg-green-100 rounded-full mt-1">
+                <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Advanced AI Analysis</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Leverage Google Gemini AI for precise solar assessments with saved analysis history</p>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Real Energy Trading</h3>
+                <p className="text-xs sm:text-sm text-gray-600">Trade actual surplus solar energy with verified households in your area</p>
               </div>
             </div>
             
@@ -168,18 +172,18 @@ export default function SignupPage() {
                 <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Professional Reports</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Generate and store detailed PDF reports for clients and stakeholders</p>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Grid Simulation</h3>
+                <p className="text-xs sm:text-sm text-gray-600">Test energy scenarios and optimize battery usage with AI-powered simulations</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+              <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full mt-1">
+                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Persistent Chat History</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Continue AI conversations across sessions with saved chat history</p>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800">AI Energy Advisor</h3>
+                <p className="text-xs sm:text-sm text-gray-600">Get personalized recommendations for optimal energy usage and trading strategies</p>
               </div>
             </div>
             
@@ -312,18 +316,21 @@ export default function SignupPage() {
                   )}
                 </div>
 
-                {/* Contact Information Section */}
+                {/* Trading Profile Section */}
                 <div className="pt-2 border-t border-gray-200">
-                  <h4 className="text-sm font-semibold text-gray-800 mb-3">Contact & Location</h4>
+                  <div className="mb-3 bg-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                    <h4 className="text-sm font-semibold text-orange-800 mb-1">🔒 Real Trading Profile</h4>
+                    <p className="text-xs text-orange-700">This information will be used for actual energy trades. Enter real details for verification.</p>
+                  </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
-                      Phone Number
+                      Phone Number <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="Enter your phone number"
+                      placeholder="+1-555-0123 (for trade verification)"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                       {...register("phone")}
                     />
@@ -335,12 +342,12 @@ export default function SignupPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
                       <Label htmlFor="state" className="text-sm font-medium text-gray-700">
-                        State
+                        State <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="state"
                         type="text"
-                        placeholder="Your state"
+                        placeholder="e.g., California"
                         className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                         {...register("state")}
                       />
@@ -351,12 +358,12 @@ export default function SignupPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="district" className="text-sm font-medium text-gray-700">
-                        District
+                        District <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="district"
                         type="text"
-                        placeholder="Your district"
+                        placeholder="e.g., Los Angeles"
                         className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                         {...register("district")}
                       />
@@ -367,18 +374,21 @@ export default function SignupPage() {
                   </div>
                 </div>
 
-                {/* Household Information Section */}
+                {/* Solar System Configuration */}
                 <div className="pt-2 border-t border-gray-200">
-                  <h4 className="text-sm font-semibold text-gray-800 mb-3">Household Information</h4>
+                  <div className="mb-3 bg-green-50 p-3 rounded-lg border-l-4 border-green-400">
+                    <h4 className="text-sm font-semibold text-green-800 mb-1">🏠 Solar System Details</h4>
+                    <p className="text-xs text-green-700">Enter actual specifications of your solar installation for accurate trading calculations.</p>
+                  </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="householdName" className="text-sm font-medium text-gray-700">
-                      Household Name
+                      Household Name <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="householdName"
                       type="text"
-                      placeholder="e.g., Smith Family Home"
+                      placeholder="e.g., Smith Family Solar Home"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                       {...register("householdName")}
                     />
@@ -389,12 +399,12 @@ export default function SignupPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="address" className="text-sm font-medium text-gray-700">
-                      Address
+                      Physical Address <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="address"
                       type="text"
-                      placeholder="Enter your home address"
+                      placeholder="123 Solar Street, City, State (for energy grid mapping)"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                       {...register("address")}
                     />
@@ -406,12 +416,12 @@ export default function SignupPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
                       <Label htmlFor="solarCapacity" className="text-sm font-medium text-gray-700">
-                        Solar Capacity (W)
+                        Solar Capacity (Watts) <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="solarCapacity"
                         type="number"
-                        placeholder="5000"
+                        placeholder="8000 (8kW typical)"
                         className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                         {...register("solarCapacity")}
                       />
@@ -422,12 +432,12 @@ export default function SignupPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="batteryCapacity" className="text-sm font-medium text-gray-700">
-                        Battery (kWh)
+                        Battery Storage (kWh) <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="batteryCapacity"
                         type="number"
-                        placeholder="10"
+                        placeholder="15 (Tesla Powerwall)"
                         className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-cyan-500 focus:ring-cyan-500"
                         {...register("batteryCapacity")}
                       />
@@ -435,6 +445,13 @@ export default function SignupPage() {
                         <p className="text-sm text-red-600">{errors.batteryCapacity.message}</p>
                       )}
                     </div>
+                  </div>
+                  
+                  <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      💡 <strong>Note:</strong> Accurate system specifications ensure fair energy pricing and optimal trade matching. 
+                      Your data is used for simulation and real trading calculations.
+                    </p>
                   </div>
                 </div>
 

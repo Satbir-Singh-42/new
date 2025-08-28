@@ -72,8 +72,9 @@ export class MemStorage implements IStorage {
       checkPeriod: 86400000, // 24 hours
     });
     
-    // Start with empty chat for authentic user experience
+    // Add demo credentials for easy website access
     this.addTestingUser();
+    this.addDemoCredentials();
   }
 
   private async addTestingUser() {
@@ -86,10 +87,49 @@ export class MemStorage implements IStorage {
       username: 'test_user',
       email: 'test@example.com',
       password: hashedPassword,
+      phone: null,
+      state: null,
+      district: null,
       createdAt: new Date()
     };
     this.users.set(testUser.id, testUser);
     this.currentUserId = 2; // Next user will get ID 2
+  }
+
+  private async addDemoCredentials() {
+    // Create demo user with complete trading profile
+    const { hashPassword } = await import("./auth");
+    const hashedPassword = await hashPassword("demo123");
+    
+    const demoUser: User = {
+      id: 2,
+      username: 'demo_trader',
+      email: 'demo@solarsense.com',
+      password: hashedPassword,
+      phone: '+1-555-0123',
+      state: 'California',
+      district: 'Los Angeles',
+      createdAt: new Date()
+    };
+    this.users.set(demoUser.id, demoUser);
+
+    // Create demo household for trading
+    const demoHousehold: Household = {
+      id: 1,
+      userId: demoUser.id,
+      name: 'Demo Solar Home',
+      address: '123 Solar Street, Los Angeles, CA',
+      solarCapacity: 8000, // 8kW system
+      batteryCapacity: 15, // 15kWh Tesla Powerwall
+      currentBatteryLevel: 85,
+      isOnline: true,
+      coordinates: null,
+      createdAt: new Date()
+    };
+    this.households.set(demoHousehold.id, demoHousehold);
+    
+    this.currentUserId = 3; // Next user will get ID 3
+    this.currentHouseholdId = 2; // Next household will get ID 2
   }
 
   private addInitialChatMessages() {
