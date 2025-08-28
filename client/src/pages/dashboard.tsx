@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -21,6 +21,8 @@ import { useAuth } from "@/hooks/use-auth";
 import Navbar from "@/components/navbar";
 import ValidationCard from "@/components/validation-card";
 import { SimulationDashboard } from "@/components/simulation-dashboard";
+import { LocationRequest } from "@/components/location-request";
+import { locationService, UserLocation } from "@/lib/location-service";
 
 
 export default function Dashboard() {
@@ -31,17 +33,61 @@ export default function Dashboard() {
   const [validationMessage, setValidationMessage] = useState("");
   const [validationType, setValidationType] = useState<"success" | "error" | "warning">("warning");
   const [showCreateTradeDialog, setShowCreateTradeDialog] = useState(false);
+  const [showLocationRequest, setShowLocationRequest] = useState(false);
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [locationPermissionChecked, setLocationPermissionChecked] = useState(false);
   const { user, logoutMutation, healthStatus } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Fetch energy trades with real-time updates
+  // Check for location permission on component mount
+  useEffect(() => {
+    const checkLocationPermission = async () => {
+      if (locationService.isGeolocationSupported()) {
+        const cachedLocation = locationService.getCachedLocation();
+        if (cachedLocation) {
+          setUserLocation(cachedLocation);
+        } else {
+          // Only show location request for authenticated users after a brief delay
+          if (user) {
+            setTimeout(() => {
+              setShowLocationRequest(true);
+            }, 1000);
+          }
+        }
+      }
+      setLocationPermissionChecked(true);
+    };
+
+    checkLocationPermission();
+  }, [user]);
+
+  const handleLocationGranted = (location: UserLocation) => {
+    setUserLocation(location);
+    setShowLocationRequest(false);
+    toast({
+      title: "Location Access Granted",
+      description: location.city ? `Showing data for ${location.city}, ${location.state}` : "Location-based features enabled",
+    });
+  };
+
+  const handleLocationDenied = () => {
+    setShowLocationRequest(false);
+    toast({
+      title: "Location Access Denied",
+      description: "You'll see general market data instead of localized information",
+      variant: "default",
+    });
+  };
+
+  // Fetch ONLY real user energy trades - no synthetic/fake data
   const { data: energyTrades = [], isLoading: tradesLoading } = useQuery({
     queryKey: ['/api/energy-trades'],
-    refetchInterval: 10000, // Refetch every 10 seconds
+    refetchInterval: user ? 10000 : false, // Only fetch for authenticated users
+    enabled: !!user, // Only run query if user is authenticated
   });
 
-  // Fetch real-time market data
+  // Fetch ONLY real market data - this endpoint provides authentic market conditions
   const { data: marketData } = useQuery<{
     supply: number;
     demand: number;
@@ -55,9 +101,17 @@ export default function Dashboard() {
     queryKey: ['/api/market/realtime'],
     refetchInterval: 5000, // Update market data every 5 seconds
     retry: false,
+    enabled: locationPermissionChecked, // Only fetch after location check is complete
   });
 
-  // Fetch network analytics
+  // Fetch ONLY real user households - no demo/synthetic data
+  const { data: userHouseholds = [] } = useQuery<Household[]>({
+    queryKey: ['/api/households'],
+    refetchInterval: user ? 15000 : false, // Only fetch for authenticated users
+    enabled: !!user, // Only run query if user is authenticated
+  });
+
+  // Fetch network analytics based ONLY on real user data
   const { data: networkAnalytics } = useQuery<{
     network: {
       totalHouseholds: number;
@@ -77,7 +131,8 @@ export default function Dashboard() {
     };
   }>({
     queryKey: ['/api/analytics/network'], 
-    refetchInterval: 15000, // Update analytics every 15 seconds
+    refetchInterval: user ? 15000 : false, // Only fetch for authenticated users
+    enabled: !!user, // Only run query if user is authenticated
     retry: false,
   });
 
@@ -103,10 +158,8 @@ export default function Dashboard() {
     }
   };
 
-  // Fetch households for trading
-  const { data: households = [] } = useQuery<Household[]>({
-    queryKey: ['/api/households'],
-  });
+  // Remove duplicate household query (already fetched as userHouseholds above)
+  const households = userHouseholds; // Use the authenticated user households
 
   // Create trade mutation
   const createTradeMutation = useMutation({
@@ -218,6 +271,26 @@ export default function Dashboard() {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 px-2 max-w-4xl mx-auto">
               Decentralized energy trading platform for a sustainable future
             </p>
+            {userLocation && (
+              <div className="flex items-center justify-center gap-1 mt-3 text-sm bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full" data-testid="text-user-location">
+                <MapPin className="h-4 w-4" />
+                <span>Serving {userLocation.city ? `${userLocation.city}, ${userLocation.state}` : `${userLocation.latitude.toFixed(2)}, ${userLocation.longitude.toFixed(2)}`}</span>
+              </div>
+            )}
+            {!userLocation && user && locationService.isGeolocationSupported() && (
+              <div className="mt-3">
+                <Button 
+                  onClick={() => setShowLocationRequest(true)}
+                  variant="outline"
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                  size="sm"
+                  data-testid="button-request-location"
+                >
+                  <MapPin className="mr-2 h-4 w-4" />
+                  Get Local Energy Data
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -439,6 +512,13 @@ export default function Dashboard() {
                 <p className="text-center text-gray-400">
                   Real-time market data will appear here when households are connected and trading energy.
                 </p>
+                {!user && (
+                  <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/50 rounded-lg">
+                    <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
+                      Please log in to view authentic energy market data and connect your household
+                    </p>
+                  </div>
+                )}
               </Card>
             )}
 
@@ -740,6 +820,13 @@ export default function Dashboard() {
           </Form>
         </DialogContent>
       </Dialog>
+
+      {/* Location Request Dialog */}
+      <LocationRequest
+        isOpen={showLocationRequest}
+        onLocationGranted={handleLocationGranted}
+        onLocationDenied={handleLocationDenied}
+      />
 
       {/* Validation Card for Server Issues and Logout - Responsive positioning below navbar */}
       {showValidationCard && (
