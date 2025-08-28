@@ -69,15 +69,8 @@ export async function apiRequest(
     await throwIfResNotOk(res);
     return res;
   } catch (error) {
-    // Enhanced error handling for backend connectivity
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      throw new Error('Backend not connected properly. Please check if the server is running.');
-    }
-    
-    if (error instanceof Error && error.message.includes('NetworkError')) {
-      throw new Error('Network connection failed. Please check your internet connection and server status.');
-    }
-    
+    // Let the original error pass through without showing backend connection messages
+    // since the server is running fine and the issue is likely elsewhere
     throw error;
   }
 }
@@ -107,7 +100,7 @@ export const queryClient = new QueryClient({
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes instead of Infinity
-      cacheTime: 10 * 60 * 1000, // 10 minutes cache
+      gcTime: 10 * 60 * 1000, // 10 minutes cache (renamed from cacheTime in v5)
       retry: 1, // Allow 1 retry for better reliability
     },
     mutations: {

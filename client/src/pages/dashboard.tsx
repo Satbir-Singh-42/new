@@ -238,9 +238,9 @@ export default function Dashboard() {
 
   // Show server unavailability message only for authenticated users who lose session
   useEffect(() => {
-    // Only show server error if user was authenticated and server/database is down
-    // Don't show for AI service issues (quota limits) - only for actual server/database problems
-    if (healthStatus && user && (!healthStatus.server || !healthStatus.database) && healthStatus.message) {
+    // Only show server error if BOTH server AND database are down - not for AI issues
+    // Don't show validation cards for "degraded" status caused by AI quota/config issues
+    if (healthStatus && user && healthStatus.server === false && healthStatus.database === false && healthStatus.message) {
       setValidationMessage(healthStatus.message);
       setValidationType("error");
       setShowValidationCard(true);
