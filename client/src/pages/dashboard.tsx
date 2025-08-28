@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertEnergyTradeSchema } from "@/../../shared/schema";
 import type { EnergyTrade, Household } from "@/../../shared/schema";
+import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 
 import AIChatWidget from "@/components/mobile-ai-chat-widget";
@@ -179,13 +180,18 @@ export default function Dashboard() {
   });
 
   // Form for creating trades
+  const tradeFormSchema = z.object({
+    sellerHouseholdId: z.number().optional(),
+    buyerHouseholdId: z.number().optional(),
+    energyAmount: z.number().min(0.1, "Energy amount must be at least 0.1 kWh"),
+    pricePerKwh: z.number().min(0.01, "Price must be at least ₹0.01 per kWh"),
+    tradeType: z.enum(['sell', 'buy']),
+  });
+
   const form = useForm({
-    resolver: zodResolver(insertEnergyTradeSchema.extend({
-      energyAmount: insertEnergyTradeSchema.shape.energyAmount.min(0.1, "Energy amount must be at least 0.1 kWh"),
-      pricePerKwh: insertEnergyTradeSchema.shape.pricePerKwh.min(0.01, "Price must be at least ₹0.01 per kWh"),
-    })),
+    resolver: zodResolver(tradeFormSchema),
     defaultValues: {
-      sellerHouseholdId: 1,
+      sellerHouseholdId: userHouseholds[0]?.id || 1,
       buyerHouseholdId: undefined,
       energyAmount: 0,
       pricePerKwh: 4.5,
@@ -194,11 +200,21 @@ export default function Dashboard() {
   });
 
   const onSubmit = (data: any) => {
+    const userHouseholdId = userHouseholds[0]?.id;
+    if (!userHouseholdId) {
+      toast({
+        title: "Error",
+        description: "No household found. Please set up your household first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Set household IDs based on trade type
     const tradeData = {
       ...data,
-      sellerHouseholdId: data.tradeType === 'sell' ? 1 : undefined,
-      buyerHouseholdId: data.tradeType === 'buy' ? 1 : undefined,
+      sellerHouseholdId: data.tradeType === 'sell' ? userHouseholdId : undefined,
+      buyerHouseholdId: data.tradeType === 'buy' ? userHouseholdId : undefined,
     };
     createTradeMutation.mutate(tradeData);
   };

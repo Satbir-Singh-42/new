@@ -39,7 +39,7 @@ export const energyReadings = pgTable("energy_readings", {
 
 export const energyTrades = pgTable("energy_trades", {
   id: serial("id").primaryKey(),
-  sellerHouseholdId: integer("seller_household_id").notNull(),
+  sellerHouseholdId: integer("seller_household_id"),
   buyerHouseholdId: integer("buyer_household_id"),
   energyAmount: integer("energy_amount_kwh").notNull(), // in kWh
   pricePerKwh: integer("price_per_kwh_cents").notNull(), // price in cents
@@ -148,6 +148,17 @@ export const insertEnergyTradeSchema = createInsertSchema(energyTrades).pick({
   energyAmount: true,
   pricePerKwh: true,
   tradeType: true,
+}).partial({ sellerHouseholdId: true, buyerHouseholdId: true })
+.refine((data) => {
+  if (data.tradeType === 'sell' && !data.sellerHouseholdId) {
+    return false;
+  }
+  if (data.tradeType === 'buy' && !data.buyerHouseholdId) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Either seller or buyer household ID must be provided based on trade type",
 });
 
 export const insertChatMessageSchema = createInsertSchema(chatMessages).pick({

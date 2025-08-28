@@ -443,6 +443,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Energy trading endpoints
   app.post("/api/energy-trades", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
     try {
       const validation = insertEnergyTradeSchema.safeParse(req.body);
       if (!validation.success) {
