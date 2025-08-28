@@ -16,14 +16,16 @@ export class MLEnergyEngine {
     return baseGeneration * weatherMultiplier * timeMultiplier * seasonalMultiplier;
   }
 
-  // Predict energy demand using ML patterns
+  // Predict energy demand using ML patterns with realistic consumption data
   predictEnergyDemand(household: Household, timeOfDay: number, dayOfWeek: number): number {
-    const baseDemand = 5.5; // kWh average - calculate from historical data
-    const timePattern = this.getTimePattern(timeOfDay);
-    const dayPattern = this.getDayPattern(dayOfWeek);
-    const householdPattern = this.getHouseholdPattern(household);
+    // Average US household consumption: 30 kWh/day = 1.25 kWh/hour baseline
+    const baseDemand = 1.25; 
+    const timePattern = this.getRealisticTimePattern(timeOfDay);
+    const dayPattern = this.getRealisticDayPattern(dayOfWeek);
+    const householdPattern = this.getRealisticHouseholdPattern(household);
+    const seasonalPattern = this.getSeasonalDemandPattern();
 
-    return baseDemand * timePattern * dayPattern * householdPattern;
+    return baseDemand * timePattern * dayPattern * householdPattern * seasonalPattern;
   }
 
   // Optimize energy distribution across the network
@@ -57,25 +59,48 @@ export class MLEnergyEngine {
     };
   }
 
-  // Weather adaptation algorithms
+  // Realistic weather adaptation algorithms based on solar irradiance data
   private getWeatherMultiplier(weather: WeatherCondition): number {
-    switch (weather.condition) {
-      case 'sunny': return 1.0;
-      case 'partly-cloudy': return 0.75;
-      case 'cloudy': return 0.4;
-      case 'overcast': return 0.2;
-      case 'rainy': return 0.1;
-      case 'stormy': return 0.05;
-      default: return 0.6;
-    }
+    const baseMultipliers = {
+      'sunny': 1.0,          // Clear sky irradiance ~1000 W/m²
+      'partly-cloudy': 0.82, // ~820 W/m² typical
+      'cloudy': 0.45,        // ~450 W/m² heavy clouds
+      'overcast': 0.25,      // ~250 W/m² thick overcast
+      'rainy': 0.15,         // ~150 W/m² during rain
+      'stormy': 0.08         // ~80 W/m² storm conditions
+    };
+    
+    const cloudCoverImpact = Math.max(0.1, 1 - (weather.cloudCover / 100) * 0.7);
+    const temperatureImpact = this.getTemperatureImpact(weather.temperature);
+    
+    return (baseMultipliers[weather.condition] || 0.6) * cloudCoverImpact * temperatureImpact;
+  }
+
+  // Solar panels lose efficiency in extreme heat
+  private getTemperatureImpact(temperature: number): number {
+    // Optimal temperature for solar panels: 25°C (77°F)
+    // -0.4% efficiency per degree above 25°C
+    if (temperature <= 25) return 1.0;
+    const tempLoss = (temperature - 25) * 0.004;
+    return Math.max(0.7, 1 - tempLoss); // Min 70% efficiency
   }
 
   private getTimeMultiplier(hour: number): number {
-    // Solar generation curve throughout the day
-    if (hour < 6 || hour > 19) return 0;
-    if (hour >= 11 && hour <= 14) return 1.0; // Peak sun hours
-    if (hour >= 9 && hour <= 16) return 0.8;
-    return 0.3;
+    // Realistic solar generation curve based on sun angle and atmospheric conditions
+    if (hour < 5 || hour > 20) return 0;
+    
+    // Peak Solar Hours (PSH) curve - bell-shaped distribution
+    const solarCurve = [
+      0, 0, 0, 0, 0,      // 0-4 AM
+      0.02, 0.15, 0.35,   // 5-7 AM: sunrise
+      0.58, 0.78, 0.92,   // 8-10 AM: morning climb
+      0.98, 1.0, 0.98,    // 11 AM-1 PM: peak hours
+      0.92, 0.78, 0.58,   // 2-4 PM: afternoon decline
+      0.35, 0.15, 0.02,   // 5-7 PM: evening
+      0, 0, 0, 0         // 8-11 PM
+    ];
+    
+    return solarCurve[hour] || 0;
   }
 
   private getSeasonalMultiplier(): number {
@@ -137,12 +162,13 @@ export class MLEnergyEngine {
           2.0 // Max 2kWh per trade for stability
         );
 
+        const priority = this.determinePriority(demander);
         pairs.push({
           supplierId: bestSupplier.id,
           demanderId: demander.id,
           energyAmount,
           distance: this.calculateDistance(bestSupplier.address || '', demander.address || ''),
-          priority: 'normal' // Priority based on battery level and demand
+          priority
         });
 
         // Update balances for next iterations
@@ -258,55 +284,149 @@ export class MLEnergyEngine {
     return diversityScore + backupScore + impactScore;
   }
 
-  private getTimePattern(hour: number): number {
-    // Demand patterns throughout the day
-    const patterns = [0.3, 0.2, 0.2, 0.2, 0.3, 0.5, 0.8, 0.9, 0.7, 0.6, 0.6, 0.7, 0.8, 0.7, 0.6, 0.7, 0.9, 1.0, 1.0, 0.9, 0.8, 0.7, 0.5, 0.4];
-    return patterns[hour] || 0.5;
+  // Realistic demand patterns based on actual residential usage data
+  private getRealisticTimePattern(hour: number): number {
+    // Based on residential load curve data - peak at 6-9 PM
+    const demandCurve = [
+      0.45, 0.42, 0.40, 0.38, 0.40,  // 12-4 AM: night minimum
+      0.45, 0.55, 0.75, 0.85, 0.72,  // 5-9 AM: morning rise
+      0.65, 0.68, 0.70, 0.72, 0.75,  // 10 AM-2 PM: daytime steady
+      0.78, 0.85, 0.95, 1.0, 0.92,   // 3-7 PM: evening peak
+      0.80, 0.70, 0.58, 0.52         // 8-11 PM: night decline
+    ];
+    return demandCurve[hour] || 0.6;
   }
 
-  private getDayPattern(dayOfWeek: number): number {
-    // 0 = Sunday, 6 = Saturday
-    const weekendPattern = [0.9, 1.0, 1.0, 1.0, 1.0, 1.0, 0.9];
-    return weekendPattern[dayOfWeek];
+  private getRealisticDayPattern(dayOfWeek: number): number {
+    // Monday=1, Sunday=0 - Weekends have different patterns
+    const weekPattern = [
+      0.95, // Sunday - moderate usage
+      1.0,  // Monday - peak work-from-home 
+      1.0,  // Tuesday 
+      1.0,  // Wednesday
+      1.0,  // Thursday
+      0.98, // Friday - slightly lower
+      0.92  // Saturday - weekend pattern
+    ];
+    return weekPattern[dayOfWeek] || 1.0;
   }
 
-  private getHouseholdPattern(household: Household): number {
-    // Adjust based on household characteristics
+  private getRealisticHouseholdPattern(household: Household): number {
     let pattern = 1.0;
-    if ((household.currentBatteryLevel || 0) < 20) pattern *= 1.3; // Low battery = higher demand
-    if ((household.batteryCapacity || 0) > 10000) pattern *= 0.9; // Large battery owners optimize
-    return pattern;
+    
+    // Battery management affects consumption patterns
+    const batteryLevel = household.currentBatteryLevel || 50;
+    if (batteryLevel < 20) pattern *= 1.15; // Low battery increases grid dependency
+    if (batteryLevel > 80) pattern *= 0.92; // High battery allows load shifting
+    
+    // Solar capacity affects consumption behavior
+    const solarCapacity = household.solarCapacity || 0;
+    if (solarCapacity > 8000) pattern *= 0.88; // Large solar systems encourage higher usage
+    if (solarCapacity === 0) pattern *= 1.05;   // No solar = higher grid usage
+    
+    // Battery capacity affects optimization behavior
+    const batteryCapacity = household.batteryCapacity || 0;
+    if (batteryCapacity > 13000) pattern *= 0.85; // Large batteries enable optimization
+    
+    return Math.max(0.7, Math.min(1.3, pattern)); // Reasonable bounds
+  }
+
+  private getSeasonalDemandPattern(): number {
+    const month = new Date().getMonth();
+    // Seasonal demand variations (HVAC usage)
+    const seasonalDemand = [
+      1.2,  // Jan - winter heating
+      1.15, // Feb
+      1.0,  // Mar - mild weather
+      0.9,  // Apr
+      1.0,  // May 
+      1.3,  // Jun - AC season starts
+      1.4,  // Jul - peak summer AC
+      1.4,  // Aug - peak summer AC
+      1.2,  // Sep - AC still high
+      0.95, // Oct - mild weather
+      1.05, // Nov - heating starts
+      1.2   // Dec - winter heating
+    ];
+    return seasonalDemand[month];
+  }
+
+  private determinePriority(household: any): 'normal' | 'high' | 'emergency' {
+    const batteryLevel = household.currentBatteryLevel || 50;
+    const netBalance = household.netBalance || 0;
+    
+    if (batteryLevel < 10 && netBalance < -2) return 'emergency';
+    if (batteryLevel < 20 || netBalance < -1.5) return 'high';
+    return 'normal';
   }
 }
 
 class PriceOptimizer {
   calculateOptimalPrices(pairs: TradingPair[], networkState: NetworkState): Map<number, number> {
     const prices = new Map<number, number>();
-    const basePrice = 0.12; // $0.12 per kWh base rate
+    
+    // Dynamic base price based on time of day (Time-of-Use pricing)
+    const hour = new Date().getHours();
+    const basePrice = this.getTimeOfUsePrice(hour);
     
     pairs.forEach(pair => {
       let price = basePrice;
       
-      // Distance premium
-      price += (pair.distance / 100) * 0.02;
+      // Transmission loss compensation (increases with distance)
+      const transmissionLoss = Math.min(0.05, (pair.distance / 100) * 0.03);
+      price += transmissionLoss;
       
-      // Urgency premium
+      // Grid congestion pricing
+      const congestionMultiplier = this.getGridCongestion(networkState);
+      price *= congestionMultiplier;
+      
+      // Priority-based pricing
       if (pair.priority === 'high') {
-        price += 0.03;
+        price *= 1.25; // Critical loads pay premium
+      } else if (pair.priority === 'emergency') {
+        price *= 1.5; // Emergency loads pay highest premium
       }
       
-      // Supply/demand adjustment
-      const supplyDemandRatio = networkState.totalGeneration / networkState.totalDemand;
-      if (supplyDemandRatio < 1) {
-        price += (1 - supplyDemandRatio) * 0.05; // Scarcity premium
-      } else {
-        price -= Math.min((supplyDemandRatio - 1) * 0.03, 0.04); // Surplus discount
-      }
+      // Real-time supply/demand elasticity
+      const supplyDemandRatio = networkState.totalGeneration / Math.max(networkState.totalDemand, 0.1);
+      const elasticity = this.calculateElasticity(supplyDemandRatio);
+      price *= elasticity;
       
-      prices.set(pair.supplierId, Math.max(price, 0.08)); // Minimum price floor
+      // Carbon pricing incentive
+      const carbonDiscount = 0.02; // $0.02/kWh for renewable energy
+      price -= carbonDiscount;
+      
+      // Market clearing price with reasonable bounds
+      const finalPrice = Math.max(0.06, Math.min(0.35, price));
+      prices.set(pair.supplierId, Math.round(finalPrice * 1000) / 1000); // Round to 3 decimals
     });
     
     return prices;
+  }
+
+  private getTimeOfUsePrice(hour: number): number {
+    // Real utility Time-of-Use rates
+    if (hour >= 16 && hour <= 21) return 0.28; // Peak hours (4-9 PM)
+    if (hour >= 10 && hour <= 15) return 0.15; // Mid-peak (10 AM-3 PM)
+    return 0.09; // Off-peak (all other hours)
+  }
+
+  private getGridCongestion(networkState: NetworkState): number {
+    const utilizationRatio = networkState.totalDemand / Math.max(networkState.totalGeneration, 0.1);
+    
+    if (utilizationRatio > 0.95) return 1.4; // High congestion
+    if (utilizationRatio > 0.85) return 1.2; // Moderate congestion
+    if (utilizationRatio < 0.6) return 0.9;  // Low utilization discount
+    return 1.0; // Normal conditions
+  }
+
+  private calculateElasticity(supplyDemandRatio: number): number {
+    // Price elasticity based on supply/demand balance
+    if (supplyDemandRatio < 0.8) return 1.5;   // Severe shortage
+    if (supplyDemandRatio < 0.95) return 1.25; // Moderate shortage
+    if (supplyDemandRatio > 1.2) return 0.75;  // Significant surplus
+    if (supplyDemandRatio > 1.05) return 0.9;  // Moderate surplus
+    return 1.0; // Balanced market
   }
 }
 
@@ -331,7 +451,7 @@ export interface TradingPair {
   demanderId: number;
   energyAmount: number;
   distance: number;
-  priority: 'high' | 'normal';
+  priority: 'high' | 'normal' | 'emergency';
 }
 
 export interface NetworkState {
