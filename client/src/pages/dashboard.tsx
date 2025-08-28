@@ -393,7 +393,7 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="w-[95vw] max-w-md mx-auto my-8 max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] max-w-md mx-auto my-8 max-h-[90vh] overflow-y-auto z-50">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
               <Plus className="h-5 w-5" />
