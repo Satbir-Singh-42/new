@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
@@ -192,7 +192,7 @@ export default function Dashboard() {
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Energy Trading Marketplace</h2>
               <Button>
-                <span className="mr-2">⚡</span>
+                <Zap className="mr-2 h-4 w-4" />
                 Create Trade Offer
               </Button>
             </div>
@@ -222,21 +222,21 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">🏠</span>
+                    <HomeIcon className="h-8 w-8 text-green-600" />
                   </div>
                   <h4 className="font-semibold mb-2">Surplus Generation</h4>
                   <p className="text-sm text-gray-600">When your solar panels produce more energy than you consume, create a sell offer.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">🔄</span>
+                    <ArrowRightLeft className="h-8 w-8 text-blue-600" />
                   </div>
                   <h4 className="font-semibold mb-2">Smart Matching</h4>
                   <p className="text-sm text-gray-600">Our AI automatically matches energy offers with nearby demand for optimal distribution.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-2xl">⚡</span>
+                    <Zap className="h-8 w-8 text-purple-600" />
                   </div>
                   <h4 className="font-semibold mb-2">Instant Transfer</h4>
                   <p className="text-sm text-gray-600">Energy is transferred instantly through the smart grid with automatic billing.</p>

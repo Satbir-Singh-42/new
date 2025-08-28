@@ -545,7 +545,7 @@ export function SimulationDashboard() {
                         </span>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-semibold">{pair.energyAmount.toFixed(1)} kWh</span>
-                          <Badge variant="outline" size="sm">{pair.priority}</Badge>
+                          <Badge variant="outline">{pair.priority}</Badge>
                         </div>
                       </div>
                     ))}
