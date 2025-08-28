@@ -132,80 +132,68 @@ export default function SignupPage() {
         </div>
       )}
       
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-3 sm:p-4 md:p-6" style={{ paddingTop: '5rem' }}>
-      <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-center">
-
-
-        {/* Left side - Hero Section */}
-        <div className="hidden md:flex flex-col justify-center space-y-6 p-6 lg:p-8 order-1">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Join SolarSense AI
-            </h1>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-8" style={{ paddingTop: '5rem' }}>
+        <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 md:px-6 space-y-8">
+          
+          {/* Hero Section - Top */}
+          <div className="text-center space-y-6">
             <div className="space-y-4">
-              <p className="text-xl text-gray-800 font-medium leading-relaxed">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                Join SolarSense AI
+              </h1>
+              <p className="text-xl sm:text-2xl text-gray-800 font-medium leading-relaxed">
                 <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent font-semibold">
                   Energy Trading & Simulation Platform
                 </span>
               </p>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
                 Join the decentralized energy marketplace. Trade surplus solar energy with neighbors and simulate grid scenarios.
               </p>
-              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
-                <p className="text-sm text-blue-800 font-medium">
+              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-blue-800 font-medium">
                   🔑 Demo Access: Use <strong>demo@solarsense.com</strong> / <strong>demo123</strong> to explore features instantly
                 </p>
               </div>
             </div>
-          </div>
-
-          <div className="space-y-3 sm:space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-green-100 rounded-full mt-1">
-                <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-              </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Real Energy Trading</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Trade actual surplus solar energy with verified households in your area</p>
-              </div>
-            </div>
             
-            <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+            {/* Features Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto mt-8">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <CloudSun className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-800">Real Energy Trading</h3>
+                <p className="text-xs text-gray-600">Trade surplus solar energy with verified households</p>
               </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Grid Simulation</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Test energy scenarios and optimize battery usage with AI-powered simulations</p>
+              
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <UserPlus className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-800">Grid Simulation</h3>
+                <p className="text-xs text-gray-600">Test energy scenarios with AI-powered simulations</p>
               </div>
-            </div>
-            
-            <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full mt-1">
-                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+              
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="p-3 bg-purple-100 rounded-full">
+                  <Mail className="h-6 w-6 text-purple-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-800">AI Energy Advisor</h3>
+                <p className="text-xs text-gray-600">Get personalized optimization recommendations</p>
               </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">AI Energy Advisor</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Get personalized recommendations for optimal energy usage and trading strategies</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Secure Data Storage</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Your project data is securely stored and accessible across all devices</p>
+              
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <Lock className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="text-sm font-semibold text-gray-800">Secure Data Storage</h3>
+                <p className="text-xs text-gray-600">Data securely stored and accessible across devices</p>
               </div>
             </div>
           </div>
           
-
-        </div>
-
-        {/* Right side - Signup Form */}
-        <div className="flex justify-center md:justify-start order-3 md:order-2">
+          {/* Signup Form - Center */}
+          <div className="flex justify-center">
           <Card className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
             <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
               <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
@@ -221,7 +209,7 @@ export default function SignupPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-sm font-medium text-gray-700">
                     Username
@@ -337,7 +325,7 @@ export default function SignupPage() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="state" className="text-sm font-medium text-gray-700">
                         State <span className="text-red-500">*</span>
@@ -519,7 +507,7 @@ export default function SignupPage() {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="solarCapacity" className="text-sm font-medium text-gray-700">
                         Solar Capacity (Watts) <span className="text-red-500">*</span>
@@ -591,7 +579,7 @@ export default function SignupPage() {
                   )}
                 </Button>
 
-                <div className="text-center pt-2">
+                <div className="text-center pt-4">
                   <p className="text-xs sm:text-sm text-gray-600">
                     Already have an account?{" "}
                     <Link href="/login">
@@ -604,8 +592,8 @@ export default function SignupPage() {
               </form>
             </CardContent>
           </Card>
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
