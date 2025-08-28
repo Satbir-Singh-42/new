@@ -85,24 +85,24 @@ export default function About() {
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 sm:p-6 border border-blue-200 hover:shadow-lg transition-shadow duration-300">
                   <div className="flex items-center mb-3">
                     <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                    <h4 className="font-semibold text-gray-900">Installation Planning</h4>
+                    <h4 className="font-semibold text-gray-900">Energy Optimization</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Dynamic AI analysis that adapts to each specific roof, using intelligent boundary detection 
-                    to ensure accurate panel placement and realistic capacity calculations.
+                    AI-powered energy flow optimization that maximizes household efficiency, battery storage management, 
+                    and smart trading recommendations for decentralized energy distribution.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-blue-700">
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-1"></div>
-                      <span>Roof Analysis</span>
+                      <span>Energy Flow</span>
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-blue-500 rounded-full mr-1"></div>
-                      <span>Panel Placement</span>
+                      <span>Battery Management</span>
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-blue-600 rounded-full mr-1"></div>
-                      <span>Power Output</span>
+                      <span>Smart Trading</span>
                     </div>
                   </div>
                 </div>
@@ -118,24 +118,24 @@ export default function About() {
                 <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 sm:p-6 border border-green-200 hover:shadow-lg transition-shadow duration-300">
                   <div className="flex items-center mb-3">
                     <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                    <h4 className="font-semibold text-gray-900">Fault Detection</h4>
+                    <h4 className="font-semibold text-gray-900">Decentralized Trading</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Advanced computer vision to identify micro-cracks, hot spots, dirt accumulation, 
-                    and other performance-affecting issues in solar panels.
+                    Peer-to-peer energy marketplace enabling households to trade surplus solar power, 
+                    creating resilient and equitable energy networks across communities.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-green-700">
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
-                      <span>Crack Detection</span>
+                      <span>P2P Trading</span>
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-                      <span>Hot Spots</span>
+                      <span>Fair Pricing</span>
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-green-600 rounded-full mr-1"></div>
-                      <span>Performance</span>
+                      <span>Grid Resilience</span>
                     </div>
                   </div>
                 </div>
@@ -154,13 +154,13 @@ export default function About() {
                     <h4 className="font-semibold text-gray-900">AI Chat Assistant</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Interactive AI-powered chat assistant providing expert guidance on solar panel installation, 
-                    maintenance, performance optimization, and troubleshooting.
+                    Interactive AI-powered chat assistant providing expert guidance on energy trading, 
+                    battery optimization, demand forecasting, and sustainable energy management.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-purple-700">
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-1"></div>
-                      <span>Expert Advice</span>
+                      <span>Trading Strategy</span>
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-purple-500 rounded-full mr-1"></div>
@@ -168,7 +168,7 @@ export default function About() {
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-purple-600 rounded-full mr-1"></div>
-                      <span>Real-time Help</span>
+                      <span>Energy Insights</span>
                     </div>
                   </div>
                 </div>

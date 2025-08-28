@@ -13,8 +13,8 @@ export default function LoadingPage() {
           </div>
         </div>
         
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">SolarScope AI</h1>
-        <p className="text-base sm:text-lg lg:text-xl opacity-90 mb-6 sm:mb-8 px-2">Loading AI-Powered Solar Analysis Platform</p>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">SolarSense AI</h1>
+        <p className="text-base sm:text-lg lg:text-xl opacity-90 mb-6 sm:mb-8 px-2">Loading AI-Powered Energy Trading Platform</p>
         
         <div className="flex justify-center space-x-2">
           <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-bounce"></div>

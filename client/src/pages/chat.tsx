@@ -189,7 +189,7 @@ export default function Chat() {
       // User logged out - reset to guest mode
       setMessages([{
         id: 1,
-        message: "Hello! I'm your SolarScope AI assistant. I'm here to help you with solar panel installation planning, fault detection, maintenance guidance, and performance optimization. How can I assist you today?",
+        message: "Hello! I'm your SolarSense AI assistant. I'm here to help you with energy trading, household energy optimization, battery management, and decentralized energy distribution. How can I assist you today?",
         sender: 'ai',
         timestamp: new Date(),
         category: 'greeting'
@@ -673,7 +673,7 @@ export default function Chat() {
     // Reset state to initial values with greeting message
     setMessages([{
       id: 1,
-      message: "Hello! I'm your SolarScope AI assistant. I'm here to help you with solar panel installation planning, fault detection, maintenance guidance, and performance optimization. How can I assist you today?",
+      message: "Hello! I'm your SolarSense AI assistant. I'm here to help you with energy trading, household energy optimization, battery management, and decentralized energy distribution. How can I assist you today?",
       sender: 'ai',
       timestamp: new Date(),
       category: 'greeting'
