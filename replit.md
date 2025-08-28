@@ -1,6 +1,11 @@
 # Project Overview
 
-SolarSense: Intelligent Energy Solutions for a Sustainable Future - A decentralized energy trading platform.
+**SolarSense: Intelligent Energy Solutions for a Sustainable Future**
+*Decentralized. Resilient. Equitable.*
+
+**Problem**: Energy grids are struggling with peak loads, unpredictable demand, and unequal access to power. Traditional systems fail during outages and extreme weather.
+
+**Solution**: SolarSense is an AI-powered platform that connects households with solar panels into a decentralized energy trading network. It intelligently manages energy flow, prevents grid overload, and ensures fair distribution—keeping the lights on even in challenging conditions.
 
 ## Architecture
 - **Frontend**: React with Vite, Tailwind CSS, shadcn/ui components
@@ -10,12 +15,12 @@ SolarSense: Intelligent Energy Solutions for a Sustainable Future - A decentrali
 - **Storage**: Hybrid storage interface supporting both database and memory storage
 
 ## Key Features
-- User authentication and energy household management
-- AI-powered energy flow optimization (Google Generative AI)
-- Decentralized energy trading network
-- Smart grid management and load balancing
-- Weather-adaptive energy predictions
-- Real-time energy monitoring and trading
+- **Smart Energy Flow**: ML models optimize solar, battery, and demand balance
+- **Weather Adaptive**: Adjusts dynamically to cloudy/rainy conditions  
+- **Decentralized Trading**: Households can sell surplus power
+- **Resilient & Fair**: Equitable access to power during peak demand
+- **AI-Powered Optimization**: Google Generative AI for energy advice and optimization
+- **Real-time Monitoring**: Live tracking of energy generation, consumption, and battery levels
 
 ## Current Status
 - ✅ Dependencies installed and verified
