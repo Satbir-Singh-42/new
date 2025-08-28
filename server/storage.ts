@@ -30,6 +30,7 @@ export interface IStorage {
   getEnergyTrades(limit?: number): Promise<EnergyTrade[]>;
   getEnergyTradesByHousehold(householdId: number, limit?: number): Promise<EnergyTrade[]>;
   updateEnergyTradeStatus(id: number, status: string): Promise<EnergyTrade | undefined>;
+  listHouseholds(): Promise<Household[]>;
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   getChatMessages(limit?: number): Promise<ChatMessage[]>;
   getChatMessagesByUser(userId: number, limit?: number): Promise<ChatMessage[]>;
@@ -148,6 +149,10 @@ export class MemStorage implements IStorage {
     const updated = { ...household, ...updates };
     this.households.set(id, updated);
     return updated;
+  }
+
+  async listHouseholds(): Promise<Household[]> {
+    return Array.from(this.households.values());
   }
 
   async createEnergyReading(insertReading: InsertEnergyReading): Promise<EnergyReading> {
@@ -438,6 +443,11 @@ export class DatabaseStorage implements IStorage {
     return household || undefined;
   }
 
+  async listHouseholds(): Promise<Household[]> {
+    const db = await this.getDb();
+    return await db.select().from(households).orderBy(desc(households.createdAt));
+  }
+
   async createEnergyReading(insertReading: InsertEnergyReading): Promise<EnergyReading> {
     const db = await this.getDb();
     const [reading] = await db.insert(energyReadings).values(insertReading).returning();
@@ -703,6 +713,18 @@ class HybridStorage implements IStorage {
       }
     }
     return await this.memoryStorage.updateHousehold(id, updates);
+  }
+
+  async listHouseholds(): Promise<Household[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.listHouseholds();
+      } catch (error) {
+        console.warn('Database listHouseholds failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.listHouseholds();
   }
 
   async createEnergyReading(reading: InsertEnergyReading): Promise<EnergyReading> {

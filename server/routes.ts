@@ -682,6 +682,217 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ===========================================
+  // ML-POWERED ENERGY TRADING SIMULATION ROUTES
+  // ===========================================
+
+  // Initialize simulation engine lazily
+  let simulationEngine: any = null;
+  let mlEngine: any = null;
+
+  const initEngines = async () => {
+    if (!simulationEngine) {
+      const { SimulationEngine } = await import('./simulation-engine');
+      const { MLEnergyEngine } = await import('./ml-engine');
+      simulationEngine = new SimulationEngine(storage);
+      mlEngine = new MLEnergyEngine();
+    }
+  };
+
+  // Start live simulation
+  app.post('/api/simulation/start', async (_req, res) => {
+    try {
+      await initEngines();
+      await simulationEngine.startSimulation();
+      const status = simulationEngine.getStatus();
+      res.json({
+        success: true,
+        message: 'Live simulation started - updates every 10 seconds',
+        status
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to start simulation',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Stop simulation
+  app.post('/api/simulation/stop', async (_req, res) => {
+    try {
+      await initEngines();
+      simulationEngine.stopSimulation();
+      res.json({
+        success: true,
+        message: 'Simulation stopped'
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to stop simulation',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Get simulation status
+  app.get('/api/simulation/status', async (_req, res) => {
+    try {
+      await initEngines();
+      const status = simulationEngine.getStatus();
+      res.json(status);
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to get simulation status',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Trigger weather change (live demonstration)
+  app.post('/api/simulation/weather', async (req, res) => {
+    try {
+      await initEngines();
+      const { condition } = req.body;
+      if (!condition) {
+        return res.status(400).json({ error: 'Weather condition required' });
+      }
+
+      const newWeather = await simulationEngine.triggerWeatherChange(condition);
+      res.json({
+        success: true,
+        message: `Weather changed to ${condition}`,
+        weather: newWeather,
+        impact: `Solar generation adjusted based on ${condition} conditions`
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to change weather',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Trigger power outage simulation
+  app.post('/api/simulation/outage', async (req, res) => {
+    try {
+      await initEngines();
+      const { householdIds = [] } = req.body;
+      const outageResponse = await simulationEngine.triggerOutage(householdIds);
+      
+      res.json({
+        success: true,
+        message: `Outage simulation: ${householdIds.length || 'random'} households affected`,
+        outageResponse,
+        resilienceScore: `Community resilience: ${(outageResponse.communityResilience * 100).toFixed(1)}%`
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to trigger outage',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Restore power after outage
+  app.post('/api/simulation/restore', async (req, res) => {
+    try {
+      await initEngines();
+      const { householdIds = [] } = req.body;
+      if (householdIds.length === 0) {
+        return res.status(400).json({ error: 'Household IDs required for power restoration' });
+      }
+
+      await simulationEngine.restorePower(householdIds);
+      res.json({
+        success: true,
+        message: `Power restored to ${householdIds.length} households`
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to restore power',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Get ML-powered energy optimization
+  app.get('/api/ml/optimization', async (_req, res) => {
+    try {
+      await initEngines();
+      const households = await storage.listHouseholds();
+      const currentWeather = {
+        condition: 'sunny' as const,
+        temperature: 25,
+        cloudCover: 20,
+        windSpeed: 10
+      };
+
+      const optimization = mlEngine.optimizeEnergyDistribution(households, currentWeather);
+      
+      // Convert Map to object for JSON response
+      const pricesObj = Object.fromEntries(optimization.prices);
+      
+      res.json({
+        success: true,
+        optimization: {
+          tradingPairs: optimization.tradingPairs,
+          prices: pricesObj,
+          gridStability: (optimization.gridStability * 100).toFixed(1) + '%',
+          recommendations: optimization.recommendations,
+          batteryStrategy: optimization.batteryStrategy
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to get ML optimization',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Real-time network analytics
+  app.get('/api/analytics/network', async (_req, res) => {
+    try {
+      const households = await storage.listHouseholds();
+      const recentTrades = await storage.getEnergyTrades(50);
+      const totalGeneration = households.reduce((sum, h) => sum + (h.solarCapacity || 0), 0);
+      const totalStorage = households.reduce((sum, h) => sum + (h.batteryCapacity || 0), 0);
+      const currentStorage = households.reduce((sum, h) => sum + (h.batteryLevel || 0), 0);
+      
+      const analytics = {
+        network: {
+          totalHouseholds: households.length,
+          activeHouseholds: households.filter(h => h.isOnline !== false).length,
+          totalGenerationCapacity: `${totalGeneration.toFixed(1)} kW`,
+          totalStorageCapacity: `${totalStorage.toFixed(1)} kWh`,
+          currentStorageLevel: `${currentStorage.toFixed(1)} kWh`,
+          storageUtilization: `${totalStorage > 0 ? ((currentStorage / totalStorage) * 100).toFixed(1) : 0}%`
+        },
+        trading: {
+          totalTrades: recentTrades.length,
+          totalEnergyTraded: `${recentTrades.reduce((sum, t) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
+          averagePrice: `$${recentTrades.length > 0 ? 
+            (recentTrades.reduce((sum, t) => sum + t.pricePerKwh, 0) / recentTrades.length).toFixed(3) : 0}/kWh`,
+          carbonSaved: `${recentTrades.reduce((sum, t) => sum + (t.carbonSaved || 0), 0).toFixed(1)} kg CO₂`
+        },
+        efficiency: {
+          averageDistance: `${recentTrades.length > 0 ?
+            (recentTrades.reduce((sum, t) => sum + (t.distance || 0), 0) / recentTrades.length).toFixed(1) : 0} km`,
+          networkEfficiency: `${recentTrades.length > 0 ?
+            (recentTrades.reduce((sum, t) => sum + (t.efficiency || 0.9), 0) / recentTrades.length * 100).toFixed(1) : 90}%`
+        }
+      };
+      
+      res.json(analytics);
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to get network analytics',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
