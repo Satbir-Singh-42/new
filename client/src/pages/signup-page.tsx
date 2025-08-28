@@ -135,8 +135,8 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-8" style={{ paddingTop: '5rem' }}>
         <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 md:px-6 space-y-8">
           
-          {/* Hero Section - Top */}
-          <div className="text-center space-y-6">
+          {/* Hero Section - Top (Desktop Only) */}
+          <div className="hidden md:block text-center space-y-6">
             <div className="space-y-4">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Join SolarSense AI
@@ -316,7 +316,7 @@ export default function SignupPage() {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="+1-555-0123 (for trade verification)"
+                      placeholder="+91-98765-43210 (for trade verification)"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("phone")}
                     />
@@ -339,56 +339,42 @@ export default function SignupPage() {
                               <SelectValue placeholder="Select your state" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Alabama">Alabama</SelectItem>
-                              <SelectItem value="Alaska">Alaska</SelectItem>
-                              <SelectItem value="Arizona">Arizona</SelectItem>
-                              <SelectItem value="Arkansas">Arkansas</SelectItem>
-                              <SelectItem value="California">California</SelectItem>
-                              <SelectItem value="Colorado">Colorado</SelectItem>
-                              <SelectItem value="Connecticut">Connecticut</SelectItem>
-                              <SelectItem value="Delaware">Delaware</SelectItem>
-                              <SelectItem value="Florida">Florida</SelectItem>
-                              <SelectItem value="Georgia">Georgia</SelectItem>
-                              <SelectItem value="Hawaii">Hawaii</SelectItem>
-                              <SelectItem value="Idaho">Idaho</SelectItem>
-                              <SelectItem value="Illinois">Illinois</SelectItem>
-                              <SelectItem value="Indiana">Indiana</SelectItem>
-                              <SelectItem value="Iowa">Iowa</SelectItem>
-                              <SelectItem value="Kansas">Kansas</SelectItem>
-                              <SelectItem value="Kentucky">Kentucky</SelectItem>
-                              <SelectItem value="Louisiana">Louisiana</SelectItem>
-                              <SelectItem value="Maine">Maine</SelectItem>
-                              <SelectItem value="Maryland">Maryland</SelectItem>
-                              <SelectItem value="Massachusetts">Massachusetts</SelectItem>
-                              <SelectItem value="Michigan">Michigan</SelectItem>
-                              <SelectItem value="Minnesota">Minnesota</SelectItem>
-                              <SelectItem value="Mississippi">Mississippi</SelectItem>
-                              <SelectItem value="Missouri">Missouri</SelectItem>
-                              <SelectItem value="Montana">Montana</SelectItem>
-                              <SelectItem value="Nebraska">Nebraska</SelectItem>
-                              <SelectItem value="Nevada">Nevada</SelectItem>
-                              <SelectItem value="New Hampshire">New Hampshire</SelectItem>
-                              <SelectItem value="New Jersey">New Jersey</SelectItem>
-                              <SelectItem value="New Mexico">New Mexico</SelectItem>
-                              <SelectItem value="New York">New York</SelectItem>
-                              <SelectItem value="North Carolina">North Carolina</SelectItem>
-                              <SelectItem value="North Dakota">North Dakota</SelectItem>
-                              <SelectItem value="Ohio">Ohio</SelectItem>
-                              <SelectItem value="Oklahoma">Oklahoma</SelectItem>
-                              <SelectItem value="Oregon">Oregon</SelectItem>
-                              <SelectItem value="Pennsylvania">Pennsylvania</SelectItem>
-                              <SelectItem value="Rhode Island">Rhode Island</SelectItem>
-                              <SelectItem value="South Carolina">South Carolina</SelectItem>
-                              <SelectItem value="South Dakota">South Dakota</SelectItem>
-                              <SelectItem value="Tennessee">Tennessee</SelectItem>
-                              <SelectItem value="Texas">Texas</SelectItem>
-                              <SelectItem value="Utah">Utah</SelectItem>
-                              <SelectItem value="Vermont">Vermont</SelectItem>
-                              <SelectItem value="Virginia">Virginia</SelectItem>
-                              <SelectItem value="Washington">Washington</SelectItem>
-                              <SelectItem value="West Virginia">West Virginia</SelectItem>
-                              <SelectItem value="Wisconsin">Wisconsin</SelectItem>
-                              <SelectItem value="Wyoming">Wyoming</SelectItem>
+                              <SelectItem value="Andhra Pradesh">Andhra Pradesh</SelectItem>
+                              <SelectItem value="Arunachal Pradesh">Arunachal Pradesh</SelectItem>
+                              <SelectItem value="Assam">Assam</SelectItem>
+                              <SelectItem value="Bihar">Bihar</SelectItem>
+                              <SelectItem value="Chhattisgarh">Chhattisgarh</SelectItem>
+                              <SelectItem value="Goa">Goa</SelectItem>
+                              <SelectItem value="Gujarat">Gujarat</SelectItem>
+                              <SelectItem value="Haryana">Haryana</SelectItem>
+                              <SelectItem value="Himachal Pradesh">Himachal Pradesh</SelectItem>
+                              <SelectItem value="Jharkhand">Jharkhand</SelectItem>
+                              <SelectItem value="Karnataka">Karnataka</SelectItem>
+                              <SelectItem value="Kerala">Kerala</SelectItem>
+                              <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
+                              <SelectItem value="Maharashtra">Maharashtra</SelectItem>
+                              <SelectItem value="Manipur">Manipur</SelectItem>
+                              <SelectItem value="Meghalaya">Meghalaya</SelectItem>
+                              <SelectItem value="Mizoram">Mizoram</SelectItem>
+                              <SelectItem value="Nagaland">Nagaland</SelectItem>
+                              <SelectItem value="Odisha">Odisha</SelectItem>
+                              <SelectItem value="Punjab">Punjab</SelectItem>
+                              <SelectItem value="Rajasthan">Rajasthan</SelectItem>
+                              <SelectItem value="Sikkim">Sikkim</SelectItem>
+                              <SelectItem value="Tamil Nadu">Tamil Nadu</SelectItem>
+                              <SelectItem value="Telangana">Telangana</SelectItem>
+                              <SelectItem value="Tripura">Tripura</SelectItem>
+                              <SelectItem value="Uttar Pradesh">Uttar Pradesh</SelectItem>
+                              <SelectItem value="Uttarakhand">Uttarakhand</SelectItem>
+                              <SelectItem value="West Bengal">West Bengal</SelectItem>
+                              <SelectItem value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</SelectItem>
+                              <SelectItem value="Chandigarh">Chandigarh</SelectItem>
+                              <SelectItem value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</SelectItem>
+                              <SelectItem value="Delhi">Delhi</SelectItem>
+                              <SelectItem value="Jammu and Kashmir">Jammu and Kashmir</SelectItem>
+                              <SelectItem value="Ladakh">Ladakh</SelectItem>
+                              <SelectItem value="Lakshadweep">Lakshadweep</SelectItem>
+                              <SelectItem value="Puducherry">Puducherry</SelectItem>
                             </SelectContent>
                           </Select>
                         )}
@@ -411,57 +397,54 @@ export default function SignupPage() {
                               <SelectValue placeholder="Select your district" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Los Angeles">Los Angeles</SelectItem>
-                              <SelectItem value="New York City">New York City</SelectItem>
-                              <SelectItem value="Chicago">Chicago</SelectItem>
-                              <SelectItem value="Houston">Houston</SelectItem>
-                              <SelectItem value="Phoenix">Phoenix</SelectItem>
-                              <SelectItem value="Philadelphia">Philadelphia</SelectItem>
-                              <SelectItem value="San Antonio">San Antonio</SelectItem>
-                              <SelectItem value="San Diego">San Diego</SelectItem>
-                              <SelectItem value="Dallas">Dallas</SelectItem>
-                              <SelectItem value="San Jose">San Jose</SelectItem>
-                              <SelectItem value="Austin">Austin</SelectItem>
-                              <SelectItem value="Jacksonville">Jacksonville</SelectItem>
-                              <SelectItem value="Fort Worth">Fort Worth</SelectItem>
-                              <SelectItem value="Columbus">Columbus</SelectItem>
-                              <SelectItem value="Charlotte">Charlotte</SelectItem>
-                              <SelectItem value="San Francisco">San Francisco</SelectItem>
-                              <SelectItem value="Indianapolis">Indianapolis</SelectItem>
-                              <SelectItem value="Seattle">Seattle</SelectItem>
-                              <SelectItem value="Denver">Denver</SelectItem>
-                              <SelectItem value="Washington DC">Washington DC</SelectItem>
-                              <SelectItem value="Boston">Boston</SelectItem>
-                              <SelectItem value="El Paso">El Paso</SelectItem>
-                              <SelectItem value="Nashville">Nashville</SelectItem>
-                              <SelectItem value="Detroit">Detroit</SelectItem>
-                              <SelectItem value="Oklahoma City">Oklahoma City</SelectItem>
-                              <SelectItem value="Portland">Portland</SelectItem>
-                              <SelectItem value="Las Vegas">Las Vegas</SelectItem>
-                              <SelectItem value="Memphis">Memphis</SelectItem>
-                              <SelectItem value="Louisville">Louisville</SelectItem>
-                              <SelectItem value="Baltimore">Baltimore</SelectItem>
-                              <SelectItem value="Milwaukee">Milwaukee</SelectItem>
-                              <SelectItem value="Albuquerque">Albuquerque</SelectItem>
-                              <SelectItem value="Tucson">Tucson</SelectItem>
-                              <SelectItem value="Fresno">Fresno</SelectItem>
-                              <SelectItem value="Sacramento">Sacramento</SelectItem>
-                              <SelectItem value="Kansas City">Kansas City</SelectItem>
-                              <SelectItem value="Mesa">Mesa</SelectItem>
-                              <SelectItem value="Virginia Beach">Virginia Beach</SelectItem>
-                              <SelectItem value="Atlanta">Atlanta</SelectItem>
-                              <SelectItem value="Colorado Springs">Colorado Springs</SelectItem>
-                              <SelectItem value="Omaha">Omaha</SelectItem>
-                              <SelectItem value="Raleigh">Raleigh</SelectItem>
-                              <SelectItem value="Miami">Miami</SelectItem>
-                              <SelectItem value="Long Beach">Long Beach</SelectItem>
-                              <SelectItem value="Oakland">Oakland</SelectItem>
-                              <SelectItem value="Minneapolis">Minneapolis</SelectItem>
-                              <SelectItem value="Tampa">Tampa</SelectItem>
-                              <SelectItem value="Cleveland">Cleveland</SelectItem>
-                              <SelectItem value="Wichita">Wichita</SelectItem>
-                              <SelectItem value="Arlington">Arlington</SelectItem>
-                              <SelectItem value="New Orleans">New Orleans</SelectItem>
+                              <SelectItem value="Mumbai">Mumbai</SelectItem>
+                              <SelectItem value="Delhi">Delhi</SelectItem>
+                              <SelectItem value="Bangalore">Bangalore</SelectItem>
+                              <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                              <SelectItem value="Ahmedabad">Ahmedabad</SelectItem>
+                              <SelectItem value="Chennai">Chennai</SelectItem>
+                              <SelectItem value="Kolkata">Kolkata</SelectItem>
+                              <SelectItem value="Pune">Pune</SelectItem>
+                              <SelectItem value="Jaipur">Jaipur</SelectItem>
+                              <SelectItem value="Surat">Surat</SelectItem>
+                              <SelectItem value="Lucknow">Lucknow</SelectItem>
+                              <SelectItem value="Kanpur">Kanpur</SelectItem>
+                              <SelectItem value="Nagpur">Nagpur</SelectItem>
+                              <SelectItem value="Indore">Indore</SelectItem>
+                              <SelectItem value="Thane">Thane</SelectItem>
+                              <SelectItem value="Bhopal">Bhopal</SelectItem>
+                              <SelectItem value="Visakhapatnam">Visakhapatnam</SelectItem>
+                              <SelectItem value="Pimpri-Chinchwad">Pimpri-Chinchwad</SelectItem>
+                              <SelectItem value="Patna">Patna</SelectItem>
+                              <SelectItem value="Vadodara">Vadodara</SelectItem>
+                              <SelectItem value="Ghaziabad">Ghaziabad</SelectItem>
+                              <SelectItem value="Ludhiana">Ludhiana</SelectItem>
+                              <SelectItem value="Agra">Agra</SelectItem>
+                              <SelectItem value="Nashik">Nashik</SelectItem>
+                              <SelectItem value="Faridabad">Faridabad</SelectItem>
+                              <SelectItem value="Meerut">Meerut</SelectItem>
+                              <SelectItem value="Rajkot">Rajkot</SelectItem>
+                              <SelectItem value="Kalyan-Dombivli">Kalyan-Dombivli</SelectItem>
+                              <SelectItem value="Vasai-Virar">Vasai-Virar</SelectItem>
+                              <SelectItem value="Varanasi">Varanasi</SelectItem>
+                              <SelectItem value="Srinagar">Srinagar</SelectItem>
+                              <SelectItem value="Aurangabad">Aurangabad</SelectItem>
+                              <SelectItem value="Dhanbad">Dhanbad</SelectItem>
+                              <SelectItem value="Amritsar">Amritsar</SelectItem>
+                              <SelectItem value="Navi Mumbai">Navi Mumbai</SelectItem>
+                              <SelectItem value="Allahabad">Allahabad</SelectItem>
+                              <SelectItem value="Ranchi">Ranchi</SelectItem>
+                              <SelectItem value="Howrah">Howrah</SelectItem>
+                              <SelectItem value="Coimbatore">Coimbatore</SelectItem>
+                              <SelectItem value="Jabalpur">Jabalpur</SelectItem>
+                              <SelectItem value="Gwalior">Gwalior</SelectItem>
+                              <SelectItem value="Vijayawada">Vijayawada</SelectItem>
+                              <SelectItem value="Jodhpur">Jodhpur</SelectItem>
+                              <SelectItem value="Madurai">Madurai</SelectItem>
+                              <SelectItem value="Raipur">Raipur</SelectItem>
+                              <SelectItem value="Kota">Kota</SelectItem>
+                              <SelectItem value="Guwahati">Guwahati</SelectItem>
+                              <SelectItem value="Chandigarh">Chandigarh</SelectItem>
                             </SelectContent>
                           </Select>
                         )}
@@ -482,7 +465,7 @@ export default function SignupPage() {
                     <Input
                       id="householdName"
                       type="text"
-                      placeholder="e.g., Smith Family Solar Home"
+                      placeholder="e.g., Sharma Family Solar Home"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("householdName")}
                     />
@@ -498,7 +481,7 @@ export default function SignupPage() {
                     <Input
                       id="address"
                       type="text"
-                      placeholder="123 Solar Street, City, State (for energy grid mapping)"
+                      placeholder="123 Solar Nagar, City, State (for energy grid mapping)"
                       className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                       {...register("address")}
                     />
