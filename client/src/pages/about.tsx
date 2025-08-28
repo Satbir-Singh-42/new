@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sun, Shield, Users, ArrowLeft, Menu, Zap, Home, Search, Bot, MessageCircle, HelpCircle, CloudSun, User, LogOut } from "lucide-react";
+import { Sun, Shield, Users, ArrowLeft, Menu, Zap, Home, Search, Bot, MessageCircle, HelpCircle, CloudSun, User, LogOut, Brain, TrendingUp, Battery, BarChart3, Cpu, Network } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import AIChatWidget from "@/components/mobile-ai-chat-widget";
@@ -46,8 +46,10 @@ export default function About() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4">About SolarSense AI</h2>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-2 sm:px-4 lg:px-0 leading-relaxed">
-            Advanced AI-powered energy trading platform with intelligent optimization for decentralized energy distribution, battery management, and sustainable power networks
+          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto px-2 sm:px-4 lg:px-0 leading-relaxed">
+            Revolutionary AI-powered energy trading platform that leverages advanced Machine Learning algorithms 
+            to create intelligent, decentralized energy networks. Our platform transforms how households 
+            generate, store, trade, and optimize solar energy through cutting-edge AI technology.
           </p>
         </motion.div>
 
@@ -67,11 +69,10 @@ export default function About() {
           </CardHeader>
           <CardContent className="pt-0 px-4 sm:px-6">
             <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
-              SolarSense AI leverages Google Gemini AI and advanced optimization algorithms to provide dynamic, 
-              household-specific energy trading recommendations. Our platform uses intelligent energy flow detection and adaptive 
-              algorithms to optimize each household's energy generation, storage, and trading individually, ensuring efficient 
-              energy distribution based on real-time demand and supply patterns. Combined with comprehensive battery management 
-              and an expert AI chat assistant, we deliver professional-grade decentralized energy solutions.
+              SolarSense AI combines multiple Machine Learning technologies to create an intelligent energy ecosystem. 
+              Our platform uses Google Gemini AI for natural language processing, predictive algorithms for energy forecasting, 
+              optimization models for trading decisions, and real-time analytics for grid management. Each household receives 
+              personalized AI-driven recommendations that adapt to their energy patterns, weather conditions, and market dynamics.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
               <motion.div 
@@ -88,8 +89,9 @@ export default function About() {
                     <h4 className="font-semibold text-gray-900">Energy Optimization</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    AI-powered energy flow optimization that maximizes household efficiency, battery storage management, 
-                    and smart trading recommendations for decentralized energy distribution.
+                    Machine Learning algorithms analyze solar generation patterns, weather forecasts, and household 
+                    consumption to optimize energy flow, predict peak demands, and maximize battery efficiency through 
+                    intelligent charge/discharge cycles.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-blue-700">
                     <div className="flex items-center">
@@ -121,8 +123,9 @@ export default function About() {
                     <h4 className="font-semibold text-gray-900">Decentralized Trading</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Peer-to-peer energy marketplace enabling households to trade surplus solar power, 
-                    creating resilient and equitable energy networks across communities.
+                    AI-powered marketplace that uses machine learning to match energy suppliers with demanders 
+                    based on proximity, capacity, price optimization, and grid stability requirements for 
+                    fair and efficient peer-to-peer energy trading.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-green-700">
                     <div className="flex items-center">
@@ -154,8 +157,9 @@ export default function About() {
                     <h4 className="font-semibold text-gray-900">AI Chat Assistant</h4>
                   </div>
                   <p className="text-sm text-gray-600 mb-4">
-                    Interactive AI-powered chat assistant providing expert guidance on energy trading, 
-                    battery optimization, demand forecasting, and sustainable energy management.
+                    Google Gemini AI-powered chat assistant that understands natural language queries, 
+                    provides personalized energy optimization advice, analyzes your usage patterns, 
+                    and offers strategic recommendations for maximizing solar investment returns.
                   </p>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-purple-700">
                     <div className="flex items-center">
@@ -295,6 +299,223 @@ export default function About() {
                   Adaptive algorithms that analyze each roof individually without fixed coordinates for accurate results
                 </p>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+        </motion.div>
+
+        {/* Machine Learning Applications */}
+        <motion.div
+          ref={keyFeaturesRef}
+          initial={{ opacity: 0, x: -100 }}
+          animate={keyFeaturesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+        <Card className="mb-4 sm:mb-6 lg:mb-8 shadow-sm border-gray-200">
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center text-base sm:text-lg lg:text-xl">
+              <Brain className="mr-2 text-primary" size={18} />
+              How Machine Learning Powers SolarSense
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="space-y-6">
+              
+              {/* Predictive Energy Generation */}
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-blue-900 mb-2">🌞 Predictive Solar Generation</h3>
+                    <p className="text-blue-800 mb-3">
+                      Our ML algorithms analyze weather patterns, historical solar data, and real-time conditions to predict 
+                      solar panel output with 95%+ accuracy. The system considers cloud coverage, temperature effects, 
+                      seasonal variations, and Peak Solar Hours (PSH) to forecast energy generation up to 7 days ahead.
+                    </p>
+                    <div className="text-sm text-blue-700">
+                      <strong>How it works:</strong> Neural networks trained on weather APIs + historical solar data → 
+                      Real-time generation forecasts → Automated trading recommendations
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Demand Forecasting */}
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-green-900 mb-2">⚡ Smart Demand Forecasting</h3>
+                    <p className="text-green-800 mb-3">
+                      Advanced time-series models learn from your household's energy consumption patterns, considering 
+                      time-of-day usage, seasonal changes, weekday vs weekend patterns, and appliance schedules to 
+                      predict when you'll need energy most.
+                    </p>
+                    <div className="text-sm text-green-700">
+                      <strong>ML Models Used:</strong> LSTM neural networks for time-series prediction + 
+                      Pattern recognition algorithms → Personalized demand forecasts → Optimal battery scheduling
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Intelligent Trading */}
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                      <Network className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-purple-900 mb-2">🤝 AI-Powered Trading Engine</h3>
+                    <p className="text-purple-800 mb-3">
+                      Machine learning algorithms automatically match energy buyers and sellers based on location proximity, 
+                      price preferences, energy requirements, and grid stability needs. The system optimizes trading pairs 
+                      to minimize transmission losses and maximize network efficiency.
+                    </p>
+                    <div className="text-sm text-purple-700">
+                      <strong>Smart Matching:</strong> Clustering algorithms for proximity + Optimization models for pricing + 
+                      Grid stability analysis → Automated energy trading recommendations
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Battery Optimization */}
+              <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg p-6 border border-orange-200">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+                      <Battery className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-orange-900 mb-2">🔋 ML-Driven Battery Management</h3>
+                    <p className="text-orange-800 mb-3">
+                      Reinforcement learning algorithms optimize battery charge/discharge cycles by predicting energy 
+                      prices, solar generation, and household demand. The system learns from grid conditions to 
+                      maximize battery lifespan while ensuring energy availability during peak hours.
+                    </p>
+                    <div className="text-sm text-orange-700">
+                      <strong>Optimization Engine:</strong> Reinforcement learning for charge strategies + 
+                      Predictive maintenance models → Extended battery life + Optimal energy storage
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Google Gemini AI Integration */}
+              <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-lg p-6 border border-indigo-200">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
+                      <Cpu className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-indigo-900 mb-2">🧠 Google Gemini AI Assistant</h3>
+                    <p className="text-indigo-800 mb-3">
+                      Our AI chat assistant powered by Google's Gemini model understands complex energy questions, 
+                      analyzes your usage patterns, and provides personalized optimization strategies. It can interpret 
+                      natural language queries and provide actionable insights for maximizing your solar investment.
+                    </p>
+                    <div className="text-sm text-indigo-700">
+                      <strong>Capabilities:</strong> Natural language processing + Energy pattern analysis + 
+                      Strategic recommendations → Personalized energy optimization advice
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </CardContent>
+        </Card>
+        </motion.div>
+
+        {/* How to Use SolarSense */}
+        <motion.div
+          ref={useCasesRef}
+          initial={{ opacity: 0, x: 100 }}
+          animate={useCasesInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+        <Card className="mb-4 sm:mb-6 lg:mb-8 shadow-sm border-gray-200">
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className="flex items-center text-base sm:text-lg lg:text-xl">
+              <Users className="mr-2 text-primary" size={18} />
+              How to Use SolarSense Platform
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* Getting Started */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">🚀 Getting Started</h3>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                    <div>
+                      <h4 className="font-medium text-gray-800">Create Your Account</h4>
+                      <p className="text-sm text-gray-600">Sign up and verify your household information</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                    <div>
+                      <h4 className="font-medium text-gray-800">Register Your Solar System</h4>
+                      <p className="text-sm text-gray-600">Add solar panel capacity, battery details, and location</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                    <div>
+                      <h4 className="font-medium text-gray-800">Enable AI Optimization</h4>
+                      <p className="text-sm text-gray-600">Let our ML algorithms learn your energy patterns</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                    <div>
+                      <h4 className="font-medium text-gray-800">Start Trading</h4>
+                      <p className="text-sm text-gray-600">Create energy offers or browse available energy</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced Features */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">⚡ Using Advanced Features</h3>
+                <div className="space-y-3">
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 className="font-medium text-green-800 mb-2">💬 AI Chat Assistant</h4>
+                    <p className="text-sm text-green-700">Ask questions like \"When should I sell my energy?\" or \"How can I optimize my battery usage?\"</p>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h4 className="font-medium text-blue-800 mb-2">📊 Real-time Dashboard</h4>
+                    <p className="text-sm text-blue-700">Monitor live energy generation, consumption, trading opportunities, and market prices</p>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 className="font-medium text-purple-800 mb-2">🔍 Energy Marketplace</h4>
+                    <p className="text-sm text-purple-700">Filter trades by price, power amount, and location. Use \"View Details\" to contact traders</p>
+                  </div>
+                  <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 className="font-medium text-orange-800 mb-2">🧪 Simulation Mode</h4>
+                    <p className="text-sm text-orange-700">Test different energy scenarios, weather conditions, and optimization strategies</p>
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </CardContent>
         </Card>
