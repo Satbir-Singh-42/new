@@ -1,6 +1,51 @@
 import { EnergyReading, EnergyTrade, Household } from '../shared/schema';
 
 // ML-based energy prediction and optimization engine
+// Type definitions for grid management
+interface GridBalancing {
+  supplyDemandRatio: number;
+  gridLoadFactor: number;
+  loadSheddingRequired: boolean;
+  loadSheddingCandidates: number[];
+  gridSupportProviders: number[];
+  recommendedLoadReduction: number;
+}
+
+interface LoadShiftingStrategy {
+  shiftableLoad: number;
+  optimalShiftTime: number;
+  potentialSavings: number;
+}
+
+interface LoadManagement {
+  priorityLoads: { [householdId: number]: string[] };
+  defferrableLoads: { [householdId: number]: string[] };
+  loadShiftingOpportunities: { [householdId: number]: LoadShiftingStrategy };
+  peakDemandReduction: number;
+}
+
+interface RedistributionAction {
+  fromHouseholdId: number;
+  toHouseholdId: number;
+  energyAmount: number;
+  transferType: 'immediate' | 'scheduled';
+  priority: 'critical' | 'high' | 'medium' | 'low';
+}
+
+interface RedistributionPlan {
+  actions: RedistributionAction[];
+  totalRedistributed: number;
+  beneficiaryCount: number;
+}
+
+interface EquitableAccess {
+  averageEnergySecurity: number;
+  vulnerableHouseholds: number[];
+  redistributionPlan: RedistributionPlan;
+  equityScore: number;
+  emergencySupport: boolean;
+}
+
 export class MLEnergyEngine {
   private weatherPatterns: Map<string, number> = new Map();
   private demandPatterns: Map<string, number[]> = new Map();
@@ -34,13 +79,18 @@ export class MLEnergyEngine {
     const tradingPairs = this.identifyTradingPairs(networkState);
     const prices = this.calculateOptimalPrices(tradingPairs, networkState);
     const batteryStrategy = this.optimizeBatteryStrategy(networkState);
+    const gridBalancing = this.calculateGridBalancing(networkState);
+    const loadManagement = this.optimizeLoadManagement(networkState);
 
     return {
       tradingPairs,
       prices,
       batteryStrategy,
       gridStability: this.calculateGridStability(networkState),
-      recommendations: this.generateRecommendations(networkState)
+      recommendations: this.generateRecommendations(networkState),
+      gridBalancing,
+      loadManagement,
+      equitableAccess: this.ensureEquitableAccess(networkState)
     };
   }
 
@@ -83,6 +133,145 @@ export class MLEnergyEngine {
     if (temperature <= 25) return 1.0;
     const tempLoss = (temperature - 25) * 0.004;
     return Math.max(0.7, 1 - tempLoss); // Min 70% efficiency
+  }
+
+  // Calculate grid balancing to prevent overload during peak demand
+  private calculateGridBalancing(networkState: NetworkState): GridBalancing {
+    const totalGeneration = networkState.households.reduce((sum, h) => sum + h.predictedGeneration, 0);
+    const totalDemand = networkState.households.reduce((sum, h) => sum + h.predictedDemand, 0);
+    const totalBatteryCapacity = networkState.households.reduce((sum, h) => sum + (h.batteryCapacity || 0), 0);
+    const totalStoredEnergy = networkState.households.reduce((sum, h) => sum + ((h.batteryLevel || 0)), 0);
+    
+    const supplyDemandRatio = totalDemand > 0 ? totalGeneration / totalDemand : 1;
+    const gridLoadFactor = Math.min(1.0, totalDemand / (totalGeneration + totalStoredEnergy));
+    
+    // Identify households that need load shedding or can provide grid support
+    const loadSheddingCandidates: number[] = [];
+    const gridSupportProviders: number[] = [];
+    
+    networkState.households.forEach(h => {
+      const surplus = h.predictedGeneration - h.predictedDemand;
+      if (surplus < -2) { // High demand, low generation
+        loadSheddingCandidates.push(h.id);
+      } else if (surplus > 2) { // High generation, low demand
+        gridSupportProviders.push(h.id);
+      }
+    });
+    
+    return {
+      supplyDemandRatio,
+      gridLoadFactor,
+      loadSheddingRequired: gridLoadFactor > 0.9,
+      loadSheddingCandidates,
+      gridSupportProviders,
+      recommendedLoadReduction: gridLoadFactor > 0.9 ? (gridLoadFactor - 0.85) * totalDemand : 0
+    };
+  }
+
+  // Optimize load management to prevent grid overload
+  private optimizeLoadManagement(networkState: NetworkState): LoadManagement {
+    const currentHour = new Date().getHours();
+    const isPeakHour = currentHour >= 17 && currentHour <= 21; // 5-9 PM peak demand
+    
+    const priorityLoads: { [householdId: number]: string[] } = {};
+    const defferrableLoads: { [householdId: number]: string[] } = {};
+    const loadShiftingOpportunities: { [householdId: number]: LoadShiftingStrategy } = {};
+    
+    networkState.households.forEach(h => {
+      const deficit = h.predictedDemand - h.predictedGeneration - (h.batteryLevel || 0);
+      
+      if (deficit > 1) { // Household needs significant grid support
+        priorityLoads[h.id] = ['refrigeration', 'medical_equipment', 'lighting'];
+        defferrableLoads[h.id] = ['water_heating', 'air_conditioning', 'electric_vehicle'];
+        
+        loadShiftingOpportunities[h.id] = {
+          shiftableLoad: Math.min(deficit * 0.3, 2), // Max 2kW shift
+          optimalShiftTime: isPeakHour ? currentHour + 4 : currentHour + 1,
+          potentialSavings: deficit * 0.15 // 15% load reduction through shifting
+        };
+      }
+    });
+    
+    return {
+      priorityLoads,
+      defferrableLoads,
+      loadShiftingOpportunities,
+      peakDemandReduction: Object.values(loadShiftingOpportunities)
+        .reduce((sum, strategy) => sum + strategy.potentialSavings, 0)
+    };
+  }
+
+  // Ensure equitable access to power across all households
+  private ensureEquitableAccess(networkState: NetworkState): EquitableAccess {
+    const householdEnergySecurity = networkState.households.map(h => {
+      const totalAvailable = h.predictedGeneration + (h.batteryLevel || 0);
+      const securityRatio = h.predictedDemand > 0 ? totalAvailable / h.predictedDemand : 1;
+      
+      return {
+        householdId: h.id,
+        energySecurity: Math.min(1, securityRatio),
+        isVulnerable: securityRatio < 0.7, // Less than 70% energy security
+        priorityLevel: this.calculatePriorityLevel(h, securityRatio)
+      };
+    });
+    
+    const vulnerableHouseholds = householdEnergySecurity.filter(h => h.isVulnerable);
+    const averageEnergySecurity = householdEnergySecurity.reduce((sum, h) => sum + h.energySecurity, 0) / householdEnergySecurity.length;
+    
+    // Calculate redistribution recommendations
+    const redistributionPlan = this.calculateRedistributionPlan(networkState, vulnerableHouseholds);
+    
+    return {
+      averageEnergySecurity,
+      vulnerableHouseholds: vulnerableHouseholds.map(h => h.householdId),
+      redistributionPlan,
+      equityScore: 1 - (vulnerableHouseholds.length / householdEnergySecurity.length),
+      emergencySupport: vulnerableHouseholds.length > networkState.households.length * 0.2
+    };
+  }
+
+  private calculatePriorityLevel(household: Household, securityRatio: number): 'critical' | 'high' | 'medium' | 'low' {
+    // Consider factors like medical equipment, vulnerable population, etc.
+    if (securityRatio < 0.3) return 'critical';
+    if (securityRatio < 0.5) return 'high'; 
+    if (securityRatio < 0.7) return 'medium';
+    return 'low';
+  }
+
+  private calculateRedistributionPlan(networkState: NetworkState, vulnerableHouseholds: any[]): RedistributionPlan {
+    const surplusHouseholds = networkState.households.filter(h => 
+      (h.predictedGeneration + (h.batteryLevel || 0)) > h.predictedDemand * 1.2
+    );
+    
+    const redistributionActions: RedistributionAction[] = [];
+    
+    vulnerableHouseholds.forEach(vulnerable => {
+      const needsKwh = networkState.households.find(h => h.id === vulnerable.householdId)?.predictedDemand || 0;
+      const availableKwh = networkState.households.find(h => h.id === vulnerable.householdId);
+      const shortfall = needsKwh - (availableKwh?.predictedGeneration || 0) - (availableKwh?.batteryLevel || 0);
+      
+      if (shortfall > 0 && surplusHouseholds.length > 0) {
+        const donor = surplusHouseholds[0]; // Simple first-available allocation
+        const transferAmount = Math.min(shortfall, 
+          (donor.predictedGeneration + (donor.batteryLevel || 0)) - donor.predictedDemand);
+        
+        if (transferAmount > 0.1) { // Minimum 0.1 kWh transfer
+          redistributionActions.push({
+            fromHouseholdId: donor.id,
+            toHouseholdId: vulnerable.householdId,
+            energyAmount: transferAmount,
+            transferType: transferAmount < 1 ? 'immediate' : 'scheduled',
+            priority: vulnerable.priorityLevel || 'medium'
+          });
+        }
+      }
+    });
+    
+    return {
+      actions: redistributionActions,
+      totalRedistributed: redistributionActions.reduce((sum, action) => sum + action.energyAmount, 0),
+      beneficiaryCount: new Set(redistributionActions.map(a => a.toHouseholdId)).size
+    };
   }
 
   private getTimeMultiplier(hour: number): number {
