@@ -869,12 +869,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get simulation analytics (including demo trades and households)
+  app.get('/api/simulation/analytics', async (_req, res) => {
+    try {
+      // Get ALL households including simulation households for demo analytics
+      const households = await storage.listHouseholds();
+      const recentTrades = await storage.getEnergyTrades(50);
+      
+      // Include simulation households (userId 999) for demo purposes
+      const simulationHouseholds = households.filter((h: any) => h.userId === 999);
+      const allHouseholds = households; // Include all for comprehensive demo
+      
+      const totalGeneration = allHouseholds.reduce((sum: number, h: any) => sum + (h.solarCapacity || 0), 0);
+      const totalStorage = allHouseholds.reduce((sum: number, h: any) => sum + (h.batteryCapacity || 0), 0);
+      const currentStorage = allHouseholds.reduce((sum: number, h: any) => sum + ((h.currentBatteryLevel || 0) * (h.batteryCapacity || 0) / 100), 0);
+      
+      // Include all trades for demo analytics
+      const allTrades = recentTrades;
+      
+      const analytics = {
+        network: {
+          totalHouseholds: allHouseholds.length,
+          activeHouseholds: allHouseholds.filter((h: any) => h.isOnline !== false).length,
+          totalGenerationCapacity: `${totalGeneration.toFixed(1)} kW`,
+          totalStorageCapacity: `${totalStorage.toFixed(1)} kWh`,
+          currentStorageLevel: `${currentStorage.toFixed(1)} kWh`,
+          storageUtilization: `${totalStorage > 0 ? ((currentStorage / totalStorage) * 100).toFixed(1) : 0}%`
+        },
+        trading: {
+          totalTrades: allTrades.length,
+          totalEnergyTraded: `${allTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
+          averagePrice: `${allTrades.length > 0 ? 
+            (allTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / allTrades.length).toFixed(2) : 0}/kWh`,
+          carbonSaved: `${(allTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)}`
+        },
+        efficiency: {
+          averageDistance: `${allTrades.length > 0 ?
+            (allTrades.reduce((sum: number, t: any) => sum + 5, 0) / allTrades.length).toFixed(1) : 0} km`,
+          networkEfficiency: `92.5%`
+        }
+      };
+      
+      res.json(analytics);
+    } catch (error) {
+      res.status(500).json({
+        error: 'Failed to get simulation analytics',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   // Real-time market data endpoint (separate from simulation)
   app.get('/api/market/realtime', async (_req, res) => {
     try {
       // REAL market data based on actual energy patterns and user households
       const households = await storage.listHouseholds();
-      const realUserHouseholds = households.filter(h => h.userId !== null && h.userId !== 0 && h.userId !== 999);
+      const realUserHouseholds = households.filter((h: any) => h.userId !== null && h.userId !== 0 && h.userId !== 999);
       
       const currentTime = Date.now();
       const now = new Date();
@@ -893,7 +943,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         baseDemand *= 0.8; // Lower weekend demand
       }
       
-      // Use the same time variables for weather calculation
+      // Weather calculation using current time variables  
+      const month = now.getMonth(); // 0-11
+      const hour = now.getHours();
+      const isDay = hour >= 6 && hour <= 18;
+      const isDayTime = hour >= 7 && hour <= 17; // Peak solar hours
       
       // Real seasonal temperature patterns
       const seasonalBaseTemp = [5, 8, 15, 22, 28, 32, 35, 33, 28, 20, 12, 7][month]; // Monthly averages
@@ -945,7 +999,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Calculate supply from actual user solar installations
       let baseSupply = 0;
       if (timeOfDay >= 6 && timeOfDay <= 18) { // Only during daylight
-        const totalSolarCapacity = realUserHouseholds.reduce((sum, h) => sum + (h.solarCapacity || 0), 0);
+        const totalSolarCapacity = realUserHouseholds.reduce((sum: number, h: any) => sum + (h.solarCapacity || 0), 0);
         const solarEfficiency = weather.efficiency / 100;
         baseSupply = (totalSolarCapacity / 1000) * solarEfficiency; // Convert to kW and apply efficiency
       }
@@ -980,20 +1034,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recentTrades = await storage.getEnergyTrades(50);
       
       // Filter out ONLY simulation/demo households - user ID 999 is reserved for simulation
-      const realHouseholds = households.filter(h => 
+      const realHouseholds = households.filter((h: any) => 
         // Only include real user households, exclude simulation households (userId 999)
         h.userId !== null && h.userId !== 0 && h.userId !== 999
       );
       
-      const totalGeneration = realHouseholds.reduce((sum, h) => sum + (h.solarCapacity || 0), 0);
-      const totalStorage = realHouseholds.reduce((sum, h) => sum + (h.batteryCapacity || 0), 0);
-      const currentStorage = realHouseholds.reduce((sum, h) => sum + ((h.currentBatteryLevel || 0) * (h.batteryCapacity || 0) / 100), 0);
+      const totalGeneration = realHouseholds.reduce((sum: number, h: any) => sum + (h.solarCapacity || 0), 0);
+      const totalStorage = realHouseholds.reduce((sum: number, h: any) => sum + (h.batteryCapacity || 0), 0);
+      const currentStorage = realHouseholds.reduce((sum: number, h: any) => sum + ((h.currentBatteryLevel || 0) * (h.batteryCapacity || 0) / 100), 0);
       
       // Filter trades to only include real user trades, not simulation trades
-      const realTrades = recentTrades.filter(t => {
+      const realTrades = recentTrades.filter((t: any) => {
         // Get household info to check if it's a simulation household
-        const sellerHousehold = realHouseholds.find(h => h.id === t.sellerHouseholdId);
-        const buyerHousehold = realHouseholds.find(h => h.id === t.buyerHouseholdId);
+        const sellerHousehold = realHouseholds.find((h: any) => h.id === t.sellerHouseholdId);
+        const buyerHousehold = realHouseholds.find((h: any) => h.id === t.buyerHouseholdId);
         
         // Only include trades between real user households (not simulation households)
         return sellerHousehold && buyerHousehold;
@@ -1002,7 +1056,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const analytics = {
         network: {
           totalHouseholds: realHouseholds.length,
-          activeHouseholds: realHouseholds.filter(h => h.isOnline !== false).length,
+          activeHouseholds: realHouseholds.filter((h: any) => h.isOnline !== false).length,
           totalGenerationCapacity: `${totalGeneration.toFixed(1)} kW`,
           totalStorageCapacity: `${totalStorage.toFixed(1)} kWh`,
           currentStorageLevel: `${currentStorage.toFixed(1)} kWh`,
@@ -1010,14 +1064,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         trading: {
           totalTrades: realTrades.length,
-          totalEnergyTraded: `${realTrades.reduce((sum, t) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
+          totalEnergyTraded: `${realTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0).toFixed(2)} kWh`,
           averagePrice: `$${realTrades.length > 0 ? 
-            (realTrades.reduce((sum, t) => sum + t.pricePerKwh, 0) / realTrades.length).toFixed(3) : 0}/kWh`,
-          carbonSaved: `${(realTrades.reduce((sum, t) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)} kg CO₂` // 0.45kg CO2 per kWh
+            (realTrades.reduce((sum: number, t: any) => sum + t.pricePerKwh, 0) / realTrades.length).toFixed(3) : 0}/kWh`,
+          carbonSaved: `${(realTrades.reduce((sum: number, t: any) => sum + t.energyAmount, 0) * 0.45 / 1000).toFixed(1)} kg CO₂` // 0.45kg CO2 per kWh
         },
         efficiency: {
           averageDistance: `${realTrades.length > 0 ?
-            (realTrades.reduce((sum, t) => sum + 5, 0) / realTrades.length).toFixed(1) : 0} km`, // Average 5km distance
+            (realTrades.reduce((sum: number, t: any) => sum + 5, 0) / realTrades.length).toFixed(1) : 0} km`, // Average 5km distance
           networkEfficiency: `92.5%` // Network efficiency based on distance and system performance
         }
       };

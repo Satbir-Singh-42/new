@@ -141,10 +141,18 @@ export function SimulationDashboard() {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/analytics/network');
+      // Fetch simulation analytics instead of real network analytics
+      const response = await fetch('/api/simulation/analytics');
       if (response.ok) {
         const data = await response.json();
         setAnalytics(data);
+      } else {
+        // Fallback to network analytics if simulation specific doesn't exist
+        const fallbackResponse = await fetch('/api/analytics/network');
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          setAnalytics(fallbackData);
+        }
       }
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
@@ -350,13 +358,13 @@ export function SimulationDashboard() {
               {/* Weather Control */}
               <div className="space-y-2">
                 <label className="text-sm font-medium">Test Weather Adaptation</label>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Select
                     value={selectedWeather}
                     onValueChange={setSelectedWeather}
                     data-testid="select-weather-condition"
                   >
-                    <SelectTrigger className="flex-1">
+                    <SelectTrigger className="w-full sm:flex-1">
                       <SelectValue placeholder="Select weather condition" />
                     </SelectTrigger>
                     <SelectContent>
@@ -372,6 +380,7 @@ export function SimulationDashboard() {
                     onClick={() => selectedWeather && changeWeather(selectedWeather)}
                     disabled={!selectedWeather || loading}
                     size="sm"
+                    className="w-full sm:w-auto"
                     data-testid="button-change-weather"
                   >
                     Apply
@@ -382,20 +391,23 @@ export function SimulationDashboard() {
               {/* Outage Simulation */}
               <div className="space-y-2">
                 <label className="text-sm font-medium">Test Power Outage Response</label>
-                <Button
-                  onClick={triggerOutage}
-                  disabled={loading}
-                  variant="outline"
-                  size="sm"
-                  data-testid="button-trigger-outage"
-                >
-                  {loading ? (
-                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                  ) : (
-                    <ZapOff className="h-4 w-4 mr-2" />
-                  )}
-                  Simulate Outage
-                </Button>
+                <div className="flex">
+                  <Button
+                    onClick={triggerOutage}
+                    disabled={loading}
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto"
+                    data-testid="button-trigger-outage"
+                  >
+                    {loading ? (
+                      <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <ZapOff className="h-4 w-4 mr-2" />
+                    )}
+                    Simulate Outage
+                  </Button>
+                </div>
               </div>
             </div>
           )}
