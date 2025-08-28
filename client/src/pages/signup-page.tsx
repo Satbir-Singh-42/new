@@ -270,51 +270,12 @@ export default function SignupPage() {
                         <Label htmlFor="state" className="text-sm font-medium text-gray-700">
                           State <span className="text-red-500">*</span>
                         </Label>
-                        <Controller
-                          name="state"
-                          control={control}
-                          render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <SelectTrigger className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500">
-                                <SelectValue placeholder="State" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Andhra Pradesh">Andhra Pradesh</SelectItem>
-                                <SelectItem value="Arunachal Pradesh">Arunachal Pradesh</SelectItem>
-                                <SelectItem value="Assam">Assam</SelectItem>
-                                <SelectItem value="Bihar">Bihar</SelectItem>
-                                <SelectItem value="Chhattisgarh">Chhattisgarh</SelectItem>
-                                <SelectItem value="Goa">Goa</SelectItem>
-                                <SelectItem value="Gujarat">Gujarat</SelectItem>
-                                <SelectItem value="Haryana">Haryana</SelectItem>
-                                <SelectItem value="Himachal Pradesh">Himachal Pradesh</SelectItem>
-                                <SelectItem value="Jharkhand">Jharkhand</SelectItem>
-                                <SelectItem value="Karnataka">Karnataka</SelectItem>
-                                <SelectItem value="Kerala">Kerala</SelectItem>
-                                <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
-                                <SelectItem value="Maharashtra">Maharashtra</SelectItem>
-                                <SelectItem value="Manipur">Manipur</SelectItem>
-                                <SelectItem value="Meghalaya">Meghalaya</SelectItem>
-                                <SelectItem value="Mizoram">Mizoram</SelectItem>
-                                <SelectItem value="Nagaland">Nagaland</SelectItem>
-                                <SelectItem value="Odisha">Odisha</SelectItem>
-                                <SelectItem value="Punjab">Punjab</SelectItem>
-                                <SelectItem value="Rajasthan">Rajasthan</SelectItem>
-                                <SelectItem value="Sikkim">Sikkim</SelectItem>
-                                <SelectItem value="Tamil Nadu">Tamil Nadu</SelectItem>
-                                <SelectItem value="Telangana">Telangana</SelectItem>
-                                <SelectItem value="Tripura">Tripura</SelectItem>
-                                <SelectItem value="Uttar Pradesh">Uttar Pradesh</SelectItem>
-                                <SelectItem value="Uttarakhand">Uttarakhand</SelectItem>
-                                <SelectItem value="West Bengal">West Bengal</SelectItem>
-                                <SelectItem value="Delhi">Delhi</SelectItem>
-                                <SelectItem value="Chandigarh">Chandigarh</SelectItem>
-                                <SelectItem value="Puducherry">Puducherry</SelectItem>
-                                <SelectItem value="Jammu and Kashmir">Jammu and Kashmir</SelectItem>
-                                <SelectItem value="Ladakh">Ladakh</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          )}
+                        <Input
+                          id="state"
+                          type="text"
+                          placeholder="Enter your state"
+                          className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                          {...register("state")}
                         />
                         {errors.state && (
                           <p className="text-sm text-red-600">{errors.state.message}</p>
@@ -325,111 +286,12 @@ export default function SignupPage() {
                         <Label htmlFor="district" className="text-sm font-medium text-gray-700">
                           District <span className="text-red-500">*</span>
                         </Label>
-                        <Controller
-                          name="district"
-                          control={control}
-                          render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <SelectTrigger className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500">
-                                <SelectValue placeholder="District" />
-                              </SelectTrigger>
-                              <SelectContent className="max-h-60">
-                                <SelectItem value="Mumbai">Mumbai</SelectItem>
-                                <SelectItem value="Delhi">Delhi</SelectItem>
-                                <SelectItem value="Bangalore">Bangalore</SelectItem>
-                                <SelectItem value="Hyderabad">Hyderabad</SelectItem>
-                                <SelectItem value="Ahmedabad">Ahmedabad</SelectItem>
-                                <SelectItem value="Chennai">Chennai</SelectItem>
-                                <SelectItem value="Kolkata">Kolkata</SelectItem>
-                                <SelectItem value="Pune">Pune</SelectItem>
-                                <SelectItem value="Jaipur">Jaipur</SelectItem>
-                                <SelectItem value="Surat">Surat</SelectItem>
-                                <SelectItem value="Lucknow">Lucknow</SelectItem>
-                                <SelectItem value="Kanpur">Kanpur</SelectItem>
-                                <SelectItem value="Nagpur">Nagpur</SelectItem>
-                                <SelectItem value="Indore">Indore</SelectItem>
-                                <SelectItem value="Thane">Thane</SelectItem>
-                                <SelectItem value="Bhopal">Bhopal</SelectItem>
-                                <SelectItem value="Visakhapatnam">Visakhapatnam</SelectItem>
-                                <SelectItem value="Vadodara">Vadodara</SelectItem>
-                                <SelectItem value="Ghaziabad">Ghaziabad</SelectItem>
-                                <SelectItem value="Ludhiana">Ludhiana</SelectItem>
-                                <SelectItem value="Agra">Agra</SelectItem>
-                                <SelectItem value="Nashik">Nashik</SelectItem>
-                                <SelectItem value="Faridabad">Faridabad</SelectItem>
-                                <SelectItem value="Meerut">Meerut</SelectItem>
-                                <SelectItem value="Rajkot">Rajkot</SelectItem>
-                                <SelectItem value="Varanasi">Varanasi</SelectItem>
-                                <SelectItem value="Srinagar">Srinagar</SelectItem>
-                                <SelectItem value="Aurangabad">Aurangabad</SelectItem>
-                                <SelectItem value="Amritsar">Amritsar</SelectItem>
-                                <SelectItem value="Allahabad">Allahabad</SelectItem>
-                                <SelectItem value="Ranchi">Ranchi</SelectItem>
-                                <SelectItem value="Coimbatore">Coimbatore</SelectItem>
-                                <SelectItem value="Jabalpur">Jabalpur</SelectItem>
-                                <SelectItem value="Gwalior">Gwalior</SelectItem>
-                                <SelectItem value="Vijayawada">Vijayawada</SelectItem>
-                                <SelectItem value="Jodhpur">Jodhpur</SelectItem>
-                                <SelectItem value="Madurai">Madurai</SelectItem>
-                                <SelectItem value="Raipur">Raipur</SelectItem>
-                                <SelectItem value="Kota">Kota</SelectItem>
-                                <SelectItem value="Guwahati">Guwahati</SelectItem>
-                                <SelectItem value="Chandigarh">Chandigarh</SelectItem>
-                                <SelectItem value="Thiruvananthapuram">Thiruvananthapuram</SelectItem>
-                                <SelectItem value="Solapur">Solapur</SelectItem>
-                                <SelectItem value="Hubballi-Dharwad">Hubballi-Dharwad</SelectItem>
-                                <SelectItem value="Tiruchirappalli">Tiruchirappalli</SelectItem>
-                                <SelectItem value="Bareilly">Bareilly</SelectItem>
-                                <SelectItem value="Mysore">Mysore</SelectItem>
-                                <SelectItem value="Tiruppur">Tiruppur</SelectItem>
-                                <SelectItem value="Gurgaon">Gurgaon</SelectItem>
-                                <SelectItem value="Aligarh">Aligarh</SelectItem>
-                                <SelectItem value="Jalandhar">Jalandhar</SelectItem>
-                                <SelectItem value="Bhubaneswar">Bhubaneswar</SelectItem>
-                                <SelectItem value="Salem">Salem</SelectItem>
-                                <SelectItem value="Warangal">Warangal</SelectItem>
-                                <SelectItem value="Guntur">Guntur</SelectItem>
-                                <SelectItem value="Bhiwandi">Bhiwandi</SelectItem>
-                                <SelectItem value="Saharanpur">Saharanpur</SelectItem>
-                                <SelectItem value="Gorakhpur">Gorakhpur</SelectItem>
-                                <SelectItem value="Bikaner">Bikaner</SelectItem>
-                                <SelectItem value="Amravati">Amravati</SelectItem>
-                                <SelectItem value="Noida">Noida</SelectItem>
-                                <SelectItem value="Jamshedpur">Jamshedpur</SelectItem>
-                                <SelectItem value="Bhilai">Bhilai</SelectItem>
-                                <SelectItem value="Cuttack">Cuttack</SelectItem>
-                                <SelectItem value="Firozabad">Firozabad</SelectItem>
-                                <SelectItem value="Kochi">Kochi</SelectItem>
-                                <SelectItem value="Bhavnagar">Bhavnagar</SelectItem>
-                                <SelectItem value="Dehradun">Dehradun</SelectItem>
-                                <SelectItem value="Durgapur">Durgapur</SelectItem>
-                                <SelectItem value="Asansol">Asansol</SelectItem>
-                                <SelectItem value="Rourkela">Rourkela</SelectItem>
-                                <SelectItem value="Nanded">Nanded</SelectItem>
-                                <SelectItem value="Kolhapur">Kolhapur</SelectItem>
-                                <SelectItem value="Ajmer">Ajmer</SelectItem>
-                                <SelectItem value="Gulbarga">Gulbarga</SelectItem>
-                                <SelectItem value="Jamnagar">Jamnagar</SelectItem>
-                                <SelectItem value="Ujjain">Ujjain</SelectItem>
-                                <SelectItem value="Loni">Loni</SelectItem>
-                                <SelectItem value="Siliguri">Siliguri</SelectItem>
-                                <SelectItem value="Jhansi">Jhansi</SelectItem>
-                                <SelectItem value="Ulhasnagar">Ulhasnagar</SelectItem>
-                                <SelectItem value="Jammu">Jammu</SelectItem>
-                                <SelectItem value="Sangli-Miraj">Sangli-Miraj</SelectItem>
-                                <SelectItem value="Mangalore">Mangalore</SelectItem>
-                                <SelectItem value="Erode">Erode</SelectItem>
-                                <SelectItem value="Belgaum">Belgaum</SelectItem>
-                                <SelectItem value="Ambattur">Ambattur</SelectItem>
-                                <SelectItem value="Tirunelveli">Tirunelveli</SelectItem>
-                                <SelectItem value="Malegaon">Malegaon</SelectItem>
-                                <SelectItem value="Gaya">Gaya</SelectItem>
-                                <SelectItem value="Jalgaon">Jalgaon</SelectItem>
-                                <SelectItem value="Udaipur">Udaipur</SelectItem>
-                                <SelectItem value="Maheshtala">Maheshtala</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          )}
+                        <Input
+                          id="district"
+                          type="text"
+                          placeholder="Enter your district"
+                          className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                          {...register("district")}
                         />
                         {errors.district && (
                           <p className="text-sm text-red-600">{errors.district.message}</p>
