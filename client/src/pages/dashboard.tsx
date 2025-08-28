@@ -1,9 +1,20 @@
 import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { insertEnergyTradeSchema } from "@/../../shared/schema";
+import type { EnergyTrade, Household } from "@/../../shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 import AIChatWidget from "@/components/mobile-ai-chat-widget";
 import { useAuth } from "@/hooks/use-auth";
@@ -17,7 +28,73 @@ export default function Dashboard() {
   const [showValidationCard, setShowValidationCard] = useState(false);
   const [validationMessage, setValidationMessage] = useState("");
   const [validationType, setValidationType] = useState<"success" | "error" | "warning">("warning");
+  const [showCreateTradeDialog, setShowCreateTradeDialog] = useState(false);
   const { user, logoutMutation, healthStatus } = useAuth();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  // Fetch energy trades
+  const { data: energyTrades = [], isLoading: tradesLoading } = useQuery({
+    queryKey: ['/api/energy-trades'],
+    refetchInterval: 10000, // Refetch every 10 seconds
+  });
+
+  // Fetch households for trading
+  const { data: households = [] } = useQuery<Household[]>({
+    queryKey: ['/api/households'],
+  });
+
+  // Create trade mutation
+  const createTradeMutation = useMutation({
+    mutationFn: (data: any) => apiRequest('/api/energy-trades', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      setShowCreateTradeDialog(false);
+      toast({
+        title: "Trade Created",
+        description: "Your energy trade offer has been created successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create trade offer.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Form for creating trades
+  const form = useForm({
+    resolver: zodResolver(insertEnergyTradeSchema.extend({
+      energyAmount: insertEnergyTradeSchema.shape.energyAmount.min(0.1, "Energy amount must be at least 0.1 kWh"),
+      pricePerKwh: insertEnergyTradeSchema.shape.pricePerKwh.min(0.01, "Price must be at least ₹0.01 per kWh"),
+    })),
+    defaultValues: {
+      sellerHouseholdId: 1,
+      buyerHouseholdId: undefined,
+      energyAmount: 0,
+      pricePerKwh: 4.5,
+      tradeType: 'sell',
+    },
+  });
+
+  const onSubmit = (data: any) => {
+    // Set household IDs based on trade type
+    const tradeData = {
+      ...data,
+      sellerHouseholdId: data.tradeType === 'sell' ? 1 : undefined,
+      buyerHouseholdId: data.tradeType === 'buy' ? 1 : undefined,
+    };
+    createTradeMutation.mutate(tradeData);
+  };
+
+  // Separate offers and requests
+  const energyOffers = energyTrades.filter((trade: EnergyTrade) => trade.tradeType === 'sell' && trade.status === 'pending');
+  const energyRequests = energyTrades.filter((trade: EnergyTrade) => trade.tradeType === 'buy' && trade.status === 'pending');
 
   // Check URL parameters on component mount
   useEffect(() => {
@@ -191,28 +268,88 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold">Energy Trading Marketplace</h2>
-              <Button>
-                <Zap className="mr-2 h-4 w-4" />
+              <Button onClick={() => setShowCreateTradeDialog(true)} data-testid="button-create-trade">
+                <Plus className="mr-2 h-4 w-4" />
                 Create Trade Offer
               </Button>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Available Energy Offers</h3>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-green-600" />
+                  Available Energy Offers ({energyOffers.length})
+                </h3>
                 <div className="space-y-3">
-                  <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
-                    No energy offers available yet. Be the first to create one!
-                  </div>
+                  {tradesLoading ? (
+                    <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
+                      Loading energy offers...
+                    </div>
+                  ) : energyOffers.length > 0 ? (
+                    energyOffers.map((offer: EnergyTrade) => (
+                      <div key={offer.id} className="p-4 border border-gray-200 rounded-lg hover:border-green-300 transition-colors">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-green-600">{offer.energyAmount} kWh available</p>
+                            <p className="text-sm text-gray-600">Household #{offer.sellerHouseholdId}</p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              Created: {new Date(offer.createdAt).toLocaleString()}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-lg">₹{offer.pricePerKwh}/kWh</p>
+                            <Button size="sm" className="mt-2" data-testid={`button-buy-${offer.id}`}>
+                              <ExternalLink className="h-3 w-3 mr-1" />
+                              Buy
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
+                      No energy offers available yet. Be the first to create one!
+                    </div>
+                  )}
                 </div>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Energy Demand Requests</h3>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <ArrowRightLeft className="h-5 w-5 text-blue-600" />
+                  Energy Demand Requests ({energyRequests.length})
+                </h3>
                 <div className="space-y-3">
-                  <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
-                    No energy requests at the moment. Check back during peak hours.
-                  </div>
+                  {tradesLoading ? (
+                    <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
+                      Loading energy requests...
+                    </div>
+                  ) : energyRequests.length > 0 ? (
+                    energyRequests.map((request: EnergyTrade) => (
+                      <div key={request.id} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-blue-600">{request.energyAmount} kWh needed</p>
+                            <p className="text-sm text-gray-600">Household #{request.buyerHouseholdId}</p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              Created: {new Date(request.createdAt).toLocaleString()}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-lg">₹{request.pricePerKwh}/kWh</p>
+                            <Button size="sm" variant="outline" className="mt-2" data-testid={`button-sell-${request.id}`}>
+                              <ExternalLink className="h-3 w-3 mr-1" />
+                              Sell
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 border border-gray-200 rounded text-center text-gray-500">
+                      No energy requests at the moment. Check back during peak hours.
+                    </div>
+                  )}
                 </div>
               </Card>
             </div>
@@ -254,6 +391,108 @@ export default function Dashboard() {
       {/* AI Chat Widget */}
       <AIChatWidget />
       
+      {/* Create Trade Dialog */}
+      <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Plus className="h-5 w-5" />
+              Create Energy Trade Offer
+            </DialogTitle>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="tradeType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Trade Type</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger data-testid="select-trade-type">
+                          <SelectValue placeholder="Select trade type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="sell">Sell Energy (I have surplus)</SelectItem>
+                        <SelectItem value="buy">Buy Energy (I need power)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="energyAmount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Energy Amount (kWh)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.1"
+                        min="0.1"
+                        placeholder="e.g., 5.5"
+                        data-testid="input-energy-amount"
+                        {...field}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="pricePerKwh"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Price per kWh (₹)</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0.01"
+                        placeholder="e.g., 4.50"
+                        data-testid="input-price-per-kwh"
+                        {...field}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowCreateTradeDialog(false)}
+                  className="flex-1"
+                  data-testid="button-cancel-trade"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={createTradeMutation.isPending}
+                  className="flex-1"
+                  data-testid="button-submit-trade"
+                >
+                  {createTradeMutation.isPending ? "Creating..." : "Create Trade"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
       {/* Validation Card for Server Issues and Logout - Responsive positioning below navbar */}
       {showValidationCard && (
         <div className="fixed top-20 sm:top-24 md:top-28 right-2 sm:right-4 md:right-6 z-[10000] w-full max-w-xs sm:max-w-sm md:max-w-md px-2 sm:px-0">
