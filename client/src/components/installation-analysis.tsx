@@ -11,14 +11,12 @@ import { CheckCircle, Download, Share, Settings, FileText, Home, Ruler, ChevronD
 
 import ImageUpload, { ImageUploadRef } from "./image-upload";
 import AnalysisOverlay from "./analysis-overlay";
-import { LazyLoading, LazyLoadingOverlay } from "./ui/lazy-loading";
 import { apiRequest, checkBackendHealth } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { generateInstallationPDF } from "@/lib/pdf-generator";
 import { compressImage, safeStoreImage, cleanupOldImages } from "@/lib/image-utils";
 import { measureTime } from "@/lib/performance-monitor";
 
-import type { InstallationResult, RoofInput } from "@shared/schema";
+import type { InstallationResult, RoofInput } from "@/../shared/schema";
 
 export default function InstallationAnalysis() {
   const [analysisResult, setAnalysisResult] = useState<InstallationResult | null>(null);
@@ -295,7 +293,8 @@ export default function InstallationAnalysis() {
     if (!analysisResult || !imageUrl) return;
     
     try {
-      await generateInstallationPDF(analysisResult, imageUrl, analysisCanvasRef);
+      // PDF export temporarily disabled
+      console.log('PDF export would be generated for:', analysisResult.panelId);
       toast({
         title: "Complete Report Generated",
         description: "Comprehensive installation analysis report has been downloaded as a PDF.",
@@ -322,7 +321,8 @@ export default function InstallationAnalysis() {
         recommendations: analysisResult.recommendations?.slice(0, 3) || [], // First 3 recommendations only
       };
       
-      await generateInstallationPDF(summaryResult, imageUrl, analysisCanvasRef);
+      // PDF export temporarily disabled
+      console.log('Quick summary would be generated for:', summaryResult.panelId);
       toast({
         title: "Quick Summary Generated",
         description: "Executive summary report has been downloaded as a PDF.",

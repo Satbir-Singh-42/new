@@ -9,12 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Send, Bot, User, Home, Sun, AlertTriangle, CheckCircle, Settings, Lightbulb, HelpCircle, CloudSun, Mic, MicOff, Menu, Search, MessageCircle, X, Square, ChevronDown, Copy, Check, LogOut } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatTime } from '@/lib/date-utils';
 import { Link } from 'wouter';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { LazyLoading } from '@/components/ui/lazy-loading';
 import { useAuth } from '@/hooks/use-auth';
 import Navbar from '@/components/navbar';
 
@@ -857,7 +856,7 @@ export default function Chat() {
                               </Badge>
                             )}
                             <span className="text-xs text-muted-foreground">
-                              {format(msg.timestamp, 'HH:mm')}
+                              {formatTime(msg.timestamp)}
                             </span>
                           </div>
                           <div className="text-sm md:text-base leading-relaxed prose prose-sm md:prose-base max-w-none dark:prose-invert">

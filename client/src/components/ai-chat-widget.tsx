@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Bot, User, MessageSquare, X, Minimize2, Maximize2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { formatTime } from '@/lib/date-utils';
 
 interface ChatMessage {
   id: number;
@@ -211,7 +211,7 @@ export default function AIChatWidget({ context, isOpen, onToggle }: AIChatWidget
                     }`}>
                       <p className="leading-relaxed">{msg.message}</p>
                       <span className="text-xs opacity-70 mt-1 block">
-                        {format(msg.timestamp, 'HH:mm')}
+                        {formatTime(msg.timestamp)}
                       </span>
                     </div>
                     {msg.sender === 'user' && (

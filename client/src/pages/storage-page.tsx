@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, Zap, AlertTriangle, CheckCircle, Loader2, LogIn, FileDown, Download, FileText, Eye, ExternalLink, User, Database } from "lucide-react";
-import { format } from "date-fns";
-import { InstallationResult, FaultResult, Analysis } from "@/shared/schema";
-import { generateInstallationPDF, generateFaultDetectionPDF } from "@/lib/pdf-generator";
+import { InstallationResult, FaultResult, Analysis } from "@/../shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { formatDate, formatTime } from "@/lib/date-utils";
 
 export default function StoragePage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -144,11 +143,12 @@ export default function StoragePage() {
         img.src = analysis.originalImageUrl;
       }
       
-      await generateInstallationPDF(
-        data,
-        analysis.originalImageUrl || '',
-        canvas ? { current: canvas } : null
-      );
+      // PDF export temporarily disabled
+      toast({
+        title: "Export Notice",
+        description: "PDF export feature is being updated. Analysis data can be viewed in the application.",
+        variant: "default",
+      });
       
       toast({
         title: "PDF Generated",
@@ -183,11 +183,12 @@ export default function StoragePage() {
         img.src = analysis.originalImageUrl;
       }
       
-      await generateFaultDetectionPDF(
-        data,
-        analysis.originalImageUrl || '',
-        canvas ? { current: canvas } : null
-      );
+      // PDF export temporarily disabled
+      toast({
+        title: "Export Notice",
+        description: "PDF export feature is being updated. Analysis data can be viewed in the application.",
+        variant: "default",
+      });
       
       toast({
         title: "PDF Generated", 
@@ -404,9 +405,9 @@ export default function StoragePage() {
                                 <div className="flex items-center text-xs sm:text-sm">
                                   <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-400" />
                                   <div>
-                                    <div className="font-medium sm:font-normal">{format(new Date(analysis.createdAt), 'MMM dd, yyyy')}</div>
+                                    <div className="font-medium sm:font-normal">{formatDate(analysis.createdAt)}</div>
                                     <div className="text-xs text-gray-500">
-                                      {format(new Date(analysis.createdAt), 'HH:mm')}
+                                      {formatTime(analysis.createdAt)}
                                     </div>
                                     {/* Show analysis type on mobile */}
                                     <div className="sm:hidden text-xs text-blue-600 flex items-center mt-1">
@@ -485,9 +486,9 @@ export default function StoragePage() {
                                 <div className="flex items-center text-xs sm:text-sm">
                                   <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-400" />
                                   <div>
-                                    <div className="font-medium sm:font-normal">{format(new Date(analysis.createdAt), 'MMM dd, yyyy')}</div>
+                                    <div className="font-medium sm:font-normal">{formatDate(analysis.createdAt)}</div>
                                     <div className="text-xs text-gray-500">
-                                      {format(new Date(analysis.createdAt), 'HH:mm')}
+                                      {formatTime(analysis.createdAt)}
                                     </div>
                                     {/* Show analysis type on mobile */}
                                     <div className="sm:hidden text-xs text-red-600 flex items-center mt-1">

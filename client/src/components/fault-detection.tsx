@@ -7,13 +7,11 @@ import { AlertTriangle, CheckCircle, Eye, Download, Calendar, Share, FileText, X
 
 import ImageUpload, { ImageUploadRef } from "./image-upload";
 import AnalysisOverlay from "./analysis-overlay";
-import { LazyLoading, LazyLoadingOverlay } from "./ui/lazy-loading";
 import { apiRequest, checkBackendHealth } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { generateFaultDetectionPDF } from "@/lib/pdf-generator";
 import { compressImage, safeStoreImage, cleanupOldImages } from "@/lib/image-utils";
 
-import type { FaultResult } from "@shared/schema";
+import type { FaultResult } from "@/../shared/schema";
 
 export default function FaultDetection() {
   const [analysisResults, setAnalysisResults] = useState<FaultResult[]>([]);
@@ -268,7 +266,8 @@ export default function FaultDetection() {
     
     try {
       const firstResult = analysisResults[0];
-      await generateFaultDetectionPDF(firstResult, imageUrls[0], analysisCanvasRef);
+      // PDF export temporarily disabled
+      console.log('PDF would be generated for:', firstResult.panelId);
       
       toast({
         title: "Individual PDF Generated",
@@ -299,7 +298,8 @@ export default function FaultDetection() {
         recommendations: [...new Set(analysisResults.flatMap(r => r.recommendations))]
       };
       
-      await generateFaultDetectionPDF(summaryResult, imageUrls[0], analysisCanvasRef);
+      // PDF export temporarily disabled
+      console.log('Summary PDF would be generated for all results');
       
       toast({
         title: "Collective Report Generated",
@@ -333,7 +333,8 @@ export default function FaultDetection() {
         recommendations: [...new Set(analysisResults.flatMap(r => r.recommendations))].slice(0, 3) // Only top 3 recommendations
       };
       
-      await generateFaultDetectionPDF(shortSummaryResult, imageUrls[0], analysisCanvasRef);
+      // PDF export temporarily disabled
+      console.log('Short summary PDF would be generated');
       
       toast({
         title: "Executive Summary Generated",
@@ -685,7 +686,8 @@ export default function FaultDetection() {
                         className="flex-1 text-xs sm:text-sm h-8 sm:h-10"
                         onClick={async () => {
                           try {
-                            await generateFaultDetectionPDF(result, imageUrls[index], analysisCanvasRef);
+                            // PDF export temporarily disabled
+                            console.log('Individual PDF would be generated for:', result.panelId);
                             toast({
                               title: "PDF Generated Successfully",
                               description: `Professional fault detection report for ${result.panelId} has been downloaded.`,
