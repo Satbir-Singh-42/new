@@ -1034,9 +1034,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const gridStability = Math.min(100, Math.max(60, 85 - Math.abs(supply - demand) * 1.5));
       
       res.json({
-        supply: Math.round(supply * 10) / 10,
-        demand: Math.round(demand * 10) / 10,
-        gridStability: Math.round(gridStability * 10) / 10,
+        supply: Math.round(supply), // Remove decimal values
+        demand: Math.round(demand), // Remove decimal values  
+        gridStability: Math.round(gridStability),
         weather
       });
     } catch (error) {

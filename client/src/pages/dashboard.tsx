@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin, Info } from "lucide-react";
 import { Link } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -631,6 +631,12 @@ export default function Dashboard() {
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Zap className="h-5 w-5 text-green-600" />
                     Available Energy Offers ({energyOffers.length})
+                    <div className="group relative">
+                      <Info className="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-help ml-1" />
+                      <div className="absolute bottom-6 left-0 w-72 p-3 bg-black text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
+                        <strong>Market Pricing:</strong> Prices range ₹4-6 per kWh (400-600 paise). Sellers set competitive rates, buyers choose best offers based on price and availability.
+                      </div>
+                    </div>
                   </h3>
                   <select 
                     value={offerFilter} 
