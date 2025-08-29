@@ -170,7 +170,10 @@ export class MLEnergyEngine {
 
   // Optimize load management to prevent grid overload
   private optimizeLoadManagement(networkState: NetworkState): LoadManagement {
-    const currentHour = new Date().getHours();
+    // Use same timezone adjustment as in analyzeNetworkState
+    const utcHour = new Date().getUTCHours();
+    const timezoneOffset = 6; // Same timezone offset as main calculations
+    const currentHour = (utcHour + timezoneOffset) % 24;
     const isPeakHour = currentHour >= 17 && currentHour <= 21; // 5-9 PM peak demand
     
     const priorityLoads: { [householdId: number]: string[] } = {};
@@ -299,7 +302,11 @@ export class MLEnergyEngine {
   }
 
   private analyzeNetworkState(households: Household[], weather: WeatherCondition): NetworkState {
-    const currentHour = new Date().getHours();
+    // Use local time instead of UTC for solar calculations
+    // Convert UTC to a reasonable local time (assuming user timezone)
+    const utcHour = new Date().getUTCHours();
+    const timezoneOffset = 6; // Assume user timezone is 6 hours ahead of UTC (e.g., Central European Time)
+    const currentHour = (utcHour + timezoneOffset) % 24; // Add timezone offset
     const dayOfWeek = new Date().getDay();
 
     const householdsWithPredictions = households.map(household => {
