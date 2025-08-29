@@ -945,9 +945,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const realUserHouseholds = households.filter((h: any) => h.userId !== null && h.userId !== 0 && h.userId !== 999);
       
       const currentTime = Date.now();
+      // Use Indian Standard Time (IST) for accurate solar calculations
       const now = new Date();
-      const timeOfDay = now.getHours();
-      const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+      const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const istTime = new Date(utcTime + (5.5 * 3600000)); // Add 5.5 hours for IST
+      const timeOfDay = istTime.getHours();
+      const isWeekend = istTime.getDay() === 0 || istTime.getDay() === 6;
       
       // REAL demand patterns based on actual residential usage
       let baseDemand = 20; // Base nighttime demand
@@ -961,9 +964,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         baseDemand *= 0.8; // Lower weekend demand
       }
       
-      // Weather calculation using current time variables  
-      const month = now.getMonth(); // 0-11
-      const hour = now.getHours();
+      // Weather calculation using IST time variables  
+      const month = istTime.getMonth(); // 0-11
+      const hour = istTime.getHours();
       const isDay = hour >= 6 && hour <= 18;
       const isDayTime = hour >= 7 && hour <= 17; // Peak solar hours
       
@@ -1016,7 +1019,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Calculate supply from actual user solar installations
       let baseSupply = 0;
-      if (timeOfDay >= 6 && timeOfDay <= 18) { // Only during daylight
+      if (hour >= 6 && hour <= 18) { // Only during daylight (using IST hour)
         const totalSolarCapacity = realUserHouseholds.reduce((sum: number, h: any) => sum + (h.solarCapacity || 0), 0);
         const solarEfficiency = weather.efficiency / 100;
         baseSupply = (totalSolarCapacity / 1000) * solarEfficiency; // Convert to kW and apply efficiency
