@@ -41,6 +41,11 @@ export default function StoragePage() {
   const [editingTrade, setEditingTrade] = useState<ExtendedEnergyTrade | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedAcceptance, setSelectedAcceptance] = useState<any>(null);
+  const [isCoordinationDialogOpen, setIsCoordinationDialogOpen] = useState(false);
+  const [isRatingDialogOpen, setIsRatingDialogOpen] = useState(false);
+  const [tradeRating, setTradeRating] = useState(0);
+  const [ratingComment, setRatingComment] = useState('');
 
   // Fetch energy trades
   const { data: energyTrades = [], isLoading, error, refetch } = useQuery<ExtendedEnergyTrade[]>({
@@ -199,6 +204,7 @@ export default function StoragePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
       toast({
         title: "Trade Accepted",
         description: "You have successfully accepted this trade offer.",
@@ -212,6 +218,75 @@ export default function StoragePage() {
       });
     },
   });
+
+  // Share contact information mutation
+  const shareContactMutation = useMutation({
+    mutationFn: async (acceptanceId: number) => {
+      return apiRequest('POST', `/api/trade-acceptances/${acceptanceId}/share-contact`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
+      toast({
+        title: "Contact Shared",
+        description: "Contact information has been shared for energy delivery coordination.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to share contact information. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Complete trade mutation
+  const completeTradeCompletionMutation = useMutation({
+    mutationFn: async ({ acceptanceId, status }: { acceptanceId: number; status: string }) => {
+      return apiRequest('PATCH', `/api/trade-acceptances/${acceptanceId}`, { status });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      toast({
+        title: "Trade Updated",
+        description: "Trade status has been updated successfully.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update trade status. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleShareContact = (acceptance: any) => {
+    setSelectedAcceptance(acceptance);
+    setIsCoordinationDialogOpen(true);
+  };
+
+  const handleConfirmTransfer = (acceptance: any) => {
+    completeTradeCompletionMutation.mutate({ acceptanceId: acceptance.id, status: 'completed' });
+  };
+
+  const handleRateTrade = (acceptance: any) => {
+    setSelectedAcceptance(acceptance);
+    setIsRatingDialogOpen(true);
+  };
+
+  const submitRating = () => {
+    // Here you would typically send the rating to backend
+    // For now, we'll just show a success message
+    toast({
+      title: "Rating Submitted",
+      description: `Thank you for rating this trade experience ${tradeRating}/5 stars!`,
+    });
+    setIsRatingDialogOpen(false);
+    setTradeRating(0);
+    setRatingComment('');
+  };
 
   const createForm = useForm<z.infer<typeof tradeFormSchema>>({
     resolver: zodResolver(tradeFormSchema),
@@ -799,23 +874,125 @@ export default function StoragePage() {
                             </div>
                           </div>
                           
-                          <div className="text-sm text-gray-600">
-                            {isAccepted ? (
-                              <div className="text-green-700 bg-green-100 p-2 rounded">
-                                ✅ Great news! Someone has accepted your {trade.tradeType === 'sell' ? 'energy listing' : 'energy request'}. 
-                                Contact details have been shared and you'll be notified via email.
+                          {isAccepted && acceptance && (
+                            <div className="mt-4 space-y-3">
+                              <div className="text-green-700 bg-green-100 p-3 rounded-lg">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <CheckCircle className="h-4 w-4" />
+                                  <span className="font-medium">Trade Accepted!</span>
+                                </div>
+                                <p className="text-sm">
+                                  Someone has accepted your {trade.tradeType === 'sell' ? 'energy listing' : 'energy request'}.
+                                </p>
                               </div>
-                            ) : isPending ? (
-                              <div className="text-yellow-700 bg-yellow-100 p-2 rounded">
-                                ⏳ Your {trade.tradeType === 'sell' ? 'energy listing' : 'energy request'} is active and visible to others. 
-                                You'll be notified when someone accepts your offer.
+                              
+                              {/* Trade Workflow Steps */}
+                              <div className="bg-white border rounded-lg p-4">
+                                <h4 className="font-medium mb-3 text-gray-900">Next Steps:</h4>
+                                <div className="space-y-2">
+                                  {/* Step 1: Share Contact */}
+                                  {acceptance.status === 'accepted' && (
+                                    <div className="flex items-center justify-between p-2 bg-blue-50 rounded">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm">1</div>
+                                        <span className="text-sm">Share contact information for coordination</span>
+                                      </div>
+                                      <Button 
+                                        size="sm" 
+                                        onClick={() => handleShareContact(acceptance)}
+                                        disabled={shareContactMutation.isPending}
+                                        data-testid="button-share-contact"
+                                      >
+                                        {shareContactMutation.isPending ? 'Sharing...' : 'Share Contact'}
+                                      </Button>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Step 2: Coordinate */}
+                                  {(acceptance.status === 'contacted' || acceptance.status === 'in_progress') && (
+                                    <>
+                                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                                        <CheckCircle className="w-5 h-5 text-green-600" />
+                                        <span className="text-sm text-green-700">Contact information shared</span>
+                                      </div>
+                                      <div className="flex items-center justify-between p-2 bg-orange-50 rounded">
+                                        <div className="flex items-center gap-2">
+                                          <div className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm">2</div>
+                                          <span className="text-sm">Coordinate delivery/pickup with the other party</span>
+                                        </div>
+                                        <Badge variant="secondary">In Progress</Badge>
+                                      </div>
+                                    </>
+                                  )}
+                                  
+                                  {/* Step 3: Confirm Transfer */}
+                                  {acceptance.status === 'in_progress' && (
+                                    <div className="flex items-center justify-between p-2 bg-purple-50 rounded">
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm">3</div>
+                                        <span className="text-sm">Confirm energy transfer completed</span>
+                                      </div>
+                                      <Button 
+                                        size="sm" 
+                                        onClick={() => handleConfirmTransfer(acceptance)}
+                                        disabled={completeTradeCompletionMutation.isPending}
+                                        data-testid="button-confirm-transfer"
+                                      >
+                                        {completeTradeCompletionMutation.isPending ? 'Confirming...' : 'Confirm Transfer'}
+                                      </Button>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Step 4: Rate Experience */}
+                                  {acceptance.status === 'completed' && (
+                                    <>
+                                      <div className="flex items-center gap-2 p-2 bg-green-50 rounded">
+                                        <CheckCircle className="w-5 h-5 text-green-600" />
+                                        <span className="text-sm text-green-700">Energy transfer completed</span>
+                                      </div>
+                                      <div className="flex items-center justify-between p-2 bg-yellow-50 rounded">
+                                        <div className="flex items-center gap-2">
+                                          <div className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-sm">4</div>
+                                          <span className="text-sm">Rate your trading experience</span>
+                                        </div>
+                                        <Button 
+                                          size="sm" 
+                                          onClick={() => handleRateTrade(acceptance)}
+                                          data-testid="button-rate-trade"
+                                        >
+                                          Rate Trade
+                                        </Button>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
                               </div>
-                            ) : (
-                              <div className="text-gray-600 bg-gray-100 p-2 rounded">
-                                ℹ️ This {trade.tradeType === 'sell' ? 'listing' : 'request'} is no longer active. Status: {trade.status}
+                            </div>
+                          )}
+                          
+                          {isPending && (
+                            <div className="text-yellow-700 bg-yellow-100 p-3 rounded-lg mt-4">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                <span className="font-medium">Waiting for Acceptance</span>
                               </div>
-                            )}
-                          </div>
+                              <p className="text-sm mt-1">
+                                Your {trade.tradeType === 'sell' ? 'energy listing' : 'energy request'} is active and visible to others.
+                              </p>
+                            </div>
+                          )}
+                          
+                          {!isAccepted && !isPending && (
+                            <div className="text-gray-600 bg-gray-100 p-3 rounded-lg mt-4">
+                              <div className="flex items-center gap-2">
+                                <AlertTriangle className="h-4 w-4" />
+                                <span className="font-medium">Trade Inactive</span>
+                              </div>
+                              <p className="text-sm mt-1">
+                                This {trade.tradeType === 'sell' ? 'listing' : 'request'} is no longer active. Status: {trade.status}
+                              </p>
+                            </div>
+                          )}
                         </Card>
                       );
                     })}
@@ -892,6 +1069,106 @@ export default function StoragePage() {
                 </div>
               </form>
             </Form>
+          </DialogContent>
+        </Dialog>
+
+        {/* Coordination Dialog */}
+        <Dialog open={isCoordinationDialogOpen} onOpenChange={setIsCoordinationDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Share Contact Information</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                This will share your contact information with the other party for energy delivery coordination.
+              </p>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Information to be shared:</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• Your name: {user?.username}</li>
+                  <li>• Your email: {user?.email}</li>
+                  <li>• Your phone: {user?.phone || 'Not provided'}</li>
+                  <li>• Your location: {user?.district}, {user?.state}</li>
+                </ul>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsCoordinationDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => {
+                    if (selectedAcceptance) {
+                      shareContactMutation.mutate(selectedAcceptance.id);
+                    }
+                    setIsCoordinationDialogOpen(false);
+                  }}
+                  disabled={shareContactMutation.isPending}
+                  data-testid="button-confirm-share-contact"
+                >
+                  {shareContactMutation.isPending ? 'Sharing...' : 'Share Contact Info'}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Rating Dialog */}
+        <Dialog open={isRatingDialogOpen} onOpenChange={setIsRatingDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Rate Your Trading Experience</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                How was your energy trading experience? Your feedback helps improve our platform.
+              </p>
+              
+              {/* Star Rating */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Rating</label>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setTradeRating(star)}
+                      className={`text-2xl ${star <= tradeRating ? 'text-yellow-500' : 'text-gray-300'} hover:text-yellow-400`}
+                      data-testid={`star-${star}`}
+                    >
+                      ⭐
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Comment */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Comments (Optional)</label>
+                <textarea
+                  value={ratingComment}
+                  onChange={(e) => setRatingComment(e.target.value)}
+                  className="w-full p-3 border rounded-lg resize-none h-20"
+                  placeholder="Share your thoughts about this trade..."
+                  data-testid="textarea-rating-comment"
+                />
+              </div>
+              
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => {
+                  setIsRatingDialogOpen(false);
+                  setTradeRating(0);
+                  setRatingComment('');
+                }}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={submitRating}
+                  disabled={tradeRating === 0}
+                  data-testid="button-submit-rating"
+                >
+                  Submit Rating
+                </Button>
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
       </div>
