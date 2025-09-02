@@ -892,6 +892,10 @@ export class DatabaseStorage implements IStorage {
       .limit(limit);
   }
 
+  // Add cache for AI insights to prevent excessive API usage
+  private static aiInsightCache = new Map<string, { data: any; timestamp: number; }>();
+  private static AI_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
   async getRealtimeMarketData(latitude: number, longitude: number): Promise<any> {
     const db = await this.getDb();
     
@@ -952,37 +956,61 @@ export class DatabaseStorage implements IStorage {
       // Calculate solar efficiency percentage for display
       const solarEfficiency = Math.round(weatherMultiplier * 100);
       
-      // Use Gemini AI to enhance market predictions (optional, for performance optimization)
+      // Use cached AI insights to drastically reduce API usage
       let aiEnhancedData = {};
-      try {
-        if (process.env.GOOGLE_API_KEY) {
-          const { GoogleGenerativeAI } = await import("@google/generative-ai");
-          const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-          
-          const marketPrompt = `As an energy market analyst, analyze this real-time data:
-          Location: ${latitude}, ${longitude}
-          Weather: ${realWeatherData.condition}, ${realWeatherData.temperature}°C, ${realWeatherData.cloudCover}% cloud cover
-          Current Supply: ${realtimeSupply} kW
-          Current Demand: ${realtimeDemand} kW
-          
-          Provide a brief market insight (max 50 words) focusing on:
-          1. Short-term price trend prediction
-          2. Grid stability factors
-          3. Optimal trading time recommendations
-          
-          Return JSON: {"insight": "text", "trend": "up/down/stable", "optimal_time": "morning/afternoon/evening"}`;
-          
-          const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-          const result = await model.generateContent(marketPrompt);
-          const response = await result.response;
-          const text = response.text();
-          if (text) {
-            aiEnhancedData = JSON.parse(text.replace(/```json\n?|```\n?/g, '').trim());
+      const cacheKey = `${Math.round(latitude * 100)}_${Math.round(longitude * 100)}_${realWeatherData.condition}_${realtimeSupply}_${realtimeDemand}`;
+      const cachedInsight = (this.constructor as typeof DatabaseStorage).aiInsightCache.get(cacheKey);
+      
+      // Use cached data if available and fresh (5 minutes)
+      if (cachedInsight && Date.now() - cachedInsight.timestamp < (this.constructor as typeof DatabaseStorage).AI_CACHE_DURATION) {
+        aiEnhancedData = cachedInsight.data;
+        console.log(`🤖 Using cached AI insight to save API costs`);
+      } else {
+        // Only call Gemini AI if cache is stale or missing
+        try {
+          if (process.env.GOOGLE_API_KEY) {
+            const { GoogleGenerativeAI } = await import("@google/generative-ai");
+            const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+            
+            const marketPrompt = `As an energy market analyst, analyze this real-time data:
+            Location: ${latitude}, ${longitude}
+            Weather: ${realWeatherData.condition}, ${realWeatherData.temperature}°C, ${realWeatherData.cloudCover}% cloud cover
+            Current Supply: ${realtimeSupply} kW
+            Current Demand: ${realtimeDemand} kW
+            
+            Provide a brief market insight (max 50 words) focusing on:
+            1. Short-term price trend prediction
+            2. Grid stability factors
+            3. Optimal trading time recommendations
+            
+            Return JSON: {"insight": "text", "trend": "up/down/stable", "optimal_time": "morning/afternoon/evening"}`;
+            
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+            const result = await model.generateContent(marketPrompt);
+            const response = await result.response;
+            const text = response.text();
+            if (text) {
+              aiEnhancedData = JSON.parse(text.replace(/```json\n?|```\n?/g, '').trim());
+              
+              // Cache the result for 5 minutes
+              (this.constructor as typeof DatabaseStorage).aiInsightCache.set(cacheKey, {
+                data: aiEnhancedData,
+                timestamp: Date.now()
+              });
+              
+              console.log(`🤖 Gemini AI market insight (fresh):`, aiEnhancedData);
+            }
           }
-          console.log(`🤖 Gemini AI market insight:`, aiEnhancedData);
+        } catch (error: any) {
+          console.log(`🤖 Gemini AI enhancement skipped:`, error?.message || String(error));
+          
+          // Use fallback insight if API fails
+          aiEnhancedData = {
+            insight: `${realtimeSupply < realtimeDemand ? 'High demand may increase prices' : 'Stable supply-demand balance'}. Weather: ${realWeatherData.condition}.`,
+            trend: realtimeSupply < realtimeDemand ? 'up' : 'stable',
+            optimal_time: 'afternoon'
+          };
         }
-      } catch (error: any) {
-        console.log(`🤖 Gemini AI enhancement skipped:`, error?.message || String(error));
       }
 
       console.log(`⚡ Real-time market calculation:`);

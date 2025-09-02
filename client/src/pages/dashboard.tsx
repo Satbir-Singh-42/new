@@ -104,7 +104,7 @@ export default function Dashboard() {
   // Fetch ONLY real user energy trades - no synthetic/fake data
   const { data: energyTrades = [], isLoading: tradesLoading } = useQuery({
     queryKey: ['/api/energy-trades'],
-    refetchInterval: user ? 10000 : false, // Only fetch for authenticated users
+    refetchInterval: user ? 20000 : false, // Reduced from 10s to 20s to optimize performance
     enabled: !!user, // Only run query if user is authenticated
   });
 
@@ -125,7 +125,7 @@ export default function Dashboard() {
     };
   }>({
     queryKey: ['/api/market/realtime', userLocation?.latitude, userLocation?.longitude],
-    refetchInterval: userLocation ? 5000 : false, // Only update when location is available
+    refetchInterval: userLocation ? 30000 : false, // Reduced from 5s to 30s to save API costs
     retry: 3,
     enabled: !!user && !!userLocation, // Only fetch when user is logged in and location is available
     queryFn: async () => {
@@ -180,7 +180,7 @@ export default function Dashboard() {
   // Fetch ONLY real user households - no demo/synthetic data
   const { data: userHouseholds = [] } = useQuery<Household[]>({
     queryKey: ['/api/households'],
-    refetchInterval: user ? 15000 : false, // Only fetch for authenticated users
+    refetchInterval: user ? 60000 : false, // Reduced to 1 minute - household data changes infrequently
     enabled: !!user, // Only run query if user is authenticated
   });
 
@@ -204,7 +204,7 @@ export default function Dashboard() {
     };
   }>({
     queryKey: ['/api/analytics/network'], 
-    refetchInterval: user ? 15000 : false, // Only fetch for authenticated users
+    refetchInterval: user ? 60000 : false, // Analytics don't need frequent updates - changed to 1 minute
     enabled: !!user, // Only run query if user is authenticated
     retry: false,
   });
