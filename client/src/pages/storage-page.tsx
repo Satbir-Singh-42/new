@@ -74,7 +74,7 @@ export default function StoragePage() {
   });
 
   // Fetch applications TO user's trades (people who want to accept their trades)
-  const { data: tradeApplications = [], isLoading: applicationsLoading } = useQuery<any[]>({
+  const { data: tradeApplications = [], isLoading: applicationsLoading, error: applicationsError } = useQuery<any[]>({
     queryKey: ['/api/my-trade-applications'],
     enabled: !!user,
     retry: 2,
@@ -236,6 +236,7 @@ export default function StoragePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
       toast({
         title: "Contact Shared",
         description: "Contact information has been shared for energy delivery coordination.",
@@ -257,6 +258,7 @@ export default function StoragePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
       queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
       toast({
         title: "Trade Updated",
@@ -823,7 +825,18 @@ export default function StoragePage() {
                 </p>
               </CardHeader>
               <CardContent>
-                {tradeApplications.length === 0 ? (
+                {applicationsLoading ? (
+                  <div className="text-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin text-indigo-600 mx-auto mb-4" />
+                    <p className="text-gray-500">Loading applications...</p>
+                  </div>
+                ) : applicationsError ? (
+                  <div className="text-center py-8">
+                    <AlertTriangle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+                    <p className="text-red-500">Error loading applications</p>
+                    <p className="text-sm text-gray-400">Please try refreshing the page</p>
+                  </div>
+                ) : tradeApplications.length === 0 ? (
                   <div className="text-center py-8" data-testid="empty-applications">
                     <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500">No applications yet</p>
