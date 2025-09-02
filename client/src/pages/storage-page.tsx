@@ -568,11 +568,11 @@ export default function StoragePage() {
               <div className="flex items-center gap-2">
                 <Database className="h-5 w-5" />
                 <span className="font-medium">Data Status:</span>
-                {!isLoading && !error && energyTrades.length > 0 && (
-                  <Badge variant="default">Connected - {energyTrades.length} trades found</Badge>
+                {!isLoading && !error && myAllTrades.length > 0 && (
+                  <Badge variant="default">Connected - {myAllTrades.length} personal trades found</Badge>
                 )}
-                {!isLoading && energyTrades.length === 0 && (
-                  <Badge variant="outline">No trading activity yet</Badge>
+                {!isLoading && myAllTrades.length === 0 && (
+                  <Badge variant="outline">No personal trades yet</Badge>
                 )}
                 {error && (
                   <Badge variant="destructive">Connection Error</Badge>
