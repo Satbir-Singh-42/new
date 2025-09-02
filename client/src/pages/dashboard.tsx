@@ -125,7 +125,7 @@ export default function Dashboard() {
     };
   }>({
     queryKey: ['/api/market/realtime', userLocation?.latitude, userLocation?.longitude],
-    refetchInterval: userLocation ? 30000 : false, // Reduced from 5s to 30s to save API costs
+    refetchInterval: false, // Disable automatic polling - only fetch when user interacts
     retry: 3,
     enabled: !!user && !!userLocation, // Only fetch when user is logged in and location is available
     queryFn: async () => {

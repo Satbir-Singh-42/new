@@ -956,9 +956,9 @@ export class DatabaseStorage implements IStorage {
       // Calculate solar efficiency percentage for display
       const solarEfficiency = Math.round(weatherMultiplier * 100);
       
-      // Use cached AI insights to drastically reduce API usage
+      // Use cached AI insights to drastically reduce API usage - cache by location and weather only
       let aiEnhancedData = {};
-      const cacheKey = `${Math.round(latitude * 100)}_${Math.round(longitude * 100)}_${realWeatherData.condition}_${realtimeSupply}_${realtimeDemand}`;
+      const cacheKey = `${Math.round(latitude * 100)}_${Math.round(longitude * 100)}_${realWeatherData.condition}`;
       const cachedInsight = (this.constructor as typeof DatabaseStorage).aiInsightCache.get(cacheKey);
       
       // Use cached data if available and fresh (5 minutes)
