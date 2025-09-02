@@ -35,7 +35,7 @@ const tradeFormSchema = z.object({
 
 export default function StoragePage() {
   const { user, isLoading: authLoading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'my-listings' | 'my-requests' | 'request-results'>('my-listings');
+  const [activeTab, setActiveTab] = useState<'my-listings' | 'my-requests' | 'request-results' | 'applications'>('my-listings');
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [editingTrade, setEditingTrade] = useState<ExtendedEnergyTrade | null>(null);
@@ -66,6 +66,16 @@ export default function StoragePage() {
   // Fetch user's trade acceptances
   const { data: tradeAcceptances = [], isLoading: acceptancesLoading } = useQuery<any[]>({
     queryKey: ['/api/trade-acceptances'],
+    enabled: !!user,
+    retry: 2,
+    retryDelay: 1000,
+    staleTime: 1000 * 60 * 5,
+    refetchInterval: 1000 * 30,
+  });
+
+  // Fetch applications TO user's trades (people who want to accept their trades)
+  const { data: tradeApplications = [], isLoading: applicationsLoading } = useQuery<any[]>({
+    queryKey: ['/api/my-trade-applications'],
     enabled: !!user,
     retry: 2,
     retryDelay: 1000,
@@ -581,7 +591,7 @@ export default function StoragePage() {
 
         {/* Main Trading Tabs */}
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="my-listings" className="flex items-center justify-center gap-2 text-xs sm:text-sm" data-testid="tab-listings">
               <Store className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">My Sell Listings</span>
@@ -593,6 +603,12 @@ export default function StoragePage() {
               <span className="hidden sm:inline">My Buy Requests</span>
               <span className="sm:hidden">Buy</span>
               ({myRequests.length})
+            </TabsTrigger>
+            <TabsTrigger value="applications" className="flex items-center justify-center gap-2 text-xs sm:text-sm" data-testid="tab-applications">
+              <User className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Applications</span>
+              <span className="sm:hidden">Apps</span>
+              ({tradeApplications.length})
             </TabsTrigger>
             <TabsTrigger value="request-results" className="flex items-center justify-center gap-2 text-xs sm:text-sm" data-testid="tab-request-results">
               <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -786,6 +802,111 @@ export default function StoragePage() {
                             </AlertDialog>
                           </div>
                         )}
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Applications to Your Trades */}
+          <TabsContent value="applications">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5 text-indigo-600" />
+                  Applications to Your Trades
+                </CardTitle>
+                <p className="text-sm text-gray-600">
+                  People who want to accept your energy listings and requests
+                </p>
+              </CardHeader>
+              <CardContent>
+                {tradeApplications.length === 0 ? (
+                  <div className="text-center py-8" data-testid="empty-applications">
+                    <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500">No applications yet</p>
+                    <p className="text-sm text-gray-400">When people accept your trades, they'll appear here for coordination</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {tradeApplications.map((application) => (
+                      <Card key={application.acceptance.id} className="p-4 border-l-4 border-l-blue-500">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="font-medium text-lg">
+                              {application.trade.tradeType === 'sell' ? '🔋 Energy Sale' : '⚡ Energy Purchase'}: {formatEnergy(application.trade.energyAmount)} kWh
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              Applied: {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
+                            </div>
+                          </div>
+                          <Badge variant="default" className="bg-blue-600">
+                            New Application
+                          </Badge>
+                        </div>
+                        
+                        {/* Applicant Details */}
+                        <div className="bg-blue-50 p-3 rounded-lg mb-4">
+                          <h4 className="font-medium mb-2 text-blue-900">👤 Applicant Details</h4>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <span className="text-blue-700 font-medium">Name:</span>
+                              <div>{application.applicant?.username || 'Anonymous'}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Household:</span>
+                              <div>{application.applicantHousehold?.name || 'Not specified'}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Location:</span>
+                              <div>{application.applicant?.district}, {application.applicant?.state}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Contact:</span>
+                              <div>{application.applicant?.email || 'Not available'}</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Trade Details */}
+                        <div className="grid grid-cols-3 gap-4 mb-4">
+                          <div>
+                            <span className="text-sm text-gray-600">Price per kWh:</span>
+                            <div className="font-medium">{formatPrice(application.trade.pricePerKwh)}</div>
+                          </div>
+                          <div>
+                            <span className="text-sm text-gray-600">Total Value:</span>
+                            <div className="font-medium">{formatTotal(application.trade.energyAmount, application.trade.pricePerKwh)}</div>
+                          </div>
+                          <div>
+                            <span className="text-sm text-gray-600">Status:</span>
+                            <div className="font-medium text-blue-600">{application.acceptance.status}</div>
+                          </div>
+                        </div>
+                        
+                        {/* Action Buttons */}
+                        <div className="flex justify-end gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => completeTradeCompletionMutation.mutate({ acceptanceId: application.acceptance.id, status: 'rejected' })}
+                            disabled={completeTradeCompletionMutation.isPending}
+                            data-testid="button-reject-application"
+                          >
+                            Reject
+                          </Button>
+                          <Button 
+                            size="sm"
+                            onClick={() => handleShareContact(application.acceptance)}
+                            disabled={shareContactMutation.isPending}
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                            data-testid="button-approve-application"
+                          >
+                            {shareContactMutation.isPending ? 'Approving...' : 'Approve & Share Contact'}
+                          </Button>
+                        </div>
                       </Card>
                     ))}
                   </div>

@@ -668,6 +668,21 @@ export function setupRoutes(app: Express) {
     }
   });
 
+  // Get applications TO your trades (people who want to accept your trades)
+  app.get("/api/my-trade-applications", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    try {
+      const applications = await storage.getApplicationsToMyTrades(req.user!.id);
+      res.json(applications);
+    } catch (error) {
+      console.error('Failed to get trade applications:', error);
+      res.status(500).json({ error: "Failed to get trade applications" });
+    }
+  });
+
   // Share contact information after acceptance
   app.post("/api/trade-acceptances/:id/share-contact", async (req, res) => {
     if (!req.isAuthenticated()) {

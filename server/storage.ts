@@ -1,5 +1,5 @@
 import { households, energyReadings, energyTrades, tradeAcceptances, users, chatMessages, userSessions, type User, type InsertUser, type Household, type InsertHousehold, type EnergyReading, type InsertEnergyReading, type EnergyTrade, type InsertEnergyTrade, type TradeAcceptance, type InsertTradeAcceptance, type ChatMessage, type InsertChatMessage } from "@shared/schema";
-import { eq, desc, count, ne, and, sql, inArray } from "drizzle-orm";
+import { eq, desc, count, ne, and, or, sql, inArray } from "drizzle-orm";
 import { weatherService } from "./weather-service";
 import { GoogleGenAI } from "@google/genai";
 import { readFileSync } from 'fs';
@@ -66,6 +66,7 @@ export interface IStorage {
   getTradeAcceptancesByTrade(tradeId: number): Promise<TradeAcceptance[]>;
   getTradeAcceptancesByUser(userId: number): Promise<TradeAcceptance[]>;
   updateTradeAcceptanceStatus(id: number, status: string): Promise<TradeAcceptance | undefined>;
+  getApplicationsToMyTrades(userId: number): Promise<any[]>;
   getAvailableOffersForUser(userId: number): Promise<any[]>;
   shareContactInfo(acceptanceId: number): Promise<any>;
 }
@@ -509,6 +510,53 @@ export class MemStorage implements IStorage {
       .filter(offer => offer.user !== null);
     
     return availableOffers;
+  }
+
+  async getApplicationsToMyTrades(userId: number): Promise<any[]> {
+    // Get user's household IDs
+    const userHouseholds = Array.from(this.households.values()).filter(h => h.userId === userId);
+    const householdIds = userHouseholds.map(h => h.id);
+    
+    if (householdIds.length === 0) {
+      return [];
+    }
+    
+    // Get all applications to user's trades
+    const applications = [];
+    
+    for (const acceptance of Array.from(this.tradeAcceptances.values())) {
+      const trade = this.energyTrades.get(acceptance.tradeId);
+      if (!trade) continue;
+      
+      // Check if this trade belongs to the user
+      const isMyTrade = (trade.tradeType === 'sell' && trade.sellerHouseholdId && householdIds.includes(trade.sellerHouseholdId)) ||
+                        (trade.tradeType === 'buy' && trade.buyerHouseholdId && householdIds.includes(trade.buyerHouseholdId));
+      
+      if (isMyTrade) {
+        const applicant = this.users.get(acceptance.acceptorUserId);
+        const applicantHousehold = Array.from(this.households.values()).find(h => h.userId === applicant?.id);
+        
+        applications.push({
+          acceptance,
+          trade,
+          applicant: applicant ? {
+            id: applicant.id,
+            username: applicant.username,
+            email: applicant.email,
+            phone: applicant.phone,
+            state: applicant.state,
+            district: applicant.district,
+          } : null,
+          applicantHousehold: applicantHousehold ? {
+            id: applicantHousehold.id,
+            name: applicantHousehold.name,
+          } : null,
+        });
+      }
+    }
+    
+    // Sort by acceptance date (newest first)
+    return applications.sort((a, b) => new Date(b.acceptance.acceptedAt).getTime() - new Date(a.acceptance.acceptedAt).getTime());
   }
 
   async shareContactInfo(acceptanceId: number): Promise<any> {
@@ -1243,6 +1291,60 @@ export class DatabaseStorage implements IStorage {
     return availableOffers;
   }
 
+  // Get applications TO user's trades (people who want to accept their trades)
+  async getApplicationsToMyTrades(userId: number): Promise<any[]> {
+    const db = await this.getDb();
+    
+    // Get user's household IDs to find their trades
+    const userHouseholds = await db.select({ id: households.id })
+      .from(households)
+      .where(eq(households.userId, userId));
+    
+    const householdIds = userHouseholds.map((h: { id: number }) => h.id);
+    
+    if (householdIds.length === 0) {
+      return [];
+    }
+    
+    // Get all applications to user's trades
+    const applications = await db
+      .select({
+        acceptance: tradeAcceptances,
+        trade: energyTrades,
+        applicant: {
+          id: users.id,
+          username: users.username,
+          email: users.email,
+          phone: users.phone,
+          state: users.state,
+          district: users.district,
+        },
+        applicantHousehold: {
+          id: households.id,
+          name: households.name,
+        }
+      })
+      .from(tradeAcceptances)
+      .innerJoin(energyTrades, eq(tradeAcceptances.tradeId, energyTrades.id))
+      .innerJoin(users, eq(tradeAcceptances.acceptorUserId, users.id))
+      .leftJoin(households, eq(users.id, households.userId))
+      .where(
+        or(
+          and(
+            eq(energyTrades.tradeType, 'sell'),
+            inArray(energyTrades.sellerHouseholdId, householdIds)
+          ),
+          and(
+            eq(energyTrades.tradeType, 'buy'),
+            inArray(energyTrades.buyerHouseholdId, householdIds)
+          )
+        )
+      )
+      .orderBy(desc(tradeAcceptances.acceptedAt));
+    
+    return applications;
+  }
+
   async shareContactInfo(acceptanceId: number): Promise<any> {
     const db = await this.getDb();
     
@@ -1798,6 +1900,18 @@ class HybridStorage implements IStorage {
       }
     }
     return await this.memoryStorage.shareContactInfo(acceptanceId);
+  }
+
+  async getApplicationsToMyTrades(userId: number): Promise<any[]> {
+    if (this.isDatabaseAvailable && this.databaseStorage) {
+      try {
+        return await this.databaseStorage.getApplicationsToMyTrades(userId);
+      } catch (error) {
+        console.warn('Database getApplicationsToMyTrades failed, falling back to memory:', error);
+        this.isDatabaseAvailable = false;
+      }
+    }
+    return await this.memoryStorage.getApplicationsToMyTrades(userId);
   }
 }
 
