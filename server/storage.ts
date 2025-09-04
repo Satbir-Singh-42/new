@@ -986,8 +986,20 @@ export class DatabaseStorage implements IStorage {
       const weatherMultiplier = (weatherMultipliers[realWeatherData.condition] || 0.6) * 
                                cloudCoverImpact * tempImpact * dayNightImpact;
       
-      // Calculate realistic supply based on weather
-      const realtimeSupply = Math.round(baseGenerationCapacity * weatherMultiplier);
+      // Calculate available supply from active sell trades
+      const activeSellTrades = await db
+        .select()
+        .from(energyTrades)
+        .where(eq(energyTrades.tradeType, 'sell'))
+        .andWhere(eq(energyTrades.status, 'pending'));
+      
+      const availableTradeSupply = activeSellTrades.reduce((total: number, trade: any) => total + trade.energyAmount, 0);
+      
+      // Calculate realistic solar supply based on weather
+      const weatherSupply = Math.round(baseGenerationCapacity * weatherMultiplier);
+      
+      // Total supply = weather-based generation + available trades
+      const realtimeSupply = weatherSupply + availableTradeSupply;
       
       // Calculate demand based on time of day and weather (higher demand in extreme weather)
       const timeOfDay = new Date().getHours();
@@ -1062,7 +1074,9 @@ export class DatabaseStorage implements IStorage {
       }
 
       console.log(`⚡ Real-time market calculation:`);
-      console.log(`   Supply: ${realtimeSupply} kW (${realWeatherData.condition}, ${weatherMultiplier.toFixed(2)}x)`);
+      console.log(`   Weather Supply: ${weatherSupply} kW (${realWeatherData.condition}, ${weatherMultiplier.toFixed(2)}x)`);
+      console.log(`   Trade Supply: ${availableTradeSupply} kW from ${activeSellTrades.length} pending trades`);
+      console.log(`   Total Supply: ${realtimeSupply} kW`);
       console.log(`   Demand: ${realtimeDemand} kW (temp: ${realWeatherData.temperature}°C)`);
       console.log(`   Grid Stability: ${Math.round(gridStability)}%`);
       console.log(`   Solar Efficiency: ${solarEfficiency}%`);
