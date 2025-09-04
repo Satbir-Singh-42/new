@@ -990,8 +990,7 @@ export class DatabaseStorage implements IStorage {
       const activeSellTrades = await db
         .select()
         .from(energyTrades)
-        .where(eq(energyTrades.tradeType, 'sell'))
-        .andWhere(eq(energyTrades.status, 'pending'));
+        .where(and(eq(energyTrades.tradeType, 'sell'), eq(energyTrades.status, 'pending')));
       
       const availableTradeSupply = activeSellTrades.reduce((total: number, trade: any) => total + trade.energyAmount, 0);
       
@@ -1001,13 +1000,23 @@ export class DatabaseStorage implements IStorage {
       // Total supply = weather-based generation + available trades
       const realtimeSupply = weatherSupply + availableTradeSupply;
       
-      // Calculate demand based on time of day and weather (higher demand in extreme weather)
-      const timeOfDay = new Date().getHours();
-      const peakHours = (timeOfDay >= 17 && timeOfDay <= 21) || (timeOfDay >= 8 && timeOfDay <= 10);
-      const weatherDemandMultiplier = realWeatherData.temperature > 30 ? 1.3 : 
-                                    realWeatherData.temperature < 15 ? 1.2 : 1.0;
-      const baseDemand = peakHours ? 140 : 100;
-      const realtimeDemand = Math.round(baseDemand * weatherDemandMultiplier);
+      // Calculate actual demand from active buy trades
+      const activeBuyTrades = await db
+        .select()
+        .from(energyTrades)
+        .where(and(eq(energyTrades.tradeType, 'buy'), eq(energyTrades.status, 'pending')));
+      
+      const activeDemand = activeBuyTrades.reduce((total: number, trade: any) => total + trade.energyAmount, 0);
+      
+      // Use actual demand from trades, or calculate realistic baseline if no active trades
+      const realtimeDemand = activeDemand > 0 ? activeDemand : (() => {
+        const timeOfDay = new Date().getHours();
+        const peakHours = (timeOfDay >= 17 && timeOfDay <= 21) || (timeOfDay >= 8 && timeOfDay <= 10);
+        const weatherDemandMultiplier = realWeatherData.temperature > 30 ? 1.3 : 
+                                       realWeatherData.temperature < 15 ? 1.2 : 1.0;
+        const baseDemand = peakHours ? 140 : 100;
+        return Math.round(baseDemand * weatherDemandMultiplier);
+      })();
       
       // Calculate grid stability based on supply/demand balance
       const supplyDemandRatio = realtimeSupply / realtimeDemand;
@@ -1075,9 +1084,10 @@ export class DatabaseStorage implements IStorage {
 
       console.log(`⚡ Real-time market calculation:`);
       console.log(`   Weather Supply: ${weatherSupply} kW (${realWeatherData.condition}, ${weatherMultiplier.toFixed(2)}x)`);
-      console.log(`   Trade Supply: ${availableTradeSupply} kW from ${activeSellTrades.length} pending trades`);
+      console.log(`   Trade Supply: ${availableTradeSupply} kW from ${activeSellTrades.length} pending sell trades`);
       console.log(`   Total Supply: ${realtimeSupply} kW`);
-      console.log(`   Demand: ${realtimeDemand} kW (temp: ${realWeatherData.temperature}°C)`);
+      console.log(`   Trade Demand: ${activeDemand} kW from ${activeBuyTrades.length} pending buy trades`);
+      console.log(`   Total Demand: ${realtimeDemand} kW`);
       console.log(`   Grid Stability: ${Math.round(gridStability)}%`);
       console.log(`   Solar Efficiency: ${solarEfficiency}%`);
       
