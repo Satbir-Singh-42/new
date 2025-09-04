@@ -130,6 +130,9 @@ export function setupAuth(app: Express) {
       id: user.id,
       username: user.username,
       email: user.email,
+      phone: user.phone,
+      state: user.state,
+      district: user.district,
     });
   });
 
