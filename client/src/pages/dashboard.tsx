@@ -125,8 +125,10 @@ export default function Dashboard() {
     };
   }>({
     queryKey: ['/api/market/realtime', userLocation?.latitude, userLocation?.longitude],
-    refetchInterval: false, // Disable automatic polling - only fetch when user interacts
+    refetchInterval: 20000, // Auto-refresh every 20 seconds for real-time data
     retry: 3,
+    staleTime: 0, // Always consider data stale to force fresh fetches
+    gcTime: 1000, // Keep cache for only 1 second (TanStack Query v5 uses gcTime instead of cacheTime)
     enabled: !!user && !!userLocation, // Only fetch when user is logged in and location is available
     queryFn: async () => {
       if (!userLocation) {
