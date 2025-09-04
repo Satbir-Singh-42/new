@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navbar from "@/components/navbar";
-import { Calendar, Zap, AlertTriangle, CheckCircle, Loader2, LogIn, User, Database, TrendingUp, TrendingDown, ShoppingCart, Store, RefreshCw, Edit2, Trash2, Handshake, Plus } from "lucide-react";
+import { Calendar, Zap, AlertTriangle, CheckCircle, Loader2, LogIn, User, Database, TrendingUp, TrendingDown, ShoppingCart, Store, RefreshCw, Edit2, Trash2, Handshake, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -181,6 +181,27 @@ export default function StoragePage() {
       toast({
         title: "Error",
         description: "Failed to update trade. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Cancel trade mutation
+  const cancelTradeMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return apiRequest('PATCH', `/api/energy-trades/${id}/cancel`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      toast({
+        title: "Trade Cancelled",
+        description: "Your energy trade has been cancelled successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Cancel Failed",
+        description: error.message || "Failed to cancel trade. Please try again.",
         variant: "destructive",
       });
     },
@@ -684,6 +705,17 @@ export default function StoragePage() {
                               <Edit2 className="h-3 w-3" />
                               Edit
                             </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => cancelTradeMutation.mutate(trade.id)}
+                              disabled={cancelTradeMutation.isPending}
+                              className="flex items-center gap-1 text-orange-600 hover:text-orange-700"
+                              data-testid="button-cancel-trade"
+                            >
+                              <X className="h-3 w-3" />
+                              Cancel
+                            </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <Button variant="destructive" size="sm" className="flex items-center gap-1">
@@ -779,6 +811,17 @@ export default function StoragePage() {
                             >
                               <Edit2 className="h-3 w-3" />
                               Edit
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => cancelTradeMutation.mutate(trade.id)}
+                              disabled={cancelTradeMutation.isPending}
+                              className="flex items-center gap-1 text-orange-600 hover:text-orange-700"
+                              data-testid="button-cancel-trade"
+                            >
+                              <X className="h-3 w-3" />
+                              Cancel
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>

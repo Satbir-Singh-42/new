@@ -194,6 +194,44 @@ export function setupRoutes(app: Express) {
     }
   });
 
+  // Cancel energy trade (update status to 'cancelled')
+  app.patch("/api/energy-trades/:id/cancel", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    try {
+      const tradeId = parseInt(req.params.id);
+
+      // Get the existing trade to verify ownership
+      const existingTrade = await storage.getEnergyTradeById(tradeId);
+      if (!existingTrade) {
+        return res.status(404).json({ error: "Trade not found" });
+      }
+
+      // Check if trade can be cancelled (only pending trades)
+      if (existingTrade.status !== 'pending') {
+        return res.status(400).json({ error: "Only pending trades can be cancelled" });
+      }
+
+      // Get user's household to verify ownership
+      const userHouseholds = await storage.getHouseholdsByUser(req.user!.id);
+      const userHouseholdId = userHouseholds[0]?.id;
+      
+      if (!userHouseholdId || 
+          (existingTrade.sellerHouseholdId !== userHouseholdId && 
+           existingTrade.buyerHouseholdId !== userHouseholdId)) {
+        return res.status(403).json({ error: "You can only cancel your own trades" });
+      }
+
+      const cancelledTrade = await storage.updateEnergyTradeStatus(tradeId, 'cancelled');
+      res.json({ success: true, trade: cancelledTrade, message: "Trade cancelled successfully" });
+    } catch (error) {
+      console.error('Failed to cancel trade:', error);
+      res.status(500).json({ error: "Failed to cancel trade" });
+    }
+  });
+
   // Delete energy trade
   app.delete("/api/energy-trades/:id", async (req, res) => {
     if (!req.isAuthenticated()) {
