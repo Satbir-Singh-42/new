@@ -789,6 +789,53 @@ export function setupRoutes(app: Express) {
     }
   });
 
+  // Weather simulation endpoints
+  app.post("/api/weather/override", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    try {
+      const { condition, temperature, cloudCover } = req.body;
+      
+      let override: any = null;
+      if (condition && condition !== 'real') {
+        override = { condition };
+        if (temperature) override.temperature = temperature;
+        if (cloudCover !== undefined) override.cloudCover = cloudCover;
+      }
+
+      // Apply override to weather service
+      if (storage instanceof require('./storage').DatabaseStorage) {
+        (storage as any).weatherService.setWeatherOverride(override);
+      }
+
+      console.log(`🌤️ Weather override applied: ${JSON.stringify(override)}`);
+      res.json({ success: true, override });
+    } catch (error) {
+      console.error('Failed to set weather override:', error);
+      res.status(500).json({ error: "Failed to set weather override" });
+    }
+  });
+
+  app.get("/api/weather/override", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    try {
+      let override = null;
+      if (storage instanceof require('./storage').DatabaseStorage) {
+        override = (storage as any).weatherService.getWeatherOverride();
+      }
+
+      res.json({ override });
+    } catch (error) {
+      console.error('Failed to get weather override:', error);
+      res.status(500).json({ error: "Failed to get weather override" });
+    }
+  });
+
   // TRADE ACCEPTANCE ENDPOINTS - Peer-to-peer trading without payment processing
   
   // Get available offers for a user (exclude their own offers)

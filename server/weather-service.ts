@@ -19,6 +19,18 @@ interface LocationCoordinates {
 class WeatherService {
   private cache = new Map<string, { data: WeatherData; timestamp: number }>();
   private readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+  private weatherOverride: Partial<WeatherData> | null = null;
+
+  // Set weather override for simulation/testing
+  setWeatherOverride(override: Partial<WeatherData> | null) {
+    this.weatherOverride = override;
+    console.log('🌤️ Weather override set:', override);
+  }
+
+  // Get current weather override
+  getWeatherOverride(): Partial<WeatherData> | null {
+    return this.weatherOverride;
+  }
 
   async getCurrentWeather(location: LocationCoordinates): Promise<WeatherData> {
     const cacheKey = `${location.latitude.toFixed(4)},${location.longitude.toFixed(4)}`;
@@ -100,6 +112,26 @@ class WeatherService {
         sunset: todaySunset
       };
       
+      // Apply weather override if set
+      if (this.weatherOverride) {
+        console.log('🌤️ Applying weather override to real data');
+        const overriddenData = { ...weatherData, ...this.weatherOverride };
+        
+        // Recalculate cloud cover based on condition if overridden
+        if (this.weatherOverride.condition && !this.weatherOverride.cloudCover) {
+          switch (this.weatherOverride.condition) {
+            case 'sunny': overriddenData.cloudCover = 10; break;
+            case 'partly-cloudy': overriddenData.cloudCover = 45; break;
+            case 'cloudy': overriddenData.cloudCover = 75; break;
+            case 'overcast': overriddenData.cloudCover = 95; break;
+            case 'rainy': overriddenData.cloudCover = 90; break;
+            case 'stormy': overriddenData.cloudCover = 100; break;
+          }
+        }
+        
+        return overriddenData;
+      }
+
       // Cache the result
       this.cache.set(cacheKey, { data: weatherData, timestamp: Date.now() });
       
