@@ -1257,57 +1257,32 @@ export default function StoragePage() {
                         <div className="space-y-4">
                           {tradeApplications.filter((application: any) => 
                             !['applicant_shared_contact', 'applicant_rejected'].includes(application.acceptance.status)
-                          ).map((application: any) => (
-                            <Card key={application.acceptance.id} className="overflow-hidden bg-gradient-to-r from-green-50 to-white border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow duration-200">
-                              <div className="p-3 md:p-4">
-                                <div className="space-y-3">
-                                  {/* Status Badge - moved to top */}
-                                  <div className="flex justify-between items-center mb-4">
-                                    <Badge 
-                                      variant={
-                                        application.acceptance.status === 'applied' ? 'secondary' :
-                                        application.acceptance.status === 'owner_accepted' ? 'default' :
-                                        application.acceptance.status === 'owner_rejected' ? 'destructive' :
-                                        'outline'
-                                      }
-                                      className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium"
-                                    >
-                                      {application.acceptance.status === 'applied' && <Calendar className="h-4 w-4" />}
-                                      {application.acceptance.status === 'owner_accepted' && <CheckCircle className="h-4 w-4" />}
-                                      {application.acceptance.status === 'owner_rejected' && <X className="h-4 w-4" />}
-                                      {application.acceptance.status === 'applied' ? 'New Application' :
-                                       application.acceptance.status === 'owner_accepted' ? 'Approved - Waiting for Response' :
-                                       application.acceptance.status === 'owner_rejected' ? 'Rejected by You' :
-                                       application.acceptance.status}
+                          ).map((application: any) => {
+                            const statusMeta = getApplicationStatusMeta(application.acceptance.status);
+                            
+                            return (
+                            <Card key={application.acceptance.id} className="overflow-hidden border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow duration-200" data-testid={`card-application-${application.acceptance.id}`}>
+                              <CardHeader className="pb-3">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <Zap className="h-5 w-5 text-green-600" />
+                                    <h3 className="text-lg font-semibold text-gray-900" data-testid={`text-title-${application.acceptance.id}`}>
+                                      Energy {application.trade?.tradeType === 'sell' ? 'Sale' : 'Purchase'}: {formatEnergy(application.trade?.energyAmount || 0)}
+                                    </h3>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <Badge variant={statusMeta.variant} className="flex items-center gap-1" data-testid={`badge-status-${application.acceptance.id}`}>
+                                      <statusMeta.icon className="h-3 w-3" />
+                                      {statusMeta.label}
                                     </Badge>
                                   </div>
-                                  
-                                  {/* Header with trade type */}
-                                  <div className="text-lg md:text-xl font-bold text-gray-900 flex items-center gap-2">
-                                    {application.trade?.tradeType === 'sell' ? (
-                                      <><TrendingUp className="h-5 w-5 text-green-600" /> Your Sell Listing</>
-                                    ) : (
-                                      <><TrendingDown className="h-5 w-5 text-blue-600" /> Your Buy Request</>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Enhanced trade info - compact */}
-                                  <div className="bg-white rounded-lg border border-gray-100 p-3 space-y-2">
-                                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                      <div className="text-lg font-bold text-gray-900">
-                                        {formatEnergy(application.trade?.energyAmount)} • {formatPrice(application.trade?.pricePerKwh)}/kWh
-                                      </div>
-                                      <div className="text-lg font-bold text-green-600">
-                                        {formatTotal(application.trade?.energyAmount, application.trade?.pricePerKwh)}
-                                      </div>
-                                    </div>
-                                    <div className="text-xs text-gray-500 flex items-center gap-1">
-                                      <Clock className="h-3 w-3" />
-                                      Applied {format(new Date(application.acceptance.acceptedAt), 'MMM dd, h:mm a')}
-                                    </div>
-                                  </div>
                                 </div>
-                              </div>
+                                <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                                  Applied: {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
+                                </div>
+                              </CardHeader>
+
+                              <CardContent className="py-3">
                               
                               {/* Applicant Details Section */}
                               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
