@@ -44,6 +44,8 @@ export default function StoragePage() {
   const [editingTrade, setEditingTrade] = useState<ExtendedEnergyTrade | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedTradeDetail, setSelectedTradeDetail] = useState<any>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // Fetch energy trades
   const { data: energyTrades = [], isLoading, error, refetch } = useQuery<ExtendedEnergyTrade[]>({
@@ -1432,12 +1434,13 @@ export default function StoragePage() {
               <CardContent>
                 {(() => {
                   // Get results from both sources (applications I submitted and applications to my trades)
+                  // Include all completed statuses: approved, withdrawn, declined, contact shared, rejected
                   const myApplicationResults = tradeAcceptances.filter((acceptance: any) => 
-                    ['contact_shared', 'applicant_rejected'].includes(acceptance.status)
+                    ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected'].includes(acceptance.status)
                   );
                   
                   const myTradeResults = tradeApplications.filter((application: any) => 
-                    ['contact_shared', 'applicant_rejected'].includes(application.acceptance.status)
+                    ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected'].includes(application.acceptance.status)
                   );
                   
                   const allResults = [...myApplicationResults, ...myTradeResults];
