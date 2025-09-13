@@ -1152,11 +1152,9 @@ export default function Dashboard() {
                     className="text-xs sm:text-sm px-3 py-2"
                   >
                     <ArrowRightLeft className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                    {(() => {
-                      // Count user's active/pending trades only
-                      const activeTrades = Array.isArray(energyTrades) 
-                        ? energyTrades.filter(trade => trade.status === 'pending' || trade.status === 'accepted').length 
-                        : 0;
+{(() => {
+                      // Count user's active trades - backend already filters out cancelled/completed trades
+                      const activeTrades = Array.isArray(energyTrades) ? energyTrades.length : 0;
                       return (
                         <>
                           <span className="hidden sm:inline">Your Trades ({activeTrades})</span>
