@@ -1852,21 +1852,11 @@ export default function StoragePage() {
         {/* Trade Detail Modal */}
         <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
           <DialogContent className="max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto sm:mx-auto">
-            <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <DialogTitle className="flex items-center gap-2 text-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-blue-600" />
                 Trade Contact Details
               </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0 hover:bg-gray-100"
-                onClick={() => setIsDetailModalOpen(false)}
-                data-testid="button-close-detail-modal"
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
             </DialogHeader>
             {selectedTradeDetail && (
               <div className="space-y-4">
