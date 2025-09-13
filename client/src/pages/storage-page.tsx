@@ -1136,17 +1136,17 @@ export default function StoragePage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                       <div>
                                         <span className="text-gray-500">Name:</span>
-                                        <div className="font-medium">{acceptance.applicant?.username || acceptance.user?.username || 'User'}</div>
+                                        <div className="font-medium">{user?.username || 'User'}</div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Household:</span>
-                                        <div className="font-medium">{acceptance.household?.name || acceptance.applicant?.household?.name || 'Not specified'}</div>
+                                        <div className="font-medium">{userHouseholds[0]?.name || 'Not specified'}</div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Location:</span>
                                         <div className="font-medium">
-                                          {acceptance.applicant?.district || acceptance.user?.district || 'Not specified'}
-                                          {(acceptance.applicant?.state || acceptance.user?.state) && `, ${acceptance.applicant?.state || acceptance.user?.state}`}
+                                          {user?.district || 'Not specified'}
+                                          {user?.state && `, ${user.state}`}
                                         </div>
                                       </div>
                                       <div>
@@ -1155,12 +1155,12 @@ export default function StoragePage() {
                                           {acceptance.status === 'owner_accepted' 
                                             ? (
                                                 <div className="space-y-1">
-                                                  <div>{acceptance.applicant?.email || acceptance.user?.email || 'Email not available'}</div>
-                                                  {(acceptance.applicant?.phone || acceptance.user?.phone) && (
-                                                    <div>{acceptance.applicant?.phone || acceptance.user?.phone}</div>
+                                                  <div>{user?.email || 'Email not available'}</div>
+                                                  {user?.phone && (
+                                                    <div>{user.phone}</div>
                                                   )}
-                                                  {acceptance.household?.address && (
-                                                    <div className="text-xs text-gray-600">Address: {acceptance.household.address}</div>
+                                                  {userHouseholds[0]?.address && (
+                                                    <div className="text-xs text-gray-600">Address: {userHouseholds[0].address}</div>
                                                   )}
                                                 </div>
                                               )

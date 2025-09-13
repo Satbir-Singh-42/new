@@ -1452,6 +1452,7 @@ export class DatabaseStorage implements IStorage {
         applicantHousehold: {
           id: households.id,
           name: households.name,
+          address: households.address,
         }
       })
       .from(tradeAcceptances)
