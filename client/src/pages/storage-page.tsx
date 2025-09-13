@@ -159,11 +159,22 @@ export default function StoragePage() {
       totalTrades: myAllTrades.length,
       activeSellListings: myListings.filter(t => t.status === 'pending').length,
       activeBuyRequests: myRequests.filter(t => t.status === 'pending').length,
-      completedTrades: myAllTrades.filter(t => t.status === 'completed').length,
+      completedTrades: (() => {
+        // Count successful contact shared results from both my applications and applications to my trades
+        const myContactSharedApplications = tradeAcceptances.filter((acceptance: any) => 
+          acceptance.status === 'contacted'
+        ).length;
+        
+        const myContactSharedTrades = tradeApplications.filter((application: any) => 
+          application.acceptance?.status === 'contacted'
+        ).length;
+        
+        return myContactSharedApplications + myContactSharedTrades;
+      })(),
       joinDate: user.createdAt ? new Date(user.createdAt) : new Date(),
       availableOffers: availableOffers.length
     };
-  }, [user, myAllTrades, myListings, myRequests, availableOffers]);
+  }, [user, myAllTrades, myListings, myRequests, availableOffers, tradeAcceptances, tradeApplications]);
 
   // Helper function to get counterparty name safely
   const getCounterpartyName = useCallback((trade: ExtendedEnergyTrade) => {
