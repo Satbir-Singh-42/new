@@ -624,7 +624,7 @@ export default function StoragePage() {
           dotClass: 'bg-red-500',
           showDetail: false
         };
-      case 'contact_shared':
+      case 'contacted':
         return {
           label: 'Contact Shared',
           variant: 'default' as const,
@@ -661,7 +661,7 @@ export default function StoragePage() {
 
   // Helper function to determine if a status allows viewing detail
   const canViewDetail = (status: string) => {
-    return ['awarded', 'contact_shared'].includes(status);
+    return ['awarded', 'contacted'].includes(status);
   };
 
   // Helper function to get consistent badge configuration
@@ -914,7 +914,7 @@ export default function StoragePage() {
               <span className="sm:hidden">Results</span>
               ({(() => {
                 // Use centralized status mapping to determine finalized results
-                const finalizedStatuses = ['contact_shared', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
+                const finalizedStatuses = ['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
                 const myApplicationResults = tradeAcceptances.filter((acceptance: any) => 
                   finalizedStatuses.includes(acceptance.status)
                 );
@@ -1129,18 +1129,18 @@ export default function StoragePage() {
                     
                     {/* Applications I submitted to others */}
                     {tradeAcceptances.filter((acceptance: any) => 
-                      !['applicant_shared_contact', 'applicant_rejected'].includes(acceptance.status)
+                      !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
                     ).length > 0 && (
                       <div>
                         <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
                           <ArrowRight className="h-4 w-4" />
                           Applications I Submitted ({tradeAcceptances.filter((acceptance: any) => 
-                            !['applicant_shared_contact', 'applicant_rejected'].includes(acceptance.status)
+                            !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
                           ).length})
                         </h3>
                         <div className="space-y-4">
                           {tradeAcceptances.filter((acceptance: any) => 
-                            !['applicant_shared_contact', 'applicant_rejected'].includes(acceptance.status)
+                            !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
                           ).map((acceptance: any) => {
                             // Find trade and offer match data
                             let trade = energyTrades.find(t => t.id === acceptance.tradeId);
@@ -1296,18 +1296,18 @@ export default function StoragePage() {
 
                     {/* Applications from others to my trades */}
                     {tradeApplications.filter((application: any) => 
-                      !['applicant_shared_contact', 'applicant_rejected'].includes(application.acceptance.status)
+                      !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance.status)
                     ).length > 0 && (
                       <div>
                         <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
                           <ArrowLeft className="h-4 w-4" />
                           Applications to My Trades ({tradeApplications.filter((application: any) => 
-                            !['applicant_shared_contact', 'applicant_rejected'].includes(application.acceptance.status)
+                            !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance.status)
                           ).length})
                         </h3>
                         <div className="space-y-4">
                           {tradeApplications.filter((application: any) => 
-                            !['applicant_shared_contact', 'applicant_rejected'].includes(application.acceptance.status)
+                            !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance.status)
                           ).map((application: any) => {
                             const statusMeta = getApplicationStatusMeta(application.acceptance.status);
                             
@@ -1485,7 +1485,7 @@ export default function StoragePage() {
                   // Get results from both sources using centralized status mapping
                   // Include all finalized statuses that represent completed interactions
                   const getFinalizedStatuses = () => {
-                    return ['contact_shared', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
+                    return ['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
                   };
                   
                   const finalizedStatuses = getFinalizedStatuses();
@@ -1521,7 +1521,7 @@ export default function StoragePage() {
                           <div className="space-y-3">
                             {myApplicationResults.map((acceptance: any) => (
                               <Card key={acceptance.id} className={`p-3 border-l-4 ${
-                                acceptance.status === 'contact_shared' 
+                                acceptance.status === 'contacted' 
                                   ? 'border-l-green-400' 
                                   : acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
@@ -1614,7 +1614,7 @@ export default function StoragePage() {
                                   </div>
                                 </div>
                                 
-                                {acceptance.status === 'contact_shared' ? (
+                                {acceptance.status === 'contacted' ? (
                                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                                     <div className="flex items-center gap-2 text-green-800 mb-2">
                                       <CheckCircle className="h-4 w-4" />
@@ -1662,7 +1662,7 @@ export default function StoragePage() {
                           <div className="space-y-3">
                             {myTradeResults.map((application: any) => (
                               <Card key={application.acceptance.id} className={`p-3 border-l-4 ${
-                                application.acceptance.status === 'contact_shared' 
+                                application.acceptance.status === 'contacted' 
                                   ? 'border-l-green-400' 
                                   : application.acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
@@ -1710,7 +1710,7 @@ export default function StoragePage() {
                                   </div>
                                 </div>
                                 
-                                {application.acceptance.status === 'contact_shared' ? (
+                                {application.acceptance.status === 'contacted' ? (
                                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                                     <div className="flex items-center gap-2 text-green-800 mb-2">
                                       <CheckCircle className="h-4 w-4" />
