@@ -1241,9 +1241,9 @@ export default function Dashboard() {
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
                             <div className="bg-green-50 p-2 sm:p-3 rounded-lg mb-3">
+                              <p className="text-xs text-gray-500">Total: {formatTradeTotal(item.trade.energyAmount, item.trade.pricePerKwh)}</p>
                               <p className="text-xs sm:text-sm text-gray-600">Price per kWh</p>
                               <p className="font-bold text-xl sm:text-2xl text-green-700">{formatTradePrice(item.trade.pricePerKwh)}</p>
-                              <p className="text-xs text-gray-500">Total: {formatTradeTotal(item.trade.energyAmount, item.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(item.trade) ? (
                               <div className="space-y-2">
@@ -1395,9 +1395,9 @@ export default function Dashboard() {
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
                             <div className="bg-blue-50 p-2 sm:p-3 rounded-lg mb-3">
+                              <p className="text-xs text-gray-500">Total: {formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
                               <p className="text-xs sm:text-sm text-gray-600">Willing to pay</p>
                               <p className="font-bold text-xl sm:text-2xl text-blue-700">{formatTradePrice(request.trade.pricePerKwh)}</p>
-                              <p className="text-xs text-gray-500">Total: {formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(request.trade) ? (
                               <div className="space-y-2">
