@@ -1152,13 +1152,15 @@ export default function Dashboard() {
                     className="text-xs sm:text-sm px-3 py-2"
                   >
                     <ArrowRightLeft className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-{(() => {
-                      // Count user's own trades from their actual energy trades, not from marketplace offers
-                      const totalUserTrades = Array.isArray(energyTrades) ? energyTrades.length : 0;
+                    {(() => {
+                      // Count user's active/pending trades only
+                      const activeTrades = Array.isArray(energyTrades) 
+                        ? energyTrades.filter(trade => trade.status === 'pending' || trade.status === 'accepted').length 
+                        : 0;
                       return (
                         <>
-                          <span className="hidden sm:inline">Your Trade ({totalUserTrades})</span>
-                          <span className="sm:hidden">Trade ({totalUserTrades})</span>
+                          <span className="hidden sm:inline">Your Trades ({activeTrades})</span>
+                          <span className="sm:hidden">Trades ({activeTrades})</span>
                         </>
                       );
                     })()}
