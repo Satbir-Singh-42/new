@@ -1309,6 +1309,51 @@ export default function StoragePage() {
                                 </div>
                               </div>
                               
+                              {/* Applicant Details Section */}
+                              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
+                                  <User className="h-4 w-4" />
+                                  <span>Applicant Details</span>
+                                </div>
+                                
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                  <div>
+                                    <span className="text-gray-500">Name:</span>
+                                    <div className="font-medium">{application.applicant?.username || 'User'}</div>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500">Household:</span>
+                                    <div className="font-medium">{application.applicantHousehold?.name || 'Not specified'}</div>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500">Location:</span>
+                                    <div className="font-medium">
+                                      {application.applicant?.district || 'Not specified'}
+                                      {application.applicant?.state && `, ${application.applicant.state}`}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500">Contact:</span>
+                                    <div className="font-medium">
+                                      {application.acceptance.status === 'owner_accepted' 
+                                        ? (
+                                            <div className="space-y-1">
+                                              <div>{application.applicant?.email || 'Email not available'}</div>
+                                              {application.applicant?.phone && (
+                                                <div>{application.applicant.phone}</div>
+                                              )}
+                                              {application.applicantHousehold?.address && (
+                                                <div className="text-xs text-gray-600">Address: {application.applicantHousehold.address}</div>
+                                              )}
+                                            </div>
+                                          )
+                                        : 'Hidden until approved'
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                               {/* Status Display for Applications to My Trades */}
                               {(() => {
                                 const status = application.acceptance.status;
