@@ -1631,28 +1631,87 @@ export default function StoragePage() {
                                   </div>
                                 </div>
                                 
-                                {acceptance.status === 'contacted' ? (
-                                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-green-800 mb-2">
-                                      <CheckCircle className="h-4 w-4" />
-                                      <span className="font-medium">Contact Details Shared</span>
-                                    </div>
-                                    <p className="text-sm text-green-700 mb-3">
-                                      You shared contact details with the trade owner. Both parties can now coordinate the energy transfer.
-                                    </p>
-
-                                  </div>
-                                ) : (
-                                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-red-800 mb-2">
-                                      <X className="h-4 w-4" />
-                                      <span className="font-medium">Trade Rejected</span>
-                                    </div>
-                                    <p className="text-sm text-red-700 mb-3">
-                                      You rejected this trade after the owner accepted your application. The trade is now available for other applicants.
-                                    </p>
-                                  </div>
-                                )}
+                                {(() => {
+                                  switch (acceptance.status) {
+                                    case 'contacted':
+                                      return (
+                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-green-800 mb-2">
+                                            <CheckCircle className="h-4 w-4" />
+                                            <span className="font-medium">Contact Details Shared</span>
+                                          </div>
+                                          <p className="text-sm text-green-700 mb-3">
+                                            You shared contact details with the trade owner. Both parties can now coordinate the energy transfer.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'awarded':
+                                      return (
+                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-blue-800 mb-2">
+                                            <CheckCircle className="h-4 w-4" />
+                                            <span className="font-medium">Application Approved</span>
+                                          </div>
+                                          <p className="text-sm text-blue-700 mb-3">
+                                            Great news! The trade owner approved your application. You can now share your contact details to coordinate the energy transfer.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'applicant_rejected':
+                                      return (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Trade Rejected</span>
+                                          </div>
+                                          <p className="text-sm text-red-700 mb-3">
+                                            You rejected this trade after the owner accepted your application. The trade is now available for other applicants.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'owner_rejected':
+                                      return (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Application Declined</span>
+                                          </div>
+                                          <p className="text-sm text-red-700 mb-3">
+                                            The trade owner declined your application. You can look for other available trades in the marketplace.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'withdrawn':
+                                      return (
+                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Application Withdrawn</span>
+                                          </div>
+                                          <p className="text-sm text-gray-700 mb-3">
+                                            You withdrew your application before the trade owner could respond. The trade remains available for other applicants.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    default:
+                                      return (
+                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                            <Clock className="h-4 w-4" />
+                                            <span className="font-medium">Status: {acceptance.status}</span>
+                                          </div>
+                                          <p className="text-sm text-gray-700">
+                                            Application status is being processed.
+                                          </p>
+                                        </div>
+                                      );
+                                  }
+                                })()}
                               </Card>
                             ))}
                           </div>
@@ -1719,48 +1778,87 @@ export default function StoragePage() {
                                   </div>
                                 </div>
                                 
-                                {application.acceptance.status === 'contacted' ? (
-                                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-green-800 mb-2">
-                                      <CheckCircle className="h-4 w-4" />
-                                      <span className="font-medium">Contact Details Shared</span>
-                                    </div>
-                                    <p className="text-sm text-green-700 mb-3">
-                                      The applicant shared contact details. Both parties can now coordinate the energy transfer.
-                                    </p>
-
-                                  </div>
-                                ) : application.acceptance.status === 'awarded' ? (
-                                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-blue-800 mb-2">
-                                      <CheckCircle className="h-4 w-4" />
-                                      <span className="font-medium">Application Approved</span>
-                                    </div>
-                                    <p className="text-sm text-blue-700">
-                                      You approved this application. Waiting for the applicant to share contact details for coordination.
-                                    </p>
-                                  </div>
-                                ) : application.acceptance.status === 'applicant_rejected' ? (
-                                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-red-800 mb-2">
-                                      <X className="h-4 w-4" />
-                                      <span className="font-medium">Application Rejected by Applicant</span>
-                                    </div>
-                                    <p className="text-sm text-red-700 mb-3">
-                                      The applicant rejected the trade after you approved their application. Your trade is now available for other applicants.
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-gray-800 mb-2">
-                                      <Clock className="h-4 w-4" />
-                                      <span className="font-medium">Status: {application.acceptance.status}</span>
-                                    </div>
-                                    <p className="text-sm text-gray-700">
-                                      Application status is being processed.
-                                    </p>
-                                  </div>
-                                )}
+                                {(() => {
+                                  switch (application.acceptance.status) {
+                                    case 'contacted':
+                                      return (
+                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-green-800 mb-2">
+                                            <CheckCircle className="h-4 w-4" />
+                                            <span className="font-medium">Contact Details Shared</span>
+                                          </div>
+                                          <p className="text-sm text-green-700 mb-3">
+                                            The applicant shared contact details. Both parties can now coordinate the energy transfer.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'awarded':
+                                      return (
+                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-blue-800 mb-2">
+                                            <CheckCircle className="h-4 w-4" />
+                                            <span className="font-medium">Application Approved</span>
+                                          </div>
+                                          <p className="text-sm text-blue-700">
+                                            You approved this application. Waiting for the applicant to share contact details for coordination.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'applicant_rejected':
+                                      return (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Application Rejected by Applicant</span>
+                                          </div>
+                                          <p className="text-sm text-red-700 mb-3">
+                                            The applicant rejected the trade after you approved their application. Your trade is now available for other applicants.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'owner_rejected':
+                                      return (
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Application Declined</span>
+                                          </div>
+                                          <p className="text-sm text-red-700 mb-3">
+                                            You declined this application. Your trade remains available for other applicants.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    case 'withdrawn':
+                                      return (
+                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                            <X className="h-4 w-4" />
+                                            <span className="font-medium">Application Withdrawn</span>
+                                          </div>
+                                          <p className="text-sm text-gray-700 mb-3">
+                                            The applicant withdrew their application before you could respond. Your trade remains available.
+                                          </p>
+                                        </div>
+                                      );
+                                    
+                                    default:
+                                      return (
+                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                            <Clock className="h-4 w-4" />
+                                            <span className="font-medium">Status: {application.acceptance.status}</span>
+                                          </div>
+                                          <p className="text-sm text-gray-700">
+                                            Application status is being processed.
+                                          </p>
+                                        </div>
+                                      );
+                                  }
+                                })()}
                               </Card>
                             ))}
                           </div>
