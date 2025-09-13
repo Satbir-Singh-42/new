@@ -1732,14 +1732,9 @@ export default function StoragePage() {
                                       <CheckCircle className="h-4 w-4" />
                                       <span className="font-medium">Application Approved</span>
                                     </div>
-                                    <p className="text-sm text-blue-700 mb-3">
+                                    <p className="text-sm text-blue-700">
                                       You approved this application. Waiting for the applicant to share contact details for coordination.
                                     </p>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="text-sm text-gray-600">
-                                        📧 Approval notification has been sent to the applicant
-                                      </div>
-                                    </div>
                                   </div>
                                 ) : application.acceptance.status === 'applicant_rejected' ? (
                                   <div className="bg-red-50 border border-red-200 rounded-lg p-3">
