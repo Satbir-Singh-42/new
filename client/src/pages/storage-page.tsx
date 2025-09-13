@@ -1464,18 +1464,18 @@ export default function StoragePage() {
                             <ArrowRight className="h-4 w-4" />
                             My Application Results ({myApplicationResults.length})
                           </h3>
-                          <div className="space-y-4">
+                          <div className="space-y-3">
                             {myApplicationResults.map((acceptance: any) => (
-                              <Card key={acceptance.id} className={`p-4 border-l-4 ${
+                              <Card key={acceptance.id} className={`p-3 border-l-4 ${
                                 acceptance.status === 'contact_shared' 
                                   ? 'border-l-green-400' 
                                   : acceptance.status === 'owner_accepted' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
                               }`}>
-                                <div className="flex justify-between items-start mb-4">
+                                <div className="flex justify-between items-start mb-3">
                                   <div className="flex-1">
-                                    <div className="space-y-2">
+                                    <div className="space-y-1">
                                       {(() => {
                                         // First try to find in energyTrades (my own trades), then in availableTradesData (others' trades)
                                         let trade = energyTrades.find(t => t.id === acceptance.tradeId);
@@ -1501,33 +1501,24 @@ export default function StoragePage() {
                                         const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'User');
                                         
                                         return (
-                                          <div className="bg-white rounded-lg border border-gray-100 p-4 md:p-6 space-y-4">
+                                          <div className="bg-white rounded-lg border border-gray-100 p-3 space-y-3">
                                             {/* Main trade info - responsive layout */}
-                                            <div className="space-y-2">
-                                              <div className="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                                            <div className="space-y-1">
+                                              <div className="text-base md:text-lg font-bold text-gray-900 leading-tight">
                                                 {formatEnergy(trade.energyAmount)} • {formatPrice(trade.pricePerKwh)}/kWh
                                               </div>
-                                              <div className="text-xl md:text-2xl font-bold text-green-600">
+                                              <div className="text-lg md:text-xl font-bold text-green-600">
                                                 Total: {formatTotal(trade.energyAmount, trade.pricePerKwh)}
                                               </div>
                                             </div>
                                             
                                             {/* Household and location info */}
-                                            <div className="space-y-2 border-t border-gray-100 pt-4">
-                                              <div className="text-base md:text-lg font-semibold text-gray-800">
+                                            <div className="space-y-1 border-t border-gray-100 pt-2">
+                                              <div className="text-sm md:text-base font-semibold text-gray-800">
                                                 {counterpartyName}
                                               </div>
-                                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 text-sm text-gray-600">
-                                                <span className="flex items-center gap-1">
-                                                  📍 {offerMatch?.user?.district || 'Location not available'}
-                                                </span>
-                                                <span className="hidden sm:inline">•</span>
-                                                <span className="flex items-center gap-1">
-                                                  🎯 Location based matching
-                                                </span>
-                                              </div>
-                                              <div className="text-sm text-gray-500">
-                                                📅 Listed on {format(new Date(trade.createdAt), 'MMM dd, yyyy')}
+                                              <div className="text-xs text-gray-600">
+                                                📍 {offerMatch?.user?.district || 'Location not available'} • 📅 {format(new Date(trade.createdAt), 'MMM dd')}
                                               </div>
                                             </div>
                                           </div>
@@ -1572,8 +1563,8 @@ export default function StoragePage() {
                                         )}
                                       </div>
                                     </div>
-                                    <div className="text-sm text-gray-500 mb-3">
-                                      Completed: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
+                                    <div className="text-xs text-gray-500 mb-2">
+                                      Completed: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                     </div>
                                   </div>
                                 </div>
@@ -1623,19 +1614,19 @@ export default function StoragePage() {
                             <ArrowLeft className="h-4 w-4" />
                             My Trade Results ({myTradeResults.length})
                           </h3>
-                          <div className="space-y-4">
+                          <div className="space-y-3">
                             {myTradeResults.map((application: any) => (
-                              <Card key={application.acceptance.id} className={`p-4 border-l-4 ${
+                              <Card key={application.acceptance.id} className={`p-3 border-l-4 ${
                                 application.acceptance.status === 'contact_shared' 
                                   ? 'border-l-green-400' 
                                   : application.acceptance.status === 'owner_accepted' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
                               }`}>
-                                <div className="flex justify-between items-start mb-4">
+                                <div className="flex justify-between items-start mb-3">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-2">
-                                      <div className="font-medium text-lg">
+                                      <div className="font-medium text-base">
                                         {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
                                       </div>
                                       <div className="flex items-center gap-2">
@@ -1677,11 +1668,8 @@ export default function StoragePage() {
                                         )}
                                       </div>
                                     </div>
-                                    <div className="text-sm text-gray-500 mb-3">
-                                      Trade: {formatEnergy(application.trade?.energyAmount)} at {formatPrice(application.trade?.pricePerKwh)}/kWh
-                                    </div>
-                                    <div className="text-sm text-gray-500 mb-3">
-                                      Completed: {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
+                                    <div className="text-xs text-gray-500 mb-2">
+                                      {formatEnergy(application.trade?.energyAmount)} at {formatPrice(application.trade?.pricePerKwh)}/kWh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
                                     </div>
                                   </div>
                                 </div>
