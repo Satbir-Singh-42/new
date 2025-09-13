@@ -1283,131 +1283,131 @@ export default function StoragePage() {
                               </CardHeader>
 
                               <CardContent className="py-3">
-                              
-                              {/* Applicant Details Section */}
-                              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-3">
-                                  <User className="h-4 w-4" />
-                                  <span>Applicant Details</span>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                                  <div>
-                                    <span className="text-gray-500">Name:</span>
-                                    <div className="font-medium">{application.applicant?.username || 'User'}</div>
+                                <div className="space-y-3">
+                                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <User className="h-4 w-4" />
+                                    <span>Applicant Details</span>
                                   </div>
-                                  <div>
-                                    <span className="text-gray-500">Household:</span>
-                                    <div className="font-medium">{application.applicantHousehold?.name || 'Not specified'}</div>
-                                  </div>
-                                  <div>
-                                    <span className="text-gray-500">Location:</span>
-                                    <div className="font-medium">
-                                      {application.applicant?.district || 'Not specified'}
-                                      {application.applicant?.state && `, ${application.applicant.state}`}
+                                  
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                                    <div>
+                                      <span className="text-gray-500">Name:</span>
+                                      <div className="font-medium">{application.applicant?.username || 'User'}</div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-500">Household:</span>
+                                      <div className="font-medium">{application.applicantHousehold?.name || 'Not specified'}</div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-500">Location:</span>
+                                      <div className="font-medium">
+                                        {application.applicant?.district || 'Not specified'}
+                                        {application.applicant?.state && `, ${application.applicant.state}`}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-500">Contact:</span>
+                                      <div className="font-medium">
+                                        {application.acceptance.status === 'owner_accepted' 
+                                          ? (
+                                              <div className="space-y-1">
+                                                <div>{application.applicant?.email || 'Email not available'}</div>
+                                                {application.applicant?.phone && (
+                                                  <div>{application.applicant.phone}</div>
+                                                )}
+                                                {application.applicantHousehold?.address && (
+                                                  <div className="text-xs text-gray-600">Address: {application.applicantHousehold.address}</div>
+                                                )}
+                                              </div>
+                                            )
+                                          : 'Hidden until approved'
+                                        }
+                                      </div>
                                     </div>
                                   </div>
-                                  <div>
-                                    <span className="text-gray-500">Contact:</span>
-                                    <div className="font-medium">
-                                      {application.acceptance.status === 'owner_accepted' 
-                                        ? (
-                                            <div className="space-y-1">
-                                              <div>{application.applicant?.email || 'Email not available'}</div>
-                                              {application.applicant?.phone && (
-                                                <div>{application.applicant.phone}</div>
-                                              )}
-                                              {application.applicantHousehold?.address && (
-                                                <div className="text-xs text-gray-600">Address: {application.applicantHousehold.address}</div>
-                                              )}
-                                            </div>
-                                          )
-                                        : 'Hidden until approved'
-                                      }
-                                    </div>
-                                  </div>
                                 </div>
-                              </div>
+                              </CardContent>
 
-                              {/* Status Display for Applications to My Trades */}
-                              {(() => {
-                                const status = application.acceptance.status;
-                                
-                                if (status === 'applied') {
-                                  return (
-                                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 shadow-sm">
-                                      <div className="space-y-2">
-                                        <div className="flex items-center gap-2 text-blue-800">
-                                          <Calendar className="h-4 w-4" />
-                                          <span className="font-medium">New Application Received!</span>
-                                        </div>
-                                        <div className="flex gap-2">
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => declineApplicationMutation.mutate(application.acceptance.id)}
-                                            disabled={declineApplicationMutation.isPending}
-                                            className="text-red-600 border-red-300 hover:bg-red-50"
-                                            data-testid="button-reject-application"
-                                          >
-                                            <X className="h-3 w-3 mr-1" />
-                                            {declineApplicationMutation.isPending ? 'Rejecting...' : 'Decline'}
-                                          </Button>
-                                          <Button
-                                            size="sm"
-                                            onClick={() => approveApplicationMutation.mutate(application.acceptance.id)}
-                                            disabled={approveApplicationMutation.isPending}
-                                            className="bg-green-600 hover:bg-green-700"
-                                            data-testid="button-approve-application"
-                                          >
-                                            <CheckCircle className="h-3 w-3 mr-1" />
-                                            {approveApplicationMutation.isPending ? 'Approving...' : 'Approve'}
-                                          </Button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                }
-                                
-                                if (status === 'owner_accepted') {
-                                  return (
-                                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                      <div className="flex items-center gap-2 text-green-800">
-                                        <CheckCircle className="h-4 w-4" />
-                                        <span className="font-medium">Application Approved</span>
-                                      </div>
-                                      <p className="text-sm text-green-700 mt-1">
-                                        You approved this application. Waiting for applicant to share contact or reject.
-                                      </p>
-                                    </div>
-                                  );
-                                }
-                                
-                                if (status === 'owner_rejected') {
-                                  return (
-                                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                      <div className="flex items-center gap-2 text-red-800">
-                                        <X className="h-4 w-4" />
-                                        <span className="font-medium">Application Rejected</span>
-                                      </div>
-                                      <p className="text-sm text-red-700 mt-1">
-                                        You rejected this application. Trade remains available.
-                                      </p>
-                                    </div>
-                                  );
-                                }
-                                
-                                return (
-                                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-gray-800">
-                                      <AlertTriangle className="h-4 w-4" />
-                                      <span className="font-medium">Status: {status}</span>
+                              <CardFooter className="pt-3 border-t">
+                                <div className="grid grid-cols-3 gap-4 w-full text-sm">
+                                  <div>
+                                    <span className="text-gray-500">Price per kWh:</span>
+                                    <div className="font-semibold" data-testid={`text-price-${application.acceptance.id}`}>{formatPrice(application.trade?.pricePerKwh || 0)}</div>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500">Total Value:</span>
+                                    <div className="font-semibold text-green-600" data-testid={`text-total-${application.acceptance.id}`}>{formatTotal(application.trade?.energyAmount || 0, application.trade?.pricePerKwh || 0)}</div>
+                                  </div>
+                                  <div>
+                                    <span className="text-gray-500">Status:</span>
+                                    <div className="flex items-center gap-1 font-medium">
+                                      <div className={`w-2 h-2 rounded-full ${statusMeta.dotClass}`}></div>
+                                      {statusMeta.label}
                                     </div>
                                   </div>
-                                );
-                              })()}
+                                </div>
+                              </CardFooter>
+
+                              
+                              {/* Action buttons */}
+                              {application.acceptance.status === 'applied' && (
+                                <div className="px-6 pb-4">
+                                  <div className="flex gap-2">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => declineApplicationMutation.mutate(application.acceptance.id)}
+                                      disabled={declineApplicationMutation.isPending}
+                                      className="text-red-600 border-red-300 hover:bg-red-50 flex-1"
+                                      data-testid="button-reject-application"
+                                    >
+                                      <X className="h-3 w-3 mr-1" />
+                                      {declineApplicationMutation.isPending ? 'Rejecting...' : 'Decline'}
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => approveApplicationMutation.mutate(application.acceptance.id)}
+                                      disabled={approveApplicationMutation.isPending}
+                                      className="bg-green-600 hover:bg-green-700 flex-1"
+                                      data-testid="button-approve-application"
+                                    >
+                                      <CheckCircle className="h-3 w-3 mr-1" />
+                                      {approveApplicationMutation.isPending ? 'Approving...' : 'Approve'}
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {application.acceptance.status === 'owner_accepted' && (
+                                <div className="px-6 pb-4">
+                                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-green-800">
+                                      <CheckCircle className="h-4 w-4" />
+                                      <span className="font-medium">Application Approved</span>
+                                    </div>
+                                    <p className="text-sm text-green-700 mt-1">
+                                      You approved this application. Waiting for applicant to share contact or reject.
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                              
+                              {application.acceptance.status === 'owner_rejected' && (
+                                <div className="px-6 pb-4">
+                                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-red-800">
+                                      <X className="h-4 w-4" />
+                                      <span className="font-medium">Application Rejected</span>
+                                    </div>
+                                    <p className="text-sm text-red-700 mt-1">
+                                      You rejected this application. Trade remains available.
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
                             </Card>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     )}
