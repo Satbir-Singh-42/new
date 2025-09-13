@@ -1945,8 +1945,8 @@ export default function StoragePage() {
                     );
                   } else if (isMyTrade) {
                     // This is from my trade results - show applicant's details
-                    const applicantUser = selectedTradeDetail.user;
-                    const applicantHousehold = selectedTradeDetail.household;
+                    const applicantUser = selectedTradeDetail.applicant;
+                    const applicantHousehold = selectedTradeDetail.applicantHousehold;
                     const trade = selectedTradeDetail.trade;
                     
                     return (
