@@ -1623,12 +1623,7 @@ export default function StoragePage() {
                                     <p className="text-sm text-green-700 mb-3">
                                       You shared contact details with the trade owner. Both parties can now coordinate the energy transfer.
                                     </p>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="text-sm font-medium text-gray-900 mb-2">Contact Information:</div>
-                                      <div className="text-sm text-gray-600">
-                                        📧 Email coordination details have been sent to both parties
-                                      </div>
-                                    </div>
+
                                   </div>
                                 ) : (
                                   <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -1719,12 +1714,7 @@ export default function StoragePage() {
                                     <p className="text-sm text-green-700 mb-3">
                                       The applicant shared contact details. Both parties can now coordinate the energy transfer.
                                     </p>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="text-sm font-medium text-gray-900 mb-2">Contact Information:</div>
-                                      <div className="text-sm text-gray-600">
-                                        📧 Email coordination details have been sent to both parties
-                                      </div>
-                                    </div>
+
                                   </div>
                                 ) : application.acceptance.status === 'awarded' ? (
                                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
