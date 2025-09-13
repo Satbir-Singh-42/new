@@ -1851,12 +1851,22 @@ export default function StoragePage() {
 
         {/* Trade Detail Modal */}
         <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
+          <DialogContent className="max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto sm:mx-auto">
+            <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <DialogTitle className="flex items-center gap-2 text-lg">
                 <FileText className="h-5 w-5 text-blue-600" />
                 Trade Contact Details
               </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 hover:bg-gray-100"
+                onClick={() => setIsDetailModalOpen(false)}
+                data-testid="button-close-detail-modal"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </Button>
             </DialogHeader>
             {selectedTradeDetail && (
               <div className="space-y-4">
@@ -1886,7 +1896,7 @@ export default function StoragePage() {
                         {/* Trade Information */}
                         <div className="bg-gray-50 rounded-lg p-4">
                           <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
-                          <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
                               <span className="text-gray-500">Energy:</span>
                               <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
@@ -1954,7 +1964,7 @@ export default function StoragePage() {
                         {/* Trade Information */}
                         <div className="bg-gray-50 rounded-lg p-4">
                           <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
-                          <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
                               <span className="text-gray-500">Energy:</span>
                               <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
@@ -2020,8 +2030,13 @@ export default function StoragePage() {
                   return <div className="text-gray-500">Trade details not available</div>;
                 })()}
                 
-                <div className="flex justify-end pt-2">
-                  <Button variant="outline" onClick={() => setIsDetailModalOpen(false)}>
+                <div className="flex justify-center sm:justify-end pt-4 mt-4 border-t border-gray-200">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setIsDetailModalOpen(false)}
+                    className="w-full sm:w-auto min-h-[44px] font-medium"
+                    data-testid="button-close-detail-modal-bottom"
+                  >
                     Close
                   </Button>
                 </div>
