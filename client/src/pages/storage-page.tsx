@@ -1678,9 +1678,14 @@ export default function StoragePage() {
                               }`}>
                                 <div className="flex justify-between items-start mb-3">
                                   <div className="flex-1">
-                                    <div className="flex items-center gap-3 mb-2">
-                                      <div className="font-medium text-base">
-                                        {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
+                                    <div className="flex items-center justify-between gap-3 mb-2">
+                                      <div className="flex items-center gap-2">
+                                        <div className="font-medium text-base">
+                                          {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
+                                        </div>
+                                        <div className="text-sm text-gray-600">
+                                          {application.trade?.energyAmount} at {application.trade?.pricePerKwh} /kwh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                        </div>
                                       </div>
                                       <div className="flex items-center gap-2">
                                         {(() => {
@@ -1711,9 +1716,6 @@ export default function StoragePage() {
                                           </Button>
                                         )}
                                       </div>
-                                    </div>
-                                    <div className="text-xs text-gray-500 mb-2">
-                                      {application.trade?.energyAmount} at {application.trade?.pricePerKwh} /kwh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
                                     </div>
                                   </div>
                                 </div>
