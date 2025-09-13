@@ -1373,7 +1373,12 @@ export class DatabaseStorage implements IStorage {
         }
       })
       .from(energyTrades)
-      .leftJoin(households, eq(energyTrades.sellerHouseholdId, households.id))
+      .leftJoin(households, 
+        or(
+          eq(energyTrades.sellerHouseholdId, households.id),  // For sell trades
+          eq(energyTrades.buyerHouseholdId, households.id)    // For buy trades
+        )
+      )
       .leftJoin(users, eq(households.userId, users.id))
       .where(
         and(
