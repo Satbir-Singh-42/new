@@ -332,6 +332,91 @@ class EmailService {
     }
   }
 
+  async sendApplicationApprovalNotification(
+    applicant: User,
+    tradeOwner: User,
+    trade: EnergyTrade,
+    household?: Household
+  ): Promise<boolean> {
+    if (!this.transporter) {
+      console.log('📧 Email service not available, skipping notification');
+      return false;
+    }
+
+    try {
+      const subject = `🎉 Your Energy Trade Application Approved! - SolarSense`;
+      
+      const htmlContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h1 style="margin: 0; font-size: 24px;">🌞 SolarSense Energy Trading</h1>
+            <p style="margin: 5px 0 0 0; opacity: 0.9;">Application Approved!</p>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 30px; border-radius: 0 0 8px 8px; border: 1px solid #e2e8f0;">
+            <h2 style="color: #10b981; margin-top: 0;">Great News! Your Application Has Been Approved ✅</h2>
+            
+            <p>Hello <strong>${applicant.username}</strong>,</p>
+            
+            <p>Excellent news! <strong>${tradeOwner.username}</strong> has approved your energy trade application. Here are the trade details:</p>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;">
+              <h3 style="margin-top: 0; color: #374151;">📊 Approved Trade Details</h3>
+              <ul style="list-style: none; padding: 0;">
+                <li style="margin: 8px 0;"><strong>Energy Amount:</strong> ${trade.energyAmount} kWh</li>
+                <li style="margin: 8px 0;"><strong>Price per kWh:</strong> ₹${trade.pricePerKwh}</li>
+                <li style="margin: 8px 0;"><strong>Total Value:</strong> ₹${(trade.energyAmount * trade.pricePerKwh).toFixed(2)}</li>
+                <li style="margin: 8px 0;"><strong>Trade Type:</strong> ${trade.tradeType === 'sell' ? '🔋 Energy Sale' : '⚡ Energy Purchase'}</li>
+                ${household ? `<li style="margin: 8px 0;"><strong>Household:</strong> ${household.name}</li>` : ''}
+              </ul>
+            </div>
+
+            <div style="background: #fef3c7; padding: 15px; border-radius: 6px; border-left: 4px solid #f59e0b; margin: 20px 0;">
+              <h4 style="margin: 0 0 10px 0; color: #92400e;">📞 Next Steps</h4>
+              <p style="margin: 0; color: #92400e; font-size: 14px;">
+                To proceed with this trade, you need to <strong>share your contact details</strong> so both parties can coordinate the energy transfer. 
+                You can do this from your dashboard.
+              </p>
+            </div>
+            
+            <p style="color: #374151; line-height: 1.6;">
+              Once you share your contact information, both you and ${tradeOwner.username} will be able to coordinate the technical details, 
+              timing, and logistics of the energy transfer.
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${process.env.CLIENT_URL || 'http://localhost:5000'}/storage" 
+                 style="background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+                📱 Share Contact Details
+              </a>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 12px; margin: 0;">
+                This email was sent automatically by SolarSense. If you have questions, please contact us through the platform.
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: applicant.email,
+        subject,
+        html: htmlContent,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+      console.log(`📧 Application approval notification sent to ${applicant.email}`);
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Failed to send application approval notification:', error);
+      return false;
+    }
+  }
+
   // Test email functionality
   async sendTestEmail(to: string): Promise<boolean> {
     if (!this.transporter) {

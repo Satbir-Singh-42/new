@@ -1414,6 +1414,25 @@ export function setupRoutes(app: Express) {
         // Update trade status to 'accepted' (closes further applications)
         await storage.updateEnergyTradeStatus(acceptance.tradeId, 'accepted');
         
+        // Send email notification to applicant
+        try {
+          const applicantUser = await storage.getUser(acceptance.acceptorUserId);
+          const applicantHouseholds = await storage.getHouseholdsByUser(acceptance.acceptorUserId);
+          const applicantHousehold = applicantHouseholds.find(h => h.id === acceptance.acceptorHouseholdId);
+          
+          if (applicantUser) {
+            await emailService.sendApplicationApprovalNotification(
+              applicantUser,
+              req.user!,
+              trade,
+              applicantHousehold
+            );
+          }
+        } catch (emailError) {
+          console.warn('Failed to send approval email notification:', emailError);
+          // Don't fail the entire operation if email fails
+        }
+        
         res.json({
           success: true,
           acceptance: updatedAcceptance,
