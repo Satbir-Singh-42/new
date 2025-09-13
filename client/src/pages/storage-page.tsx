@@ -1686,35 +1686,35 @@ export default function StoragePage() {
                                           {application.trade?.energyAmount} at {application.trade?.pricePerKwh} /kwh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
                                         </div>
                                       </div>
-                                      <div className="flex items-center gap-2">
-                                        {(() => {
-                                          const statusConfig = getStatusBadgeConfig(application.acceptance.status);
-                                          const StatusIcon = statusConfig.icon;
-                                          return (
-                                            <Badge 
-                                              variant={statusConfig.variant}
-                                              className="flex items-center gap-1"
-                                            >
-                                              <StatusIcon className="h-3 w-3" />
-                                              {statusConfig.label}
-                                            </Badge>
-                                          );
-                                        })()}
-                                        {canViewDetail(application.acceptance.status) && (
-                                          <Button 
-                                            size="sm" 
-                                            variant="outline" 
-                                            className="h-7 text-xs"
-                                            onClick={() => {
-                                              setSelectedTradeDetail(application);
-                                              setIsDetailModalOpen(true);
-                                            }}
-                                            data-testid={`button-view-detail-trade-${application.acceptance.id}`}
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      {(() => {
+                                        const statusConfig = getStatusBadgeConfig(application.acceptance.status);
+                                        const StatusIcon = statusConfig.icon;
+                                        return (
+                                          <Badge 
+                                            variant={statusConfig.variant}
+                                            className="flex items-center gap-1"
                                           >
-                                            View Detail
-                                          </Button>
-                                        )}
-                                      </div>
+                                            <StatusIcon className="h-3 w-3" />
+                                            {statusConfig.label}
+                                          </Badge>
+                                        );
+                                      })()}
+                                      {canViewDetail(application.acceptance.status) && (
+                                        <Button 
+                                          size="sm" 
+                                          variant="outline" 
+                                          className="h-7 text-xs"
+                                          onClick={() => {
+                                            setSelectedTradeDetail(application);
+                                            setIsDetailModalOpen(true);
+                                          }}
+                                          data-testid={`button-view-detail-trade-${application.acceptance.id}`}
+                                        >
+                                          View Detail
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
