@@ -160,16 +160,17 @@ export default function StoragePage() {
       activeSellListings: myListings.filter(t => t.status === 'pending').length,
       activeBuyRequests: myRequests.filter(t => t.status === 'pending').length,
       completedTrades: (() => {
-        // Count successful contact shared results from both my applications and applications to my trades
-        const myContactSharedApplications = tradeAcceptances.filter((acceptance: any) => 
-          acceptance.status === 'contacted'
+        // Count completed trades: both awarded (auto contact share) and contacted status
+        const completedStatuses = ['awarded', 'contacted'];
+        const myCompletedApplications = tradeAcceptances.filter((acceptance: any) => 
+          completedStatuses.includes(acceptance.status)
         ).length;
         
-        const myContactSharedTrades = tradeApplications.filter((application: any) => 
-          application.acceptance?.status === 'contacted'
+        const myCompletedTrades = tradeApplications.filter((application: any) => 
+          completedStatuses.includes(application.acceptance?.status)
         ).length;
         
-        return myContactSharedApplications + myContactSharedTrades;
+        return myCompletedApplications + myCompletedTrades;
       })(),
       joinDate: user.createdAt ? new Date(user.createdAt) : new Date(),
       availableOffers: availableOffers.length
@@ -1654,7 +1655,7 @@ export default function StoragePage() {
                                             <span className="font-medium">Application Approved</span>
                                           </div>
                                           <p className="text-sm text-blue-700 mb-3">
-                                            Great news! The trade owner approved your application. You can now share your contact details to coordinate the energy transfer.
+                                            Great news! The trade owner approved your application. Contact details have been automatically shared and both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
                                       );
@@ -1801,7 +1802,7 @@ export default function StoragePage() {
                                             <span className="font-medium">Application Approved</span>
                                           </div>
                                           <p className="text-sm text-blue-700">
-                                            You approved this application. Waiting for the applicant to share contact details for coordination.
+                                            You approved this application. Contact details have been automatically shared and both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
                                       );
