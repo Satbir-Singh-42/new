@@ -906,7 +906,17 @@ export default function StoragePage() {
               <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Applications</span>
               <span className="sm:hidden">Apps</span>
-              ({tradeAcceptances.length + tradeApplications.length})
+              ({(() => {
+                // Count only non-finalized applications (same logic as content filtering)
+                const nonFinalizedStatuses = ['applied', 'pending']; // Active statuses only
+                const myActiveAcceptances = tradeAcceptances.filter((acceptance: any) => 
+                  !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
+                );
+                const myActiveApplications = tradeApplications.filter((application: any) => 
+                  !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance?.status)
+                );
+                return myActiveAcceptances.length + myActiveApplications.length;
+              })()})
             </TabsTrigger>
             <TabsTrigger value="request-results" className="flex items-center justify-center gap-2 text-xs sm:text-sm" data-testid="tab-request-results">
               <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
