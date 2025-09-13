@@ -608,7 +608,7 @@ export default function StoragePage() {
           dotClass: 'bg-yellow-500',
           showDetail: false
         };
-      case 'owner_accepted':
+      case 'awarded':
         return {
           label: 'Approved',
           variant: 'default' as const,
@@ -661,7 +661,7 @@ export default function StoragePage() {
 
   // Helper function to determine if a status allows viewing detail
   const canViewDetail = (status: string) => {
-    return ['owner_accepted', 'contact_shared'].includes(status);
+    return ['awarded', 'contact_shared'].includes(status);
   };
 
   // Helper function to get consistent badge configuration
@@ -914,7 +914,7 @@ export default function StoragePage() {
               <span className="sm:hidden">Results</span>
               ({(() => {
                 // Use centralized status mapping to determine finalized results
-                const finalizedStatuses = ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected', 'withdrawn'];
+                const finalizedStatuses = ['contact_shared', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
                 const myApplicationResults = tradeAcceptances.filter((acceptance: any) => 
                   finalizedStatuses.includes(acceptance.status)
                 );
@@ -1203,7 +1203,7 @@ export default function StoragePage() {
                                       <div>
                                         <span className="text-gray-500">Contact:</span>
                                         <div className="font-medium">
-                                          {acceptance.status === 'owner_accepted' 
+                                          {acceptance.status === 'awarded' 
                                             ? (
                                                 <div className="space-y-1">
                                                   <div>{user?.email || 'Email not available'}</div>
@@ -1260,7 +1260,7 @@ export default function StoragePage() {
                                 </div>
                               )}
                               
-                              {acceptance.status === 'owner_accepted' && (
+                              {acceptance.status === 'awarded' && (
                                 <div className="px-6 pb-4">
                                   <div className="flex gap-2">
                                     <Button
@@ -1359,7 +1359,7 @@ export default function StoragePage() {
                                     <div>
                                       <span className="text-gray-500">Contact:</span>
                                       <div className="font-medium">
-                                        {application.acceptance.status === 'owner_accepted' 
+                                        {application.acceptance.status === 'awarded' 
                                           ? (
                                               <div className="space-y-1">
                                                 <div>{application.applicant?.email || 'Email not available'}</div>
@@ -1429,7 +1429,7 @@ export default function StoragePage() {
                                 </div>
                               )}
                               
-                              {application.acceptance.status === 'owner_accepted' && (
+                              {application.acceptance.status === 'awarded' && (
                                 <div className="px-6 pb-4">
                                   <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                                     <div className="flex items-center gap-2 text-green-800">
@@ -1485,7 +1485,7 @@ export default function StoragePage() {
                   // Get results from both sources using centralized status mapping
                   // Include all finalized statuses that represent completed interactions
                   const getFinalizedStatuses = () => {
-                    return ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected', 'withdrawn'];
+                    return ['contact_shared', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'];
                   };
                   
                   const finalizedStatuses = getFinalizedStatuses();
@@ -1523,7 +1523,7 @@ export default function StoragePage() {
                               <Card key={acceptance.id} className={`p-3 border-l-4 ${
                                 acceptance.status === 'contact_shared' 
                                   ? 'border-l-green-400' 
-                                  : acceptance.status === 'owner_accepted' 
+                                  : acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
                               }`}>
@@ -1664,7 +1664,7 @@ export default function StoragePage() {
                               <Card key={application.acceptance.id} className={`p-3 border-l-4 ${
                                 application.acceptance.status === 'contact_shared' 
                                   ? 'border-l-green-400' 
-                                  : application.acceptance.status === 'owner_accepted' 
+                                  : application.acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
                               }`}>

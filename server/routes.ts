@@ -1409,15 +1409,15 @@ export function setupRoutes(app: Express) {
       }
       
       if (decision === 'accept') {
-        // Update acceptance status to 'owner_accepted'
-        const updatedAcceptance = await storage.updateTradeAcceptanceStatus(acceptanceId, 'owner_accepted');
+        // Update acceptance status to 'awarded' (aligns with contact sharing workflow)
+        const updatedAcceptance = await storage.updateTradeAcceptanceStatus(acceptanceId, 'awarded');
         // Update trade status to 'accepted' (closes further applications)
         await storage.updateEnergyTradeStatus(acceptance.tradeId, 'accepted');
         
         res.json({
           success: true,
           acceptance: updatedAcceptance,
-          message: "Application accepted! Waiting for applicant to share contact or reject."
+          message: "Application accepted! You can now share contact information for energy delivery coordination."
         });
       } else {
         // Update acceptance status to 'owner_rejected'
@@ -1453,9 +1453,9 @@ export function setupRoutes(app: Express) {
         return res.status(404).json({ error: "Trade acceptance not found or access denied" });
       }
       
-      // Only allow rejection when status is 'owner_accepted'
-      if (acceptance.status !== 'owner_accepted') {
-        return res.status(400).json({ error: "Can only reject applications that have been accepted by owner" });
+      // Only allow rejection when status is 'awarded'
+      if (acceptance.status !== 'awarded') {
+        return res.status(400).json({ error: "Can only reject applications that have been awarded by owner" });
       }
       
       // Update acceptance status to 'applicant_rejected'

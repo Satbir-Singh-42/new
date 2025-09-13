@@ -390,14 +390,14 @@ export default function Dashboard() {
   // Check if user has already applied to a trade - use current data to avoid stale closure
   const hasUserApplied = (tradeId: number) => {
     return (userTradeAcceptances || []).some((acceptance) => 
-      acceptance.tradeId === tradeId && ['applied', 'accepted', 'pending', 'owner_accepted'].includes(acceptance.status)
+      acceptance.tradeId === tradeId && ['applied', 'accepted', 'pending', 'awarded'].includes(acceptance.status)
     );
   };
 
   // Get user's acceptance for a trade (to get acceptance ID for cancellation) - use current data
   const getUserAcceptance = (tradeId: number) => {
     return (userTradeAcceptances || []).find((acceptance) => 
-      acceptance.tradeId === tradeId && ['applied', 'accepted', 'pending', 'owner_accepted'].includes(acceptance.status)
+      acceptance.tradeId === tradeId && ['applied', 'accepted', 'pending', 'awarded'].includes(acceptance.status)
     );
   };
 

@@ -56,7 +56,7 @@ export const tradeAcceptances = pgTable("trade_acceptances", {
   tradeId: integer("trade_id").notNull().references(() => energyTrades.id, { onDelete: "cascade" }),
   acceptorUserId: integer("acceptor_user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   acceptorHouseholdId: integer("acceptor_household_id").notNull().references(() => households.id, { onDelete: "cascade" }),
-  status: text("status").notNull().default('applied'), // 'applied', 'withdrawn', 'owner_accepted', 'owner_rejected', 'applicant_shared_contact', 'applicant_rejected', 'completed', 'cancelled'
+  status: text("status").notNull().default('applied'), // 'applied', 'withdrawn', 'awarded', 'owner_rejected', 'applicant_shared_contact', 'applicant_rejected', 'completed', 'cancelled'
   contactShared: boolean("contact_shared").notNull().default(false),
   acceptedAt: timestamp("accepted_at").defaultNow().notNull(),
   completedAt: timestamp("completed_at"),
