@@ -1356,7 +1356,7 @@ export class DatabaseStorage implements IStorage {
     
     // Get trade owner contact details for each acceptance
     const enrichedAcceptances = await Promise.all(
-      acceptancesWithTrades.map(async (acceptance) => {
+      acceptancesWithTrades.map(async (acceptance: any) => {
         if (!acceptance.trade) return acceptance;
         
         // Determine the trade owner's household ID
