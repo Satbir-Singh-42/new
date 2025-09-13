@@ -17,24 +17,38 @@ class EmailService {
 
   private async initializeTransporter() {
     try {
-      // For development, use Gmail SMTP with app passwords
-      // In production, you would use a service like SendGrid, Mailgun, etc.
+      // Enhanced SMTP configuration with timeout and security settings
       this.transporter = nodemailer.createTransport({
         service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD, // Use app password for Gmail
         },
+        tls: {
+          rejectUnauthorized: false
+        },
+        connectionTimeout: 10000, // 10 seconds timeout
+        socketTimeout: 10000, // 10 seconds timeout
+        greetingTimeout: 5000, // 5 seconds timeout
       });
 
-      // Verify the connection
+      // Verify the connection with timeout
       if (this.transporter) {
-        await this.transporter.verify();
+        const verifyPromise = this.transporter.verify();
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Connection verification timeout')), 15000);
+        });
+        
+        await Promise.race([verifyPromise, timeoutPromise]);
         console.log('📧 Email service initialized successfully');
       }
     } catch (error) {
       console.warn('⚠️ Email service initialization failed:', error);
-      // Gracefully handle email service failure
+      console.warn('📧 Email notifications will be disabled but application will continue normally');
+      // Gracefully handle email service failure - app continues without email
       this.transporter = null;
     }
   }
