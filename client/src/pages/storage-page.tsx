@@ -1850,9 +1850,12 @@ export default function StoragePage() {
                       offerMatch = availableTradesData.find(o => o.trade?.id === trade?.id);
                     }
 
-                    const counterpartyName = offerMatch?.household?.name || `Household ${trade?.sellerHouseholdId || trade?.buyerHouseholdId}`;
-                    const counterpartyUser = offerMatch?.user;
-                    const counterpartyHousehold = offerMatch?.household;
+                    // Use trade owner data if available from backend
+                    const counterpartyName = selectedTradeDetail.tradeOwner?.household?.name || 
+                                            offerMatch?.household?.name || 
+                                            `Household ${trade?.sellerHouseholdId || trade?.buyerHouseholdId}`;
+                    const counterpartyUser = selectedTradeDetail.tradeOwner?.user || offerMatch?.user;
+                    const counterpartyHousehold = selectedTradeDetail.tradeOwner?.household || offerMatch?.household;
                     
                     return (
                       <div className="space-y-4">

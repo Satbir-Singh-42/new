@@ -1317,7 +1317,7 @@ export class DatabaseStorage implements IStorage {
   async getTradeAcceptancesByUser(userId: number): Promise<any[]> {
     const db = await this.getDb();
     
-    // Join with energy_trades to get full trade details
+    // Join with energy_trades and get trade owner's contact details
     const acceptancesWithTrades = await db
       .select({
         id: tradeAcceptances.id,
@@ -1344,7 +1344,52 @@ export class DatabaseStorage implements IStorage {
       .leftJoin(energyTrades, eq(tradeAcceptances.tradeId, energyTrades.id))
       .where(eq(tradeAcceptances.acceptorUserId, userId));
     
-    return acceptancesWithTrades;
+    // Get trade owner contact details for each acceptance
+    const enrichedAcceptances = await Promise.all(
+      acceptancesWithTrades.map(async (acceptance) => {
+        if (!acceptance.trade) return acceptance;
+        
+        // Determine the trade owner's household ID
+        const ownerHouseholdId = acceptance.trade.sellerHouseholdId || acceptance.trade.buyerHouseholdId;
+        
+        if (ownerHouseholdId) {
+          // Get household and user details
+          const householdResult = await db
+            .select({
+              household: {
+                id: households.id,
+                name: households.name,
+                address: households.address,
+              },
+              user: {
+                id: users.id,
+                username: users.username,
+                email: users.email,
+                district: users.district,
+                state: users.state,
+              }
+            })
+            .from(households)
+            .leftJoin(users, eq(households.userId, users.id))
+            .where(eq(households.id, ownerHouseholdId))
+            .limit(1);
+          
+          if (householdResult.length > 0) {
+            return {
+              ...acceptance,
+              tradeOwner: {
+                household: householdResult[0].household,
+                user: householdResult[0].user,
+              }
+            };
+          }
+        }
+        
+        return acceptance;
+      })
+    );
+    
+    return enrichedAcceptances;
   }
 
   async updateTradeAcceptanceStatus(id: number, status: string): Promise<TradeAcceptance | undefined> {
