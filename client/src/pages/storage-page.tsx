@@ -1136,21 +1136,34 @@ export default function StoragePage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                       <div>
                                         <span className="text-gray-500">Name:</span>
-                                        <div className="font-medium">{getAcceptanceCounterparty(acceptance)}</div>
+                                        <div className="font-medium">{acceptance.applicant?.username || acceptance.user?.username || 'User'}</div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Household:</span>
-                                        <div className="font-medium">{acceptance.household?.name || acceptance.applicant?.household?.name || '—'}</div>
+                                        <div className="font-medium">{acceptance.household?.name || acceptance.applicant?.household?.name || 'Not specified'}</div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Location:</span>
-                                        <div className="font-medium">{acceptance.applicant?.district || acceptance.user?.district || 'Not available'}</div>
+                                        <div className="font-medium">
+                                          {acceptance.applicant?.district || acceptance.user?.district || 'Not specified'}
+                                          {(acceptance.applicant?.state || acceptance.user?.state) && `, ${acceptance.applicant?.state || acceptance.user?.state}`}
+                                        </div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Contact:</span>
                                         <div className="font-medium">
                                           {acceptance.status === 'owner_accepted' 
-                                            ? (acceptance.applicant?.email || acceptance.user?.email || 'Not available')
+                                            ? (
+                                                <div className="space-y-1">
+                                                  <div>{acceptance.applicant?.email || acceptance.user?.email || 'Email not available'}</div>
+                                                  {(acceptance.applicant?.phone || acceptance.user?.phone) && (
+                                                    <div>{acceptance.applicant?.phone || acceptance.user?.phone}</div>
+                                                  )}
+                                                  {acceptance.household?.address && (
+                                                    <div className="text-xs text-gray-600">Address: {acceptance.household.address}</div>
+                                                  )}
+                                                </div>
+                                              )
                                             : 'Hidden until approved'
                                           }
                                         </div>
