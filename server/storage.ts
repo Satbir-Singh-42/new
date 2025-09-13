@@ -847,12 +847,16 @@ export class DatabaseStorage implements IStorage {
       return [];
     }
     
-    // Get trades where user's households are involved
+    // Get trades where user's households are involved - ONLY pending trades
     const trades = await db
       .select()
       .from(energyTrades)
       .where(
-        sql`(${energyTrades.sellerHouseholdId} IN (${householdIds.join(',')}) OR ${energyTrades.buyerHouseholdId} IN (${householdIds.join(',')}))`
+        and(
+          sql`(${energyTrades.sellerHouseholdId} IN (${householdIds.join(',')}) OR ${energyTrades.buyerHouseholdId} IN (${householdIds.join(',')}))`
+          ,
+          eq(energyTrades.status, 'pending') // Only return active trades that user can manage
+        )
       )
       .orderBy(desc(energyTrades.createdAt))
       .limit(limit);
