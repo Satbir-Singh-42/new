@@ -1800,6 +1800,186 @@ export default function StoragePage() {
           </DialogContent>
         </Dialog>
 
+        {/* Trade Detail Modal */}
+        <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-600" />
+                Trade Contact Details
+              </DialogTitle>
+            </DialogHeader>
+            {selectedTradeDetail && (
+              <div className="space-y-4">
+                {(() => {
+                  // Determine if this is from myApplicationResults or myTradeResults
+                  const isMyApplication = selectedTradeDetail.tradeId;
+                  const isMyTrade = selectedTradeDetail.trade;
+                  
+                  if (isMyApplication) {
+                    // This is from my application results - show trade owner's details
+                    let trade = energyTrades.find(t => t.id === selectedTradeDetail.tradeId);
+                    let offerMatch = null;
+                    
+                    if (!trade) {
+                      offerMatch = availableTradesData.find(o => o.trade?.id === selectedTradeDetail.tradeId);
+                      trade = offerMatch?.trade;
+                    } else {
+                      offerMatch = availableTradesData.find(o => o.trade?.id === trade?.id);
+                    }
+
+                    const counterpartyName = offerMatch?.household?.name || `Household ${trade?.sellerHouseholdId || trade?.buyerHouseholdId}`;
+                    const counterpartyUser = offerMatch?.user;
+                    const counterpartyHousehold = offerMatch?.household;
+                    
+                    return (
+                      <div className="space-y-4">
+                        {/* Trade Information */}
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                              <span className="text-gray-500">Energy:</span>
+                              <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Price:</span>
+                              <div className="font-medium">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Total:</span>
+                              <div className="font-medium text-green-600">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Type:</span>
+                              <div className="font-medium capitalize">{trade?.tradeType}</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Contact Information */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Trade Owner Contact Details
+                          </h3>
+                          <div className="space-y-2 text-sm">
+                            <div>
+                              <span className="text-blue-700 font-medium">Name:</span>
+                              <div className="text-blue-900">{counterpartyName}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Location:</span>
+                              <div className="text-blue-900">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
+                            </div>
+                            {counterpartyHousehold?.address && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Address:</span>
+                                <div className="text-blue-900">{counterpartyHousehold.address}</div>
+                              </div>
+                            )}
+                            {counterpartyUser?.phone && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Phone:</span>
+                                <div className="text-blue-900">{counterpartyUser.phone}</div>
+                              </div>
+                            )}
+                            {counterpartyUser?.email && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Email:</span>
+                                <div className="text-blue-900">{counterpartyUser.email}</div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  } else if (isMyTrade) {
+                    // This is from my trade results - show applicant's details
+                    const applicantUser = selectedTradeDetail.user;
+                    const applicantHousehold = selectedTradeDetail.household;
+                    const trade = selectedTradeDetail.trade;
+                    
+                    return (
+                      <div className="space-y-4">
+                        {/* Trade Information */}
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                              <span className="text-gray-500">Energy:</span>
+                              <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Price:</span>
+                              <div className="font-medium">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Total:</span>
+                              <div className="font-medium text-green-600">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">Type:</span>
+                              <div className="font-medium capitalize">{trade?.tradeType}</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Contact Information */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
+                            <User className="h-4 w-4" />
+                            Applicant Contact Details
+                          </h3>
+                          <div className="space-y-2 text-sm">
+                            <div>
+                              <span className="text-blue-700 font-medium">Name:</span>
+                              <div className="text-blue-900">{applicantUser?.username || applicantHousehold?.name}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Household:</span>
+                              <div className="text-blue-900">{applicantHousehold?.name || 'Household not available'}</div>
+                            </div>
+                            <div>
+                              <span className="text-blue-700 font-medium">Location:</span>
+                              <div className="text-blue-900">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
+                            </div>
+                            {applicantHousehold?.address && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Address:</span>
+                                <div className="text-blue-900">{applicantHousehold.address}</div>
+                              </div>
+                            )}
+                            {applicantUser?.phone && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Phone:</span>
+                                <div className="text-blue-900">{applicantUser.phone}</div>
+                              </div>
+                            )}
+                            {applicantUser?.email && (
+                              <div>
+                                <span className="text-blue-700 font-medium">Email:</span>
+                                <div className="text-blue-900">{applicantUser.email}</div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  
+                  return <div className="text-gray-500">Trade details not available</div>;
+                })()}
+                
+                <div className="flex justify-end pt-2">
+                  <Button variant="outline" onClick={() => setIsDetailModalOpen(false)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
 
       </div>
     </div>
