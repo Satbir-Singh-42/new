@@ -28,7 +28,7 @@ class EmailService {
           pass: process.env.EMAIL_PASSWORD, // Use app password for Gmail
         },
         tls: {
-          rejectUnauthorized: false
+          rejectUnauthorized: true
         },
         connectionTimeout: 10000, // 10 seconds timeout
         socketTimeout: 10000, // 10 seconds timeout
