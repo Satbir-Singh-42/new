@@ -255,27 +255,6 @@ export default function Dashboard() {
   // Remove duplicate household query (already fetched as userHouseholds above)
   const households = userHouseholds; // Use the authenticated user households
 
-  // Weather simulation mutation
-  const setWeatherCondition = async (condition: string) => {
-    try {
-      await apiRequest('POST', '/api/weather/override', { condition });
-      
-      // Refresh market data to show new weather conditions
-      await queryClient.invalidateQueries({ queryKey: ['/api/market/realtime'] });
-      
-      toast({
-        title: "Weather Condition Changed",
-        description: `Weather set to ${condition === 'real' ? 'real weather data' : condition}. Market data will update shortly.`,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to change weather condition.",
-        variant: "destructive",
-      });
-    }
-  };
-
   // Create trade mutation
   const createTradeMutation = useMutation({
     mutationFn: (data: any) => apiRequest('POST', '/api/energy-trades', data),
@@ -1036,67 +1015,6 @@ export default function Dashboard() {
                         }`}
                         style={{ width: `${marketData?.weather?.efficiency || 0}%` }}
                       ></div>
-                    </div>
-                    
-                    {/* Weather Simulation Controls */}
-                    <div className="pt-4 border-t border-gray-100">
-                      <h4 className="text-sm font-medium text-gray-700 mb-3">Test Weather Scenarios</h4>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setWeatherCondition('sunny')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-sunny"
-                        >
-                          ☀️ Sunny
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setWeatherCondition('partly-cloudy')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-partly-cloudy"
-                        >
-                          ⛅ Partly Cloudy
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setWeatherCondition('cloudy')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-cloudy"
-                        >
-                          ☁️ Cloudy
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setWeatherCondition('rainy')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-rainy"
-                        >
-                          🌧️ Rainy
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setWeatherCondition('stormy')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-stormy"
-                        >
-                          ⛈️ Stormy
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="secondary" 
-                          onClick={() => setWeatherCondition('real')}
-                          className="text-xs px-2 py-1 h-8"
-                          data-testid="button-weather-real"
-                        >
-                          🌍 Real Weather
-                        </Button>
-                      </div>
                     </div>
                   </div>
                 </Card>
