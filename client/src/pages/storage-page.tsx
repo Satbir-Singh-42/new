@@ -587,6 +587,7 @@ export default function StoragePage() {
   const formatPrice = (price: number) => formatTradePrice(price);
   const formatTotal = (amount: number, price: number) => formatTradeTotal(amount, price);
 
+  // Comprehensive status mapping for all trade acceptance statuses
   const getApplicationStatusMeta = (status: string) => {
     switch (status) {
       case 'applied':
@@ -594,37 +595,73 @@ export default function StoragePage() {
           label: 'Applied',
           variant: 'secondary' as const,
           icon: Calendar,
-          dotClass: 'bg-yellow-500'
+          dotClass: 'bg-yellow-500',
+          showDetail: false
         };
       case 'owner_accepted':
         return {
-          label: 'Accepted',
+          label: 'Approved',
           variant: 'default' as const,
           icon: CheckCircle,
-          dotClass: 'bg-green-500'
+          dotClass: 'bg-blue-500',
+          showDetail: true
         };
       case 'owner_rejected':
+        return {
+          label: 'Declined',
+          variant: 'destructive' as const,
+          icon: X,
+          dotClass: 'bg-red-500',
+          showDetail: false
+        };
+      case 'contact_shared':
+        return {
+          label: 'Contact Shared',
+          variant: 'default' as const,
+          icon: CheckCircle,
+          dotClass: 'bg-green-500',
+          showDetail: true
+        };
+      case 'applicant_rejected':
         return {
           label: 'Rejected',
           variant: 'destructive' as const,
           icon: X,
-          dotClass: 'bg-red-500'
+          dotClass: 'bg-red-500',
+          showDetail: false
         };
       case 'withdrawn':
         return {
           label: 'Withdrawn',
           variant: 'outline' as const,
           icon: X,
-          dotClass: 'bg-gray-500'
+          dotClass: 'bg-gray-500',
+          showDetail: false
         };
       default:
         return {
-          label: status,
+          label: status.charAt(0).toUpperCase() + status.slice(1),
           variant: 'outline' as const,
           icon: AlertTriangle,
-          dotClass: 'bg-gray-500'
+          dotClass: 'bg-gray-500',
+          showDetail: false
         };
     }
+  };
+
+  // Helper function to determine if a status allows viewing detail
+  const canViewDetail = (status: string) => {
+    return ['owner_accepted', 'contact_shared'].includes(status);
+  };
+
+  // Helper function to get consistent badge configuration
+  const getStatusBadgeConfig = (status: string) => {
+    const meta = getApplicationStatusMeta(status);
+    return {
+      variant: meta.variant,
+      icon: meta.icon,
+      label: meta.label
+    };
   };
 
   return (
@@ -866,11 +903,13 @@ export default function StoragePage() {
               <span className="hidden sm:inline">Results</span>
               <span className="sm:hidden">Results</span>
               ({(() => {
+                // Use centralized status mapping to determine finalized results
+                const finalizedStatuses = ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected', 'withdrawn'];
                 const myApplicationResults = tradeAcceptances.filter((acceptance: any) => 
-                  ['contact_shared', 'applicant_rejected'].includes(acceptance.status)
+                  finalizedStatuses.includes(acceptance.status)
                 );
                 const myTradeResults = tradeApplications.filter((application: any) => 
-                  ['contact_shared', 'applicant_rejected'].includes(application.acceptance?.status)
+                  finalizedStatuses.includes(application.acceptance?.status)
                 );
                 return myApplicationResults.length + myTradeResults.length;
               })()})
@@ -1433,14 +1472,19 @@ export default function StoragePage() {
               </CardHeader>
               <CardContent>
                 {(() => {
-                  // Get results from both sources (applications I submitted and applications to my trades)
-                  // Include all completed statuses: approved, withdrawn, declined, contact shared, rejected
+                  // Get results from both sources using centralized status mapping
+                  // Include all finalized statuses that represent completed interactions
+                  const getFinalizedStatuses = () => {
+                    return ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected', 'withdrawn'];
+                  };
+                  
+                  const finalizedStatuses = getFinalizedStatuses();
                   const myApplicationResults = tradeAcceptances.filter((acceptance: any) => 
-                    ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected'].includes(acceptance.status)
+                    finalizedStatuses.includes(acceptance.status)
                   );
                   
                   const myTradeResults = tradeApplications.filter((application: any) => 
-                    ['contact_shared', 'applicant_rejected', 'owner_accepted', 'owner_rejected'].includes(application.acceptance.status)
+                    finalizedStatuses.includes(application.acceptance?.status)
                   );
                   
                   const allResults = [...myApplicationResults, ...myTradeResults];
@@ -1525,29 +1569,20 @@ export default function StoragePage() {
                                         );
                                       })()}
                                       <div className="flex items-center gap-2">
-                                        <Badge 
-                                          variant={
-                                            acceptance.status === 'contact_shared' ? 'default' 
-                                            : acceptance.status === 'owner_accepted' ? 'secondary'
-                                            : 'destructive'
-                                          }
-                                          className="flex items-center gap-1"
-                                        >
-                                          {acceptance.status === 'contact_shared' ? (
-                                            <CheckCircle className="h-3 w-3" />
-                                          ) : acceptance.status === 'owner_accepted' ? (
-                                            <Clock className="h-3 w-3" />
-                                          ) : (
-                                            <X className="h-3 w-3" />
-                                          )}
-                                          {
-                                            acceptance.status === 'contact_shared' ? 'Contact Shared'
-                                            : acceptance.status === 'owner_accepted' ? 'Approved'
-                                            : acceptance.status === 'owner_rejected' ? 'Declined'
-                                            : 'Rejected'
-                                          }
-                                        </Badge>
-                                        {acceptance.status === 'owner_accepted' && (
+                                        {(() => {
+                                          const statusConfig = getStatusBadgeConfig(acceptance.status);
+                                          const StatusIcon = statusConfig.icon;
+                                          return (
+                                            <Badge 
+                                              variant={statusConfig.variant}
+                                              className="flex items-center gap-1"
+                                            >
+                                              <StatusIcon className="h-3 w-3" />
+                                              {statusConfig.label}
+                                            </Badge>
+                                          );
+                                        })()}
+                                        {canViewDetail(acceptance.status) && (
                                           <Button 
                                             size="sm" 
                                             variant="outline" 
@@ -1630,29 +1665,20 @@ export default function StoragePage() {
                                         {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
                                       </div>
                                       <div className="flex items-center gap-2">
-                                        <Badge 
-                                          variant={
-                                            application.acceptance.status === 'contact_shared' ? 'default' 
-                                            : application.acceptance.status === 'owner_accepted' ? 'secondary'
-                                            : 'destructive'
-                                          }
-                                          className="flex items-center gap-1"
-                                        >
-                                          {application.acceptance.status === 'contact_shared' ? (
-                                            <CheckCircle className="h-3 w-3" />
-                                          ) : application.acceptance.status === 'owner_accepted' ? (
-                                            <Clock className="h-3 w-3" />
-                                          ) : (
-                                            <X className="h-3 w-3" />
-                                          )}
-                                          {
-                                            application.acceptance.status === 'contact_shared' ? 'Contact Shared'
-                                            : application.acceptance.status === 'owner_accepted' ? 'Approved'
-                                            : application.acceptance.status === 'owner_rejected' ? 'Declined'
-                                            : 'Rejected'
-                                          }
-                                        </Badge>
-                                        {application.acceptance.status === 'owner_accepted' && (
+                                        {(() => {
+                                          const statusConfig = getStatusBadgeConfig(application.acceptance.status);
+                                          const StatusIcon = statusConfig.icon;
+                                          return (
+                                            <Badge 
+                                              variant={statusConfig.variant}
+                                              className="flex items-center gap-1"
+                                            >
+                                              <StatusIcon className="h-3 w-3" />
+                                              {statusConfig.label}
+                                            </Badge>
+                                          );
+                                        })()}
+                                        {canViewDetail(application.acceptance.status) && (
                                           <Button 
                                             size="sm" 
                                             variant="outline" 
