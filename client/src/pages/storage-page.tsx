@@ -1839,7 +1839,8 @@ export default function StoragePage() {
                   
                   if (isMyApplication) {
                     // This is from my application results - show trade owner's details
-                    let trade = energyTrades.find(t => t.id === selectedTradeDetail.tradeId);
+                    // First check if trade data is included in the acceptance response
+                    let trade = selectedTradeDetail.trade || energyTrades.find(t => t.id === selectedTradeDetail.tradeId);
                     let offerMatch = null;
                     
                     if (!trade) {
