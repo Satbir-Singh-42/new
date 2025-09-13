@@ -1467,7 +1467,11 @@ export default function StoragePage() {
                           <div className="space-y-4">
                             {myApplicationResults.map((acceptance: any) => (
                               <Card key={acceptance.id} className={`p-4 border-l-4 ${
-                                acceptance.status === 'contact_shared' ? 'border-l-green-400' : 'border-l-red-400'
+                                acceptance.status === 'contact_shared' 
+                                  ? 'border-l-green-400' 
+                                  : acceptance.status === 'owner_accepted' 
+                                    ? 'border-l-blue-400'
+                                    : 'border-l-red-400'
                               }`}>
                                 <div className="flex justify-between items-start mb-4">
                                   <div className="flex-1">
@@ -1529,17 +1533,44 @@ export default function StoragePage() {
                                           </div>
                                         );
                                       })()}
-                                      <Badge 
-                                        variant={acceptance.status === 'contact_shared' ? 'default' : 'destructive'}
-                                        className="flex items-center gap-1"
-                                      >
-                                        {acceptance.status === 'contact_shared' ? (
-                                          <CheckCircle className="h-3 w-3" />
-                                        ) : (
-                                          <X className="h-3 w-3" />
+                                      <div className="flex items-center gap-2">
+                                        <Badge 
+                                          variant={
+                                            acceptance.status === 'contact_shared' ? 'default' 
+                                            : acceptance.status === 'owner_accepted' ? 'secondary'
+                                            : 'destructive'
+                                          }
+                                          className="flex items-center gap-1"
+                                        >
+                                          {acceptance.status === 'contact_shared' ? (
+                                            <CheckCircle className="h-3 w-3" />
+                                          ) : acceptance.status === 'owner_accepted' ? (
+                                            <Clock className="h-3 w-3" />
+                                          ) : (
+                                            <X className="h-3 w-3" />
+                                          )}
+                                          {
+                                            acceptance.status === 'contact_shared' ? 'Contact Shared'
+                                            : acceptance.status === 'owner_accepted' ? 'Approved'
+                                            : acceptance.status === 'owner_rejected' ? 'Declined'
+                                            : 'Rejected'
+                                          }
+                                        </Badge>
+                                        {acceptance.status === 'owner_accepted' && (
+                                          <Button 
+                                            size="sm" 
+                                            variant="outline" 
+                                            className="h-7 text-xs"
+                                            onClick={() => {
+                                              setSelectedTradeDetail(acceptance);
+                                              setIsDetailModalOpen(true);
+                                            }}
+                                            data-testid={`button-view-detail-${acceptance.id}`}
+                                          >
+                                            View Detail
+                                          </Button>
                                         )}
-                                        {acceptance.status === 'contact_shared' ? 'Contact Shared' : 'Rejected'}
-                                      </Badge>
+                                      </div>
                                     </div>
                                     <div className="text-sm text-gray-500 mb-3">
                                       Completed: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
@@ -1595,7 +1626,11 @@ export default function StoragePage() {
                           <div className="space-y-4">
                             {myTradeResults.map((application: any) => (
                               <Card key={application.acceptance.id} className={`p-4 border-l-4 ${
-                                application.acceptance.status === 'contact_shared' ? 'border-l-green-400' : 'border-l-red-400'
+                                application.acceptance.status === 'contact_shared' 
+                                  ? 'border-l-green-400' 
+                                  : application.acceptance.status === 'owner_accepted' 
+                                    ? 'border-l-blue-400'
+                                    : 'border-l-red-400'
                               }`}>
                                 <div className="flex justify-between items-start mb-4">
                                   <div className="flex-1">
@@ -1603,17 +1638,44 @@ export default function StoragePage() {
                                       <div className="font-medium text-lg">
                                         {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
                                       </div>
-                                      <Badge 
-                                        variant={application.acceptance.status === 'contact_shared' ? 'default' : 'destructive'}
-                                        className="flex items-center gap-1"
-                                      >
-                                        {application.acceptance.status === 'contact_shared' ? (
-                                          <CheckCircle className="h-3 w-3" />
-                                        ) : (
-                                          <X className="h-3 w-3" />
+                                      <div className="flex items-center gap-2">
+                                        <Badge 
+                                          variant={
+                                            application.acceptance.status === 'contact_shared' ? 'default' 
+                                            : application.acceptance.status === 'owner_accepted' ? 'secondary'
+                                            : 'destructive'
+                                          }
+                                          className="flex items-center gap-1"
+                                        >
+                                          {application.acceptance.status === 'contact_shared' ? (
+                                            <CheckCircle className="h-3 w-3" />
+                                          ) : application.acceptance.status === 'owner_accepted' ? (
+                                            <Clock className="h-3 w-3" />
+                                          ) : (
+                                            <X className="h-3 w-3" />
+                                          )}
+                                          {
+                                            application.acceptance.status === 'contact_shared' ? 'Contact Shared'
+                                            : application.acceptance.status === 'owner_accepted' ? 'Approved'
+                                            : application.acceptance.status === 'owner_rejected' ? 'Declined'
+                                            : 'Rejected'
+                                          }
+                                        </Badge>
+                                        {application.acceptance.status === 'owner_accepted' && (
+                                          <Button 
+                                            size="sm" 
+                                            variant="outline" 
+                                            className="h-7 text-xs"
+                                            onClick={() => {
+                                              setSelectedTradeDetail(application);
+                                              setIsDetailModalOpen(true);
+                                            }}
+                                            data-testid={`button-view-detail-trade-${application.acceptance.id}`}
+                                          >
+                                            View Detail
+                                          </Button>
                                         )}
-                                        {application.acceptance.status === 'contact_shared' ? 'Contact Shared' : 'Applicant Rejected'}
-                                      </Badge>
+                                      </div>
                                     </div>
                                     <div className="text-sm text-gray-500 mb-3">
                                       Trade: {formatEnergy(application.trade?.energyAmount)} at {formatPrice(application.trade?.pricePerKwh)}/kWh
