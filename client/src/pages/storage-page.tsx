@@ -1586,12 +1586,14 @@ export default function StoragePage() {
                                         const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'User');
                                         
                                         return (
-                                          <div className="flex items-center gap-3 mb-2">
-                                            <div className="font-medium text-base">
-                                              {trade.tradeType === 'sell' ? 'Energy Purchase' : 'Energy Sale'}
-                                            </div>
-                                            <div className="text-xs text-gray-500">
-                                              {trade.energyAmount} at {trade.pricePerKwh} /kwh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                          <div className="flex items-center justify-between gap-3 mb-2">
+                                            <div className="flex items-center gap-2">
+                                              <div className="font-medium text-base">
+                                                {trade.tradeType === 'sell' ? 'Energy Purchase' : 'Energy Sale'}
+                                              </div>
+                                              <div className="text-sm text-gray-600">
+                                                {trade.energyAmount} at {trade.pricePerKwh} /kwh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                              </div>
                                             </div>
                                           </div>
                                         );
@@ -1625,9 +1627,6 @@ export default function StoragePage() {
                                           </Button>
                                         )}
                                       </div>
-                                    </div>
-                                    <div className="text-xs text-gray-500 mb-2">
-                                      Completed: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                     </div>
                                   </div>
                                 </div>
