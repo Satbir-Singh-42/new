@@ -156,7 +156,7 @@ export default function StoragePage() {
     return {
       username: user.username,
       email: user.email,
-      totalTrades: myAllTrades.length,
+      totalTrades: myAllTrades.length + tradeAcceptances.length + tradeApplications.length,
       activeSellListings: myListings.filter(t => t.status === 'pending').length,
       activeBuyRequests: myRequests.filter(t => t.status === 'pending').length,
       completedTrades: (() => {
