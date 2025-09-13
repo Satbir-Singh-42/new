@@ -1726,7 +1726,22 @@ export default function StoragePage() {
                                       </div>
                                     </div>
                                   </div>
-                                ) : (
+                                ) : application.acceptance.status === 'awarded' ? (
+                                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-blue-800 mb-2">
+                                      <CheckCircle className="h-4 w-4" />
+                                      <span className="font-medium">Application Approved</span>
+                                    </div>
+                                    <p className="text-sm text-blue-700 mb-3">
+                                      You approved this application. Waiting for the applicant to share contact details for coordination.
+                                    </p>
+                                    <div className="bg-white border rounded-lg p-3">
+                                      <div className="text-sm text-gray-600">
+                                        📧 Approval notification has been sent to the applicant
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : application.acceptance.status === 'applicant_rejected' ? (
                                   <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                                     <div className="flex items-center gap-2 text-red-800 mb-2">
                                       <X className="h-4 w-4" />
@@ -1740,6 +1755,16 @@ export default function StoragePage() {
                                         📧 Rejection notification has been received
                                       </div>
                                     </div>
+                                  </div>
+                                ) : (
+                                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                      <Clock className="h-4 w-4" />
+                                      <span className="font-medium">Status: {application.acceptance.status}</span>
+                                    </div>
+                                    <p className="text-sm text-gray-700">
+                                      Application status is being processed.
+                                    </p>
                                   </div>
                                 )}
                               </Card>
