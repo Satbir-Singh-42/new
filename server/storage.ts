@@ -273,8 +273,8 @@ export class MemStorage implements IStorage {
       .filter(trade => 
         (householdIds.includes(trade.sellerHouseholdId || -1) || 
          householdIds.includes(trade.buyerHouseholdId || -1)) &&
-        // Only include truly active trades - exclude cancelled and completed
-        !['cancelled', 'completed'].includes(trade.status)
+        // Only include pending trades - once awarded/completed/cancelled, no longer "active" for the creator
+        trade.status === 'pending'
       )
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
     
