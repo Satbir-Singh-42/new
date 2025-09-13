@@ -1545,9 +1545,11 @@ export default function StoragePage() {
                                         }
                                         
                                         if (!trade) return (
-                                          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                            <div className="text-sm text-gray-500">Trade Reference: {acceptance.tradeId}</div>
-                                            <div className="text-xs text-gray-400 mt-1">Trade details no longer available</div>
+                                          <div className="flex items-center gap-3 mb-2">
+                                            <div className="font-medium text-base">Trade Application</div>
+                                            <div className="text-xs text-gray-500">
+                                              Reference: {acceptance.tradeId} • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                            </div>
                                           </div>
                                         );
                                         
@@ -1555,25 +1557,12 @@ export default function StoragePage() {
                                         const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'User');
                                         
                                         return (
-                                          <div className="bg-white rounded-lg border border-gray-100 p-3 space-y-3">
-                                            {/* Main trade info - responsive layout */}
-                                            <div className="space-y-1">
-                                              <div className="text-base md:text-lg font-bold text-gray-900 leading-tight">
-                                                {formatEnergy(trade.energyAmount)} • {formatPrice(trade.pricePerKwh)}/kWh
-                                              </div>
-                                              <div className="text-lg md:text-xl font-bold text-green-600">
-                                                Total: {formatTotal(trade.energyAmount, trade.pricePerKwh)}
-                                              </div>
+                                          <div className="flex items-center gap-3 mb-2">
+                                            <div className="font-medium text-base">
+                                              {trade.tradeType === 'sell' ? 'Energy Purchase' : 'Energy Sale'}
                                             </div>
-                                            
-                                            {/* Household and location info */}
-                                            <div className="space-y-1 border-t border-gray-100 pt-2">
-                                              <div className="text-sm md:text-base font-semibold text-gray-800">
-                                                {counterpartyName}
-                                              </div>
-                                              <div className="text-xs text-gray-600">
-                                                📍 {offerMatch?.user?.district || 'Location not available'} • 📅 {format(new Date(trade.createdAt), 'MMM dd')}
-                                              </div>
+                                            <div className="text-xs text-gray-500">
+                                              {formatEnergy(trade.energyAmount)} at {formatPrice(trade.pricePerKwh)}/kWh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                             </div>
                                           </div>
                                         );
@@ -1634,11 +1623,6 @@ export default function StoragePage() {
                                     <p className="text-sm text-red-700 mb-3">
                                       You rejected this trade after the owner accepted your application. The trade is now available for other applicants.
                                     </p>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="text-sm text-gray-600">
-                                        📧 Rejection notification has been sent to the trade owner
-                                      </div>
-                                    </div>
                                   </div>
                                 )}
                               </Card>
@@ -1735,11 +1719,6 @@ export default function StoragePage() {
                                     <p className="text-sm text-red-700 mb-3">
                                       The applicant rejected the trade after you approved their application. Your trade is now available for other applicants.
                                     </p>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="text-sm text-gray-600">
-                                        📧 Rejection notification has been received
-                                      </div>
-                                    </div>
                                   </div>
                                 ) : (
                                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
