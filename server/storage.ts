@@ -1314,9 +1314,37 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(tradeAcceptances).where(eq(tradeAcceptances.tradeId, tradeId));
   }
 
-  async getTradeAcceptancesByUser(userId: number): Promise<TradeAcceptance[]> {
+  async getTradeAcceptancesByUser(userId: number): Promise<any[]> {
     const db = await this.getDb();
-    return await db.select().from(tradeAcceptances).where(eq(tradeAcceptances.acceptorUserId, userId));
+    
+    // Join with energy_trades to get full trade details
+    const acceptancesWithTrades = await db
+      .select({
+        id: tradeAcceptances.id,
+        tradeId: tradeAcceptances.tradeId,
+        acceptorUserId: tradeAcceptances.acceptorUserId,
+        acceptorHouseholdId: tradeAcceptances.acceptorHouseholdId,
+        status: tradeAcceptances.status,
+        contactShared: tradeAcceptances.contactShared,
+        acceptedAt: tradeAcceptances.acceptedAt,
+        completedAt: tradeAcceptances.completedAt,
+        // Include full trade details
+        trade: {
+          id: energyTrades.id,
+          energyAmount: energyTrades.energyAmount,
+          pricePerKwh: energyTrades.pricePerKwh,
+          tradeType: energyTrades.tradeType,
+          status: energyTrades.status,
+          createdAt: energyTrades.createdAt,
+          sellerHouseholdId: energyTrades.sellerHouseholdId,
+          buyerHouseholdId: energyTrades.buyerHouseholdId,
+        }
+      })
+      .from(tradeAcceptances)
+      .leftJoin(energyTrades, eq(tradeAcceptances.tradeId, energyTrades.id))
+      .where(eq(tradeAcceptances.acceptorUserId, userId));
+    
+    return acceptancesWithTrades;
   }
 
   async updateTradeAcceptanceStatus(id: number, status: string): Promise<TradeAcceptance | undefined> {

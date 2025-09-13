@@ -1544,7 +1544,7 @@ export default function StoragePage() {
                                           offerMatch = availableTradesData.find(o => o.trade?.id === trade?.id);
                                         }
                                         
-                                        if (!trade) return (
+                                        if (!trade && !acceptance.trade) return (
                                           <div className="flex items-center gap-3 mb-2">
                                             <div className="font-medium text-base">Trade Application</div>
                                             <div className="text-xs text-gray-500">
@@ -1552,6 +1552,14 @@ export default function StoragePage() {
                                             </div>
                                           </div>
                                         );
+                                        
+                                        // Use trade from acceptance if available
+                                        if (!trade && acceptance.trade) {
+                                          trade = acceptance.trade;
+                                        }
+                                        
+                                        // Ensure we have trade data before proceeding
+                                        if (!trade) return null;
                                         
                                         const tradeHouseholdId = trade.sellerHouseholdId || trade.buyerHouseholdId;
                                         const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'User');
