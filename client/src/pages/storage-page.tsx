@@ -1106,11 +1106,10 @@ export default function StoragePage() {
                               offerMatch = availableTradesData.find(o => o.trade?.id === acceptance.tradeId);
                               trade = offerMatch?.trade;
                             } else {
-                              offerMatch = availableTradesData.find(o => o.trade?.id === trade.id);
+                              offerMatch = availableTradesData.find(o => o.trade?.id === trade?.id);
                             }
                             
                             const statusMeta = getApplicationStatusMeta(acceptance.status);
-                            const counterpartyName = acceptance.applicant?.username || acceptance.user?.username || 'Unknown Applicant';
                             
                             return (
                               <Card key={acceptance.id} className="overflow-hidden border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-shadow duration-200" data-testid={`card-application-${acceptance.id}`}>
@@ -1131,11 +1130,6 @@ export default function StoragePage() {
                                   </div>
                                   <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
                                     Applied: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
-                                  </div>
-                                  <div className="mt-2 text-sm text-gray-600">
-                                    <div><strong>Name:</strong> {counterpartyName}</div>
-                                    <div><strong>Household:</strong> {acceptance.household?.name || acceptance.applicant?.household?.name || '—'}</div>
-                                    <div><strong>Location:</strong> {acceptance.applicant?.district || acceptance.user?.district || 'Not available'}</div>
                                   </div>
                                 </CardHeader>
                                 
@@ -1460,7 +1454,7 @@ export default function StoragePage() {
                                           trade = offerMatch?.trade;
                                         } else {
                                           // Find the counterparty information for my own trades
-                                          offerMatch = availableTradesData.find(o => o.trade?.id === trade.id);
+                                          offerMatch = availableTradesData.find(o => o.trade?.id === trade?.id);
                                         }
                                         
                                         if (!trade) return (
