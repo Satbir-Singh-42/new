@@ -992,12 +992,12 @@ export default function StoragePage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Price/kWh:</span>
-                            <div className="font-medium text-sm sm:text-base">{formatPrice(trade.pricePerKwh)}</div>
+                            <span className="text-xs sm:text-sm text-gray-600">Energy Amount:</span>
+                            <div className="font-medium text-sm sm:text-base">{trade.energyAmount}</div>
                           </div>
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Total Value:</span>
-                            <div className="font-semibold text-green-600 text-sm sm:text-base">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
+                            <span className="text-xs sm:text-sm text-gray-600">Price:</span>
+                            <div className="font-semibold text-green-600 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
@@ -1079,12 +1079,12 @@ export default function StoragePage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Willing to Pay:</span>
-                            <div className="font-medium text-sm sm:text-base">{formatPrice(trade.pricePerKwh)}</div>
+                            <span className="text-xs sm:text-sm text-gray-600">Energy Amount:</span>
+                            <div className="font-medium text-sm sm:text-base">{trade.energyAmount}</div>
                           </div>
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Total Budget:</span>
-                            <div className="font-semibold text-blue-600 text-sm sm:text-base">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
+                            <span className="text-xs sm:text-sm text-gray-600">Price:</span>
+                            <div className="font-semibold text-blue-600 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
@@ -1247,12 +1247,12 @@ export default function StoragePage() {
                                 <CardFooter className="pt-3 border-t">
                                   <div className="grid grid-cols-3 gap-4 w-full text-sm">
                                     <div>
-                                      <span className="text-gray-500">Price per kWh:</span>
-                                      <div className="font-semibold" data-testid={`text-price-${acceptance.id}`}>{formatPrice(trade?.pricePerKwh || 0)}</div>
+                                      <span className="text-gray-500">Energy Amount:</span>
+                                      <div className="font-semibold" data-testid={`text-amount-${acceptance.id}`}>{trade?.energyAmount || 0}</div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Total Value:</span>
-                                      <div className="font-semibold text-green-600" data-testid={`text-total-${acceptance.id}`}>{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                                      <span className="text-gray-500">Price:</span>
+                                      <div className="font-semibold text-green-600" data-testid={`text-price-${acceptance.id}`}>{trade?.pricePerKwh || 0} /kwh</div>
                                     </div>
                                     <div>
                                       <span className="text-gray-500">Status:</span>
@@ -1403,12 +1403,12 @@ export default function StoragePage() {
                               <CardFooter className="pt-3 border-t">
                                 <div className="grid grid-cols-3 gap-4 w-full text-sm">
                                   <div>
-                                    <span className="text-gray-500">Price per kWh:</span>
-                                    <div className="font-semibold" data-testid={`text-price-${application.acceptance.id}`}>{formatPrice(application.trade?.pricePerKwh || 0)}</div>
+                                    <span className="text-gray-500">Energy Amount:</span>
+                                    <div className="font-semibold" data-testid={`text-amount-${application.acceptance.id}`}>{application.trade?.energyAmount || 0}</div>
                                   </div>
                                   <div>
-                                    <span className="text-gray-500">Total Value:</span>
-                                    <div className="font-semibold text-green-600" data-testid={`text-total-${application.acceptance.id}`}>{formatTotal(application.trade?.energyAmount || 0, application.trade?.pricePerKwh || 0)}</div>
+                                    <span className="text-gray-500">Price:</span>
+                                    <div className="font-semibold text-green-600" data-testid={`text-price-${application.acceptance.id}`}>{application.trade?.pricePerKwh || 0} /kwh</div>
                                   </div>
                                   <div>
                                     <span className="text-gray-500">Status:</span>
@@ -1591,7 +1591,7 @@ export default function StoragePage() {
                                               {trade.tradeType === 'sell' ? 'Energy Purchase' : 'Energy Sale'}
                                             </div>
                                             <div className="text-xs text-gray-500">
-                                              {formatEnergy(trade.energyAmount)} at {formatPrice(trade.pricePerKwh)}/kWh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                              {trade.energyAmount} at {trade.pricePerKwh} /kwh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                             </div>
                                           </div>
                                         );
@@ -1713,7 +1713,7 @@ export default function StoragePage() {
                                       </div>
                                     </div>
                                     <div className="text-xs text-gray-500 mb-2">
-                                      {formatEnergy(application.trade?.energyAmount)} at {formatPrice(application.trade?.pricePerKwh)}/kWh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
+                                      {application.trade?.energyAmount} at {application.trade?.pricePerKwh} /kwh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
                                     </div>
                                   </div>
                                 </div>
