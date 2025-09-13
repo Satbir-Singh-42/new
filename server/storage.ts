@@ -1173,8 +1173,8 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(energyTrades.createdAt))
       .limit(10);
     
-    // Filter out unrealistic prices (above ₹15/kWh) 
-    const validTrades = recentTrades.filter((trade: EnergyTrade) => trade.pricePerKwh <= 15 && trade.pricePerKwh >= 1);
+    // Filter out unrealistic prices (above ₹1000/kWh or below ₹1/kWh) 
+    const validTrades = recentTrades.filter((trade: EnergyTrade) => trade.pricePerKwh <= 1000 && trade.pricePerKwh >= 1);
     
     const avgPriceNum = validTrades.length > 0 ? 
       Math.round(validTrades.reduce((sum: number, trade: EnergyTrade) => sum + trade.pricePerKwh, 0) / validTrades.length) :
