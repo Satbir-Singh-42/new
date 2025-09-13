@@ -79,22 +79,22 @@ export default function StoragePage() {
   // Fetch user's trade acceptances (applications they submitted to other people's trades)
   const { data: tradeAcceptances = [], isLoading: acceptancesLoading, refetch: refetchAcceptances } = useQuery<any[]>({
     queryKey: ['/api/trade-acceptances'],
-    enabled: !!user && (activeTab === 'applications' || activeTab === 'request-results'),
+    enabled: !!user,
     retry: 2,
     retryDelay: 1000,
-    staleTime: 1000 * 60 * 3,
-    refetchInterval: activeTab === 'applications' || activeTab === 'request-results' ? 1000 * 45 : false,
+    staleTime: 1000 * 60 * 2,
+    refetchInterval: false,
     refetchOnWindowFocus: true,
   });
 
   // Fetch applications TO user's trades (people who want to accept their trades)
   const { data: tradeApplications = [], isLoading: applicationsLoading, error: applicationsError, refetch: refetchApplications } = useQuery<any[]>({
     queryKey: ['/api/my-trade-applications'],
-    enabled: !!user && activeTab === 'applications',
+    enabled: !!user,
     retry: 2,
     retryDelay: 1000,
     staleTime: 1000 * 60 * 2,
-    refetchInterval: activeTab === 'applications' ? 1000 * 30 : false,
+    refetchInterval: false,
     refetchOnWindowFocus: true,
   });
 
@@ -189,7 +189,8 @@ export default function StoragePage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       setIsCreateDialogOpen(false);
       toast({
         title: "Trade Created",
@@ -215,7 +216,8 @@ export default function StoragePage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       setIsEditDialogOpen(false);
       setEditingTrade(null);
       toast({
@@ -256,7 +258,8 @@ export default function StoragePage() {
       return { previousTrades };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Trade Cancelled",
         description: "Your energy trade has been cancelled successfully.",
@@ -275,7 +278,8 @@ export default function StoragePage() {
     },
     onSettled: () => {
       // Always refetch after error or success to ensure consistency
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
     },
   });
 
@@ -285,7 +289,8 @@ export default function StoragePage() {
       return apiRequest('DELETE', `/api/energy-trades/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Trade Deleted",
         description: "Your energy trade has been deleted successfully.",
@@ -306,8 +311,9 @@ export default function StoragePage() {
       return apiRequest('POST', '/api/trade-acceptances', { tradeId });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Trade Accepted",
         description: "You have successfully accepted this trade offer.",
@@ -328,8 +334,8 @@ export default function StoragePage() {
       return apiRequest('POST', `/api/trade-acceptances/${acceptanceId}/share-contact`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
       toast({
         title: "Contact Shared Automatically",
         description: "Contact information has been shared automatically for energy delivery coordination.",
@@ -350,9 +356,9 @@ export default function StoragePage() {
       return apiRequest('PATCH', `/api/trade-acceptances/${acceptanceId}`, { status });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
       toast({
         title: "Trade Updated",
         description: "Trade status has been updated successfully.",
@@ -373,9 +379,10 @@ export default function StoragePage() {
       return apiRequest('DELETE', `/api/trade-acceptances/${acceptanceId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
       toast({
         title: "Application Withdrawn",
         description: "Your application has been successfully withdrawn.",
@@ -398,9 +405,10 @@ export default function StoragePage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Application Rejected",
         description: "The application has been rejected. Trade remains available for other applicants.",
@@ -423,9 +431,10 @@ export default function StoragePage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Application Approved",
         description: "Application accepted! Waiting for applicant to share contact or reject.",
@@ -446,9 +455,10 @@ export default function StoragePage() {
       return apiRequest('PATCH', `/api/trade-acceptances/${acceptanceId}/applicant-reject`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-acceptances'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/my-trade-applications'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/energy-trades'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['/api/trade-offers'], refetchType: 'all' });
       toast({
         title: "Trade Rejected",
         description: "You have rejected this trade. It's now available for other applicants.",
