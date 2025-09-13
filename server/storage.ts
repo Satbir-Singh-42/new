@@ -1180,6 +1180,16 @@ export class DatabaseStorage implements IStorage {
     // Filter out unrealistic prices (above ₹1000/kWh or below ₹1/kWh) 
     const validTrades = recentTrades.filter((trade: EnergyTrade) => trade.pricePerKwh <= 1000 && trade.pricePerKwh >= 1);
     
+    // Filter trades to only include today's trades for carbon calculation
+    const today = new Date();
+    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    
+    const todaysTrades = validTrades.filter((trade: EnergyTrade) => {
+      const tradeDate = new Date(trade.createdAt);
+      return tradeDate >= startOfDay && tradeDate < endOfDay;
+    });
+    
     const avgPriceNum = validTrades.length > 0 ? 
       Math.round(validTrades.reduce((sum: number, trade: EnergyTrade) => sum + trade.pricePerKwh, 0) / validTrades.length) :
       0; // Show 0 when no trade data exists
@@ -1209,7 +1219,7 @@ export class DatabaseStorage implements IStorage {
       trading: {
         totalTrades,
         averagePrice: avgPriceNum > 0 ? `₹${avgPriceNum}` : "₹0", // Format as currency string
-        carbonSaved: this.calculateCarbonSaved(validTrades)
+        carbonSaved: this.calculateCarbonSaved(todaysTrades) // Only calculate from today's trades
       },
       efficiency: {
         networkEfficiency: this.calculateNetworkEfficiency(totalGeneration, currentBatteryStorage, totalTrades),
