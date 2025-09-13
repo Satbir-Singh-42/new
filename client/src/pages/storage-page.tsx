@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navbar from "@/components/navbar";
-import { Calendar, Zap, AlertTriangle, CheckCircle, Loader2, LogIn, User, Database, TrendingUp, TrendingDown, ShoppingCart, Store, RefreshCw, Edit2, Trash2, Handshake, Plus, X, Activity, FileText, ArrowRight, ArrowLeft, MapPin, Target, Clock, Mail, Phone } from "lucide-react";
+import { Calendar, Zap, AlertTriangle, CheckCircle, Loader2, LogIn, User, TrendingUp, TrendingDown, ShoppingCart, RefreshCw, Edit2, X, FileText, ArrowRight, ArrowLeft, Clock, Plus, Store, Handshake, Database } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -44,10 +44,6 @@ export default function StoragePage() {
   const [editingTrade, setEditingTrade] = useState<ExtendedEnergyTrade | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedAcceptance, setSelectedAcceptance] = useState<any>(null);
-  const [isRatingDialogOpen, setIsRatingDialogOpen] = useState(false);
-  const [tradeRating, setTradeRating] = useState(0);
-  const [ratingComment, setRatingComment] = useState('');
 
   // Fetch energy trades
   const { data: energyTrades = [], isLoading, error, refetch } = useQuery<ExtendedEnergyTrade[]>({
@@ -166,6 +162,20 @@ export default function StoragePage() {
       availableOffers: availableOffers.length
     };
   }, [user, myAllTrades, myListings, myRequests, availableOffers]);
+
+  // Helper function to get counterparty name safely
+  const getCounterpartyName = useCallback((trade: ExtendedEnergyTrade) => {
+    if (!user || !trade) return 'User';
+    const isSeller = !!trade.sellerHouseholdId && userHouseholdIds.includes(trade.sellerHouseholdId);
+    return isSeller
+      ? (trade.buyerHousehold?.user?.username ?? 'Buyer')
+      : (trade.sellerHousehold?.user?.username ?? 'Seller');
+  }, [user, userHouseholdIds]);
+
+  // Helper function to get acceptance counterparty name
+  const getAcceptanceCounterparty = useCallback((acceptance: any) => {
+    return acceptance.applicant?.username || acceptance.user?.username || 'User';
+  }, []);
 
   // Create trade mutation
   const createTradeMutation = useMutation({
@@ -460,11 +470,6 @@ export default function StoragePage() {
     completeTradeCompletionMutation.mutate({ acceptanceId: acceptance.id, status: 'completed' });
   };
 
-  const handleRateTrade = (acceptance: any) => {
-    setSelectedAcceptance(acceptance);
-    setIsRatingDialogOpen(true);
-  };
-
   // Comprehensive refresh function that refreshes all data
   const handleRefreshAll = async () => {
     try {
@@ -485,18 +490,6 @@ export default function StoragePage() {
         variant: "destructive",
       });
     }
-  };
-
-  const submitRating = () => {
-    // Here you would typically send the rating to backend
-    // For now, we'll just show a success message
-    toast({
-      title: "Rating Submitted",
-      description: `Thank you for rating this trade experience ${tradeRating}/5 stars!`,
-    });
-    setIsRatingDialogOpen(false);
-    setTradeRating(0);
-    setRatingComment('');
   };
 
   const createForm = useForm<z.infer<typeof tradeFormSchema>>({
@@ -557,7 +550,7 @@ export default function StoragePage() {
                 Please log in to view your energy trading history and manage your listings.
               </p>
               <Button 
-                onClick={() => window.location.href = '/login'}
+                onClick={() => setLocation('/login')}
                 className="bg-green-600 hover:bg-green-700 text-white"
                 data-testid="button-login"
               >
@@ -1143,7 +1136,7 @@ export default function StoragePage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                       <div>
                                         <span className="text-gray-500">Name:</span>
-                                        <div className="font-medium">{counterpartyName}</div>
+                                        <div className="font-medium">{getAcceptanceCounterparty(acceptance)}</div>
                                       </div>
                                       <div>
                                         <span className="text-gray-500">Household:</span>
@@ -1465,7 +1458,7 @@ export default function StoragePage() {
                                         );
                                         
                                         const tradeHouseholdId = trade.sellerHouseholdId || trade.buyerHouseholdId;
-                                        const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'Unknown Household');
+                                        const counterpartyName = offerMatch?.household?.name || (tradeHouseholdId ? `Household ${tradeHouseholdId}` : 'User');
                                         
                                         return (
                                           <div className="bg-white rounded-lg border border-gray-100 p-4 md:p-6 space-y-4">
@@ -1710,65 +1703,6 @@ export default function StoragePage() {
         </Dialog>
 
 
-        {/* Rating Dialog */}
-        <Dialog open={isRatingDialogOpen} onOpenChange={setIsRatingDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Rate Your Trading Experience</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <p className="text-gray-600">
-                How was your energy trading experience? Your feedback helps improve our platform.
-              </p>
-              
-              {/* Star Rating */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Rating</label>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onClick={() => setTradeRating(star)}
-                      className={`text-2xl ${star <= tradeRating ? 'text-yellow-500' : 'text-gray-300'} hover:text-yellow-400`}
-                      data-testid={`star-${star}`}
-                    >
-                      ⭐
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Comment */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Comments (Optional)</label>
-                <textarea
-                  value={ratingComment}
-                  onChange={(e) => setRatingComment(e.target.value)}
-                  className="w-full p-3 border rounded-lg resize-none h-20"
-                  placeholder="Share your thoughts about this trade..."
-                  data-testid="textarea-rating-comment"
-                />
-              </div>
-              
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => {
-                  setIsRatingDialogOpen(false);
-                  setTradeRating(0);
-                  setRatingComment('');
-                }} className="text-red-600">
-                  Cancel
-                </Button>
-                <Button 
-                  onClick={submitRating}
-                  disabled={tradeRating === 0}
-                  data-testid="button-submit-rating"
-                >
-                  Submit Rating
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );
