@@ -972,34 +972,69 @@ export default function StoragePage() {
                   <div className="space-y-4">
                     {myListings.map((trade) => (
                       <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
-                          <div className="flex-1">
-                            <div className="font-medium text-base sm:text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
-                            <div className="text-xs sm:text-sm text-slate-400">
+                        <div className="mb-4">
+                          {/* Mobile compact layout */}
+                          <div className="sm:hidden">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
+                                {getStatusIcon(trade.status)}
+                                {trade.status}
+                              </Badge>
+                            </div>
+                            <div className="text-xs text-slate-400 mb-2" data-testid={`text-date-mobile-${trade.id}`}>
                               Listed: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                             </div>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-2">
                             {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
-                              <Badge variant="secondary" className="flex items-center gap-1 text-xs">
+                              <Badge variant="secondary" className="flex items-center gap-1 text-xs mb-2" data-testid={`badge-acceptances-mobile-${trade.id}`}>
                                 <User className="h-3 w-3" />
                                 {trade.acceptanceCount} applied
                               </Badge>
                             )}
-                            <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
-                              {getStatusIcon(trade.status)}
-                              {trade.status}
-                            </Badge>
+                            <div className="flex justify-between text-sm" data-testid={`mobile-details-${trade.id}`}>
+                              <span>
+                                <span className="text-slate-400">Amount:</span>
+                                <span className="font-medium text-slate-200 ml-1" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
+                              </span>
+                              <span>
+                                <span className="text-slate-400">Price:</span>
+                                <span className="font-semibold text-emerald-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatPrice(trade.pricePerKwh)}/kWh</span>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
-                          <div>
-                            <span className="text-xs sm:text-sm text-slate-400">Energy Amount:</span>
-                            <div className="font-medium text-sm sm:text-base text-slate-200">{trade.energyAmount}</div>
-                          </div>
-                          <div>
-                            <span className="text-xs sm:text-sm text-slate-400">Price:</span>
-                            <div className="font-semibold text-emerald-400 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
+                          
+                          {/* Desktop layout */}
+                          <div className="hidden sm:block">
+                            <div className="flex justify-between items-start gap-3 mb-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                                <div className="text-sm text-slate-400">
+                                  Listed: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
+                                  <Badge variant="secondary" className="flex items-center gap-1 text-xs">
+                                    <User className="h-3 w-3" />
+                                    {trade.acceptanceCount} applied
+                                  </Badge>
+                                )}
+                                <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
+                                  {getStatusIcon(trade.status)}
+                                  {trade.status}
+                                </Badge>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                              <div>
+                                <span className="text-sm text-slate-400">Energy Amount:</span>
+                                <div className="font-medium text-base text-slate-200">{trade.energyAmount}</div>
+                              </div>
+                              <div>
+                                <span className="text-sm text-slate-400">Price:</span>
+                                <div className="font-semibold text-emerald-400 text-base">{trade.pricePerKwh} /kwh</div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
@@ -1059,34 +1094,69 @@ export default function StoragePage() {
                   <div className="space-y-4">
                     {myRequests.map((trade) => (
                       <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
-                          <div className="flex-1">
-                            <div className="font-medium text-base sm:text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
-                            <div className="text-xs sm:text-sm text-slate-400">
+                        <div className="mb-4">
+                          {/* Mobile compact layout */}
+                          <div className="sm:hidden">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
+                                {getStatusIcon(trade.status)}
+                                {trade.status}
+                              </Badge>
+                            </div>
+                            <div className="text-xs text-slate-400 mb-2" data-testid={`text-date-mobile-${trade.id}`}>
                               Requested: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                             </div>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-2">
                             {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
-                              <Badge variant="secondary" className="flex items-center gap-1 text-xs">
+                              <Badge variant="secondary" className="flex items-center gap-1 text-xs mb-2" data-testid={`badge-acceptances-mobile-${trade.id}`}>
                                 <User className="h-3 w-3" />
                                 {trade.acceptanceCount} applied
                               </Badge>
                             )}
-                            <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
-                              {getStatusIcon(trade.status)}
-                              {trade.status}
-                            </Badge>
+                            <div className="flex justify-between text-sm" data-testid={`mobile-details-${trade.id}`}>
+                              <span>
+                                <span className="text-slate-400">Amount:</span>
+                                <span className="font-medium text-slate-200 ml-1" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
+                              </span>
+                              <span>
+                                <span className="text-slate-400">Price:</span>
+                                <span className="font-semibold text-blue-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatPrice(trade.pricePerKwh)}/kWh</span>
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
-                          <div>
-                            <span className="text-xs sm:text-sm text-slate-400">Energy Amount:</span>
-                            <div className="font-medium text-sm sm:text-base text-slate-200">{trade.energyAmount}</div>
-                          </div>
-                          <div>
-                            <span className="text-xs sm:text-sm text-slate-400">Price:</span>
-                            <div className="font-semibold text-blue-400 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
+                          
+                          {/* Desktop layout */}
+                          <div className="hidden sm:block">
+                            <div className="flex justify-between items-start gap-3 mb-4">
+                              <div className="flex-1">
+                                <div className="font-medium text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                                <div className="text-sm text-slate-400">
+                                  Requested: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
+                                  <Badge variant="secondary" className="flex items-center gap-1 text-xs">
+                                    <User className="h-3 w-3" />
+                                    {trade.acceptanceCount} applied
+                                  </Badge>
+                                )}
+                                <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
+                                  {getStatusIcon(trade.status)}
+                                  {trade.status}
+                                </Badge>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4 mb-4">
+                              <div>
+                                <span className="text-sm text-slate-400">Energy Amount:</span>
+                                <div className="font-medium text-base text-slate-200">{trade.energyAmount}</div>
+                              </div>
+                              <div>
+                                <span className="text-sm text-slate-400">Price:</span>
+                                <div className="font-semibold text-blue-400 text-base">{trade.pricePerKwh} /kwh</div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
