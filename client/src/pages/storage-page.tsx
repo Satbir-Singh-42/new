@@ -1037,7 +1037,7 @@ export default function StoragePage() {
                               </span>
                               <span>
                                 <span className="text-slate-400">Price:</span>
-                                <span className="font-semibold text-emerald-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatPrice(trade.pricePerKwh)}/kWh</span>
+                                <span className="font-semibold text-emerald-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</span>
                               </span>
                             </div>
                           </div>
@@ -1165,7 +1165,7 @@ export default function StoragePage() {
                               </span>
                               <span>
                                 <span className="text-slate-400">Price:</span>
-                                <span className="font-semibold text-blue-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatPrice(trade.pricePerKwh)}/kWh</span>
+                                <span className="font-semibold text-blue-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</span>
                               </span>
                             </div>
                           </div>
