@@ -976,7 +976,7 @@ export default function StoragePage() {
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <div className="font-medium text-base text-emerald-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
                                 {getStatusIcon(trade.status)}
                                 {trade.status}
@@ -1040,22 +1040,22 @@ export default function StoragePage() {
                         {trade.status === 'pending' && (
                           <div className="flex flex-col sm:flex-row gap-2">
                             <Button
-                              variant="outline"
+                              variant="secondary"
                               size="sm"
                               onClick={() => handleEditTrade(trade)}
                               disabled={trade.acceptanceCount !== undefined && trade.acceptanceCount > 0}
-                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto"
+                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
                               data-testid="button-edit-trade"
                             >
                               <Edit2 className="h-3 w-3" />
                               Edit
                             </Button>
                             <Button
-                              variant="outline"
+                              variant="destructive"
                               size="sm"
                               onClick={() => cancelTradeMutation.mutate(trade.id)}
                               disabled={cancelTradeMutation.isPending}
-                              className="flex items-center justify-center gap-1 text-red-600 hover:text-red-700 min-h-[44px] w-full sm:w-auto"
+                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-red-600/20 hover:bg-red-600/30 text-red-400 border-red-500/50"
                               data-testid="button-cancel-trade"
                             >
                               <X className="h-3 w-3" />
@@ -1098,7 +1098,7 @@ export default function StoragePage() {
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <div className="font-medium text-base text-blue-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
                                 {getStatusIcon(trade.status)}
                                 {trade.status}
@@ -1162,22 +1162,22 @@ export default function StoragePage() {
                         {trade.status === 'pending' && (
                           <div className="flex flex-col sm:flex-row gap-2">
                             <Button
-                              variant="outline"
+                              variant="secondary"
                               size="sm"
                               onClick={() => handleEditTrade(trade)}
                               disabled={trade.acceptanceCount !== undefined && trade.acceptanceCount > 0}
-                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto"
+                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
                               data-testid="button-edit-trade"
                             >
                               <Edit2 className="h-3 w-3" />
                               Edit
                             </Button>
                             <Button
-                              variant="outline"
+                              variant="destructive"
                               size="sm"
                               onClick={() => cancelTradeMutation.mutate(trade.id)}
                               disabled={cancelTradeMutation.isPending}
-                              className="flex items-center justify-center gap-1 text-red-600 hover:text-red-700 min-h-[44px] w-full sm:w-auto"
+                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-red-600/20 hover:bg-red-600/30 text-red-400 border-red-500/50"
                               data-testid="button-cancel-trade"
                             >
                               <X className="h-3 w-3" />
