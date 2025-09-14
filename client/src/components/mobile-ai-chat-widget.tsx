@@ -500,7 +500,7 @@ export default function AIChatWidget() {
       <button
         ref={iconRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-full shadow-lg transition-all duration-300 border-2 border-white cursor-pointer hover:scale-105 touch-manipulation"
+        className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-full shadow-lg transition-all duration-300 border-2 border-slate-300/20 cursor-pointer hover:scale-105 touch-manipulation"
         aria-label={isOpen ? "Close AI Chat" : "Open AI Chat"}
       >
         <img 
@@ -513,8 +513,8 @@ export default function AIChatWidget() {
       {/* Chat widget positioned above the icon */}
       {isOpen && (
         <div className="absolute bottom-16 right-0 mb-2" ref={widgetRef}>
-          <Card className={`w-[calc(100vw-2rem)] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg transition-all duration-300 h-[60vh] sm:h-[70vh] max-h-80 sm:max-h-96 md:max-h-[500px] shadow-2xl drop-shadow-lg rounded-lg`}>
-        <CardHeader className="flex flex-row items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
+          <Card className={`w-[calc(100vw-2rem)] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg transition-all duration-300 h-[60vh] sm:h-[70vh] max-h-80 sm:max-h-96 md:max-h-[500px] shadow-2xl drop-shadow-lg rounded-lg bg-slate-900/95 backdrop-blur-sm border border-slate-700/50`}>
+        <CardHeader className="flex flex-row items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-t-lg border-b border-slate-700/50">
           <CardTitle className="text-sm sm:text-base font-medium flex items-center">
             <img 
               src={robotIcon} 
@@ -529,7 +529,7 @@ export default function AIChatWidget() {
               variant="ghost"
               size="sm"
               onClick={startNewConversation}
-              className="h-7 w-auto px-2 sm:h-8 sm:px-3 hover:bg-white/20 text-xs rounded-md"
+              className="h-7 w-auto px-2 sm:h-8 sm:px-3 hover:bg-white/20 text-xs rounded-md border border-white/20"
               title="Start new conversation"
             >
               <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
@@ -540,7 +540,7 @@ export default function AIChatWidget() {
               variant="ghost"
               size="sm"
               onClick={handleClose}
-              className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-white/20"
+              className="h-6 w-6 sm:h-7 sm:w-7 p-0 hover:bg-white/20 border border-white/20 rounded"
             >
               <X className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
@@ -561,8 +561,8 @@ export default function AIChatWidget() {
                       <div
                         className={`px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base ${
                           msg.sender === 'user'
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-gray-100 text-gray-800'
+                            ? 'bg-blue-600 text-white shadow-md'
+                            : 'bg-slate-800/80 text-slate-100 border border-slate-700/50'
                         }`}
                       >
                         {msg.sender === 'ai' ? (
@@ -579,27 +579,27 @@ export default function AIChatWidget() {
                                 code: ({ children, className }) => {
                                   const isInline = !className?.includes('language-');
                                   return isInline ? (
-                                    <code className="bg-gray-200 px-1 py-0.5 rounded text-xs font-mono">
+                                    <code className="bg-slate-700/60 px-1 py-0.5 rounded text-xs font-mono text-slate-200">
                                       {children}
                                     </code>
                                   ) : (
-                                    <pre className="bg-gray-200 p-2 rounded text-xs font-mono overflow-x-auto mb-2">
+                                    <pre className="bg-slate-700/60 p-2 rounded text-xs font-mono overflow-x-auto mb-2 text-slate-200">
                                       <code>{children}</code>
                                     </pre>
                                   );
                                 },
                                 blockquote: ({ children }) => (
-                                  <blockquote className="border-l-4 border-purple-500 pl-3 italic mb-2">
+                                  <blockquote className="border-l-4 border-blue-500 pl-3 italic mb-2">
                                     {children}
                                   </blockquote>
                                 ),
-                                hr: () => <hr className="my-2 border-gray-300" />
+                                hr: () => <hr className="my-2 border-slate-600" />
                               }}
                             >
                               {typingMessageId === msg.id ? displayedText[msg.id] || '' : msg.message}
                             </ReactMarkdown>
                             {typingMessageId === msg.id && (
-                              <span className="inline-block w-2 h-4 bg-purple-500 animate-pulse ml-1 rounded-sm"></span>
+                              <span className="inline-block w-2 h-4 bg-blue-500 animate-pulse ml-1 rounded-sm"></span>
                             )}
                           </div>
                         ) : (
@@ -614,10 +614,10 @@ export default function AIChatWidget() {
                             variant="ghost"
                             size="sm"
                             onClick={() => copyToClipboard(msg.message, msg.id)}
-                            className="h-6 w-6 p-0 hover:bg-gray-200 opacity-70 hover:opacity-100 transition-opacity rounded-md"
+                            className="h-6 w-6 p-0 hover:bg-slate-700/60 opacity-70 hover:opacity-100 transition-opacity rounded-md border border-slate-600/30"
                             title={copiedMessageId === msg.id ? "Copied!" : "Copy message"}
                           >
-                            <Copy className={`h-3 w-3 ${copiedMessageId === msg.id ? 'text-green-600' : 'text-gray-600'}`} />
+                            <Copy className={`h-3 w-3 ${copiedMessageId === msg.id ? 'text-green-400' : 'text-slate-400'}`} />
                           </Button>
                         </div>
                       )}
@@ -626,11 +626,11 @@ export default function AIChatWidget() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-100 text-gray-800 px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base">
+                    <div className="bg-slate-800/80 text-slate-100 px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base border border-slate-700/50">
                       <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -639,7 +639,7 @@ export default function AIChatWidget() {
               </div>
             </ScrollArea>
             
-            <div className="p-3 sm:p-4 border-t bg-gray-50 rounded-b-lg">
+            <div className="p-3 sm:p-4 border-t border-slate-700/50 bg-slate-800/60 backdrop-blur-sm rounded-b-lg">
               <div className="flex items-center gap-3 sm:gap-4">
                 <Input
                   type="text"
@@ -647,7 +647,7 @@ export default function AIChatWidget() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="flex-1 text-sm sm:text-base h-9 sm:h-10"
+                  className="flex-1 text-sm sm:text-base h-9 sm:h-10 bg-slate-900/60 border-slate-600/50 text-slate-100 placeholder-slate-400"
                   disabled={isLoading || isListening}
                 />
                 {recognition && (
@@ -655,7 +655,7 @@ export default function AIChatWidget() {
                     size="sm"
                     onClick={toggleListening}
                     disabled={isLoading}
-                    className={`h-9 w-9 sm:h-10 sm:w-10 p-0 ${isListening ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-500 hover:bg-gray-600'}`}
+                    className={`h-9 w-9 sm:h-10 sm:w-10 p-0 ${isListening ? 'bg-red-500 hover:bg-red-600' : 'bg-slate-600 hover:bg-slate-500'}`}
                   >
                     {isListening ? <MicOff className="h-3 w-3 sm:h-4 sm:w-4" /> : <Mic className="h-3 w-3 sm:h-4 sm:w-4" />}
                   </Button>
@@ -674,7 +674,7 @@ export default function AIChatWidget() {
                     size="sm"
                     onClick={handleSendMessage}
                     disabled={!inputValue.trim() || isLoading || isListening}
-                    className="bg-purple-600 hover:bg-purple-700 h-9 w-9 sm:h-10 sm:w-10 p-0"
+                    className="bg-blue-600 hover:bg-blue-700 h-9 w-9 sm:h-10 sm:w-10 p-0"
                   >
                     <Send className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
