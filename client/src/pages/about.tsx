@@ -308,21 +308,21 @@ export default function About() {
                   <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded mx-auto"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-500 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
-                    <span className="text-xs sm:text-sm font-medium">React 18</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-blue-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-400 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">React 18</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-300 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-600 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">TypeScript</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-500/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-blue-400/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">TypeScript</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-cyan-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-cyan-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">Tailwind CSS</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-cyan-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-cyan-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-cyan-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Tailwind CSS</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-indigo-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-indigo-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.6s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">shadcn/ui</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-indigo-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-indigo-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-indigo-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">shadcn/ui</span>
                   </div>
                 </div>
               </div>
@@ -343,21 +343,21 @@ export default function About() {
                   <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded mx-auto"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-green-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-green-500 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
-                    <span className="text-xs sm:text-sm font-medium">Node.js</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-green-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-green-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-green-400 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Node.js</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-gray-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-gray-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">Express.js</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-gray-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-gray-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-gray-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Express.js</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">PostgreSQL</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-blue-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">PostgreSQL</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-200 transform hover:scale-105 transition-transform">
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-blue-500/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-blue-400/70">
                     <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-blue-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.6s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">Drizzle ORM</span>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Drizzle ORM</span>
                   </div>
                 </div>
               </div>
@@ -378,17 +378,17 @@ export default function About() {
                   <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-purple-400 to-purple-600 rounded mx-auto"></div>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-purple-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-purple-500 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
-                    <span className="text-xs sm:text-sm font-medium">Google Gemini AI</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-purple-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-purple-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-purple-400 rounded-full mr-1.5 sm:mr-2 animate-pulse"></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Google Gemini AI</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-amber-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-amber-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">Weather API</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-amber-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-amber-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-amber-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">Weather API</span>
                   </div>
-                  <div className="flex items-center bg-white rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-teal-200 transform hover:scale-105 transition-transform">
-                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-teal-500 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                    <span className="text-xs sm:text-sm font-medium">ML Algorithms</span>
+                  <div className="flex items-center bg-slate-800/80 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-md border border-teal-400/50 transform hover:scale-105 transition-transform backdrop-blur-sm hover:border-teal-300/70">
+                    <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-teal-400 rounded-full mr-1.5 sm:mr-2 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    <span className="text-xs sm:text-sm font-medium text-gray-100">ML Algorithms</span>
                   </div>
                 </div>
               </div>
@@ -512,77 +512,6 @@ export default function About() {
           </Card>
         </motion.div>
 
-        {/* Use Cases */}
-        <motion.div
-          ref={useCasesRef}
-          initial={{ opacity: 0, y: 100 }}
-          animate={useCasesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <Card className="mb-6 sm:mb-8 lg:mb-12 bg-slate-800/50 border-slate-700/50 backdrop-blur-sm shadow-2xl">
-            <CardHeader className="pb-4 sm:pb-6">
-              <CardTitle className="flex items-center text-base sm:text-lg lg:text-xl text-gray-100">
-                <Users className="mr-2 text-blue-400" size={18} />
-                Real-World Applications
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 rounded-lg p-4 sm:p-6 border border-green-500/30 backdrop-blur-sm hover:border-green-400/50 transition-colors">
-                  <h4 className="font-semibold text-gray-100 mb-3">Residential Solar Communities</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    Homeowners with solar panels can automatically trade excess energy with neighbors, 
-                    creating local energy markets that reduce dependence on traditional grids.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="text-xs">Local Trading</Badge>
-                    <Badge variant="secondary" className="text-xs">Grid Independence</Badge>
-                    <Badge variant="secondary" className="text-xs">Cost Savings</Badge>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-blue-900/40 to-indigo-900/40 rounded-lg p-4 sm:p-6 border border-blue-500/30 backdrop-blur-sm hover:border-blue-400/50 transition-colors">
-                  <h4 className="font-semibold text-gray-100 mb-3">Commercial Energy Management</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    Businesses can optimize energy costs by participating in intelligent trading networks, 
-                    selling surplus during low-demand periods and buying during peak production times.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="text-xs">Cost Optimization</Badge>
-                    <Badge variant="secondary" className="text-xs">Peak Management</Badge>
-                    <Badge variant="secondary" className="text-xs">Smart Trading</Badge>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 rounded-lg p-4 sm:p-6 border border-purple-500/30 backdrop-blur-sm hover:border-purple-400/50 transition-colors">
-                  <h4 className="font-semibold text-gray-100 mb-3">Grid Resilience & Emergency Response</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    During power outages or extreme weather events, the network automatically redistributes 
-                    available energy to critical facilities and essential services.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="text-xs">Emergency Response</Badge>
-                    <Badge variant="secondary" className="text-xs">Auto Redistribution</Badge>
-                    <Badge variant="secondary" className="text-xs">Grid Stability</Badge>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-amber-900/40 to-yellow-900/40 rounded-lg p-4 sm:p-6 border border-amber-500/30 backdrop-blur-sm hover:border-amber-400/50 transition-colors">
-                  <h4 className="font-semibold text-gray-100 mb-3">Sustainable Energy Planning</h4>
-                  <p className="text-sm text-gray-300 mb-4">
-                    City planners and energy providers can use the platform's analytics to design more 
-                    efficient and sustainable energy infrastructure for future developments.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="text-xs">Urban Planning</Badge>
-                    <Badge variant="secondary" className="text-xs">Analytics</Badge>
-                    <Badge variant="secondary" className="text-xs">Sustainability</Badge>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
 
         {/* Back to Dashboard Button */}
         <motion.div
