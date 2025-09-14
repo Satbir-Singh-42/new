@@ -706,8 +706,9 @@ export default function StoragePage() {
               className="flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none"
               data-testid="button-refresh"
             >
-              <RefreshCw className={`h-4 w-4 ${isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading ? 'animate-spin' : ''}`} />
-              <span className="sm:inline">Refresh</span>
+              <RefreshCw className={`mr-2 h-4 w-4 ${isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">{isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading ? 'Updating...' : 'Refresh'}</span>
+              <span className="sm:hidden">{isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading ? 'Update' : 'Refresh'}</span>
             </Button>
             <Button
               variant="outline"
