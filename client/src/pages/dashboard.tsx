@@ -746,7 +746,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Navbar 
         currentPage="dashboard" 
         activeTab={activeTab} 
@@ -833,24 +833,30 @@ export default function Dashboard() {
       </div>
 
       {/* Main Application Interface */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 relative">
+        {/* Subtle background gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/5 via-transparent to-purple-900/5 pointer-events-none rounded-lg"></div>
+        <div className="relative z-10">
         {/* Content Sections */}
         {activeTab === 'energy-dashboard' && (
           <div className="space-y-6">
             {/* Real-time Market Overview */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
-              <h2 className="text-xl sm:text-2xl font-bold">Real-time Energy Market</h2>
-              <Button onClick={handleRefresh} disabled={refreshing} size="sm" variant="outline" data-testid="button-refresh" className="w-full sm:w-auto">
-                <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                <span className="hidden sm:inline">{refreshing ? 'Updating...' : 'Refresh'}</span>
-                <span className="sm:hidden">{refreshing ? 'Update' : 'Refresh'}</span>
-              </Button>
+            <div className="bg-gradient-to-r from-slate-800/50 via-slate-700/30 to-slate-800/50 p-4 sm:p-6 rounded-xl border border-slate-600/30 backdrop-blur-sm">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+                <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-300 via-emerald-300 to-purple-300 bg-clip-text text-transparent">Real-time Energy Market</h2>
+                <Button onClick={handleRefresh} disabled={refreshing} size="sm" variant="outline" data-testid="button-refresh" className="w-full sm:w-auto border-slate-600 hover:bg-slate-700/50 bg-gradient-to-r from-slate-700/50 to-slate-600/50">
+                  <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">{refreshing ? 'Updating...' : 'Refresh'}</span>
+                  <span className="sm:hidden">{refreshing ? 'Update' : 'Refresh'}</span>
+                </Button>
+              </div>
             </div>
 
             {/* Key Performance Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-emerald-950/30 to-emerald-900/20 border-emerald-800/30">
-                <div className="flex items-center justify-between">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-emerald-950/40 via-emerald-900/25 to-emerald-800/30 border-emerald-700/40 relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent pointer-events-none"></div>
+                <div className="flex items-center justify-between relative z-10">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs sm:text-sm font-medium text-emerald-400 mb-1 truncate">Network Generation</h3>
                     <p className="text-lg sm:text-2xl font-bold text-emerald-200 truncate" data-testid="text-total-generation">
@@ -858,14 +864,15 @@ export default function Dashboard() {
                     </p>
                     <p className="text-xs text-emerald-300 truncate">Solar capacity online</p>
                   </div>
-                  <div className="bg-emerald-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                  <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-emerald-400/20">
                     <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/30 to-blue-900/20 border-blue-800/30">
-                <div className="flex items-center justify-between">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/40 via-blue-900/25 to-blue-800/30 border-blue-700/40 relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent pointer-events-none"></div>
+                <div className="flex items-center justify-between relative z-10">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Energy Trades</h3>
                     <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-active-trades">
@@ -873,14 +880,15 @@ export default function Dashboard() {
                     </p>
                     <p className="text-xs text-blue-300 truncate">Active exchanges</p>
                   </div>
-                  <div className="bg-blue-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                  <div className="bg-gradient-to-br from-blue-500/25 to-blue-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-blue-400/20">
                     <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-950/30 to-purple-900/20 border-purple-800/30">
-                <div className="flex items-center justify-between">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-950/40 via-purple-900/25 to-purple-800/30 border-purple-700/40 relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none"></div>
+                <div className="flex items-center justify-between relative z-10">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs sm:text-sm font-medium text-purple-400 mb-1 truncate">Average Price</h3>
                     <p className="text-lg sm:text-2xl font-bold text-purple-200 truncate" data-testid="text-average-price">
@@ -888,25 +896,26 @@ export default function Dashboard() {
                     </p>
                     <p className="text-xs text-purple-300 truncate">Current market rate</p>
                   </div>
-                  <div className="bg-purple-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                  <div className="bg-gradient-to-br from-purple-500/25 to-purple-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-purple-400/20">
                     <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/30 to-blue-900/20 border-blue-800/30">
-                <div className="flex items-center justify-between">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-green-950/40 via-emerald-900/25 to-green-800/30 border-green-700/40 relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none"></div>
+                <div className="flex items-center justify-between relative z-10">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Carbon Saved</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-carbon-saved">
+                    <h3 className="text-xs sm:text-sm font-medium text-green-400 mb-1 truncate">Carbon Saved</h3>
+                    <p className="text-lg sm:text-2xl font-bold text-green-200 truncate" data-testid="text-carbon-saved">
                       {networkAnalytics?.trading?.carbonSaved ? 
                         formatCarbonSavings(parseFloat(networkAnalytics.trading.carbonSaved.replace(/[^\d.]/g, ''))) : 
                         "0 kg CO2"}
                     </p>
-                    <p className="text-xs text-blue-300 truncate">CO₂ avoided today</p>
+                    <p className="text-xs text-green-300 truncate">CO₂ avoided today</p>
                   </div>
-                  <div className="bg-blue-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
-                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
+                  <div className="bg-gradient-to-br from-green-500/25 to-green-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-green-400/20">
+                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
                   </div>
                 </div>
               </Card>
@@ -1544,8 +1553,8 @@ export default function Dashboard() {
             <SimulationDashboard />
           </div>
         )}
-
-
+        
+        </div> {/* Close relative z-10 div */}
       </main>
 
       {/* AI Chat Widget */}
