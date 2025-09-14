@@ -105,7 +105,7 @@ export default function LoginPage() {
 
         {/* Login Form */}
         <div className="flex justify-center md:justify-end order-2 md:order-1">
-          <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl">
+          <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl hover:border-primary/50 hover:bg-muted/90 cursor-pointer">
             <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
               <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
                 <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
