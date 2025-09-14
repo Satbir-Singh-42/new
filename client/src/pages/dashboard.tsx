@@ -992,22 +992,24 @@ export default function Dashboard() {
                   </div>
                 </Card>
 
-                <Card className="p-4 sm:p-6">
+                <Card className="p-4 sm:p-6 bg-gradient-to-br from-orange-950/40 via-yellow-900/25 to-amber-800/30 border border-yellow-500/20 backdrop-blur-sm shadow-xl">
                   <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
                     <div className="flex items-center gap-2">
-                      <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
-                      <span className="hidden sm:inline">Weather Impact</span>
-                      <span className="sm:hidden">Weather</span>
+                      <div className="p-1.5 sm:p-2 bg-yellow-500/20 rounded-full">
+                        <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
+                      </div>
+                      <span className="hidden sm:inline bg-gradient-to-r from-yellow-400 to-orange-300 bg-clip-text text-transparent">Weather Impact</span>
+                      <span className="sm:hidden bg-gradient-to-r from-yellow-400 to-orange-300 bg-clip-text text-transparent">Weather</span>
                     </div>
                     <span className="bg-green-900/30 text-green-400 px-2 py-1 rounded-full text-xs font-medium self-start">
                       Live Weather API
                     </span>
                   </h3>
                   <div className="space-y-3 sm:space-y-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center p-3 bg-gradient-to-r from-slate-800/50 to-slate-700/30 rounded-xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-300">
                       <span className="text-secondary-custom text-sm sm:text-base">Current Conditions</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-right sm:text-left">
-                        <span className="font-medium text-sm sm:text-base" data-testid="text-weather-condition">
+                        <span className="font-medium text-sm sm:text-base text-yellow-200" data-testid="text-weather-condition">
                           {marketData?.weather?.condition || "No data"}
                         </span>
                         {userLocation && (
@@ -1017,13 +1019,13 @@ export default function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center p-3 bg-gradient-to-r from-orange-900/40 to-orange-800/30 rounded-xl border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300">
                       <span className="text-secondary-custom text-sm sm:text-base">Temperature</span>
-                      <span className="font-medium text-sm sm:text-base" data-testid="text-temperature">
+                      <span className="font-medium text-sm sm:text-base text-orange-200" data-testid="text-temperature">
                         {marketData?.weather?.temperature ? `${marketData.weather.temperature}°C` : "No data"}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center p-3 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300">
                       <span className="text-secondary-custom text-sm sm:text-base">Solar Efficiency</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-right sm:text-left">
                         <span className={`font-medium text-sm sm:text-base ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-muted-foreground' : 'text-emerald-300'}`} data-testid="text-solar-efficiency">
@@ -1037,10 +1039,10 @@ export default function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    <div className="w-full bg-gradient-to-r from-slate-700 to-slate-600 rounded-full h-3 overflow-hidden shadow-inner">
                       <div 
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          marketData?.weather?.efficiency === 0 ? 'bg-gray-400' : 'bg-yellow-500'
+                        className={`h-3 rounded-full transition-all duration-300 shadow-lg ${
+                          marketData?.weather?.efficiency === 0 ? 'bg-gradient-to-r from-gray-500 to-gray-400' : 'bg-gradient-to-r from-yellow-500 to-orange-400'
                         }`}
                         style={{ width: `${marketData?.weather?.efficiency || 0}%` }}
                       ></div>
@@ -1068,44 +1070,59 @@ export default function Dashboard() {
 
             {/* Network Health */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              <Card className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold mb-2 flex items-center gap-2">
-                  <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline">Connected Households</span>
-                  <span className="sm:hidden">Households</span>
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-primary" data-testid="text-total-households">
+              <Card className="p-4 sm:p-6 bg-gradient-to-br from-indigo-950/40 via-indigo-900/25 to-indigo-800/30 border border-indigo-500/20 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                    <div className="p-1.5 sm:p-2 bg-indigo-500/20 rounded-full">
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-400" />
+                    </div>
+                    <span className="hidden sm:inline text-indigo-200">Connected Households</span>
+                    <span className="sm:hidden text-indigo-200">Households</span>
+                  </h3>
+                  <div className="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-bold text-indigo-300 mb-2" data-testid="text-total-households">
                   {networkAnalytics?.network?.totalHouseholds || 0}
                 </p>
-                <p className="text-xs sm:text-sm text-secondary-custom">
+                <p className="text-xs sm:text-sm text-indigo-400">
                   {networkAnalytics?.network?.activeHouseholds || 0} currently active
                 </p>
               </Card>
               
-              <Card className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold mb-2 flex items-center gap-2">
-                  <Battery className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline">Battery Storage</span>
-                  <span className="sm:hidden">Storage</span>
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-emerald-300" data-testid="text-battery-capacity">
+              <Card className="p-4 sm:p-6 bg-gradient-to-br from-emerald-950/40 via-emerald-900/25 to-emerald-800/30 border border-emerald-500/20 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                    <div className="p-1.5 sm:p-2 bg-emerald-500/20 rounded-full">
+                      <Battery className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+                    </div>
+                    <span className="hidden sm:inline text-emerald-200">Battery Storage</span>
+                    <span className="sm:hidden text-emerald-200">Storage</span>
+                  </h3>
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-300 mb-2" data-testid="text-battery-capacity">
                   {userHouseholds.length > 0 ? `${userHouseholds[0].batteryCapacity || 0} kWh` : "0 kWh"}
                 </p>
-                <p className="text-xs sm:text-sm text-secondary-custom">
+                <p className="text-xs sm:text-sm text-emerald-400">
                   Household battery capacity
                 </p>
               </Card>
               
-              <Card className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold mb-2 flex items-center gap-2">
-                  <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline">Network Efficiency</span>
-                  <span className="sm:hidden">Efficiency</span>
-                </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-blue-300" data-testid="text-network-efficiency">
+              <Card className="p-4 sm:p-6 bg-gradient-to-br from-cyan-950/40 via-cyan-900/25 to-cyan-800/30 border border-cyan-500/20 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                    <div className="p-1.5 sm:p-2 bg-cyan-500/20 rounded-full">
+                      <Gauge className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-400" />
+                    </div>
+                    <span className="hidden sm:inline text-cyan-200">Network Efficiency</span>
+                    <span className="sm:hidden text-cyan-200">Efficiency</span>
+                  </h3>
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                </div>
+                <p className="text-2xl sm:text-3xl font-bold text-cyan-300 mb-2" data-testid="text-network-efficiency">
                   {networkAnalytics?.efficiency?.networkEfficiency || "0%"}
                 </p>
-                <p className="text-xs sm:text-sm text-secondary-custom">
+                <p className="text-xs sm:text-sm text-cyan-400">
                   Avg. distance: {networkAnalytics?.efficiency?.averageDistance || "0 km"}
                 </p>
               </Card>
@@ -1528,58 +1545,58 @@ export default function Dashboard() {
             
             {/* Enhanced Information Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-purple-950/40 via-purple-900/25 to-pink-900/30 border border-purple-500/20 backdrop-blur-sm shadow-xl">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <div className="p-2 bg-purple-500/15 rounded-full">
-                    <TrendingUp className="h-5 w-5 text-purple-300" />
+                  <div className="p-2 bg-purple-500/20 rounded-full">
+                    <TrendingUp className="h-5 w-5 text-purple-400" />
                   </div>
-                  Market Insights
+                  <span className="bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">Market Insights</span>
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-white rounded-lg">
-                    <span className="text-sm font-medium">Peak Trading Hours</span>
-                    <span className="text-sm text-gray-600">6PM - 10PM</span>
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-slate-800/50 to-slate-700/30 rounded-xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-300">
+                    <span className="text-sm font-medium text-purple-200">Peak Trading Hours</span>
+                    <span className="text-sm text-purple-300 font-semibold">6PM - 10PM</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white rounded-lg">
-                    <span className="text-sm font-medium">Current Market Rate</span>
-                    <span className="text-sm text-gray-600">{networkAnalytics?.trading?.averagePrice || "₹0"}/kWh</span>
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-slate-800/50 to-slate-700/30 rounded-xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-300">
+                    <span className="text-sm font-medium text-purple-200">Current Market Rate</span>
+                    <span className="text-sm text-purple-300 font-semibold">{networkAnalytics?.trading?.averagePrice || "₹0"}/kWh</span>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-white rounded-lg">
-                    <span className="text-sm font-medium">Grid Stability</span>
-                    <span className={`text-sm ${(marketData?.gridStability || 0) > 70 ? 'text-emerald-300' : (marketData?.gridStability || 0) > 40 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  <div className="flex justify-between items-center p-3 bg-gradient-to-r from-slate-800/50 to-slate-700/30 rounded-xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-300">
+                    <span className="text-sm font-medium text-purple-200">Grid Stability</span>
+                    <span className={`text-sm font-semibold ${(marketData?.gridStability || 0) > 70 ? 'text-emerald-300' : (marketData?.gridStability || 0) > 40 ? 'text-yellow-400' : 'text-red-400'}`}>
                       {marketData?.gridStability || 0}%
                     </span>
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 lg:p-6">
+              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-slate-950/40 via-blue-950/25 to-slate-900/30 border border-blue-500/20 backdrop-blur-sm shadow-xl">
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                  <div className="p-1.5 sm:p-2 bg-blue-500/15 rounded-full">
-                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300" />
+                  <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-full">
+                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
                   </div>
-                  <span className="text-sm sm:text-base">How Trading Works</span>
+                  <span className="text-sm sm:text-base bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">How Trading Works</span>
                 </h3>
                 <div className="space-y-3 sm:space-y-4">
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-500/15 rounded-full flex items-center justify-center text-emerald-300 font-bold text-xs sm:text-sm flex-shrink-0">1</div>
+                  <div className="flex items-start gap-2 sm:gap-3 p-3 bg-gradient-to-r from-emerald-900/30 to-emerald-800/20 rounded-xl border border-emerald-500/20 hover:border-emerald-400/40 transition-all duration-300">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 font-bold text-xs sm:text-sm flex-shrink-0">1</div>
                     <div>
-                      <h4 className="font-semibold text-xs sm:text-sm">Create Your Offer</h4>
-                      <p className="text-xs text-gray-600">Set your energy amount and price</p>
+                      <h4 className="font-semibold text-xs sm:text-sm text-emerald-200">Create Your Offer</h4>
+                      <p className="text-xs text-emerald-400">Set your energy amount and price</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500/15 rounded-full flex items-center justify-center text-blue-300 font-bold text-xs sm:text-sm flex-shrink-0">2</div>
+                  <div className="flex items-start gap-2 sm:gap-3 p-3 bg-gradient-to-r from-blue-900/30 to-blue-800/20 rounded-xl border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold text-xs sm:text-sm flex-shrink-0">2</div>
                     <div>
-                      <h4 className="font-semibold text-xs sm:text-sm">Smart Matching</h4>
-                      <p className="text-xs text-gray-600">AI finds the best local matches</p>
+                      <h4 className="font-semibold text-xs sm:text-sm text-blue-200">Smart Matching</h4>
+                      <p className="text-xs text-blue-400">AI finds the best local matches</p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-500/15 rounded-full flex items-center justify-center text-purple-300 font-bold text-xs sm:text-sm flex-shrink-0">3</div>
+                  <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-purple-900/30 to-purple-800/20 rounded-xl border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold text-xs sm:text-sm flex-shrink-0">3</div>
                     <div>
-                      <h4 className="font-semibold text-xs sm:text-sm">Instant Transfer</h4>
-                      <p className="text-xs text-gray-600">Automatic grid routing and billing</p>
+                      <h4 className="font-semibold text-xs sm:text-sm text-purple-200">Instant Transfer</h4>
+                      <p className="text-xs text-purple-400">Automatic grid routing and billing</p>
                     </div>
                   </div>
                 </div>
