@@ -949,10 +949,10 @@ export default function Dashboard() {
                   <div className="space-y-2 sm:space-y-3">
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                           Current Supply
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-emerald-300 truncate">Available for trading</p>
                       </div>
                       <div className="text-right">
@@ -963,10 +963,10 @@ export default function Dashboard() {
                     </div>
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-blue-900/40 to-blue-800/30 rounded-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-blue-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-blue-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                           Current Demand
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-blue-300 truncate">Energy needed now</p>
                       </div>
                       <div className="text-right">
@@ -977,10 +977,10 @@ export default function Dashboard() {
                     </div>
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-purple-900/40 to-purple-800/30 rounded-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-purple-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-purple-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
                           Grid Stability
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-purple-300 truncate">Network balance score</p>
                       </div>
                       <div className="text-right">
@@ -1008,10 +1008,10 @@ export default function Dashboard() {
                   <div className="space-y-2 sm:space-y-3">
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-sky-900/40 to-sky-800/30 rounded-xl border border-sky-500/30 hover:border-sky-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-sky-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-sky-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
                           Current Conditions
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-sky-300 truncate">Weather status</p>
                       </div>
                       <div className="text-right">
@@ -1028,10 +1028,10 @@ export default function Dashboard() {
                     
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-orange-900/40 to-orange-800/30 rounded-xl border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-orange-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-orange-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
                           Temperature
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-orange-300 truncate">Current temp</p>
                       </div>
                       <div className="text-right">
@@ -1043,10 +1043,10 @@ export default function Dashboard() {
                     
                     <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
+                        <div className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
                           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                           Solar Efficiency
-                        </p>
+                        </div>
                         <p className="text-xs sm:text-sm text-emerald-300 truncate">Power generation rate</p>
                       </div>
                       <div className="text-right">
