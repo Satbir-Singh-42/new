@@ -976,7 +976,7 @@ export default function Dashboard() {
                   </h3>
                   <div className="space-y-3 sm:space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm sm:text-base">Current Conditions</span>
+                      <span className="text-secondary-custom text-sm sm:text-base">Current Conditions</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-right sm:text-left">
                         <span className="font-medium text-sm sm:text-base" data-testid="text-weather-condition">
                           {marketData?.weather?.condition || "No data"}
@@ -989,21 +989,21 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm sm:text-base">Temperature</span>
+                      <span className="text-secondary-custom text-sm sm:text-base">Temperature</span>
                       <span className="font-medium text-sm sm:text-base" data-testid="text-temperature">
                         {marketData?.weather?.temperature ? `${marketData.weather.temperature}°C` : "No data"}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600 text-sm sm:text-base">Solar Efficiency</span>
+                      <span className="text-secondary-custom text-sm sm:text-base">Solar Efficiency</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-right sm:text-left">
-                        <span className={`font-medium text-sm sm:text-base ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-gray-500' : 'text-emerald-300'}`} data-testid="text-solar-efficiency">
+                        <span className={`font-medium text-sm sm:text-base ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-muted-foreground' : 'text-emerald-300'}`} data-testid="text-solar-efficiency">
                           {marketData?.weather?.efficiency !== undefined ? `${Math.round(marketData.weather.efficiency)}%` : "No data"}
                         </span>
                         {(marketData?.weather?.efficiency || 0) <= 0 && (
                           <>
-                            <span className="text-xs text-gray-500 hidden sm:inline">(Night - No Solar)</span>
-                            <span className="text-xs text-gray-500 sm:hidden">(Night)</span>
+                            <span className="text-xs text-muted-foreground hidden sm:inline">(Night - No Solar)</span>
+                            <span className="text-xs text-muted-foreground sm:hidden">(Night)</span>
                           </>
                         )}
                       </div>
@@ -1021,10 +1021,10 @@ export default function Dashboard() {
               </div>
             ) : (
               <Card className="p-6">
-                <h3 className="text-lg font-semibold mb-4 text-center text-gray-500">
+                <h3 className="text-lg font-semibold mb-4 text-center text-secondary-custom">
                   No Market Data Available
                 </h3>
-                <p className="text-center text-gray-400">
+                <p className="text-center text-muted-foreground">
                   Real-time market data will appear here when households are connected and trading energy.
                 </p>
                 {!user && (
@@ -1048,7 +1048,7 @@ export default function Dashboard() {
                 <p className="text-2xl sm:text-3xl font-bold text-primary" data-testid="text-total-households">
                   {networkAnalytics?.network?.totalHouseholds || 0}
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-secondary-custom">
                   {networkAnalytics?.network?.activeHouseholds || 0} currently active
                 </p>
               </Card>
@@ -1062,7 +1062,7 @@ export default function Dashboard() {
                 <p className="text-2xl sm:text-3xl font-bold text-emerald-300" data-testid="text-battery-capacity">
                   {userHouseholds.length > 0 ? `${userHouseholds[0].batteryCapacity || 0} kWh` : "0 kWh"}
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-secondary-custom">
                   Household battery capacity
                 </p>
               </Card>
@@ -1076,7 +1076,7 @@ export default function Dashboard() {
                 <p className="text-2xl sm:text-3xl font-bold text-blue-300" data-testid="text-network-efficiency">
                   {networkAnalytics?.efficiency?.networkEfficiency || "0%"}
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-secondary-custom">
                   Avg. distance: {networkAnalytics?.efficiency?.averageDistance || "0 km"}
                 </p>
               </Card>
@@ -1087,19 +1087,19 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">1. Register Your Household</h4>
-                  <p className="text-sm text-gray-600">Add your solar installation and battery details to join the energy trading network.</p>
+                  <p className="text-sm text-secondary-custom">Add your solar installation and battery details to join the energy trading network.</p>
                 </div>
                 <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">2. Monitor Energy Flow</h4>
-                  <p className="text-sm text-gray-600">Track your energy production, consumption, and battery levels in real-time.</p>
+                  <p className="text-sm text-secondary-custom">Track your energy production, consumption, and battery levels in real-time.</p>
                 </div>
                 <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">3. Trade Energy</h4>
-                  <p className="text-sm text-gray-600">Buy and sell surplus energy with neighbors for optimal grid balance.</p>
+                  <p className="text-sm text-secondary-custom">Buy and sell surplus energy with neighbors for optimal grid balance.</p>
                 </div>
                 <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">4. AI Optimization</h4>
-                  <p className="text-sm text-gray-600">Let our AI optimize energy distribution and trading opportunities for you.</p>
+                  <p className="text-sm text-secondary-custom">Let our AI optimize energy distribution and trading opportunities for you.</p>
                 </div>
               </div>
             </Card>
@@ -1115,21 +1115,21 @@ export default function Dashboard() {
                   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                     <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Energy Trading Marketplace</h2>
                   </div>
-                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Connect directly with neighbors to trade renewable energy. Smart matching, instant transfers, fair pricing.</p>
+                  <p className="text-sm sm:text-base text-secondary-custom mb-3 sm:mb-4">Connect directly with neighbors to trade renewable energy. Smart matching, instant transfers, fair pricing.</p>
                   
                   {/* Market Stats */}
                   <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-300">{energyOffers.length}</p>
-                      <p className="text-xs text-gray-500">Active Offers</p>
+                      <p className="text-xs text-muted-foreground">Active Offers</p>
                     </div>
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-emerald-300">{energyRequests.length}</p>
-                      <p className="text-xs text-gray-500">Energy Requests</p>
+                      <p className="text-xs text-muted-foreground">Energy Requests</p>
                     </div>
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-300">{networkAnalytics?.trading?.averagePrice || "₹0"}</p>
-                      <p className="text-xs text-gray-500">Avg Price/kWh</p>
+                      <p className="text-xs text-muted-foreground">Avg Price/kWh</p>
                     </div>
                   </div>
                 </div>
@@ -1225,11 +1225,11 @@ export default function Dashboard() {
                                 );
                               })()}
                             </div>
-                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-1">
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-secondary-custom mb-1">
                               <HomeIcon className="h-4 w-4" />
                               <span className="truncate">{item.household?.name || 'Unknown Household'}</span>
                             </div>
-                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-gray-500">
+                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-muted-foreground">
                               <div className="flex items-center gap-1">
                                 <MapPin className="h-4 w-4" />
                                 <span className="hidden sm:inline">Ludhiana, Punjab • Location based matching</span>
@@ -1241,9 +1241,9 @@ export default function Dashboard() {
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
                             <div className="bg-emerald-500/10 p-2 sm:p-3 rounded-lg mb-3">
-                              <p className="text-xs sm:text-sm text-gray-600">Total</p>
+                              <p className="text-xs sm:text-sm text-secondary-custom">Total</p>
                               <p className="font-bold text-xl sm:text-2xl text-emerald-400">{formatTradeTotal(item.trade.energyAmount, item.trade.pricePerKwh)}</p>
-                              <p className="text-xs text-gray-500">Price per kWh: {formatTradePrice(item.trade.pricePerKwh)}</p>
+                              <p className="text-xs text-muted-foreground">Price per kWh: {formatTradePrice(item.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(item.trade) ? (
                               <div className="space-y-2">
@@ -1309,8 +1309,8 @@ export default function Dashboard() {
                       <div className="w-16 h-16 bg-emerald-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Zap className="h-8 w-8 text-emerald-300" />
                       </div>
-                      <h4 className="font-semibold text-gray-700 mb-2">No Energy Offers Yet</h4>
-                      <p className="text-sm text-gray-500 mb-4">Be the first to sell surplus solar energy!</p>
+                      <h4 className="font-semibold text-primary-custom mb-2">No Energy Offers Yet</h4>
+                      <p className="text-sm text-muted-foreground mb-4">Be the first to sell surplus solar energy!</p>
                       <Button onClick={() => {
                         form.setValue('tradeType', 'sell');
                         setShowCreateTradeDialog(true);
@@ -1379,11 +1379,11 @@ export default function Dashboard() {
                                 );
                               })()}
                             </div>
-                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-1">
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-secondary-custom mb-1">
                               <HomeIcon className="h-4 w-4" />
                               <span className="truncate">{request.household?.name || 'Unknown Household'}</span>
                             </div>
-                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-gray-500">
+                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-muted-foreground">
                               <div className="flex items-center gap-1">
                                 <MapPin className="h-4 w-4" />
                                 <span className="hidden sm:inline">Ludhiana, Punjab • Location based matching</span>
@@ -1395,7 +1395,7 @@ export default function Dashboard() {
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
                             <div className="bg-blue-500/10 p-2 sm:p-3 rounded-lg mb-3">
-                              <p className="text-xs sm:text-sm text-gray-600">Total willing to pay</p>
+                              <p className="text-xs sm:text-sm text-secondary-custom">Total willing to pay</p>
                               <p className="font-bold text-xl sm:text-2xl text-blue-400">{formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
                               <p className="text-xs text-gray-500">Price per kWh: {formatTradePrice(request.trade.pricePerKwh)}</p>
                             </div>

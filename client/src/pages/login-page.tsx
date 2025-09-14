@@ -99,39 +99,39 @@ export default function LoginPage() {
         </div>
       )}
       
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-3 sm:p-4 md:p-6 pt-20">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 p-3 sm:p-4 md:p-6 pt-20">
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-center">
 
 
         {/* Login Form */}
         <div className="flex justify-center md:justify-end order-2 md:order-1">
-          <Card className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
+          <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl">
             <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
               <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
                 <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
                   <CloudSun className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
               </div>
-              <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-800">
+              <CardTitle className="text-xl sm:text-2xl font-semibold text-primary-custom">
                 Welcome Back
               </CardTitle>
-              <CardDescription className="text-sm sm:text-base text-gray-600">
+              <CardDescription className="text-sm sm:text-base text-secondary-custom">
                 Sign in to your account to continue
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  <Label htmlFor="email" className="text-sm font-medium text-primary-custom">
                     Email Address
                   </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="Enter your email"
-                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                       {...register("email")}
                     />
                   </div>
@@ -141,22 +141,22 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                  <Label htmlFor="password" className="text-sm font-medium text-primary-custom">
                     Password
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                       {...register("password")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -182,10 +182,10 @@ export default function LoginPage() {
                 </Button>
 
                 <div className="text-center pt-2">
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-secondary-custom">
                     Don't have an account?{" "}
                     <Link href="/signup">
-                      <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer transition-colors duration-200">
+                      <span className="text-primary hover:text-accent font-medium cursor-pointer transition-colors duration-200">
                         Sign up here
                       </span>
                     </Link>
@@ -200,52 +200,52 @@ export default function LoginPage() {
         {/* Right side - Benefits Section */}
         <div className="hidden md:flex flex-col justify-center space-y-4 sm:space-y-6 p-4 sm:p-6 lg:p-8 order-1 md:order-2">
           <div className="space-y-3 sm:space-y-4">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Join SolarSense
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-secondary-custom leading-relaxed">
               Connect to the intelligent energy trading network and optimize your solar energy usage.
             </p>
           </div>
 
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              <div className="p-1.5 sm:p-2 bg-primary/20 rounded-full mt-1">
+                <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Energy Trading Dashboard</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Monitor real-time energy trades, track your household's generation and consumption</p>
+                <h3 className="text-sm sm:text-base font-semibold text-primary-custom">Energy Trading Dashboard</h3>
+                <p className="text-xs sm:text-sm text-secondary-custom">Monitor real-time energy trades, track your household's generation and consumption</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                <UserCircle className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+              <div className="p-1.5 sm:p-2 bg-accent/20 rounded-full mt-1">
+                <UserCircle className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">AI-Powered Optimization</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Get intelligent recommendations for energy trading and battery management</p>
+                <h3 className="text-sm sm:text-base font-semibold text-primary-custom">AI-Powered Optimization</h3>
+                <p className="text-xs sm:text-sm text-secondary-custom">Get intelligent recommendations for energy trading and battery management</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              <div className="p-1.5 sm:p-2 bg-primary/20 rounded-full mt-1">
+                <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Network Analytics</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Access detailed insights on grid stability, trading volumes, and carbon savings</p>
+                <h3 className="text-sm sm:text-base font-semibold text-primary-custom">Network Analytics</h3>
+                <p className="text-xs sm:text-sm text-secondary-custom">Access detailed insights on grid stability, trading volumes, and carbon savings</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
-              <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+              <div className="p-1.5 sm:p-2 bg-accent/20 rounded-full mt-1">
+                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800">Energy Trading History</h3>
-                <p className="text-xs sm:text-sm text-gray-600">Track your trading performance and energy optimization over time</p>
+                <h3 className="text-sm sm:text-base font-semibold text-primary-custom">Energy Trading History</h3>
+                <p className="text-xs sm:text-sm text-secondary-custom">Track your trading performance and energy optimization over time</p>
               </div>
             </div>
           </div>

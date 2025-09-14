@@ -178,16 +178,16 @@ export default function SignupPage() {
       )}
 
       <div
-        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-3 sm:p-4 md:p-6"
+        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 p-3 sm:p-4 md:p-6"
         style={{ paddingTop: "3.75rem" }}>
         <div className="w-full max-w-6xl grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-start">
           {/* Left side - Benefits Section */}
           <div className="hidden md:flex flex-col justify-start space-y-4 sm:space-y-6 p-4 sm:p-6 lg:p-8 order-1 md:order-1">
             <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Join the Energy Revolution
               </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-secondary-custom leading-relaxed">
                 Connect with neighbors, trade solar energy, and help build a
                 sustainable future with AI-powered grid optimization.
               </p>
@@ -195,14 +195,14 @@ export default function SignupPage() {
 
             <div className="space-y-3 sm:space-y-4">
               <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-green-100 rounded-full mt-1">
-                  <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                <div className="p-1.5 sm:p-2 bg-secondary/20 rounded-full mt-1">
+                  <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-secondary" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">
+                  <h3 className="text-sm sm:text-base font-semibold text-primary-custom">
                     Real Energy Trading
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-secondary-custom">
                     Trade surplus solar energy directly with verified households
                     in your area
                   </p>
@@ -210,14 +210,14 @@ export default function SignupPage() {
               </div>
 
               <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full mt-1">
-                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <div className="p-1.5 sm:p-2 bg-primary/20 rounded-full mt-1">
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">
+                  <h3 className="text-sm sm:text-base font-semibold text-primary-custom">
                     Grid Simulation & Testing
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-secondary-custom">
                     Test energy scenarios with AI-powered simulations before
                     implementing
                   </p>
@@ -225,14 +225,14 @@ export default function SignupPage() {
               </div>
 
               <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-purple-100 rounded-full mt-1">
-                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+                <div className="p-1.5 sm:p-2 bg-accent/20 rounded-full mt-1">
+                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">
+                  <h3 className="text-sm sm:text-base font-semibold text-primary-custom">
                     AI Energy Optimization
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-secondary-custom">
                     Get personalized recommendations to maximize your solar
                     investment
                   </p>
@@ -240,14 +240,14 @@ export default function SignupPage() {
               </div>
 
               <div className="flex items-start space-x-3">
-                <div className="p-1.5 sm:p-2 bg-cyan-100 rounded-full mt-1">
-                  <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
+                <div className="p-1.5 sm:p-2 bg-primary/20 rounded-full mt-1">
+                  <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800">
+                  <h3 className="text-sm sm:text-base font-semibold text-primary-custom">
                     Secure & Transparent
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-secondary-custom">
                     All transactions are secure with transparent pricing and
                     verified participants
                   </p>
@@ -258,17 +258,17 @@ export default function SignupPage() {
 
           {/* Signup Form */}
           <div className="flex justify-center md:justify-start order-2 md:order-2">
-            <Card className="w-full max-w-sm sm:max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
+            <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl">
               <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
                 <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
                   <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
                     <CloudSun className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                   </div>
                 </div>
-                <CardTitle className="text-xl sm:text-2xl font-semibold text-gray-800">
+                <CardTitle className="text-xl sm:text-2xl font-semibold text-primary-custom">
                   Create Account
                 </CardTitle>
-                <CardDescription className="text-sm sm:text-base text-gray-600">
+                <CardDescription className="text-sm sm:text-base text-secondary-custom">
                   Join thousands of solar professionals
                 </CardDescription>
               </CardHeader>
@@ -279,16 +279,16 @@ export default function SignupPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="username"
-                      className="text-sm font-medium text-gray-700">
+                      className="text-sm font-medium text-primary-custom">
                       Username
                     </Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="username"
                         type="text"
                         placeholder="Choose a username"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("username")}
                       />
                     </div>
@@ -302,16 +302,16 @@ export default function SignupPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="email"
-                      className="text-sm font-medium text-gray-700">
+                      className="text-sm font-medium text-primary-custom">
                       Email Address
                     </Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("email")}
                       />
                     </div>
@@ -325,16 +325,16 @@ export default function SignupPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="password"
-                      className="text-sm font-medium text-gray-700">
+                      className="text-sm font-medium text-primary-custom">
                       Password
                     </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("password", {
                           onChange: handlePasswordChange,
                         })}
@@ -342,7 +342,7 @@ export default function SignupPage() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground">
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -366,16 +366,16 @@ export default function SignupPage() {
                   <div className="space-y-2">
                     <Label
                       htmlFor="confirmPassword"
-                      className="text-sm font-medium text-gray-700">
+                      className="text-sm font-medium text-primary-custom">
                       Confirm Password
                     </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("confirmPassword")}
                       />
                       <button
@@ -383,7 +383,7 @@ export default function SignupPage() {
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground">
                         {showConfirmPassword ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -399,18 +399,18 @@ export default function SignupPage() {
                   </div>
 
                   {/* Trading Profile Section */}
-                  <div className="pt-2 border-t border-gray-200">
+                  <div className="pt-2 border-t border-border">
                     <div className="space-y-3">
                       <Label
                         htmlFor="phone"
-                        className="text-sm font-medium text-gray-700">
+                        className="text-sm font-medium text-primary-custom">
                         Phone Number <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="phone"
                         type="tel"
                         placeholder="+91-98765-43210"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("phone")}
                       />
                       {errors.phone && (
@@ -424,14 +424,14 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label
                           htmlFor="state"
-                          className="text-sm font-medium text-gray-700">
+                          className="text-sm font-medium text-primary-custom">
                           State <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="state"
                           type="text"
                           placeholder="Enter your state"
-                          className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                          className="h-10 sm:h-11 text-xs sm:text-sm bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                           {...register("state")}
                         />
                         {errors.state && (
@@ -444,14 +444,14 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label
                           htmlFor="district"
-                          className="text-sm font-medium text-gray-700">
+                          className="text-sm font-medium text-primary-custom">
                           District <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="district"
                           type="text"
                           placeholder="Enter your district"
-                          className="h-10 sm:h-11 text-xs sm:text-sm border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                          className="h-10 sm:h-11 text-xs sm:text-sm bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                           {...register("district")}
                         />
                         {errors.district && (
@@ -465,14 +465,14 @@ export default function SignupPage() {
                     <div className="space-y-3">
                       <Label
                         htmlFor="address"
-                        className="text-sm font-medium text-gray-700">
+                        className="text-sm font-medium text-primary-custom">
                         Physical Address <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="address"
                         type="text"
                         placeholder="123 Solar Nagar, City, State"
-                        className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("address")}
                       />
                       {errors.address && (
@@ -485,14 +485,14 @@ export default function SignupPage() {
                     <div className="space-y-3">
                       <Label
                         htmlFor="householdName"
-                        className="text-sm font-medium text-gray-700">
+                        className="text-sm font-medium text-primary-custom">
                         Household Name <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="householdName"
                         type="text"
                         placeholder="Smith Family Solar Home"
-                        className="h-10 sm:h-11 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("householdName")}
                       />
                       {errors.householdName && (
@@ -505,7 +505,7 @@ export default function SignupPage() {
                     <div className="space-y-3">
                       <Label
                         htmlFor="solarCapacity"
-                        className="text-sm font-medium text-gray-700">
+                        className="text-sm font-medium text-primary-custom">
                         Solar Capacity (Watts){" "}
                         <span className="text-red-500">*</span>
                       </Label>
@@ -513,7 +513,7 @@ export default function SignupPage() {
                         id="solarCapacity"
                         type="number"
                         placeholder="8000"
-                        className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("solarCapacity")}
                       />
                       {errors.solarCapacity && (
@@ -526,7 +526,7 @@ export default function SignupPage() {
                     <div className="space-y-3">
                       <Label
                         htmlFor="batteryCapacity"
-                        className="text-sm font-medium text-gray-700">
+                        className="text-sm font-medium text-primary-custom">
                         Battery Storage (kWh){" "}
                         <span className="text-red-500">*</span>
                       </Label>
@@ -534,7 +534,7 @@ export default function SignupPage() {
                         id="batteryCapacity"
                         type="number"
                         placeholder="13.5"
-                        className="h-12 sm:h-12 text-sm sm:text-base border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("batteryCapacity")}
                       />
                       {errors.batteryCapacity && (
@@ -560,11 +560,11 @@ export default function SignupPage() {
                       <div className="grid gap-1.5 leading-none">
                         <Label
                           htmlFor="dataAccuracyConfirmed"
-                          className="text-xs sm:text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          className="text-xs sm:text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-primary-custom">
                           I confirm that the provided energy system details are
                           accurate
                         </Label>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-secondary-custom">
                           Required for energy trading verification and grid
                           compatibility
                         </p>
@@ -592,10 +592,10 @@ export default function SignupPage() {
                   </Button>
 
                   <div className="text-center pt-2">
-                    <p className="text-xs sm:text-sm text-gray-600">
+                    <p className="text-xs sm:text-sm text-secondary-custom">
                       Already have an account?{" "}
                       <Link href="/login">
-                        <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer transition-colors duration-200">
+                        <span className="text-primary hover:text-accent font-medium cursor-pointer transition-colors duration-200">
                           Sign in here
                         </span>
                       </Link>
