@@ -1977,22 +1977,20 @@ export default function StoragePage() {
         {/* Edit Trade Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent 
-            className="p-0 bg-slate-900/95 backdrop-blur-xl border border-slate-600/40 shadow-2xl shadow-black/20 w-[calc(100vw-1rem)] max-w-[95vw] sm:w-full sm:max-w-md md:max-w-lg lg:max-w-xl max-h-[95svh] sm:max-h-[90svh] overflow-hidden rounded-lg sm:rounded-2xl"
+            className="w-[95vw] sm:max-w-[500px] p-4 sm:p-6 max-h-[85vh] overflow-y-auto rounded-xl sm:rounded-2xl mx-2 sm:mx-0 bg-slate-900/95 backdrop-blur-xl border border-slate-600/40 shadow-2xl shadow-black/20"
             data-testid="dialog-edit-trade"
           >
-            <DialogTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent flex items-center gap-2 px-4 sm:px-6 pt-5 pb-2">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-blue-500 via-cyan-500 to-emerald-500 flex items-center justify-center shadow-lg">
-                <Edit2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+            <DialogTitle className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent flex items-center gap-2 text-center sm:text-left break-words mb-2">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-gradient-to-br from-blue-500 via-cyan-500 to-emerald-500 flex items-center justify-center shadow-lg">
+                <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
               </div>
               Edit Energy Trade
             </DialogTitle>
-            <DialogDescription className="text-slate-400 px-4 sm:px-6 pb-4 text-sm sm:text-base leading-relaxed border-b border-slate-700/50">
+            <DialogDescription className="text-slate-400 text-sm sm:text-base leading-relaxed border-b border-slate-700/50 pb-4 mb-4 break-words">
               Update your trade details below. All changes are validated in real-time.
             </DialogDescription>
-            {/* Scrollable Form Body */}
-            <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-5">
-              <Form {...editForm}>
-                <form id="edit-trade-form" onSubmit={editForm.handleSubmit((data) => editingTrade && updateTradeMutation.mutate({ id: editingTrade.id, data }))} className="space-y-4 sm:space-y-6">
+            <Form {...editForm}>
+              <form id="edit-trade-form" onSubmit={editForm.handleSubmit((data) => editingTrade && updateTradeMutation.mutate({ id: editingTrade.id, data }))} className="space-y-3 sm:space-y-4">
                   <FormField
                     control={editForm.control}
                     name="tradeType"
@@ -2103,18 +2101,17 @@ export default function StoragePage() {
                       </FormItem>
                     )}
                   />
-                </form>
-              </Form>
-            </div>
+              </form>
+            </Form>
             
-            {/* Sticky Footer */}
-            <div className="sticky bottom-0 bg-slate-900/98 backdrop-blur-xl border-t border-slate-600/40 px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-end">
+            {/* Action Buttons */}
+            <div className="sticky bottom-0 bg-slate-900/80 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 border-t border-slate-600/40 pt-4 mt-6 pb-[calc(env(safe-area-inset-bottom)+12px)] flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 w-full">
               <Button 
                 type="button" 
                 variant="ghost" 
                 onClick={() => setIsEditDialogOpen(false)} 
                 data-testid="button-cancel"
-                className="order-2 sm:order-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-all duration-300 px-4 py-2.5 sm:py-2 text-sm sm:text-base font-medium rounded-lg"
+                className="w-full sm:w-auto text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-all duration-300 px-4 py-2.5 text-sm font-medium rounded-lg"
               >
                 Cancel
               </Button>
@@ -2123,7 +2120,7 @@ export default function StoragePage() {
                 form="edit-trade-form"
                 disabled={updateTradeMutation.isPending || !editForm.formState.isDirty || !editForm.formState.isValid}
                 data-testid="button-update"
-                className="order-1 sm:order-2 bg-gradient-to-r from-blue-600 via-cyan-600 to-emerald-600 hover:from-blue-700 hover:via-cyan-700 hover:to-emerald-700 text-white font-semibold shadow-xl shadow-blue-500/25 hover:shadow-blue-500/35 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] sm:min-w-[120px] px-6 py-2.5 sm:py-2 text-sm sm:text-base rounded-lg"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-cyan-600 to-emerald-600 hover:from-blue-700 hover:via-cyan-700 hover:to-emerald-700 text-white font-semibold shadow-xl shadow-blue-500/25 hover:shadow-blue-500/35 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed px-6 py-2.5 text-sm rounded-lg"
                 onClick={() => {
                   const form = document.getElementById('edit-trade-form') as HTMLFormElement;
                   if (form) form.requestSubmit();

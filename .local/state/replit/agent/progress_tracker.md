@@ -413,6 +413,11 @@
 [x] 634. Added energy amount on left and per kWh price on right below total price
 [x] 635. Applied consistent three-piece layout to both mobile and desktop views
 [x] 636. Layout now shows: ₹450 (top), 5 kWh (left), ₹9/kWh (right) as requested
+[x] 637. Fixed Edit Energy Trade dialog responsiveness issues for mobile devices
+[x] 638. Implemented proper viewport constraints (w-[95vw] sm:max-w-[500px])
+[x] 639. Added mobile-first button stacking (flex-col-reverse) and full-width buttons
+[x] 640. Applied safe area padding for mobile keyboard compatibility
+[x] 641. Optimized dialog height and scrolling behavior for small screens
 
 **CURRENT SESSION - THEME CONSISTENCY FIX - September 14, 2025**
 [x] 627. Resolved cross-env dependency issue and restarted workflow successfully
