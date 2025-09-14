@@ -417,6 +417,7 @@
 [x] 636. Updated all form elements, inputs, buttons, and text colors for theme consistency
 [x] 637. Applied theme patterns from main application to dialog for seamless integration
 [x] 638. Simplified dialog background from complex gradient to clean slate-900 for better aesthetics
+[x] 639. Updated dialog text from "Market Rate:" to "Average /kWh:" for clarity
 
 **CURRENT SESSION - FINAL MIGRATION COMPLETION - September 14, 2025**
 [x] 627. Resolved final cross-env dependency issue by installing missing package
