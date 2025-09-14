@@ -592,10 +592,6 @@ export default function SignupPage() {
                           I confirm that the provided energy system details are
                           accurate
                         </Label>
-                        <p className="text-xs text-secondary-custom">
-                          Required for energy trading verification and grid
-                          compatibility
-                        </p>
                       </div>
                     </div>
                     {errors.dataAccuracyConfirmed && (
