@@ -1192,7 +1192,7 @@ export default function Dashboard() {
               <div className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-0">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Energy Trading Marketplace</h2>
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">Energy Trading Marketplace</h2>
                   </div>
                   <p className="text-sm sm:text-base text-slate-200 mb-3 sm:mb-4">Connect directly with neighbors to trade renewable energy. Smart matching, instant transfers, fair pricing.</p>
                   
