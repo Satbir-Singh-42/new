@@ -1686,17 +1686,17 @@ export default function StoragePage() {
                                         })()}
                                         {canViewDetail(acceptance.status) && (
                                           <Button 
-                                            size="default" 
+                                            size="sm" 
                                             variant="outline" 
-                                            className="min-h-[40px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2"
+                                            className="h-8 px-3 bg-slate-700/60 hover:bg-slate-600/60 text-slate-200 border-slate-500/50"
                                             onClick={() => {
                                               setSelectedTradeDetail(acceptance);
                                               setIsDetailModalOpen(true);
                                             }}
                                             data-testid={`button-view-detail-${acceptance.id}`}
                                           >
-                                            <FileText className="h-4 w-4 mr-2" />
-                                            View Details
+                                            <FileText className="h-3 w-3 mr-1" />
+                                            Details
                                           </Button>
                                         )}
                                       </div>
@@ -1835,17 +1835,17 @@ export default function StoragePage() {
                                       })()}
                                       {canViewDetail(application.acceptance.status) && (
                                         <Button 
-                                          size="default" 
+                                          size="sm" 
                                           variant="outline" 
-                                          className="min-h-[40px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2"
+                                          className="h-8 px-3 bg-slate-700/60 hover:bg-slate-600/60 text-slate-200 border-slate-500/50"
                                           onClick={() => {
                                             setSelectedTradeDetail(application);
                                             setIsDetailModalOpen(true);
                                           }}
                                           data-testid={`button-view-detail-trade-${application.acceptance.id}`}
                                         >
-                                          <FileText className="h-4 w-4 mr-2" />
-                                          View Details
+                                          <FileText className="h-3 w-3 mr-1" />
+                                          Details
                                         </Button>
                                       )}
                                     </div>
@@ -2117,19 +2117,15 @@ export default function StoragePage() {
 
         {/* Trade Detail Modal */}
         <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
-          <DialogContent className="max-w-3xl w-full mx-4 max-h-[95vh] overflow-y-auto sm:mx-auto bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 border border-slate-600/50 shadow-2xl backdrop-blur-xl">
-            <DialogHeader className="pb-6 border-b border-slate-600/30">
-              <DialogTitle className="flex items-center gap-3 text-xl font-semibold">
-                <div className="p-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg border border-blue-500/30">
-                  <FileText className="h-6 w-6 text-blue-400" />
-                </div>
-                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Trade Contact Details
-                </span>
+          <DialogContent className="p-4 sm:p-5 max-h-[70vh] overflow-y-auto sm:max-w-xl md:max-w-2xl bg-slate-900/95 border-slate-700/60">
+            <DialogHeader className="pb-3 border-b border-slate-600/30">
+              <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
+                <FileText className="h-4 w-4 text-blue-400" />
+                <span className="text-slate-200">Trade Details</span>
               </DialogTitle>
             </DialogHeader>
             {selectedTradeDetail && (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {(() => {
                   // Determine if this is from myApplicationResults or myTradeResults
                   const isMyApplication = selectedTradeDetail.tradeId;
@@ -2158,68 +2154,56 @@ export default function StoragePage() {
                     return (
                       <div className="space-y-4">
                         {/* Trade Information */}
-                        <div className="bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-700/60 border border-slate-600/40 rounded-xl p-6 shadow-lg backdrop-blur-sm">
-                          <h3 className="font-semibold text-slate-100 mb-4 flex items-center gap-2">
-                            <div className="p-1.5 bg-emerald-500/20 rounded-md">
-                              <Zap className="h-4 w-4 text-emerald-400" />
-                            </div>
+                        <div className="bg-slate-800/40 border border-slate-600/40 rounded-lg p-3">
+                          <h3 className="font-medium text-slate-100 mb-2 flex items-center gap-2 text-sm">
+                            <Zap className="h-4 w-4 text-emerald-400" />
                             Trade Information
                           </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Energy Amount</span>
-                              <div className="font-semibold text-lg text-slate-100 mt-1">{formatEnergy(trade?.energyAmount || 0)}</div>
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Energy</div>
+                              <div className="font-medium text-slate-100">{formatEnergy(trade?.energyAmount || 0)}</div>
                             </div>
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Price per kWh</span>
-                              <div className="font-semibold text-lg text-slate-100 mt-1">{formatPrice(trade?.pricePerKwh || 0)}</div>
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Price/kWh</div>
+                              <div className="font-medium text-slate-100">{formatPrice(trade?.pricePerKwh || 0)}</div>
                             </div>
-                            <div className="bg-gradient-to-r from-emerald-900/30 to-emerald-800/30 p-3 rounded-lg border border-emerald-600/30">
-                              <span className="text-emerald-300 text-xs uppercase tracking-wide">Total Value</span>
-                              <div className="font-bold text-xl text-emerald-400 mt-1">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                            <div className="bg-emerald-900/20 p-2 rounded border border-emerald-600/30">
+                              <div className="text-xs text-emerald-300">Total</div>
+                              <div className="font-semibold text-emerald-400">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
                             </div>
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Trade Type</span>
-                              <div className="font-semibold text-lg capitalize text-slate-100 mt-1">{trade?.tradeType}</div>
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Type</div>
+                              <div className="font-medium capitalize text-slate-100">{trade?.tradeType}</div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Contact Information */}
-                        <div className="bg-gradient-to-br from-blue-900/30 via-blue-800/20 to-indigo-900/30 border border-blue-500/40 rounded-xl p-6 shadow-lg backdrop-blur-sm">
-                          <h3 className="font-semibold text-blue-300 mb-4 flex items-center gap-3">
-                            <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-400/30">
-                              <User className="h-5 w-5 text-blue-400" />
-                            </div>
-                            <span className="bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">
-                              Trade Owner Contact Details
-                            </span>
+                        <div className="bg-blue-900/20 border border-blue-500/40 rounded-lg p-3">
+                          <h3 className="font-medium text-blue-300 mb-2 flex items-center gap-2 text-sm">
+                            <User className="h-4 w-4 text-blue-400" />
+                            Contact Details
                           </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                              <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Full Name</span>
-                              <div className="text-blue-100 font-semibold text-base break-words">{counterpartyName}</div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between py-1">
+                              <span className="text-blue-400">Name:</span>
+                              <span className="text-blue-100 font-medium truncate ml-2">{counterpartyName}</span>
                             </div>
-                            <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                              <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Location</span>
-                              <div className="text-blue-100 font-semibold text-base break-words">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
+                            <div className="flex justify-between py-1">
+                              <span className="text-blue-400">Location:</span>
+                              <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser?.district || 'N/A'}, {counterpartyUser?.state || 'N/A'}</span>
                             </div>
-                            {counterpartyHousehold?.address && (
-                              <div className="sm:col-span-2 bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Full Address</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{counterpartyHousehold.address}</div>
-                              </div>
-                            )}
                             {counterpartyUser?.phone && (
-                              <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Phone Number</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{counterpartyUser.phone}</div>
+                              <div className="flex justify-between py-1">
+                                <span className="text-blue-400">Phone:</span>
+                                <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser.phone}</span>
                               </div>
                             )}
                             {counterpartyUser?.email && (
-                              <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Email Address</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{counterpartyUser.email}</div>
+                              <div className="flex justify-between py-1">
+                                <span className="text-blue-400">Email:</span>
+                                <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser.email}</span>
                               </div>
                             )}
                           </div>
@@ -2235,72 +2219,60 @@ export default function StoragePage() {
                     return (
                       <div className="space-y-4">
                         {/* Trade Information */}
-                        <div className="bg-gradient-to-br from-slate-800/60 via-slate-800/40 to-slate-700/60 border border-slate-600/40 rounded-xl p-6 shadow-lg backdrop-blur-sm">
-                          <h3 className="font-semibold text-slate-100 mb-4 flex items-center gap-2">
-                            <div className="p-1.5 bg-emerald-500/20 rounded-md">
-                              <Zap className="h-4 w-4 text-emerald-400" />
-                            </div>
+                        <div className="bg-slate-800/40 border border-slate-600/40 rounded-lg p-3">
+                          <h3 className="font-medium text-slate-100 mb-2 flex items-center gap-2 text-sm">
+                            <Zap className="h-4 w-4 text-emerald-400" />
                             Trade Information
                           </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Energy Amount</span>
-                              <div className="font-semibold text-lg text-slate-100 mt-1">{formatEnergy(trade?.energyAmount || 0)}</div>
+                          <div className="grid grid-cols-2 gap-2 text-sm">
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Energy</div>
+                              <div className="font-medium text-slate-100">{formatEnergy(trade?.energyAmount || 0)}</div>
                             </div>
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Price per kWh</span>
-                              <div className="font-semibold text-lg text-slate-100 mt-1">{formatPrice(trade?.pricePerKwh || 0)}</div>
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Price/kWh</div>
+                              <div className="font-medium text-slate-100">{formatPrice(trade?.pricePerKwh || 0)}</div>
                             </div>
-                            <div className="bg-gradient-to-r from-emerald-900/30 to-emerald-800/30 p-3 rounded-lg border border-emerald-600/30">
-                              <span className="text-emerald-300 text-xs uppercase tracking-wide">Total Value</span>
-                              <div className="font-bold text-xl text-emerald-400 mt-1">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                            <div className="bg-emerald-900/20 p-2 rounded border border-emerald-600/30">
+                              <div className="text-xs text-emerald-300">Total</div>
+                              <div className="font-semibold text-emerald-400">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
                             </div>
-                            <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/30">
-                              <span className="text-slate-400 text-xs uppercase tracking-wide">Trade Type</span>
-                              <div className="font-semibold text-lg capitalize text-slate-100 mt-1">{trade?.tradeType}</div>
+                            <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
+                              <div className="text-xs text-slate-400">Type</div>
+                              <div className="font-medium capitalize text-slate-100">{trade?.tradeType}</div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Contact Information */}
-                        <div className="bg-gradient-to-br from-blue-900/30 via-blue-800/20 to-indigo-900/30 border border-blue-500/40 rounded-xl p-6 shadow-lg backdrop-blur-sm">
-                          <h3 className="font-semibold text-blue-300 mb-4 flex items-center gap-3">
-                            <div className="p-2 bg-blue-500/20 rounded-lg border border-blue-400/30">
-                              <User className="h-5 w-5 text-blue-400" />
-                            </div>
-                            <span className="bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">
-                              Applicant Contact Details
-                            </span>
+                        <div className="bg-blue-900/20 border border-blue-500/40 rounded-lg p-3">
+                          <h3 className="font-medium text-blue-300 mb-2 flex items-center gap-2 text-sm">
+                            <User className="h-4 w-4 text-blue-400" />
+                            Applicant Details
                           </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                              <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Full Name</span>
-                              <div className="text-blue-100 font-semibold text-base break-words">{applicantUser?.username || applicantHousehold?.name}</div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex justify-between py-1">
+                              <span className="text-blue-400">Name:</span>
+                              <span className="text-blue-100 font-medium truncate ml-2">{applicantUser?.username || applicantHousehold?.name}</span>
                             </div>
-                            <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                              <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Household</span>
-                              <div className="text-blue-100 font-semibold text-base break-words">{applicantHousehold?.name || 'Household not available'}</div>
+                            <div className="flex justify-between py-1">
+                              <span className="text-blue-400">Household:</span>
+                              <span className="text-blue-100 font-medium truncate ml-2">{applicantHousehold?.name || 'N/A'}</span>
                             </div>
-                            <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                              <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Location</span>
-                              <div className="text-blue-100 font-semibold text-base break-words">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
+                            <div className="flex justify-between py-1">
+                              <span className="text-blue-400">Location:</span>
+                              <span className="text-blue-100 font-medium truncate ml-2">{applicantUser?.district || 'N/A'}, {applicantUser?.state || 'N/A'}</span>
                             </div>
-                            {applicantHousehold?.address && (
-                              <div className="sm:col-span-2 bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Full Address</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{applicantHousehold.address}</div>
-                              </div>
-                            )}
                             {applicantUser?.phone && (
-                              <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Phone Number</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{applicantUser.phone}</div>
+                              <div className="flex justify-between py-1">
+                                <span className="text-blue-400">Phone:</span>
+                                <span className="text-blue-100 font-medium truncate ml-2">{applicantUser.phone}</span>
                               </div>
                             )}
                             {applicantUser?.email && (
-                              <div className="bg-blue-800/20 p-4 rounded-lg border border-blue-600/30 hover:border-blue-500/50 transition-colors">
-                                <span className="text-blue-300 font-medium text-xs uppercase tracking-wide mb-2 block">Email Address</span>
-                                <div className="text-blue-100 font-semibold text-base break-words">{applicantUser.email}</div>
+                              <div className="flex justify-between py-1">
+                                <span className="text-blue-400">Email:</span>
+                                <span className="text-blue-100 font-medium truncate ml-2">{applicantUser.email}</span>
                               </div>
                             )}
                           </div>
@@ -2312,15 +2284,16 @@ export default function StoragePage() {
                   return <div className="text-slate-400">Trade details not available</div>;
                 })()}
                 
-                <div className="flex justify-center sm:justify-end pt-6 mt-6 border-t border-slate-600/30">
+                <div className="flex justify-end pt-3 mt-3 border-t border-slate-600/30">
                   <Button 
                     variant="outline" 
+                    size="sm"
                     onClick={() => setIsDetailModalOpen(false)}
-                    className="w-full sm:w-auto min-h-[48px] font-semibold px-8 py-3 bg-gradient-to-r from-slate-700/80 to-slate-600/80 hover:from-slate-600/80 hover:to-slate-500/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="h-8 px-3 bg-slate-700/60 hover:bg-slate-600/60 text-slate-200 border-slate-500/50"
                     data-testid="button-close-detail-modal-bottom"
                   >
-                    <X className="h-4 w-4 mr-2" />
-                    Close Details
+                    <X className="h-3 w-3 mr-1" />
+                    Close
                   </Button>
                 </div>
               </div>

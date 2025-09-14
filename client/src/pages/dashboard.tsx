@@ -1390,16 +1390,16 @@ export default function Dashboard() {
                               </Button>
                             ) : (
                               <Button 
-                                size="default" 
+                                size="sm" 
                                 onClick={() => {
                                   setSelectedTradeForDetails(item);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full min-h-[44px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2.5"
+                                className="w-full h-8 bg-slate-700/60 hover:bg-slate-600/60 text-slate-200 border-slate-500/50"
                                 variant="outline"
                               >
-                                <FileText className="h-4 w-4 mr-2" />
-                                View Details
+                                <FileText className="h-3 w-3 mr-1" />
+                                Details
                               </Button>
                             )}
                           </div>
@@ -1545,16 +1545,16 @@ export default function Dashboard() {
                               </Button>
                             ) : (
                               <Button 
-                                size="default" 
+                                size="sm" 
                                 onClick={() => {
                                   setSelectedTradeForDetails(request);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full min-h-[44px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2.5"
+                                className="w-full h-8 bg-slate-700/60 hover:bg-slate-600/60 text-slate-200 border-slate-500/50"
                                 variant="outline"
                               >
-                                <FileText className="h-4 w-4 mr-2" />
-                                View Details
+                                <FileText className="h-3 w-3 mr-1" />
+                                Details
                               </Button>
                             )}
                           </div>
