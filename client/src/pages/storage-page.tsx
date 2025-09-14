@@ -120,19 +120,41 @@ export default function StoragePage() {
     [energyTrades]
   );
 
-  // Memoized trade categorizations
+  // Memoized application count mapping
+  const applicationCountMap = useMemo(() => {
+    const countMap = new Map<number, number>();
+    tradeApplications.forEach((application: any) => {
+      const tradeId = application.acceptance?.tradeId || application.tradeId;
+      if (tradeId) {
+        countMap.set(tradeId, (countMap.get(tradeId) || 0) + 1);
+      }
+    });
+    return countMap;
+  }, [tradeApplications]);
+
+  // Memoized trade categorizations with application counts
   const myListings = useMemo(() =>
-    sortedTrades.filter(trade => 
-      trade.tradeType === 'sell' && trade.sellerHouseholdId && userHouseholdIds.includes(trade.sellerHouseholdId)
-    ),
-    [sortedTrades, userHouseholdIds]
+    sortedTrades
+      .filter(trade => 
+        trade.tradeType === 'sell' && trade.sellerHouseholdId && userHouseholdIds.includes(trade.sellerHouseholdId)
+      )
+      .map(trade => ({
+        ...trade,
+        acceptanceCount: applicationCountMap.get(trade.id) || 0
+      })),
+    [sortedTrades, userHouseholdIds, applicationCountMap]
   );
 
   const myRequests = useMemo(() =>
-    sortedTrades.filter(trade => 
-      trade.tradeType === 'buy' && trade.buyerHouseholdId && userHouseholdIds.includes(trade.buyerHouseholdId)
-    ),
-    [sortedTrades, userHouseholdIds]
+    sortedTrades
+      .filter(trade => 
+        trade.tradeType === 'buy' && trade.buyerHouseholdId && userHouseholdIds.includes(trade.buyerHouseholdId)
+      )
+      .map(trade => ({
+        ...trade,
+        acceptanceCount: applicationCountMap.get(trade.id) || 0
+      })),
+    [sortedTrades, userHouseholdIds, applicationCountMap]
   );
 
   const myAllTrades = useMemo(() =>
