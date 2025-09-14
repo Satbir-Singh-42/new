@@ -401,9 +401,9 @@ export function SimulationDashboard() {
                 className="flex-1 sm:flex-none text-xs sm:text-sm"
               >
                 {loading ? (
-                  <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 animate-spin mr-1 sm:mr-2" />
+                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <Play className="mr-2 h-4 w-4" />
                 )}
                 <span className="hidden sm:inline">Start Live Demo</span>
                 <span className="sm:hidden">Start Demo</span>
@@ -472,9 +472,9 @@ export function SimulationDashboard() {
                     data-testid="button-trigger-outage"
                   >
                     {loading ? (
-                      <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 animate-spin mr-1 sm:mr-2" />
+                      <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
-                      <ZapOff className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <ZapOff className="mr-2 h-4 w-4" />
                     )}
                     <span className="hidden sm:inline">Simulate Outage</span>
                     <span className="sm:hidden">Outage Test</span>
