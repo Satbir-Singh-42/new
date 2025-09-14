@@ -1632,7 +1632,7 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-gradient-to-br from-slate-950/95 via-blue-950/90 to-slate-900/95 border border-blue-500/30 backdrop-blur-sm rounded-xl shadow-2xl">
+        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-slate-900 border border-slate-600/50 rounded-xl shadow-2xl">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-white dark:text-white">
               <Plus className="h-5 w-5 text-blue-400" />
