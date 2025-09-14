@@ -38,7 +38,7 @@ export default function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-md fixed top-0 left-0 right-0 z-50">
+    <header className="bg-card border-b border-border shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/">
@@ -134,7 +134,7 @@ export default function Navbar({
                 variant="outline"
                 size="sm"
                 onClick={() => logoutMutation.mutate()}
-                className="flex items-center gap-2 bg-white hover:bg-red-50 text-red-600 border-red-200 hover:border-red-300 transition-all duration-300 ease-in-out transform active:scale-95">
+                className="flex items-center gap-2 bg-card hover:bg-destructive/10 text-red-500 border-red-500/20 hover:border-red-500/30 transition-all duration-300 ease-in-out transform active:scale-95">
                 <LogOut size={16} />
                 Logout
               </Button>
@@ -154,7 +154,7 @@ export default function Navbar({
                 <Button
                   variant="outline"
                   size="icon"
-                  className="bg-white hover:bg-blue-50 text-black hover:text-blue-600 border-gray-300 hover:border-blue-400 active:scale-95 transition-all duration-200 ease-in-out">
+                  className="bg-card hover:bg-primary/10 text-foreground hover:text-primary border-border hover:border-primary/40 active:scale-95 transition-all duration-200 ease-in-out">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
@@ -187,7 +187,7 @@ export default function Navbar({
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "energy-dashboard"
                               ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-gray-100"
+                              : "text-secondary-custom hover:bg-muted"
                           }`}>
                           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Energy Dashboard</span>
@@ -206,7 +206,7 @@ export default function Navbar({
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "energy-trading"
                               ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-gray-100"
+                              : "text-secondary-custom hover:bg-muted"
                           }`}>
                           <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Energy Trading</span>
@@ -225,7 +225,7 @@ export default function Navbar({
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "simulation"
                               ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-gray-100"
+                              : "text-secondary-custom hover:bg-muted"
                           }`}>
                           <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Simulation Lab</span>
@@ -309,7 +309,7 @@ export default function Navbar({
                     {user ? (
                       <Button
                         variant="outline"
-                        className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 bg-white hover:bg-red-50 text-red-600 border-red-200 hover:border-red-300 transition-all duration-300 ease-in-out transform active:scale-95 touch-manipulation"
+                        className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 bg-card hover:bg-destructive/10 text-red-500 border-red-500/20 hover:border-red-500/30 transition-all duration-300 ease-in-out transform active:scale-95 touch-manipulation"
                         onClick={() => {
                           logoutMutation.mutate();
                           setIsMenuOpen(false);
