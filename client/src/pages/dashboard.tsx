@@ -757,40 +757,14 @@ export default function Dashboard() {
         }}
       />
 
-      {/* Hero Section - Enhanced with vibrant colors */}
-      <section className="bg-gradient-to-br from-blue-900 via-purple-900 to-emerald-900 text-white pb-6 sm:pb-8 md:pb-10 lg:pb-12 xl:pb-16 pt-20 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/15 to-emerald-600/10 animate-pulse"></div>
-        <div className="absolute top-0 left-1/4 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl animate-bounce" style={{animationDelay: '0s', animationDuration: '6s'}}></div>
-        <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-purple-500/15 rounded-full blur-3xl animate-bounce" style={{animationDelay: '2s', animationDuration: '8s'}}></div>
-        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl animate-bounce" style={{animationDelay: '4s', animationDuration: '7s'}}></div>
-        
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 relative z-10">
+      {/* Hero Section - Now visible on all devices */}
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 text-white pb-6 sm:pb-8 md:pb-10 lg:pb-12 xl:pb-16 pt-20">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center flex flex-col justify-center items-center min-h-[150px] sm:min-h-[160px] md:min-h-[170px] lg:min-h-[180px] xl:min-h-[190px] pt-6 sm:pt-8 md:pt-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 lg:mb-8 bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent drop-shadow-lg">
-              SolarSense: Intelligent Energy Solutions
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl px-2 max-w-4xl mx-auto bg-gradient-to-r from-blue-200 via-purple-200 to-emerald-200 bg-clip-text text-transparent font-medium drop-shadow-md">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 lg:mb-8">SolarSense: Intelligent Energy Solutions</h2>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 px-2 max-w-4xl mx-auto">
               Decentralized energy trading platform for a sustainable future
             </p>
-            
-            {/* Decorative elements */}
-            <div className="flex items-center justify-center gap-4 mt-6 sm:mt-8">
-              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
-            </div>
-            
-            {/* Energy flow visualization */}
-            <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 opacity-60">
-              <div className="flex items-center gap-1">
-                <Sun className="w-4 h-4 text-yellow-400 animate-pulse" />
-                <div className="w-12 h-0.5 bg-gradient-to-r from-yellow-400 via-blue-400 to-emerald-400 rounded animate-pulse"></div>
-                <ArrowRightLeft className="w-4 h-4 text-purple-400 animate-pulse" style={{animationDelay: '1s'}} />
-                <div className="w-12 h-0.5 bg-gradient-to-r from-purple-400 via-blue-400 to-emerald-400 rounded animate-pulse"></div>
-                <Home className="w-4 h-4 text-emerald-400 animate-pulse" style={{animationDelay: '2s'}} />
-              </div>
-            </div>
           </div>
         </div>
       </section>
