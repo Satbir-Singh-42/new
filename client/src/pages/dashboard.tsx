@@ -1240,10 +1240,10 @@ export default function Dashboard() {
                     <span className="hidden sm:inline">Create Trade</span>
                     <span className="sm:hidden">Create</span>
                   </Button>
-                  <Button variant="outline" onClick={handleRefresh} size="sm" data-testid="button-refresh-trades" className="text-xs sm:text-sm px-3 py-2">
-                    <RefreshCw className={`mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 ${refreshing ? 'animate-spin' : ''}`} />
-                    <span className="hidden sm:inline">Refresh</span>
-                    <span className="sm:hidden">Refresh</span>
+                  <Button variant="outline" onClick={handleRefresh} size="sm" data-testid="button-refresh-trades" className="text-xs sm:text-sm px-3 py-2" disabled={refreshing}>
+                    <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                    <span className="hidden sm:inline">{refreshing ? 'Updating...' : 'Refresh'}</span>
+                    <span className="sm:hidden">{refreshing ? 'Update' : 'Refresh'}</span>
                   </Button>
                   <Button 
                     variant="outline" 
