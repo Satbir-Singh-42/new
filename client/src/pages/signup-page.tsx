@@ -405,7 +405,7 @@ export default function SignupPage() {
                   </div>
 
                   {/* Trading Profile Section */}
-                  <div className="pt-2 border-t border-border">
+                  <div className="space-y-3 sm:space-y-4">
                     <div className="space-y-3">
                       <Label
                         htmlFor="phone"
@@ -430,7 +430,7 @@ export default function SignupPage() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <Label
                           htmlFor="state"
                           className="text-sm font-medium text-primary-custom">
@@ -453,7 +453,7 @@ export default function SignupPage() {
                         )}
                       </div>
 
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <Label
                           htmlFor="district"
                           className="text-sm font-medium text-primary-custom">
