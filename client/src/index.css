@@ -121,6 +121,35 @@
   }
 }
 
+/* Input type normalization - ensure all input types look identical */
+input[type="number"], 
+input[type="tel"], 
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ensure consistent height and padding for all inputs */
+input[type="number"], 
+input[type="tel"], 
+input[type="text"], 
+input[type="email"], 
+input[type="password"] {
+  box-sizing: border-box !important;
+  height: auto !important;
+  line-height: normal !important;
+}
+
 /* Tablet-specific optimizations */
 @media (min-width: 768px) and (max-width: 1024px) {
   .tablet-optimized {
