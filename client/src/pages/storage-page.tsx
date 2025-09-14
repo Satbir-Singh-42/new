@@ -167,10 +167,10 @@ export default function StoragePage() {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && !applicationsLoading && energyTrades.length > 0) {
+    if (!isLoading && !applicationsLoading) {
       setTimeout(() => setDataLoaded(true), 100);
     }
-  }, [isLoading, applicationsLoading, energyTrades]);
+  }, [isLoading, applicationsLoading]);
 
   const myAllTrades = useMemo(() =>
     sortedTrades.filter(trade => isOwnTrade(trade)),

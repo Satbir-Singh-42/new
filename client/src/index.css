@@ -512,6 +512,19 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
     animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .card-stagger,
+  .btn-smooth,
+  .tab-panel,
+  .page-mount,
+  .fade-up-enter,
+  .fade-up-active {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 }
 
