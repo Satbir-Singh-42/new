@@ -394,6 +394,25 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
     background-color: var(--surface);
     color: var(--text-primary);
   }
+
+  /* Force all inputs to use dark styling and override browser defaults */
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    background-color: var(--input) !important;
+    color: var(--foreground) !important;
+    border-color: var(--border) !important;
+  }
+
+  /* Override browser autofill styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--input) inset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    caret-color: var(--foreground) !important;
+  }
 }
 
 @layer utilities {
