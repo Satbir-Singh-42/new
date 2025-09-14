@@ -1,0 +1,68 @@
+[vite] connecting...
+[vite] connected.
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: false, …}
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: false, …}
+🗺️ Location permission needed, showing dialog
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: true, …}
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: true, …}
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: true, …}
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: false, userLocation: null, locationPermissionChecked: true, …}
+Location granted: 
+Object {latitude: 30.9264384, longitude: 75.8284288, accuracy: 2362.6792471638564, address: "Ludhiana", city: "Ludhiana", …}
+🔍 Market query debug: 
+Object {marketData: undefined, marketError: undefined, marketLoading: true, userLocation: {…}, locationPermissionChecked: true, …}
+✅ Market data received: 
+Object {supply: 200, demand: 90, gridStability: 100, weather: {…}, aiInsight: {…}}
+🔍 Market query debug: 
+Object {marketData: {…}, marketError: undefined, marketLoading: false, userLocation: {…}, locationPermissionChecked: true, …}
+Warning: validateDOMNesting(...): <div> cannot appear as a descendant of &lt;p&gt;.
+    at div
+    at p
+    at div
+    at div
+    at div
+    at div
+    at _c (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/components/ui/card.tsx:23:11)
+    at div
+    at div
+    at div
+    at main
+    at div
+    at Dashboard (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/pages/dashboard.tsx:43:37)
+    at Route (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ab1e4d20:205:16)
+    at ProtectedRoute (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/lib/protected-route.tsx:22:3)
+    at Switch (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ab1e4d20:261:17)
+    at Router
+    at AuthProvider (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/hooks/use-auth.tsx:39:32)
+    at QueryClientProvider (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=ab1e4d20:2874:3)
+    at App (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/App.tsx?v=kINKustDTo0WWbJYYi7ub:102:37)
+at div
+at p
+at div
+at div
+at div
+at div
+at _c (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/components/ui/card.tsx:23:11)
+at div
+at div
+at div
+at main
+at div
+at Dashboard (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/pages/dashboard.tsx:43:37)
+at Route (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ab1e4d20:205:16)
+at ProtectedRoute (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/lib/protected-route.tsx:22:3)
+at Switch (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ab1e4d20:261:17)
+at Router
+at AuthProvider (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/hooks/use-auth.tsx:39:32)
+at QueryClientProvider (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=ab1e4d20:2874:3)
+at App (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/src/App.tsx?v=kINKustDTo0WWbJYYi7ub:102:37)
+at t.value (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://6e042fcb-31cd-448f-8c8e-fd802133f3a6-00-22u2stbzq6dgb.picard.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
