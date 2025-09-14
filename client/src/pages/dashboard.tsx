@@ -935,39 +935,59 @@ export default function Dashboard() {
               </Card>
             ) : marketData ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                <Card className="p-4 sm:p-6">
+                <Card className="p-4 sm:p-6 bg-gradient-to-br from-slate-900/60 via-blue-950/40 to-slate-800/60 border border-blue-500/20 backdrop-blur-sm shadow-xl">
                   <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300" />
-                    <span className="hidden sm:inline">Live Market Activity</span>
-                    <span className="sm:hidden">Market Activity</span>
+                    <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-full">
+                      <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
+                    </div>
+                    <span className="hidden sm:inline bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Live Market Activity</span>
+                    <span className="sm:hidden bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Market Activity</span>
+                    <span className="bg-green-900/30 text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                      Live Data
+                    </span>
                   </h3>
                   <div className="space-y-2 sm:space-y-3">
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-green-950/20 rounded-lg">
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-emerald-200 text-sm sm:text-base">Current Supply</p>
+                        <p className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                          Current Supply
+                        </p>
                         <p className="text-xs sm:text-sm text-emerald-300 truncate">Available for trading</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-emerald-200 ml-2" data-testid="text-current-supply">
-                        {marketData?.supply ?? "No data"} {marketData?.supply ? "kWh" : ""}
-                      </p>
+                      <div className="text-right">
+                        <p className="text-lg sm:text-xl font-bold text-emerald-300 ml-2" data-testid="text-current-supply">
+                          {marketData?.supply ?? "No data"} {marketData?.supply ? "kWh" : ""}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-blue-950/20 rounded-lg">
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-blue-900/40 to-blue-800/30 rounded-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-blue-200 text-sm sm:text-base">Current Demand</p>
+                        <p className="font-medium text-blue-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                          Current Demand
+                        </p>
                         <p className="text-xs sm:text-sm text-blue-300 truncate">Energy needed now</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-blue-200 ml-2" data-testid="text-current-demand">
-                        {marketData?.demand ?? "No data"} {marketData?.demand ? "kWh" : ""}
-                      </p>
+                      <div className="text-right">
+                        <p className="text-lg sm:text-xl font-bold text-blue-300 ml-2" data-testid="text-current-demand">
+                          {marketData?.demand ?? "No data"} {marketData?.demand ? "kWh" : ""}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-purple-950/20 rounded-lg">
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-purple-900/40 to-purple-800/30 rounded-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-purple-200 text-sm sm:text-base">Grid Stability</p>
+                        <p className="font-medium text-purple-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                          Grid Stability
+                        </p>
                         <p className="text-xs sm:text-sm text-purple-300 truncate">Network balance score</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-purple-200 ml-2" data-testid="text-grid-stability">
-                        {marketData?.gridStability ?? "No data"}{marketData?.gridStability ? "%" : ""}
-                      </p>
+                      <div className="text-right">
+                        <p className="text-lg sm:text-xl font-bold text-purple-300 ml-2" data-testid="text-grid-stability">
+                          {marketData?.gridStability ?? "No data"}{marketData?.gridStability ? "%" : ""}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Card>
