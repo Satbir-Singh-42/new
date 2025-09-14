@@ -43,6 +43,12 @@
   --gray-900: hsl(220, 84%, 95%);
   --purple-400: hsl(262, 83%, 78%);
   --purple-600: hsl(262, 83%, 58%);
+  
+  /* Animation tokens */
+  --anim-dur: 200ms;
+  --anim-dur-slow: 300ms;
+  --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --anim-ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Mobile keyboard handling */
@@ -498,4 +504,99 @@ body::-webkit-scrollbar, html::-webkit-scrollbar {
   100% {
     stroke-dashoffset: 88;
   }
+}
+
+/* Accessibility: Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Smooth page mount animations */
+@keyframes fadeUpMount {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab transition animations */
+@keyframes tabPanelEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Card stagger animations */
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Animation utility classes */
+.fade-up-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.fade-up-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--anim-dur) var(--anim-ease), transform var(--anim-dur) var(--anim-ease);
+}
+
+.page-mount {
+  animation: fadeUpMount var(--anim-dur-slow) var(--anim-ease) forwards;
+}
+
+.tab-panel[data-state='active'] {
+  opacity: 1;
+  transform: translateY(0);
+  animation: tabPanelEnter var(--anim-dur) var(--anim-ease) forwards;
+}
+
+.tab-panel[data-state='inactive'] {
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.card-stagger {
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  animation: cardEnter var(--anim-dur) var(--anim-ease) forwards;
+  will-change: transform, opacity;
+}
+
+/* Button micro-interactions */
+.btn-smooth {
+  transition: transform var(--anim-dur) var(--anim-ease), box-shadow var(--anim-dur) var(--anim-ease);
+}
+
+.btn-smooth:hover {
+  transform: translateY(-1px);
+}
+
+.btn-smooth:active {
+  transform: scale(0.98);
 }
