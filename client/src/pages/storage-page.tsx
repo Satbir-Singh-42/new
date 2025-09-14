@@ -1563,13 +1563,13 @@ export default function StoragePage() {
 
           {/* Your Results */}
           <TabsContent value="request-results">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-purple-600" />
+                <CardTitle className="flex items-center gap-2 text-slate-200">
+                  <CheckCircle className="h-5 w-5 text-emerald-400" />
                   Your Results
                 </CardTitle>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-400">
                   Completed trade interactions with contact details and outcomes
                 </p>
               </CardHeader>
@@ -1595,9 +1595,9 @@ export default function StoragePage() {
                   if (allResults.length === 0) {
                     return (
                       <div className="text-center py-8" data-testid="empty-results">
-                        <CheckCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-500">No completed trade interactions yet</p>
-                        <p className="text-sm text-gray-400">When applications are finalized (contact shared or rejected), they will appear here</p>
+                        <CheckCircle className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                        <p className="text-slate-300">No completed trade interactions yet</p>
+                        <p className="text-sm text-slate-400">When applications are finalized (contact shared or rejected), they will appear here</p>
                       </div>
                     );
                   }
@@ -1607,15 +1607,15 @@ export default function StoragePage() {
                       {/* Results from applications I submitted */}
                       {myApplicationResults.length > 0 && (
                         <div>
-                          <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-                            <ArrowRight className="h-4 w-4" />
+                          <h3 className="font-medium text-slate-200 mb-3 flex items-center gap-2">
+                            <ArrowRight className="h-4 w-4 text-emerald-400" />
                             My Application Results ({myApplicationResults.length})
                           </h3>
                           <div className="space-y-3">
                             {myApplicationResults.map((acceptance: any) => (
-                              <Card key={acceptance.id} className={`p-3 border-l-4 ${
+                              <Card key={acceptance.id} className={`p-3 border-l-4 bg-slate-800/50 border-slate-600/50 ${
                                 acceptance.status === 'contacted' 
-                                  ? 'border-l-green-400' 
+                                  ? 'border-l-emerald-400' 
                                   : acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
@@ -1639,8 +1639,8 @@ export default function StoragePage() {
                                         
                                         if (!trade && !acceptance.trade) return (
                                           <div className="flex items-center gap-3 mb-2">
-                                            <div className="font-medium text-base">Trade Application</div>
-                                            <div className="text-xs text-gray-500">
+                                            <div className="font-medium text-base text-slate-200">Trade Application</div>
+                                            <div className="text-xs text-slate-400">
                                               Reference: {acceptance.tradeId} • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                             </div>
                                           </div>
@@ -1660,10 +1660,10 @@ export default function StoragePage() {
                                         return (
                                           <div className="flex items-center justify-between gap-3 mb-2">
                                             <div className="flex items-center gap-2">
-                                              <div className="font-medium text-base">
+                                              <div className="font-medium text-base text-slate-200">
                                                 {trade.tradeType === 'sell' ? 'Energy Purchase' : 'Energy Sale'}
                                               </div>
-                                              <div className="text-sm text-gray-600">
+                                              <div className="text-sm text-slate-400">
                                                 {trade.energyAmount} at {trade.pricePerKwh} /kwh • {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy')}
                                               </div>
                                             </div>
@@ -1707,12 +1707,12 @@ export default function StoragePage() {
                                   switch (acceptance.status) {
                                     case 'contacted':
                                       return (
-                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-green-800 mb-2">
+                                        <div className="bg-emerald-900/20 border border-emerald-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-emerald-400 mb-2">
                                             <CheckCircle className="h-4 w-4" />
                                             <span className="font-medium">Contact Details Shared</span>
                                           </div>
-                                          <p className="text-sm text-green-700 mb-3">
+                                          <p className="text-sm text-emerald-300 mb-3">
                                             You shared contact details with the trade owner. Both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
@@ -1720,12 +1720,12 @@ export default function StoragePage() {
                                     
                                     case 'awarded':
                                       return (
-                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-blue-800 mb-2">
+                                        <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-blue-400 mb-2">
                                             <CheckCircle className="h-4 w-4" />
                                             <span className="font-medium">Application Approved</span>
                                           </div>
-                                          <p className="text-sm text-blue-700 mb-3">
+                                          <p className="text-sm text-blue-300 mb-3">
                                             Great news! The trade owner approved your application. Contact details have been automatically shared and both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
@@ -1733,12 +1733,12 @@ export default function StoragePage() {
                                     
                                     case 'applicant_rejected':
                                       return (
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                        <div className="bg-red-900/20 border border-red-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-400 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Trade Rejected</span>
                                           </div>
-                                          <p className="text-sm text-red-700 mb-3">
+                                          <p className="text-sm text-red-300 mb-3">
                                             You rejected this trade after the owner accepted your application. The trade is now available for other applicants.
                                           </p>
                                         </div>
@@ -1746,12 +1746,12 @@ export default function StoragePage() {
                                     
                                     case 'owner_rejected':
                                       return (
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                        <div className="bg-red-900/20 border border-red-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-400 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Application Declined</span>
                                           </div>
-                                          <p className="text-sm text-red-700 mb-3">
+                                          <p className="text-sm text-red-300 mb-3">
                                             The trade owner declined your application. You can look for other available trades in the marketplace.
                                           </p>
                                         </div>
@@ -1759,12 +1759,12 @@ export default function StoragePage() {
                                     
                                     case 'withdrawn':
                                       return (
-                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-slate-300 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Application Withdrawn</span>
                                           </div>
-                                          <p className="text-sm text-gray-700 mb-3">
+                                          <p className="text-sm text-slate-400 mb-3">
                                             You withdrew your application before the trade owner could respond. The trade remains available for other applicants.
                                           </p>
                                         </div>
@@ -1772,12 +1772,12 @@ export default function StoragePage() {
                                     
                                     default:
                                       return (
-                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-slate-300 mb-2">
                                             <Clock className="h-4 w-4" />
                                             <span className="font-medium">Status: {acceptance.status}</span>
                                           </div>
-                                          <p className="text-sm text-gray-700">
+                                          <p className="text-sm text-slate-400">
                                             Application status is being processed.
                                           </p>
                                         </div>
@@ -1793,15 +1793,15 @@ export default function StoragePage() {
                       {/* Results from applications to my trades */}
                       {myTradeResults.length > 0 && (
                         <div>
-                          <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-                            <ArrowLeft className="h-4 w-4" />
+                          <h3 className="font-medium text-slate-200 mb-3 flex items-center gap-2">
+                            <ArrowLeft className="h-4 w-4 text-emerald-400" />
                             My Trade Results ({myTradeResults.length})
                           </h3>
                           <div className="space-y-3">
                             {myTradeResults.map((application: any) => (
-                              <Card key={application.acceptance.id} className={`p-3 border-l-4 ${
+                              <Card key={application.acceptance.id} className={`p-3 border-l-4 bg-slate-800/50 border-slate-600/50 ${
                                 application.acceptance.status === 'contacted' 
-                                  ? 'border-l-green-400' 
+                                  ? 'border-l-emerald-400' 
                                   : application.acceptance.status === 'awarded' 
                                     ? 'border-l-blue-400'
                                     : 'border-l-red-400'
@@ -1810,10 +1810,10 @@ export default function StoragePage() {
                                   <div className="flex-1">
                                     <div className="flex items-center justify-between gap-3 mb-2">
                                       <div className="flex items-center gap-2">
-                                        <div className="font-medium text-base">
+                                        <div className="font-medium text-base text-slate-200">
                                           {application.trade?.tradeType === 'sell' ? 'Your Sell Listing' : 'Your Buy Request'}
                                         </div>
-                                        <div className="text-sm text-gray-600">
+                                        <div className="text-sm text-slate-400">
                                           {application.trade?.energyAmount} at {application.trade?.pricePerKwh} /kwh • {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy')}
                                         </div>
                                       </div>
@@ -1854,12 +1854,12 @@ export default function StoragePage() {
                                   switch (application.acceptance.status) {
                                     case 'contacted':
                                       return (
-                                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-green-800 mb-2">
+                                        <div className="bg-emerald-900/20 border border-emerald-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-emerald-400 mb-2">
                                             <CheckCircle className="h-4 w-4" />
                                             <span className="font-medium">Contact Details Shared</span>
                                           </div>
-                                          <p className="text-sm text-green-700 mb-3">
+                                          <p className="text-sm text-emerald-300 mb-3">
                                             The applicant shared contact details. Both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
@@ -1867,12 +1867,12 @@ export default function StoragePage() {
                                     
                                     case 'awarded':
                                       return (
-                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-blue-800 mb-2">
+                                        <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-blue-400 mb-2">
                                             <CheckCircle className="h-4 w-4" />
                                             <span className="font-medium">Application Approved</span>
                                           </div>
-                                          <p className="text-sm text-blue-700">
+                                          <p className="text-sm text-blue-300">
                                             You approved this application. Contact details have been automatically shared and both parties can now coordinate the energy transfer.
                                           </p>
                                         </div>
@@ -1880,12 +1880,12 @@ export default function StoragePage() {
                                     
                                     case 'applicant_rejected':
                                       return (
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                        <div className="bg-red-900/20 border border-red-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-400 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Application Rejected by Applicant</span>
                                           </div>
-                                          <p className="text-sm text-red-700 mb-3">
+                                          <p className="text-sm text-red-300 mb-3">
                                             The applicant rejected the trade after you approved their application. Your trade is now available for other applicants.
                                           </p>
                                         </div>
@@ -1893,12 +1893,12 @@ export default function StoragePage() {
                                     
                                     case 'owner_rejected':
                                       return (
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-red-800 mb-2">
+                                        <div className="bg-red-900/20 border border-red-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-red-400 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Application Declined</span>
                                           </div>
-                                          <p className="text-sm text-red-700 mb-3">
+                                          <p className="text-sm text-red-300 mb-3">
                                             You declined this application. Your trade remains available for other applicants.
                                           </p>
                                         </div>
@@ -1906,12 +1906,12 @@ export default function StoragePage() {
                                     
                                     case 'withdrawn':
                                       return (
-                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-slate-300 mb-2">
                                             <X className="h-4 w-4" />
                                             <span className="font-medium">Application Withdrawn</span>
                                           </div>
-                                          <p className="text-sm text-gray-700 mb-3">
+                                          <p className="text-sm text-slate-400 mb-3">
                                             The applicant withdrew their application before you could respond. Your trade remains available.
                                           </p>
                                         </div>
@@ -1919,12 +1919,12 @@ export default function StoragePage() {
                                     
                                     default:
                                       return (
-                                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                                          <div className="flex items-center gap-2 text-gray-800 mb-2">
+                                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-3">
+                                          <div className="flex items-center gap-2 text-slate-300 mb-2">
                                             <Clock className="h-4 w-4" />
                                             <span className="font-medium">Status: {application.acceptance.status}</span>
                                           </div>
-                                          <p className="text-sm text-gray-700">
+                                          <p className="text-sm text-slate-400">
                                             Application status is being processed.
                                           </p>
                                         </div>
@@ -2152,59 +2152,59 @@ export default function StoragePage() {
                     return (
                       <div className="space-y-4">
                         {/* Trade Information */}
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
+                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-4">
+                          <h3 className="font-medium text-slate-200 mb-3">Trade Information</h3>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
-                              <span className="text-gray-500">Energy:</span>
-                              <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
+                              <span className="text-slate-400">Energy:</span>
+                              <div className="font-medium text-slate-200">{formatEnergy(trade?.energyAmount || 0)}</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Price:</span>
-                              <div className="font-medium">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
+                              <span className="text-slate-400">Price:</span>
+                              <div className="font-medium text-slate-200">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Total:</span>
-                              <div className="font-medium text-green-600">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                              <span className="text-slate-400">Total:</span>
+                              <div className="font-medium text-emerald-400">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Type:</span>
-                              <div className="font-medium capitalize">{trade?.tradeType}</div>
+                              <span className="text-slate-400">Type:</span>
+                              <div className="font-medium capitalize text-slate-200">{trade?.tradeType}</div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Contact Information */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
+                        <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4">
+                          <h3 className="font-medium text-blue-400 mb-3 flex items-center gap-2">
                             <User className="h-4 w-4" />
                             Trade Owner Contact Details
                           </h3>
                           <div className="space-y-2 text-sm">
                             <div>
-                              <span className="text-blue-700 font-medium">Name:</span>
-                              <div className="text-blue-900">{counterpartyName}</div>
+                              <span className="text-blue-300 font-medium">Name:</span>
+                              <div className="text-blue-200">{counterpartyName}</div>
                             </div>
                             <div>
-                              <span className="text-blue-700 font-medium">Location:</span>
-                              <div className="text-blue-900">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
+                              <span className="text-blue-300 font-medium">Location:</span>
+                              <div className="text-blue-200">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
                             </div>
                             {counterpartyHousehold?.address && (
                               <div>
-                                <span className="text-blue-700 font-medium">Address:</span>
-                                <div className="text-blue-900">{counterpartyHousehold.address}</div>
+                                <span className="text-blue-300 font-medium">Address:</span>
+                                <div className="text-blue-200">{counterpartyHousehold.address}</div>
                               </div>
                             )}
                             {counterpartyUser?.phone && (
                               <div>
-                                <span className="text-blue-700 font-medium">Phone:</span>
-                                <div className="text-blue-900">{counterpartyUser.phone}</div>
+                                <span className="text-blue-300 font-medium">Phone:</span>
+                                <div className="text-blue-200">{counterpartyUser.phone}</div>
                               </div>
                             )}
                             {counterpartyUser?.email && (
                               <div>
-                                <span className="text-blue-700 font-medium">Email:</span>
-                                <div className="text-blue-900">{counterpartyUser.email}</div>
+                                <span className="text-blue-300 font-medium">Email:</span>
+                                <div className="text-blue-200">{counterpartyUser.email}</div>
                               </div>
                             )}
                           </div>
@@ -2220,63 +2220,63 @@ export default function StoragePage() {
                     return (
                       <div className="space-y-4">
                         {/* Trade Information */}
-                        <div className="bg-gray-50 rounded-lg p-4">
-                          <h3 className="font-medium text-gray-900 mb-3">Trade Information</h3>
+                        <div className="bg-slate-800/50 border border-slate-600/50 rounded-lg p-4">
+                          <h3 className="font-medium text-slate-200 mb-3">Trade Information</h3>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
-                              <span className="text-gray-500">Energy:</span>
-                              <div className="font-medium">{formatEnergy(trade?.energyAmount || 0)}</div>
+                              <span className="text-slate-400">Energy:</span>
+                              <div className="font-medium text-slate-200">{formatEnergy(trade?.energyAmount || 0)}</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Price:</span>
-                              <div className="font-medium">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
+                              <span className="text-slate-400">Price:</span>
+                              <div className="font-medium text-slate-200">{formatPrice(trade?.pricePerKwh || 0)}/kWh</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Total:</span>
-                              <div className="font-medium text-green-600">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
+                              <span className="text-slate-400">Total:</span>
+                              <div className="font-medium text-emerald-400">{formatTotal(trade?.energyAmount || 0, trade?.pricePerKwh || 0)}</div>
                             </div>
                             <div>
-                              <span className="text-gray-500">Type:</span>
-                              <div className="font-medium capitalize">{trade?.tradeType}</div>
+                              <span className="text-slate-400">Type:</span>
+                              <div className="font-medium capitalize text-slate-200">{trade?.tradeType}</div>
                             </div>
                           </div>
                         </div>
                         
                         {/* Contact Information */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
+                        <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4">
+                          <h3 className="font-medium text-blue-400 mb-3 flex items-center gap-2">
                             <User className="h-4 w-4" />
                             Applicant Contact Details
                           </h3>
                           <div className="space-y-2 text-sm">
                             <div>
-                              <span className="text-blue-700 font-medium">Name:</span>
-                              <div className="text-blue-900">{applicantUser?.username || applicantHousehold?.name}</div>
+                              <span className="text-blue-300 font-medium">Name:</span>
+                              <div className="text-blue-200">{applicantUser?.username || applicantHousehold?.name}</div>
                             </div>
                             <div>
-                              <span className="text-blue-700 font-medium">Household:</span>
-                              <div className="text-blue-900">{applicantHousehold?.name || 'Household not available'}</div>
+                              <span className="text-blue-300 font-medium">Household:</span>
+                              <div className="text-blue-200">{applicantHousehold?.name || 'Household not available'}</div>
                             </div>
                             <div>
-                              <span className="text-blue-700 font-medium">Location:</span>
-                              <div className="text-blue-900">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
+                              <span className="text-blue-300 font-medium">Location:</span>
+                              <div className="text-blue-200">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
                             </div>
                             {applicantHousehold?.address && (
                               <div>
-                                <span className="text-blue-700 font-medium">Address:</span>
-                                <div className="text-blue-900">{applicantHousehold.address}</div>
+                                <span className="text-blue-300 font-medium">Address:</span>
+                                <div className="text-blue-200">{applicantHousehold.address}</div>
                               </div>
                             )}
                             {applicantUser?.phone && (
                               <div>
-                                <span className="text-blue-700 font-medium">Phone:</span>
-                                <div className="text-blue-900">{applicantUser.phone}</div>
+                                <span className="text-blue-300 font-medium">Phone:</span>
+                                <div className="text-blue-200">{applicantUser.phone}</div>
                               </div>
                             )}
                             {applicantUser?.email && (
                               <div>
-                                <span className="text-blue-700 font-medium">Email:</span>
-                                <div className="text-blue-900">{applicantUser.email}</div>
+                                <span className="text-blue-300 font-medium">Email:</span>
+                                <div className="text-blue-200">{applicantUser.email}</div>
                               </div>
                             )}
                           </div>
@@ -2285,10 +2285,10 @@ export default function StoragePage() {
                     );
                   }
                   
-                  return <div className="text-gray-500">Trade details not available</div>;
+                  return <div className="text-slate-400">Trade details not available</div>;
                 })()}
                 
-                <div className="flex justify-center sm:justify-end pt-4 mt-4 border-t border-gray-200">
+                <div className="flex justify-center sm:justify-end pt-4 mt-4 border-t border-slate-600/50">
                   <Button 
                     variant="outline" 
                     onClick={() => setIsDetailModalOpen(false)}
