@@ -409,12 +409,12 @@ export default function Dashboard() {
     if (count > 0) {
       return {
         text: `${count} applied`,
-        className: userApplied ? "bg-blue-100 text-blue-700" : "bg-green-100 text-green-700"
+        className: userApplied ? "bg-blue-500/15 text-blue-400" : "bg-emerald-500/15 text-emerald-400"
       };
     } else {
       return {
         text: "0 applied",
-        className: "bg-gray-100 text-gray-600"
+        className: "bg-muted text-gray-600"
       };
     }
   };
@@ -428,8 +428,8 @@ export default function Dashboard() {
       return {
         text: tradeStatus,
         className: tradeStatus === 'completed' 
-          ? "bg-green-100 text-green-700" 
-          : "bg-gray-100 text-gray-600"
+          ? "bg-emerald-500/15 text-emerald-400" 
+          : "bg-muted text-gray-600"
       };
     }
     
@@ -451,7 +451,7 @@ export default function Dashboard() {
       } else {
         return {
           text: "available",
-          className: "bg-green-100 text-green-700"
+          className: "bg-emerald-500/15 text-emerald-400"
         };
       }
     }
@@ -459,7 +459,7 @@ export default function Dashboard() {
     // Fallback - show the original status
     return {
       text: tradeStatus,
-      className: "bg-gray-100 text-gray-600"
+      className: "bg-muted text-gray-600"
     };
   };
 
@@ -758,7 +758,7 @@ export default function Dashboard() {
       />
 
       {/* Hero Section - Now visible on all devices */}
-      <section className="bg-gradient-to-br from-primary to-blue-600 text-white pb-6 sm:pb-8 md:pb-10 lg:pb-12 xl:pb-16 pt-20">
+      <section className="bg-gradient-to-br from-slate-800 to-slate-900 text-white pb-6 sm:pb-8 md:pb-10 lg:pb-12 xl:pb-16 pt-20">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center flex flex-col justify-center items-center min-h-[150px] sm:min-h-[160px] md:min-h-[170px] lg:min-h-[180px] xl:min-h-[190px] pt-6 sm:pt-8 md:pt-10">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 lg:mb-8">SolarSense: Intelligent Energy Solutions</h2>
@@ -849,64 +849,64 @@ export default function Dashboard() {
 
             {/* Key Performance Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-emerald-950/30 to-emerald-900/20 border-emerald-800/30">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-green-700 mb-1 truncate">Network Generation</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-green-800 truncate" data-testid="text-total-generation">
+                    <h3 className="text-xs sm:text-sm font-medium text-emerald-400 mb-1 truncate">Network Generation</h3>
+                    <p className="text-lg sm:text-2xl font-bold text-emerald-200 truncate" data-testid="text-total-generation">
                       {networkAnalytics?.network?.totalGenerationCapacity || "0 kW"}
                     </p>
-                    <p className="text-xs text-green-600 truncate">Solar capacity online</p>
+                    <p className="text-xs text-emerald-300 truncate">Solar capacity online</p>
                   </div>
-                  <div className="bg-green-200 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
-                    <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-green-700" />
+                  <div className="bg-emerald-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                    <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/30 to-blue-900/20 border-blue-800/30">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-blue-700 mb-1 truncate">Energy Trades</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-800 truncate" data-testid="text-active-trades">
+                    <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Energy Trades</h3>
+                    <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-active-trades">
                       {availableTrades.length || 0}
                     </p>
-                    <p className="text-xs text-blue-600 truncate">Active exchanges</p>
+                    <p className="text-xs text-blue-300 truncate">Active exchanges</p>
                   </div>
-                  <div className="bg-blue-200 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
-                    <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-700" />
+                  <div className="bg-blue-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                    <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-950/30 to-purple-900/20 border-purple-800/30">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-purple-700 mb-1 truncate">Average Price</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-purple-800 truncate" data-testid="text-average-price">
+                    <h3 className="text-xs sm:text-sm font-medium text-purple-400 mb-1 truncate">Average Price</h3>
+                    <p className="text-lg sm:text-2xl font-bold text-purple-200 truncate" data-testid="text-average-price">
 {networkAnalytics?.trading?.averagePrice || "₹0"}/kWh
                     </p>
-                    <p className="text-xs text-purple-600 truncate">Current market rate</p>
+                    <p className="text-xs text-purple-300 truncate">Current market rate</p>
                   </div>
-                  <div className="bg-purple-200 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
-                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-700" />
+                  <div className="bg-purple-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
                   </div>
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/30 to-blue-900/20 border-blue-800/30">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-blue-700 mb-1 truncate">Carbon Saved</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-800 truncate" data-testid="text-carbon-saved">
+                    <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Carbon Saved</h3>
+                    <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-carbon-saved">
                       {networkAnalytics?.trading?.carbonSaved ? 
                         formatCarbonSavings(parseFloat(networkAnalytics.trading.carbonSaved.replace(/[^\d.]/g, ''))) : 
                         "0 kg CO2"}
                     </p>
-                    <p className="text-xs text-blue-600 truncate">CO₂ avoided today</p>
+                    <p className="text-xs text-blue-300 truncate">CO₂ avoided today</p>
                   </div>
-                  <div className="bg-blue-200 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
-                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-blue-700" />
+                  <div className="bg-blue-500/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2">
+                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
                   </div>
                 </div>
               </Card>
@@ -919,44 +919,44 @@ export default function Dashboard() {
                   Loading Market Data...
                 </h3>
                 <div className="animate-pulse space-y-3">
-                  <div className="h-3 sm:h-4 bg-gray-200 rounded"></div>
-                  <div className="h-3 sm:h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-3 sm:h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-3 sm:h-4 bg-muted rounded"></div>
+                  <div className="h-3 sm:h-4 bg-muted rounded w-3/4"></div>
+                  <div className="h-3 sm:h-4 bg-muted rounded w-1/2"></div>
                 </div>
               </Card>
             ) : marketData ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <Card className="p-4 sm:p-6">
                   <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300" />
                     <span className="hidden sm:inline">Live Market Activity</span>
                     <span className="sm:hidden">Market Activity</span>
                   </h3>
                   <div className="space-y-2 sm:space-y-3">
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-green-50 rounded-lg">
+                    <div className="flex justify-between items-center p-2 sm:p-3 bg-green-950/20 rounded-lg">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-green-800 text-sm sm:text-base">Current Supply</p>
-                        <p className="text-xs sm:text-sm text-green-600 truncate">Available for trading</p>
+                        <p className="font-medium text-emerald-200 text-sm sm:text-base">Current Supply</p>
+                        <p className="text-xs sm:text-sm text-emerald-300 truncate">Available for trading</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-green-800 ml-2" data-testid="text-current-supply">
+                      <p className="text-lg sm:text-xl font-bold text-emerald-200 ml-2" data-testid="text-current-supply">
                         {marketData?.supply ?? "No data"} {marketData?.supply ? "kWh" : ""}
                       </p>
                     </div>
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-blue-50 rounded-lg">
+                    <div className="flex justify-between items-center p-2 sm:p-3 bg-blue-950/20 rounded-lg">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-blue-800 text-sm sm:text-base">Current Demand</p>
-                        <p className="text-xs sm:text-sm text-blue-600 truncate">Energy needed now</p>
+                        <p className="font-medium text-blue-200 text-sm sm:text-base">Current Demand</p>
+                        <p className="text-xs sm:text-sm text-blue-300 truncate">Energy needed now</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-blue-800 ml-2" data-testid="text-current-demand">
+                      <p className="text-lg sm:text-xl font-bold text-blue-200 ml-2" data-testid="text-current-demand">
                         {marketData?.demand ?? "No data"} {marketData?.demand ? "kWh" : ""}
                       </p>
                     </div>
-                    <div className="flex justify-between items-center p-2 sm:p-3 bg-purple-50 rounded-lg">
+                    <div className="flex justify-between items-center p-2 sm:p-3 bg-purple-950/20 rounded-lg">
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-purple-800 text-sm sm:text-base">Grid Stability</p>
-                        <p className="text-xs sm:text-sm text-purple-600 truncate">Network balance score</p>
+                        <p className="font-medium text-purple-200 text-sm sm:text-base">Grid Stability</p>
+                        <p className="text-xs sm:text-sm text-purple-300 truncate">Network balance score</p>
                       </div>
-                      <p className="text-lg sm:text-xl font-bold text-purple-800 ml-2" data-testid="text-grid-stability">
+                      <p className="text-lg sm:text-xl font-bold text-purple-200 ml-2" data-testid="text-grid-stability">
                         {marketData?.gridStability ?? "No data"}{marketData?.gridStability ? "%" : ""}
                       </p>
                     </div>
@@ -970,7 +970,7 @@ export default function Dashboard() {
                       <span className="hidden sm:inline">Weather Impact</span>
                       <span className="sm:hidden">Weather</span>
                     </div>
-                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium self-start">
+                    <span className="bg-green-900/30 text-green-400 px-2 py-1 rounded-full text-xs font-medium self-start">
                       Live Weather API
                     </span>
                   </h3>
@@ -982,7 +982,7 @@ export default function Dashboard() {
                           {marketData?.weather?.condition || "No data"}
                         </span>
                         {userLocation && (
-                          <span className="bg-blue-100 text-blue-700 px-1 py-0.5 rounded text-xs">
+                          <span className="bg-blue-900/30 text-blue-400 px-1 py-0.5 rounded text-xs">
                             {userLocation.city}, {userLocation.state}
                           </span>
                         )}
@@ -997,7 +997,7 @@ export default function Dashboard() {
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600 text-sm sm:text-base">Solar Efficiency</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-right sm:text-left">
-                        <span className={`font-medium text-sm sm:text-base ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-gray-500' : 'text-green-600'}`} data-testid="text-solar-efficiency">
+                        <span className={`font-medium text-sm sm:text-base ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-gray-500' : 'text-emerald-300'}`} data-testid="text-solar-efficiency">
                           {marketData?.weather?.efficiency !== undefined ? `${Math.round(marketData.weather.efficiency)}%` : "No data"}
                         </span>
                         {(marketData?.weather?.efficiency || 0) <= 0 && (
@@ -1008,7 +1008,7 @@ export default function Dashboard() {
                         )}
                       </div>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-muted rounded-full h-2">
                       <div 
                         className={`h-2 rounded-full transition-all duration-300 ${
                           marketData?.weather?.efficiency === 0 ? 'bg-gray-400' : 'bg-yellow-500'
@@ -1028,8 +1028,8 @@ export default function Dashboard() {
                   Real-time market data will appear here when households are connected and trading energy.
                 </p>
                 {!user && (
-                  <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/50 rounded-lg">
-                    <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
+                  <div className="mt-4 p-3 bg-blue-500/10 dark:bg-blue-950/50 rounded-lg">
+                    <p className="text-sm text-blue-400 dark:text-blue-300 text-center">
                       Please log in to view authentic energy market data and connect your household
                     </p>
                   </div>
@@ -1059,7 +1059,7 @@ export default function Dashboard() {
                   <span className="hidden sm:inline">Battery Storage</span>
                   <span className="sm:hidden">Storage</span>
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-green-600" data-testid="text-battery-capacity">
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-300" data-testid="text-battery-capacity">
                   {userHouseholds.length > 0 ? `${userHouseholds[0].batteryCapacity || 0} kWh` : "0 kWh"}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
@@ -1073,7 +1073,7 @@ export default function Dashboard() {
                   <span className="hidden sm:inline">Network Efficiency</span>
                   <span className="sm:hidden">Efficiency</span>
                 </h3>
-                <p className="text-2xl sm:text-3xl font-bold text-blue-600" data-testid="text-network-efficiency">
+                <p className="text-2xl sm:text-3xl font-bold text-blue-300" data-testid="text-network-efficiency">
                   {networkAnalytics?.efficiency?.networkEfficiency || "0%"}
                 </p>
                 <p className="text-xs sm:text-sm text-gray-600">
@@ -1085,19 +1085,19 @@ export default function Dashboard() {
             <Card className="p-6">
               <h3 className="text-xl font-semibold mb-4">Getting Started with SolarSense</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 border border-gray-200 rounded-lg">
+                <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">1. Register Your Household</h4>
                   <p className="text-sm text-gray-600">Add your solar installation and battery details to join the energy trading network.</p>
                 </div>
-                <div className="p-4 border border-gray-200 rounded-lg">
+                <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">2. Monitor Energy Flow</h4>
                   <p className="text-sm text-gray-600">Track your energy production, consumption, and battery levels in real-time.</p>
                 </div>
-                <div className="p-4 border border-gray-200 rounded-lg">
+                <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">3. Trade Energy</h4>
                   <p className="text-sm text-gray-600">Buy and sell surplus energy with neighbors for optimal grid balance.</p>
                 </div>
-                <div className="p-4 border border-gray-200 rounded-lg">
+                <div className="p-4 border border-border rounded-lg">
                   <h4 className="font-semibold mb-2">4. AI Optimization</h4>
                   <p className="text-sm text-gray-600">Let our AI optimize energy distribution and trading opportunities for you.</p>
                 </div>
@@ -1120,15 +1120,15 @@ export default function Dashboard() {
                   {/* Market Stats */}
                   <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
-                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600">{energyOffers.length}</p>
+                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-300">{energyOffers.length}</p>
                       <p className="text-xs text-gray-500">Active Offers</p>
                     </div>
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
-                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">{energyRequests.length}</p>
+                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-emerald-300">{energyRequests.length}</p>
                       <p className="text-xs text-gray-500">Energy Requests</p>
                     </div>
                     <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
-                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">{networkAnalytics?.trading?.averagePrice || "₹0"}</p>
+                      <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-300">{networkAnalytics?.trading?.averagePrice || "₹0"}</p>
                       <p className="text-xs text-gray-500">Avg Price/kWh</p>
                     </div>
                   </div>
@@ -1171,11 +1171,11 @@ export default function Dashboard() {
               <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-3 sm:gap-0">
                   <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <div className="p-1.5 sm:p-2 bg-green-100 rounded-full">
-                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                    <div className="p-1.5 sm:p-2 bg-emerald-500/15 rounded-full">
+                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-300" />
                     </div>
                     <span className="text-sm sm:text-base">Energy Available</span>
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs sm:text-sm font-medium">
+                    <span className="bg-emerald-500/15 text-emerald-200 px-2 py-1 rounded-full text-xs sm:text-sm font-medium">
                       {energyOffers.length}
                     </span>
                   </h3>
@@ -1194,9 +1194,9 @@ export default function Dashboard() {
                   {tradesLoading ? (
                     <div className="space-y-3">
                       {[1,2,3].map(i => (
-                        <div key={i} className="p-4 border border-gray-200 rounded-lg animate-pulse">
-                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                          <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                        <div key={i} className="p-4 border border-border rounded-lg animate-pulse">
+                          <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-muted rounded w-1/2"></div>
                         </div>
                       ))}
                     </div>
@@ -1206,8 +1206,8 @@ export default function Dashboard() {
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
                           <div className="flex-1 w-full sm:w-auto">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
-                              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                              <p className="font-bold text-green-700 text-base sm:text-lg">{item.trade.energyAmount} kWh</p>
+                              <div className="w-3 h-3 bg-emerald-500/100 rounded-full animate-pulse"></div>
+                              <p className="font-bold text-emerald-400 text-base sm:text-lg">{item.trade.energyAmount} kWh</p>
                               {(() => {
                                 const smartStatus = getSmartTradeStatus(item.trade.status, (item as any).acceptanceCount);
                                 return (
@@ -1240,9 +1240,9 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
-                            <div className="bg-green-50 p-2 sm:p-3 rounded-lg mb-3">
+                            <div className="bg-emerald-500/10 p-2 sm:p-3 rounded-lg mb-3">
                               <p className="text-xs sm:text-sm text-gray-600">Total</p>
-                              <p className="font-bold text-xl sm:text-2xl text-green-700">{formatTradeTotal(item.trade.energyAmount, item.trade.pricePerKwh)}</p>
+                              <p className="font-bold text-xl sm:text-2xl text-emerald-400">{formatTradeTotal(item.trade.energyAmount, item.trade.pricePerKwh)}</p>
                               <p className="text-xs text-gray-500">Price per kWh: {formatTradePrice(item.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(item.trade) ? (
@@ -1251,7 +1251,7 @@ export default function Dashboard() {
                                   size="sm" 
                                   variant="outline"
                                   onClick={() => handleEditTrade(item.trade)}
-                                  className="w-full border-blue-300 text-blue-700"
+                                  className="w-full border-blue-300 text-blue-400"
                                   data-testid={`button-edit-offer-${item.trade.id}`}
                                 >
                                   ✏️ Edit
@@ -1294,7 +1294,7 @@ export default function Dashboard() {
                                   setSelectedTradeForDetails(item);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-gray-100 text-gray-600"
+                                className="w-full bg-muted text-gray-600"
                                 variant="outline"
                               >
                                 View Details
@@ -1306,8 +1306,8 @@ export default function Dashboard() {
                     ))
                   ) : (
                     <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Zap className="h-8 w-8 text-green-600" />
+                      <div className="w-16 h-16 bg-emerald-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Zap className="h-8 w-8 text-emerald-300" />
                       </div>
                       <h4 className="font-semibold text-gray-700 mb-2">No Energy Offers Yet</h4>
                       <p className="text-sm text-gray-500 mb-4">Be the first to sell surplus solar energy!</p>
@@ -1325,11 +1325,11 @@ export default function Dashboard() {
               <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-3 sm:gap-0">
                   <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full">
-                      <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                    <div className="p-1.5 sm:p-2 bg-blue-500/15 rounded-full">
+                      <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300" />
                     </div>
                     <span className="text-sm sm:text-base">Energy Needed</span>
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs sm:text-sm font-medium">
+                    <span className="bg-blue-500/15 text-blue-200 px-2 py-1 rounded-full text-xs sm:text-sm font-medium">
                       {energyRequests.length}
                     </span>
                   </h3>
@@ -1348,9 +1348,9 @@ export default function Dashboard() {
                   {tradesLoading ? (
                     <div className="space-y-3">
                       {[1,2,3].map(i => (
-                        <div key={i} className="p-4 border border-gray-200 rounded-lg animate-pulse">
-                          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                          <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                        <div key={i} className="p-4 border border-border rounded-lg animate-pulse">
+                          <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-muted rounded w-1/2"></div>
                         </div>
                       ))}
                     </div>
@@ -1360,8 +1360,8 @@ export default function Dashboard() {
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
                           <div className="flex-1 w-full sm:w-auto">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
-                              <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                              <p className="font-bold text-blue-700 text-base sm:text-lg">{request.trade.energyAmount} kWh</p>
+                              <div className="w-3 h-3 bg-blue-500/100 rounded-full animate-pulse"></div>
+                              <p className="font-bold text-blue-400 text-base sm:text-lg">{request.trade.energyAmount} kWh</p>
                               {(() => {
                                 const smartStatus = getSmartTradeStatus(request.trade.status, (request as any).acceptanceCount);
                                 return (
@@ -1394,9 +1394,9 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <div className="w-full sm:w-auto sm:text-right">
-                            <div className="bg-blue-50 p-2 sm:p-3 rounded-lg mb-3">
+                            <div className="bg-blue-500/10 p-2 sm:p-3 rounded-lg mb-3">
                               <p className="text-xs sm:text-sm text-gray-600">Total willing to pay</p>
-                              <p className="font-bold text-xl sm:text-2xl text-blue-700">{formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
+                              <p className="font-bold text-xl sm:text-2xl text-blue-400">{formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
                               <p className="text-xs text-gray-500">Price per kWh: {formatTradePrice(request.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(request.trade) ? (
@@ -1405,7 +1405,7 @@ export default function Dashboard() {
                                   size="sm" 
                                   variant="outline"
                                   onClick={() => handleEditTrade(request.trade)}
-                                  className="w-full border-blue-300 text-blue-700"
+                                  className="w-full border-blue-300 text-blue-400"
                                   data-testid={`button-edit-request-${request.trade.id}`}
                                 >
                                   ✏️ Edit
@@ -1448,7 +1448,7 @@ export default function Dashboard() {
                                   setSelectedTradeForDetails(request);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-gray-100 text-gray-600"
+                                className="w-full bg-muted text-gray-600"
                                 variant="outline"
                               >
                                 View Details
@@ -1460,8 +1460,8 @@ export default function Dashboard() {
                     ))
                   ) : (
                     <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <ArrowRightLeft className="h-8 w-8 text-blue-600" />
+                      <div className="w-16 h-16 bg-blue-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ArrowRightLeft className="h-8 w-8 text-blue-300" />
                       </div>
                       <h4 className="font-semibold text-gray-700 mb-2">No Energy Requests</h4>
                       <p className="text-sm text-gray-500 mb-4">Be the first to request clean energy!</p>
@@ -1481,8 +1481,8 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
                 <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <div className="p-2 bg-purple-100 rounded-full">
-                    <TrendingUp className="h-5 w-5 text-purple-600" />
+                  <div className="p-2 bg-purple-500/15 rounded-full">
+                    <TrendingUp className="h-5 w-5 text-purple-300" />
                   </div>
                   Market Insights
                 </h3>
@@ -1497,7 +1497,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex justify-between items-center p-3 bg-white rounded-lg">
                     <span className="text-sm font-medium">Grid Stability</span>
-                    <span className={`text-sm ${(marketData?.gridStability || 0) > 70 ? 'text-green-600' : (marketData?.gridStability || 0) > 40 ? 'text-yellow-600' : 'text-red-600'}`}>
+                    <span className={`text-sm ${(marketData?.gridStability || 0) > 70 ? 'text-emerald-300' : (marketData?.gridStability || 0) > 40 ? 'text-yellow-600' : 'text-red-600'}`}>
                       {marketData?.gridStability || 0}%
                     </span>
                   </div>
@@ -1506,28 +1506,28 @@ export default function Dashboard() {
               
               <Card className="p-3 sm:p-4 lg:p-6">
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                  <div className="p-1.5 sm:p-2 bg-blue-100 rounded-full">
-                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                  <div className="p-1.5 sm:p-2 bg-blue-500/15 rounded-full">
+                    <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300" />
                   </div>
                   <span className="text-sm sm:text-base">How Trading Works</span>
                 </h3>
                 <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold text-xs sm:text-sm flex-shrink-0">1</div>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-500/15 rounded-full flex items-center justify-center text-emerald-300 font-bold text-xs sm:text-sm flex-shrink-0">1</div>
                     <div>
                       <h4 className="font-semibold text-xs sm:text-sm">Create Your Offer</h4>
                       <p className="text-xs text-gray-600">Set your energy amount and price</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xs sm:text-sm flex-shrink-0">2</div>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500/15 rounded-full flex items-center justify-center text-blue-300 font-bold text-xs sm:text-sm flex-shrink-0">2</div>
                     <div>
                       <h4 className="font-semibold text-xs sm:text-sm">Smart Matching</h4>
                       <p className="text-xs text-gray-600">AI finds the best local matches</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-xs sm:text-sm flex-shrink-0">3</div>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-500/15 rounded-full flex items-center justify-center text-purple-300 font-bold text-xs sm:text-sm flex-shrink-0">3</div>
                     <div>
                       <h4 className="font-semibold text-xs sm:text-sm">Instant Transfer</h4>
                       <p className="text-xs text-gray-600">Automatic grid routing and billing</p>
@@ -1565,19 +1565,19 @@ export default function Dashboard() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6 pt-2 sm:pt-4">
               
               {/* Smart Price Recommendation */}
-              <div className="bg-blue-50 p-3 sm:p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2 text-sm sm:text-base">
+              <div className="bg-blue-500/10 p-3 sm:p-4 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-200 mb-3 flex items-center gap-2 text-sm sm:text-base">
                   <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
                   💡 Smart Pricing Recommendation
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                   <div className="bg-white p-3 sm:p-4 rounded border">
                     <p className="text-gray-600 text-xs sm:text-sm mb-1">Current Market Rate</p>
-                    <p className="font-bold text-blue-700 text-base sm:text-lg">₹{currentMarketRate}/kWh</p>
+                    <p className="font-bold text-blue-400 text-base sm:text-lg">₹{currentMarketRate}/kWh</p>
                   </div>
                   <div className="bg-white p-3 sm:p-4 rounded border">
                     <p className="text-gray-600 text-xs sm:text-sm mb-1">Recommended Range</p>
-                    <p className="font-bold text-green-700 text-base sm:text-lg">₹{minPrice} - ₹{maxPrice}/kWh</p>
+                    <p className="font-bold text-emerald-400 text-base sm:text-lg">₹{minPrice} - ₹{maxPrice}/kWh</p>
                   </div>
                 </div>
               </div>
@@ -1591,8 +1591,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
                           field.value === 'sell' 
-                            ? 'border-green-500 bg-green-50 text-green-900' 
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-emerald-500/10 text-green-900' 
+                            : 'border-border hover:border-gray-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="option-have-energy"
@@ -1606,8 +1606,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
                           field.value === 'buy' 
-                            ? 'border-blue-500 bg-blue-50 text-blue-900' 
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-500/10 text-blue-900' 
+                            : 'border-border hover:border-gray-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="option-need-energy"
@@ -1776,7 +1776,7 @@ export default function Dashboard() {
         <DialogContent className="w-[95vw] max-w-lg mx-auto my-4 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl font-bold text-gray-800">
-              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-300" />
               Accept Energy Trade
             </DialogTitle>
           </DialogHeader>
@@ -1798,7 +1798,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex justify-between items-center border-t pt-2">
                     <span className="text-gray-700 font-medium">Total Cost:</span>
-                    <span className="font-bold text-base sm:text-lg text-green-600">
+                    <span className="font-bold text-base sm:text-lg text-emerald-300">
                       {formatTradeTotal(acceptingTrade.trade.energyAmount, acceptingTrade.trade.pricePerKwh)}
                     </span>
                   </div>
@@ -1813,12 +1813,12 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-3 sm:p-4 rounded-lg border border-blue-200">
-                <h5 className="font-semibold text-blue-800 mb-3 flex items-center gap-2 text-sm sm:text-base">
+              <div className="bg-blue-500/10 p-3 sm:p-4 rounded-lg border border-blue-200">
+                <h5 className="font-semibold text-blue-200 mb-3 flex items-center gap-2 text-sm sm:text-base">
                   <Activity className="h-4 w-4" />
                   What happens next?
                 </h5>
-                <div className="space-y-2 text-xs sm:text-sm text-blue-700">
+                <div className="space-y-2 text-xs sm:text-sm text-blue-400">
                   <div className="flex items-start gap-2">
                     <span className="text-blue-500 mt-0.5">•</span>
                     <span>Your contact information will be shared with the other party</span>
@@ -1885,7 +1885,7 @@ export default function Dashboard() {
                 <p><strong>Created:</strong> {new Date(selectedTradeForDetails.trade.createdAt).toLocaleString()}</p>
               </div>
               
-              <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="p-4 bg-blue-500/10 rounded-lg">
                 <h4 className="font-semibold mb-2">💌 Express Interest</h4>
                 <p className="text-sm text-gray-600 mb-3">
                   Click below to send an automated email expressing your interest in this trade. 
@@ -1941,12 +1941,12 @@ export default function Dashboard() {
             <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-6 pt-4">
               
               {/* Smart Price Recommendation */}
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+              <div className="bg-blue-500/10 p-4 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-200 mb-2 flex items-center gap-2">
                   <TrendingUp className="h-4 w-4" />
                   💡 Current Market Rate
                 </h4>
-                <p className="text-sm text-blue-700">
+                <p className="text-sm text-blue-400">
                   Market rate: <strong>₹5/kWh</strong> • Weather impact: <strong>Stormy conditions reducing solar</strong>
                 </p>
               </div>
@@ -1961,8 +1961,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                           field.value === 'sell' 
-                            ? 'border-green-500 bg-green-50 text-green-900' 
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-emerald-500/10 text-green-900' 
+                            : 'border-border hover:border-gray-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="edit-option-have-energy"
@@ -1976,8 +1976,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                           field.value === 'buy' 
-                            ? 'border-blue-500 bg-blue-50 text-blue-900' 
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-500/10 text-blue-900' 
+                            : 'border-border hover:border-gray-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="edit-option-need-energy"
