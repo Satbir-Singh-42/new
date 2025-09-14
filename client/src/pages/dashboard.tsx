@@ -3,10 +3,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin, Edit, ShoppingCart } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin, Edit, ShoppingCart, Target } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -1632,32 +1632,29 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="w-[95vw] max-w-lg mx-auto my-4 sm:my-8 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto z-50 p-4 sm:p-6">
+        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl">
           <DialogHeader className="pb-2">
-            <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl font-semibold">
-              <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
-              Create Energy Trade
+            <DialogTitle className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
+              <Plus className="h-5 w-5 text-blue-500" />
+              Quick Trade
             </DialogTitle>
+            <DialogDescription className="text-sm text-slate-600 dark:text-slate-400">
+              Create a new energy trade with local households
+            </DialogDescription>
           </DialogHeader>
           
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6 pt-2 sm:pt-4">
               
-              {/* Smart Price Recommendation */}
-              <div className="bg-blue-500/10 p-3 sm:p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-200 mb-3 flex items-center gap-2 text-sm sm:text-base">
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
-                  💡 Smart Pricing Recommendation
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                  <div className="bg-slate-800/60 p-3 sm:p-4 rounded border border-slate-600/30">
-                    <p className="text-slate-300 text-xs sm:text-sm mb-1">Current Market Rate</p>
-                    <p className="font-bold text-blue-400 text-base sm:text-lg">₹{currentMarketRate}/kWh</p>
-                  </div>
-                  <div className="bg-slate-800/60 p-3 sm:p-4 rounded border border-slate-600/30">
-                    <p className="text-slate-300 text-xs sm:text-sm mb-1">Recommended Range</p>
-                    <p className="font-bold text-emerald-400 text-base sm:text-lg">₹{minPrice} - ₹{maxPrice}/kWh</p>
-                  </div>
+              {/* Compact Market Info */}
+              <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg border border-blue-200 dark:border-blue-800/50">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-600 dark:text-slate-300">Market Rate:</span>
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">₹{currentMarketRate}/kWh</span>
+                </div>
+                <div className="flex items-center justify-between text-sm mt-1">
+                  <span className="text-slate-600 dark:text-slate-300">Range:</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">₹{minPrice}-₹{maxPrice}</span>
                 </div>
               </div>
               <FormField
@@ -1665,184 +1662,183 @@ export default function Dashboard() {
                 name="tradeType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm sm:text-base font-medium">What do you want to do?</FormLabel>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div 
-                        className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
+                    <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">Action Type</FormLabel>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button 
+                        type="button"
+                        variant={field.value === 'sell' ? 'default' : 'outline'}
+                        size="sm"
+                        className={`h-16 p-2 transition-all ${
                           field.value === 'sell' 
-                            ? 'border-emerald-500 bg-emerald-500/20 text-emerald-200' 
-                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                            : 'border-slate-300 dark:border-slate-600 hover:border-emerald-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="option-have-energy"
                       >
-                        <div className="text-center">
-                          <div className="text-2xl sm:text-3xl mb-2">⚡</div>
-                          <div className="font-semibold text-sm sm:text-base">I HAVE</div>
-                          <div className="text-xs sm:text-sm">Surplus Energy</div>
+                        <div className="flex flex-col items-center gap-1">
+                          <Zap className="h-4 w-4" />
+                          <span className="text-xs font-medium">SELL</span>
                         </div>
-                      </div>
-                      <div 
-                        className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
+                      </Button>
+                      <Button 
+                        type="button"
+                        variant={field.value === 'buy' ? 'default' : 'outline'}
+                        size="sm"
+                        className={`h-16 p-2 transition-all ${
                           field.value === 'buy' 
-                            ? 'border-blue-500 bg-blue-500/20 text-blue-200' 
-                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                            : 'border-slate-300 dark:border-slate-600 hover:border-blue-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="option-need-energy"
                       >
-                        <div className="text-center">
-                          <div className="text-2xl sm:text-3xl mb-2">🔋</div>
-                          <div className="font-semibold text-sm sm:text-base">I NEED</div>
-                          <div className="text-xs sm:text-sm">Extra Power</div>
+                        <div className="flex flex-col items-center gap-1">
+                          <Battery className="h-4 w-4" />
+                          <span className="text-xs font-medium">BUY</span>
                         </div>
-                      </div>
+                      </Button>
                     </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="energyAmount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm sm:text-base font-medium">
-                      {form.watch("tradeType") === "sell" 
-                        ? "How much energy do you have? (kWh)" 
-                        : form.watch("tradeType") === "buy"
-                        ? "How much energy do you need? (kWh)"
-                        : "Energy Amount (kWh)"}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        inputMode="numeric"
-                        step="1"
-                        min="1"
-                        placeholder={form.watch("tradeType") === "sell" 
-                          ? "e.g., 5" 
-                          : form.watch("tradeType") === "buy"
-                          ? "e.g., 3"
-                          : "e.g., 5"}
-                        data-testid="input-energy-amount"
-                        className="w-full text-base sm:text-sm h-12 sm:h-10"
-                        {...field}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="energyAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Amount (kWh)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          inputMode="numeric"
+                          step="1"
+                          min="1"
+                          placeholder="5"
+                          data-testid="input-energy-amount"
+                          className="h-9 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          {...field}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="pricePerKwh"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2 text-sm sm:text-base font-medium">
-                      {form.watch("tradeType") === "sell" 
-                        ? "💰 Your Selling Price" 
-                        : form.watch("tradeType") === "buy"
-                        ? "💳 Maximum You'll Pay"
-                        : "💱 Price per kWh"}
-                    </FormLabel>
-                    <div className="space-y-3">
-                      <div className="flex gap-2">
-                        <div className="flex-1">
-                          <FormControl>
-                            <Input
-                              type="number"
-                              inputMode="decimal"
-                              step="0.1"
-                              min="1"
-                              max="500"
-                              placeholder={form.watch("tradeType") === "sell" 
-                                ? "e.g., 5" 
-                                : form.watch("tradeType") === "buy"
-                                ? "e.g., 6"
-                                : "e.g., 5"}
-                              data-testid="input-price-per-kwh"
-                              className="w-full text-base sm:text-sm h-12 sm:h-10"
-                              {...field}
-                              onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className="flex items-center text-sm sm:text-xs text-gray-600 bg-gray-50 px-3 sm:px-2 rounded border min-w-fit">
-                          ₹/kWh
-                        </div>
-                      </div>
-                      {field.value > 0 && (
-                        <div className="grid grid-cols-3 gap-2 sm:flex sm:gap-2 text-xs">
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => field.onChange(minPrice)}
-                            className="text-xs px-2 py-3 sm:py-1 min-h-[44px] sm:min-h-0"
-                            data-testid="button-price-low"
-                          >
-                            Low: ₹{Math.round(minPrice)}
-                          </Button>
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => field.onChange(currentMarketRate)}
-                            className="text-xs px-2 py-3 sm:py-1 min-h-[44px] sm:min-h-0"
-                            data-testid="button-price-market"
-                          >
-                            Market: ₹{Math.round(currentMarketRate)}
-                          </Button>
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => field.onChange(9)}
-                            className="text-xs px-2 py-3 sm:py-1 min-h-[44px] sm:min-h-0"
-                            data-testid="button-price-high"
-                          >
-                            High: ₹9
-                          </Button>
-                        </div>
-                      )}
-                      {field.value > 0 && (
-                        <div className="text-sm sm:text-xs text-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 p-3 sm:p-2 rounded-lg border">
-                          💰 <span className="font-medium">Total Value: ₹{Math.round((form.watch("energyAmount") || 0) * field.value)}</span>
-                        </div>
-                      )}
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="pricePerKwh"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Price (₹/kWh)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          inputMode="decimal"
+                          step="0.1"
+                          min="1"
+                          max="500"
+                          placeholder="6.0"
+                          data-testid="input-price-per-kwh"
+                          className="h-9 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-6 sm:pt-8">
+              {/* Quick Price Buttons */}
+              <div className="grid grid-cols-3 gap-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => form.setValue('pricePerKwh', minPrice)}
+                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-300"
+                  data-testid="button-price-low"
+                >
+                  Low: ₹{Math.round(minPrice)}
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => form.setValue('pricePerKwh', currentMarketRate)}
+                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-emerald-500 text-slate-700 dark:text-slate-300"
+                  data-testid="button-price-market"
+                >
+                  Market: ₹{Math.round(currentMarketRate)}
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => form.setValue('pricePerKwh', 9)}
+                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-purple-500 text-slate-700 dark:text-slate-300"
+                  data-testid="button-price-high"
+                >
+                  High: ₹9
+                </Button>
+              </div>
+
+              {/* Total Display */}
+              {form.watch('energyAmount') > 0 && form.watch('pricePerKwh') > 0 && (
+                <div className="bg-emerald-50 dark:bg-emerald-950/30 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800/50">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600 dark:text-slate-300">Total Value:</span>
+                    <span className="font-bold text-lg text-emerald-600 dark:text-emerald-400">
+                      ₹{Math.round((form.watch('energyAmount') || 0) * (form.watch('pricePerKwh') || 0))}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-3">
                 <Button
                   type="button"
                   variant="outline"
+                  size="sm"
                   onClick={() => setShowCreateTradeDialog(false)}
-                  className="flex-1 w-full h-12 sm:h-10 text-base sm:text-sm text-red-600"
+                  className="flex-1 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-red-500"
                   data-testid="button-cancel-trade"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
+                  size="sm"
                   disabled={createTradeMutation.isPending}
-                  className="flex-1 w-full h-12 sm:h-10 text-base sm:text-sm font-medium"
+                  className={`flex-1 h-10 font-medium text-white ${
+                    form.watch("tradeType") === "sell"
+                      ? "bg-emerald-600 hover:bg-emerald-700"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  }`}
                   data-testid="button-submit-trade"
                 >
-                  {createTradeMutation.isPending 
-                    ? "Creating..." 
-                    : form.watch("tradeType") === "sell"
-                    ? "List Energy for Sale"
-                    : form.watch("tradeType") === "buy"
-                    ? "Post Energy Request"
-                    : "Create Trade"}
+                  {createTradeMutation.isPending ? (
+                    <>
+                      <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                      Creating...
+                    </>
+                  ) : form.watch("tradeType") === "sell" ? (
+                    "Sell Energy"
+                  ) : form.watch("tradeType") === "buy" ? (
+                    "Buy Energy"
+                  ) : (
+                    "Create Trade"
+                  )}
                 </Button>
               </div>
             </form>
