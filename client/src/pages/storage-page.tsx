@@ -1948,51 +1948,43 @@ export default function StoragePage() {
         {/* Edit Trade Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent 
-            className="p-0 sm:p-0 bg-slate-900/90 backdrop-blur-md border border-slate-700/60 sm:rounded-xl rounded-none w-[calc(100vw-2rem)] sm:w-full sm:max-w-lg md:max-w-xl max-h-[90svh] overflow-y-auto shadow-2xl shadow-sky-500/10"
+            className="p-0 bg-slate-900/95 backdrop-blur-xl border border-slate-600/40 shadow-2xl shadow-black/20 w-[calc(100vw-1rem)] max-w-[95vw] sm:w-full sm:max-w-md md:max-w-lg lg:max-w-xl max-h-[95svh] sm:max-h-[90svh] overflow-hidden rounded-lg sm:rounded-2xl"
             data-testid="dialog-edit-trade"
-            id="dialog-edit-trade"
-            aria-labelledby="dialog-edit-trade-title"
-            aria-describedby="dialog-edit-trade-description"
           >
-            {/* Header with gradient bar */}
-            <DialogHeader className="relative px-4 sm:px-6 pt-4 pb-3 bg-gradient-to-r from-sky-500/10 via-blue-500/5 to-emerald-500/10 border-b border-slate-700/60">
-              <DialogTitle 
-                id="dialog-edit-trade-title"
-                className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-3"
-              >
-                <Edit2 className="h-5 w-5 text-sky-400" />
-                Edit Energy Trade
-              </DialogTitle>
-              <DialogDescription 
-                id="dialog-edit-trade-description"
-                className="text-slate-400 mt-1 text-sm sm:text-base leading-relaxed"
-              >
-                Update your trade details below. All changes are validated in real-time.
-              </DialogDescription>
-            </DialogHeader>
-            {/* Form Body */}
-            <div className="px-4 sm:px-6 py-4 sm:py-6 grid gap-4 sm:gap-6">
+            <DialogTitle className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent flex items-center gap-2 px-4 sm:px-6 pt-5 pb-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-blue-500 via-cyan-500 to-emerald-500 flex items-center justify-center shadow-lg">
+                <Edit2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              </div>
+              Edit Energy Trade
+            </DialogTitle>
+            <DialogDescription className="text-slate-400 px-4 sm:px-6 pb-4 text-sm sm:text-base leading-relaxed border-b border-slate-700/50">
+              Update your trade details below. All changes are validated in real-time.
+            </DialogDescription>
+            {/* Scrollable Form Body */}
+            <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-5">
               <Form {...editForm}>
-                <form id="edit-trade-form" onSubmit={editForm.handleSubmit((data) => editingTrade && updateTradeMutation.mutate({ id: editingTrade.id, data }))} className="space-y-5">
+                <form id="edit-trade-form" onSubmit={editForm.handleSubmit((data) => editingTrade && updateTradeMutation.mutate({ id: editingTrade.id, data }))} className="space-y-4 sm:space-y-6">
                   <FormField
                     control={editForm.control}
                     name="tradeType"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-slate-300 font-medium text-sm sm:text-base flex items-center gap-2">
-                          <ShoppingCart className="h-4 w-4 text-blue-400" />
+                        <FormLabel className="text-slate-200 font-semibold text-sm sm:text-base flex items-center gap-2 mb-2">
+                          <div className="w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center">
+                            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
+                          </div>
                           Trade Type
                         </FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger 
                               data-testid="select-trade-type"
-                              className="h-12 bg-slate-800/60 border-slate-600/60 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200"
+                              className="h-11 sm:h-12 bg-slate-800/70 border-slate-600/50 hover:border-slate-500/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 rounded-lg text-slate-100"
                             >
                               <SelectValue placeholder="Choose your trade type" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-slate-800 border-slate-600">
+                          <SelectContent className="bg-slate-800/95 backdrop-blur-sm border-slate-600/50 rounded-lg">
                             <SelectItem value="sell" className="flex items-center">
                               <div className="flex items-center gap-2">
                                 <TrendingUp className="h-4 w-4 text-green-400" />
@@ -2007,7 +1999,7 @@ export default function StoragePage() {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                        <p className="text-xs text-slate-500 mt-1">Select whether you want to sell or buy energy</p>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1.5">Choose your trading action</p>
                         <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
@@ -2017,8 +2009,10 @@ export default function StoragePage() {
                     name="energyAmount"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-slate-300 font-medium text-sm sm:text-base flex items-center gap-2">
-                          <Zap className="h-4 w-4 text-yellow-400" />
+                        <FormLabel className="text-slate-200 font-semibold text-sm sm:text-base flex items-center gap-2 mb-2">
+                          <div className="w-5 h-5 rounded-md bg-yellow-500/20 flex items-center justify-center">
+                            <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
+                          </div>
                           Energy Amount
                         </FormLabel>
                         <FormControl>
@@ -2029,17 +2023,18 @@ export default function StoragePage() {
                               step={1}
                               inputMode="numeric"
                               data-testid="input-energy-amount"
-                              className="h-12 bg-slate-800/60 border-slate-600/60 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200 pl-10 pr-14"
+                              className="h-11 sm:h-12 bg-slate-800/70 border-slate-600/50 hover:border-slate-500/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 pl-9 sm:pl-10 pr-12 sm:pr-14 text-slate-100 placeholder:text-slate-500 rounded-lg"
                               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                              placeholder="Enter kWh"
                               {...field}
                             />
-                            <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-yellow-400/60" />
-                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-slate-700/60 text-slate-300 px-2 py-1 rounded text-xs font-medium">
+                            <Zap className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-yellow-400/70" />
+                            <div className="absolute right-1.5 sm:right-2 top-1/2 transform -translate-y-1/2 bg-slate-700/80 text-slate-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-semibold">
                               kWh
                             </div>
                           </div>
                         </FormControl>
-                        <p className="text-xs text-slate-500 mt-1">Whole kWh only - minimum 1 kWh</p>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1.5">Whole numbers only, minimum 1 kWh</p>
                         <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
@@ -2049,8 +2044,10 @@ export default function StoragePage() {
                     name="pricePerKwh"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-slate-300 font-medium text-sm sm:text-base flex items-center gap-2">
-                          <Store className="h-4 w-4 text-green-400" />
+                        <FormLabel className="text-slate-200 font-semibold text-sm sm:text-base flex items-center gap-2 mb-2">
+                          <div className="w-5 h-5 rounded-md bg-green-500/20 flex items-center justify-center">
+                            <Store className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
+                          </div>
                           Price per kWh
                         </FormLabel>
                         <FormControl>
@@ -2061,17 +2058,18 @@ export default function StoragePage() {
                               step={1}
                               inputMode="numeric"
                               data-testid="input-price-per-kwh"
-                              className="h-12 bg-slate-800/60 border-slate-600/60 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-200 pl-10 pr-16"
+                              className="h-11 sm:h-12 bg-slate-800/70 border-slate-600/50 hover:border-slate-500/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 pl-9 sm:pl-10 pr-14 sm:pr-16 text-slate-100 placeholder:text-slate-500 rounded-lg"
                               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+                              placeholder="Enter price"
                               {...field}
                             />
-                            <Store className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-400/60" />
-                            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-slate-700/60 text-slate-300 px-2 py-1 rounded text-xs font-medium">
+                            <Store className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-400/70" />
+                            <div className="absolute right-1.5 sm:right-2 top-1/2 transform -translate-y-1/2 bg-slate-700/80 text-slate-200 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-semibold">
                               ₹/kWh
                             </div>
                           </div>
                         </FormControl>
-                        <p className="text-xs text-slate-500 mt-1">Set your trading price per kWh</p>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-1.5">Set your rate in rupees per kWh</p>
                         <FormMessage className="text-red-400" />
                       </FormItem>
                     )}
@@ -2081,13 +2079,13 @@ export default function StoragePage() {
             </div>
             
             {/* Sticky Footer */}
-            <div className="sticky bottom-0 bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 border-t border-slate-700/60 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-end gap-2">
+            <div className="sticky bottom-0 bg-slate-900/98 backdrop-blur-xl border-t border-slate-600/40 px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-end">
               <Button 
                 type="button" 
                 variant="ghost" 
                 onClick={() => setIsEditDialogOpen(false)} 
                 data-testid="button-cancel"
-                className="text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-all duration-200 px-4 py-2"
+                className="order-2 sm:order-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/70 transition-all duration-300 px-4 py-2.5 sm:py-2 text-sm sm:text-base font-medium rounded-lg"
               >
                 Cancel
               </Button>
@@ -2096,16 +2094,16 @@ export default function StoragePage() {
                 form="edit-trade-form"
                 disabled={updateTradeMutation.isPending || !editForm.formState.isDirty || !editForm.formState.isValid}
                 data-testid="button-update"
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
+                className="order-1 sm:order-2 bg-gradient-to-r from-blue-600 via-cyan-600 to-emerald-600 hover:from-blue-700 hover:via-cyan-700 hover:to-emerald-700 text-white font-semibold shadow-xl shadow-blue-500/25 hover:shadow-blue-500/35 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] sm:min-w-[120px] px-6 py-2.5 sm:py-2 text-sm sm:text-base rounded-lg"
                 onClick={() => {
                   const form = document.getElementById('edit-trade-form') as HTMLFormElement;
                   if (form) form.requestSubmit();
                 }}
               >
                 {updateTradeMutation.isPending ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Updating...
+                    <span>Updating...</span>
                   </div>
                 ) : (
                   'Update Trade'
