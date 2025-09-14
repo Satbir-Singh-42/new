@@ -154,21 +154,21 @@ export default function Navbar({
                 <Button
                   variant="outline"
                   size="icon"
-                  className="bg-card hover:bg-primary/10 text-foreground hover:text-primary border-border hover:border-primary/40 active:scale-95 transition-all duration-200 ease-in-out">
+                  className="bg-slate-800/50 hover:bg-blue-600/20 text-gray-300 hover:text-blue-400 border-slate-600/50 hover:border-blue-400/60 active:scale-95 transition-all duration-300 ease-in-out backdrop-blur-sm shadow-lg">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[280px] sm:w-[300px] lg:w-[350px] p-0 overflow-y-auto">
+                className="w-[280px] sm:w-[300px] lg:w-[350px] p-0 overflow-y-auto bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-l border-slate-700/50 shadow-2xl backdrop-blur-xl">
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <SheetDescription className="sr-only">
                   Main navigation menu for SolarSense
                 </SheetDescription>
                 <nav className="flex flex-col space-y-3 sm:space-y-4 lg:space-y-6 p-3 sm:p-4 lg:p-6 mt-3 sm:mt-4 lg:mt-8">
                   <div className="flex flex-col space-y-3 sm:space-y-4">
-                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">
+                    <h3 className="font-semibold text-base sm:text-lg bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent px-1">
                       Energy Platform
                     </h3>
                     {currentPage === "dashboard" && onTabChange ? (
@@ -186,8 +186,8 @@ export default function Navbar({
                           }}
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "energy-dashboard"
-                              ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-muted"
+                              ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg"
+                              : "text-gray-300 hover:bg-slate-800/60 hover:text-blue-400 backdrop-blur-sm border border-transparent hover:border-blue-500/30"
                           }`}>
                           <Home className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Energy Dashboard</span>
@@ -205,8 +205,8 @@ export default function Navbar({
                           }}
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "energy-trading"
-                              ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-muted"
+                              ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg"
+                              : "text-gray-300 hover:bg-slate-800/60 hover:text-blue-400 backdrop-blur-sm border border-transparent hover:border-blue-500/30"
                           }`}>
                           <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Energy Trading</span>
@@ -224,8 +224,8 @@ export default function Navbar({
                           }}
                           className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xs sm:text-sm md:text-base touch-manipulation ${
                             activeTab === "simulation"
-                              ? "bg-primary text-white"
-                              : "text-secondary-custom hover:bg-muted"
+                              ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg"
+                              : "text-gray-300 hover:bg-slate-800/60 hover:text-blue-400 backdrop-blur-sm border border-transparent hover:border-blue-500/30"
                           }`}>
                           <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Simulation Lab</span>
@@ -236,7 +236,7 @@ export default function Navbar({
                         <Link href="/?tab=energy-dashboard">
                           <Button
                             variant="outline"
-                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation bg-slate-800/40 hover:bg-slate-700/60 text-gray-300 hover:text-blue-400 border-slate-600/50 hover:border-blue-500/50 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}>
                             <Home className="w-4 h-4 sm:w-5 sm:h-5" />
                             <span>Energy Dashboard</span>
@@ -245,7 +245,7 @@ export default function Navbar({
                         <Link href="/?tab=energy-trading">
                           <Button
                             variant="outline"
-                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation bg-slate-800/40 hover:bg-slate-700/60 text-gray-300 hover:text-blue-400 border-slate-600/50 hover:border-blue-500/50 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}>
                             <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                             <span>Energy Trading</span>
@@ -254,7 +254,7 @@ export default function Navbar({
                         <Link href="/?tab=simulation">
                           <Button
                             variant="outline"
-                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                            className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation bg-slate-800/40 hover:bg-slate-700/60 text-gray-300 hover:text-blue-400 border-slate-600/50 hover:border-blue-500/50 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}>
                             <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                             <span>Simulation Lab</span>
@@ -266,7 +266,7 @@ export default function Navbar({
 
                   {user && (
                     <div className="flex flex-col space-y-3 sm:space-y-4">
-                      <h3 className="font-semibold text-base sm:text-lg text-primary px-1">
+                      <h3 className="font-semibold text-base sm:text-lg bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent px-1">
                         Data Management
                       </h3>
                       <Link href="/storage">
@@ -274,7 +274,11 @@ export default function Navbar({
                           variant={
                             currentPage === "storage" ? "default" : "outline"
                           }
-                          className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                          className={`w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation ${
+                            currentPage === "storage"
+                              ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg"
+                              : "bg-slate-800/40 hover:bg-slate-700/60 text-gray-300 hover:text-green-400 border-slate-600/50 hover:border-green-500/50 backdrop-blur-sm"
+                          }`}
                           onClick={() => setIsMenuOpen(false)}>
                           <Database className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Storage</span>
@@ -285,7 +289,7 @@ export default function Navbar({
 
 
                   <div className="flex flex-col space-y-3 sm:space-y-4">
-                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">
+                    <h3 className="font-semibold text-base sm:text-lg bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent px-1">
                       Information
                     </h3>
                     <Link href="/about">
@@ -293,7 +297,11 @@ export default function Navbar({
                         variant={
                           currentPage === "about" ? "default" : "outline"
                         }
-                        className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                        className={`w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation ${
+                          currentPage === "about"
+                            ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
+                            : "bg-slate-800/40 hover:bg-slate-700/60 text-gray-300 hover:text-purple-400 border-slate-600/50 hover:border-purple-500/50 backdrop-blur-sm"
+                        }`}
                         onClick={() => setIsMenuOpen(false)}>
                         <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                         <span>About</span>
@@ -303,13 +311,13 @@ export default function Navbar({
 
                   {/* Authentication Section */}
                   <div className="flex flex-col space-y-3 sm:space-y-4">
-                    <h3 className="font-semibold text-base sm:text-lg text-primary px-1">
+                    <h3 className="font-semibold text-base sm:text-lg bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent px-1">
                       Account
                     </h3>
                     {user ? (
                       <Button
                         variant="outline"
-                        className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 bg-card hover:bg-destructive/10 text-red-500 border-red-500/20 hover:border-red-500/30 transition-all duration-300 ease-in-out transform active:scale-95 touch-manipulation"
+                        className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 bg-slate-800/40 hover:bg-red-900/30 text-red-400 border-red-500/30 hover:border-red-400/60 transition-all duration-300 ease-in-out transform active:scale-95 touch-manipulation backdrop-blur-sm hover:shadow-lg"
                         onClick={() => {
                           logoutMutation.mutate();
                           setIsMenuOpen(false);
@@ -320,7 +328,7 @@ export default function Navbar({
                     ) : (
                       <Link href="/login">
                         <Button
-                          className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation"
+                          className="w-full justify-start space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base py-2 sm:py-2.5 transition-all duration-300 ease-in-out transform hover:scale-105 touch-manipulation bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg"
                           onClick={() => setIsMenuOpen(false)}>
                           <User className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Login</span>
