@@ -1065,7 +1065,7 @@ export default function StoragePage() {
                               </div>
                               <div>
                                 <span className="text-sm text-slate-400">Price:</span>
-                                <div className="font-semibold text-emerald-400 text-base">{trade.pricePerKwh} /kwh</div>
+                                <div className="font-semibold text-emerald-400 text-base">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               </div>
                             </div>
                           </div>
@@ -1193,7 +1193,7 @@ export default function StoragePage() {
                               </div>
                               <div>
                                 <span className="text-sm text-slate-400">Price:</span>
-                                <div className="font-semibold text-blue-400 text-base">{trade.pricePerKwh} /kwh</div>
+                                <div className="font-semibold text-blue-400 text-base">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               </div>
                             </div>
                           </div>

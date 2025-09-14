@@ -407,6 +407,8 @@
 [x] 628. Changed chat widget from purple-blue to blue gradient design
 [x] 629. Updated user messages, AI messages, and input area to dark slate theme
 [x] 630. Fixed code blocks and UI elements to use consistent dark theme colors
+[x] 631. Fixed storage page price display to show total price (₹450) instead of price per kWh (₹5/kwh)
+[x] 632. Updated both My Sell Listings and My Buy Requests sections to use formatTradeTotal function
 
 **CURRENT SESSION - THEME CONSISTENCY FIX - September 14, 2025**
 [x] 627. Resolved cross-env dependency issue and restarted workflow successfully
