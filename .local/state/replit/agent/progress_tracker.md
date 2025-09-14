@@ -418,6 +418,7 @@
 [x] 637. Applied theme patterns from main application to dialog for seamless integration
 [x] 638. Simplified dialog background from complex gradient to clean slate-900 for better aesthetics
 [x] 639. Updated dialog text from "Market Rate:" to "Average /kWh:" for clarity
+[x] 640. Reverted label back to "Market Rate:" as user preferred original label
 
 **CURRENT SESSION - FINAL MIGRATION COMPLETION - September 14, 2025**
 [x] 627. Resolved final cross-env dependency issue by installing missing package

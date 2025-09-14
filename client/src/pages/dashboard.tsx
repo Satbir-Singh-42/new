@@ -1649,7 +1649,7 @@ export default function Dashboard() {
               {/* Compact Market Info */}
               <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-slate-600/30">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-300">Average /kWh:</span>
+                  <span className="text-slate-300">Market Rate:</span>
                   <span className="font-semibold text-blue-400">₹{currentMarketRate}/kWh</span>
                 </div>
                 <div className="flex items-center justify-between text-sm mt-1">
