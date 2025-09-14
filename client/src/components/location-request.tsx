@@ -58,7 +58,7 @@ export function LocationRequest({ onLocationGranted, onLocationDenied, isOpen }:
 
   return (
     <Dialog open={showPermissionDialog} onOpenChange={() => {}}>
-      <DialogContent className="mx-3 max-w-sm sm:max-w-md w-full p-4 sm:p-6" data-testid="dialog-location-permission">
+      <DialogContent className="mx-3 max-w-sm sm:max-w-md w-full p-4 sm:p-6 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 border-blue-700/50" data-testid="dialog-location-permission">
         <DialogHeader className="pb-3">
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg" data-testid="text-dialog-title">
             <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
