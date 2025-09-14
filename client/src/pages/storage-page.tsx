@@ -546,11 +546,11 @@ export default function StoragePage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <div className="min-h-screen bg-slate-900">
         <Navbar />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+            <Loader2 className="h-8 w-8 animate-spin text-emerald-400" />
           </div>
         </div>
       </div>
@@ -559,23 +559,23 @@ export default function StoragePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      <div className="min-h-screen bg-slate-900">
         <Navbar />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
-          <Card className="max-w-md mx-auto">
+          <Card className="max-w-md mx-auto bg-slate-800/50 border-slate-600/50">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <LogIn className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-slate-200">
+                <LogIn className="h-5 w-5 text-emerald-400" />
                 Authentication Required
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-6">
+              <p className="text-slate-400 mb-6">
                 Please log in to view your energy trading history and manage your listings.
               </p>
               <Button 
                 onClick={() => setLocation('/login')}
-                className="bg-green-600 hover:bg-green-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 data-testid="button-login"
               >
                 Go to Login
@@ -687,14 +687,14 @@ export default function StoragePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-slate-900">
       <Navbar currentPage="storage" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Energy Trading Hub</h1>
-            <p className="text-gray-600 text-sm sm:text-base">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">Energy Trading Hub</h1>
+            <p className="text-slate-400 text-sm sm:text-base">
               Manage your energy listings, requests, and trading history
             </p>
           </div>
@@ -720,14 +720,14 @@ export default function StoragePage() {
             </Button>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none">
                   <Plus className="h-4 w-4" />
                   <span className="sm:inline">Create Trade</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="bg-slate-800/50 border-slate-600/50">
                 <DialogHeader>
-                  <DialogTitle>Create Energy Trade</DialogTitle>
+                  <DialogTitle className="text-slate-200">Create Energy Trade</DialogTitle>
                 </DialogHeader>
                 <Form {...createForm}>
                   <form onSubmit={createForm.handleSubmit((data) => createTradeMutation.mutate(data))} className="space-y-4">
@@ -779,7 +779,7 @@ export default function StoragePage() {
                       )}
                     />
                     <div className="flex justify-end gap-2">
-                      <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="text-red-600">
+                      <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="bg-slate-800/50 border-slate-600/50 text-slate-300 hover:border-red-500">
                         Cancel
                       </Button>
                       <Button type="submit" disabled={createTradeMutation.isPending}>
@@ -796,81 +796,81 @@ export default function StoragePage() {
         {/* User Stats Cards */}
         {userInfo && (
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Store className="h-4 w-4 text-blue-600" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
+                  <Store className="h-4 w-4 text-blue-400" />
                   My Sell Listings
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">{userInfo.activeSellListings}</div>
-                <p className="text-xs text-gray-500">Energy for sale</p>
+                <div className="text-2xl font-bold text-blue-400">{userInfo.activeSellListings}</div>
+                <p className="text-xs text-slate-400">Energy for sale</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <ShoppingCart className="h-4 w-4 text-green-600" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
+                  <ShoppingCart className="h-4 w-4 text-emerald-400" />
                   My Buy Requests
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{userInfo.activeBuyRequests}</div>
-                <p className="text-xs text-gray-500">Energy needed</p>
+                <div className="text-2xl font-bold text-emerald-400">{userInfo.activeBuyRequests}</div>
+                <p className="text-xs text-slate-400">Energy needed</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Handshake className="h-4 w-4 text-blue-600" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
+                  <Handshake className="h-4 w-4 text-blue-400" />
                   Available Offers
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">{userInfo.availableOffers}</div>
-                <p className="text-xs text-gray-500">To accept</p>
+                <div className="text-2xl font-bold text-blue-400">{userInfo.availableOffers}</div>
+                <p className="text-xs text-slate-400">To accept</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-purple-600" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
+                  <CheckCircle className="h-4 w-4 text-purple-400" />
                   Completed Trades
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-600">{userInfo.completedTrades}</div>
-                <p className="text-xs text-gray-500">Successful</p>
+                <div className="text-2xl font-bold text-purple-400">{userInfo.completedTrades}</div>
+                <p className="text-xs text-slate-400">Successful</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-indigo-600" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
+                  <Zap className="h-4 w-4 text-indigo-400" />
                   Total Activity
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-indigo-600">{userInfo.totalTrades}</div>
-                <p className="text-xs text-gray-500">All time</p>
+                <div className="text-2xl font-bold text-indigo-400">{userInfo.totalTrades}</div>
+                <p className="text-xs text-slate-400">All time</p>
               </CardContent>
             </Card>
           </div>
         )}
 
         {/* Data Source Status */}
-        <Card className="mb-6">
+        <Card className="mb-6 bg-slate-800/50 border-slate-600/50">
           <CardContent className="pt-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 <div className="flex items-center gap-2">
-                  <Database className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="font-medium text-sm sm:text-base">Data Status:</span>
+                  <Database className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+                  <span className="font-medium text-sm sm:text-base text-slate-200">Data Status:</span>
                 </div>
                 <div className="flex items-center gap-2 ml-6 sm:ml-0" data-testid="connection-status">
                   {!isLoading && !error && energyTrades.length > 0 && (
@@ -892,7 +892,7 @@ export default function StoragePage() {
                   )}
                 </div>
               </div>
-              <div className="text-xs sm:text-sm text-gray-500 ml-6 sm:ml-0" aria-live="polite" data-testid="last-updated">
+              <div className="text-xs sm:text-sm text-slate-400 ml-6 sm:ml-0" aria-live="polite" data-testid="last-updated">
                 Last updated: {format(new Date(), 'HH:mm:ss')}
               </div>
             </div>
@@ -901,7 +901,7 @@ export default function StoragePage() {
 
         {/* Main Trading Tabs */}
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 gap-1 sm:gap-2 text-xs sm:text-sm mb-6">
+          <TabsList className="grid w-full grid-cols-4 gap-1 sm:gap-2 text-xs sm:text-sm mb-6 bg-slate-800/50 border-slate-600/50">
             <TabsTrigger value="my-listings" className="flex items-center justify-center gap-2 text-xs sm:text-sm" data-testid="tab-listings">
               <Store className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Sell Listings</span>
@@ -950,31 +950,31 @@ export default function StoragePage() {
 
           {/* My Sell Listings */}
           <TabsContent value="my-listings">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Store className="h-5 w-5 text-blue-600" />
+                <CardTitle className="flex items-center gap-2 text-slate-200">
+                  <Store className="h-5 w-5 text-blue-400" />
                   Energy You're Selling
                 </CardTitle>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-400">
                   Energy listings you've posted for others to buy
                 </p>
               </CardHeader>
               <CardContent>
                 {myListings.length === 0 ? (
                   <div className="text-center py-8" data-testid="empty-listings">
-                    <Store className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">No sell listings yet</p>
-                    <p className="text-sm text-gray-400">Create energy listings to start selling surplus power</p>
+                    <Store className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                    <p className="text-slate-400">No sell listings yet</p>
+                    <p className="text-sm text-slate-500">Create energy listings to start selling surplus power</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {myListings.map((trade) => (
-                      <Card key={trade.id} className="p-3 sm:p-4">
+                      <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                           <div className="flex-1">
-                            <div className="font-medium text-base sm:text-lg">{formatEnergy(trade.energyAmount)}</div>
-                            <div className="text-xs sm:text-sm text-gray-500">
+                            <div className="font-medium text-base sm:text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                            <div className="text-xs sm:text-sm text-slate-400">
                               Listed: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                             </div>
                           </div>
@@ -993,12 +993,12 @@ export default function StoragePage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Energy Amount:</span>
-                            <div className="font-medium text-sm sm:text-base">{trade.energyAmount}</div>
+                            <span className="text-xs sm:text-sm text-slate-400">Energy Amount:</span>
+                            <div className="font-medium text-sm sm:text-base text-slate-200">{trade.energyAmount}</div>
                           </div>
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Price:</span>
-                            <div className="font-semibold text-green-600 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
+                            <span className="text-xs sm:text-sm text-slate-400">Price:</span>
+                            <div className="font-semibold text-emerald-400 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
@@ -1037,31 +1037,31 @@ export default function StoragePage() {
 
           {/* My Buy Requests */}
           <TabsContent value="my-requests">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <ShoppingCart className="h-5 w-5 text-green-600" />
+                <CardTitle className="flex items-center gap-2 text-slate-200">
+                  <ShoppingCart className="h-5 w-5 text-emerald-400" />
                   Energy You're Requesting
                 </CardTitle>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-400">
                   Active and manageable buy requests (edit or cancel here)
                 </p>
               </CardHeader>
               <CardContent>
                 {myRequests.length === 0 ? (
                   <div className="text-center py-8" data-testid="empty-requests">
-                    <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">No buy requests yet</p>
-                    <p className="text-sm text-gray-400">Create requests to purchase energy from other users</p>
+                    <ShoppingCart className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                    <p className="text-slate-400">No buy requests yet</p>
+                    <p className="text-sm text-slate-500">Create requests to purchase energy from other users</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {myRequests.map((trade) => (
-                      <Card key={trade.id} className="p-3 sm:p-4">
+                      <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                           <div className="flex-1">
-                            <div className="font-medium text-base sm:text-lg">{formatEnergy(trade.energyAmount)}</div>
-                            <div className="text-xs sm:text-sm text-gray-500">
+                            <div className="font-medium text-base sm:text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                            <div className="text-xs sm:text-sm text-slate-400">
                               Requested: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                             </div>
                           </div>
@@ -1080,12 +1080,12 @@ export default function StoragePage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4">
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Energy Amount:</span>
-                            <div className="font-medium text-sm sm:text-base">{trade.energyAmount}</div>
+                            <span className="text-xs sm:text-sm text-slate-400">Energy Amount:</span>
+                            <div className="font-medium text-sm sm:text-base text-slate-200">{trade.energyAmount}</div>
                           </div>
                           <div>
-                            <span className="text-xs sm:text-sm text-gray-600">Price:</span>
-                            <div className="font-semibold text-blue-600 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
+                            <span className="text-xs sm:text-sm text-slate-400">Price:</span>
+                            <div className="font-semibold text-blue-400 text-sm sm:text-base">{trade.pricePerKwh} /kwh</div>
                           </div>
                         </div>
                         {trade.status === 'pending' && (
@@ -1124,27 +1124,27 @@ export default function StoragePage() {
 
           {/* Applications - Combined Tab */}
           <TabsContent value="applications">
-            <Card>
+            <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-blue-600" />
+                <CardTitle className="flex items-center gap-2 text-slate-200">
+                  <FileText className="h-5 w-5 text-blue-400" />
                   Applications
                 </CardTitle>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-400">
                   Applications you submitted to others and applications others submitted to your trades
                 </p>
               </CardHeader>
               <CardContent>
                 {(acceptancesLoading || applicationsLoading) ? (
                   <div className="text-center py-8">
-                    <Loader2 className="h-12 w-12 text-gray-400 mx-auto mb-4 animate-spin" />
-                    <p className="text-gray-500">Loading applications...</p>
+                    <Loader2 className="h-12 w-12 text-slate-400 mx-auto mb-4 animate-spin" />
+                    <p className="text-slate-400">Loading applications...</p>
                   </div>
                 ) : (tradeAcceptances.length === 0 && tradeApplications.length === 0) ? (
                   <div className="text-center py-8" data-testid="empty-applications">
-                    <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">No applications yet</p>
-                    <p className="text-sm text-gray-400">Apply to energy trades or wait for others to apply to your trades</p>
+                    <FileText className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+                    <p className="text-slate-400">No applications yet</p>
+                    <p className="text-sm text-slate-500">Apply to energy trades or wait for others to apply to your trades</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -1154,8 +1154,8 @@ export default function StoragePage() {
                       !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
                     ).length > 0 && (
                       <div>
-                        <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-                          <ArrowRight className="h-4 w-4" />
+                        <h3 className="font-medium text-slate-200 mb-3 flex items-center gap-2">
+                          <ArrowRight className="h-4 w-4 text-emerald-400" />
                           Applications I Submitted ({tradeAcceptances.filter((acceptance: any) => 
                             !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(acceptance.status)
                           ).length})
@@ -1178,12 +1178,12 @@ export default function StoragePage() {
                             const statusMeta = getApplicationStatusMeta(acceptance.status);
                             
                             return (
-                              <Card key={acceptance.id} className="overflow-hidden border-l-4 border-l-blue-500 shadow-sm hover:shadow-md transition-shadow duration-200" data-testid={`card-application-${acceptance.id}`}>
+                              <Card key={acceptance.id} className="overflow-hidden border-l-4 border-l-blue-400 shadow-sm hover:shadow-md transition-shadow duration-200 bg-slate-700/50 border-slate-600/50" data-testid={`card-application-${acceptance.id}`}>
                                 <CardHeader className="pb-3">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                      <Zap className="h-5 w-5 text-green-600" />
-                                      <h3 className="text-lg font-semibold text-gray-900" data-testid={`text-title-${acceptance.id}`}>
+                                      <Zap className="h-5 w-5 text-emerald-400" />
+                                      <h3 className="text-lg font-semibold text-slate-200" data-testid={`text-title-${acceptance.id}`}>
                                         Energy {trade?.tradeType === 'sell' ? 'Sale' : 'Purchase'}: {formatEnergy(trade?.energyAmount || 0)}
                                       </h3>
                                     </div>
@@ -1194,37 +1194,37 @@ export default function StoragePage() {
                                       </Badge>
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                                  <div className="flex items-center gap-1 text-sm text-slate-400 mt-1">
                                     Applied: {format(new Date(acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
                                   </div>
                                 </CardHeader>
                                 
                                 <CardContent className="py-3">
                                   <div className="space-y-3">
-                                    <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                      <User className="h-4 w-4" />
+                                    <div className="flex items-center gap-2 text-sm font-medium text-slate-300">
+                                      <User className="h-4 w-4 text-emerald-400" />
                                       <span>Applicant Details</span>
                                     </div>
                                     
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                       <div>
-                                        <span className="text-gray-500">Name:</span>
-                                        <div className="font-medium">{user?.username || 'User'}</div>
+                                        <span className="text-slate-400">Name:</span>
+                                        <div className="font-medium text-slate-200">{user?.username || 'User'}</div>
                                       </div>
                                       <div>
-                                        <span className="text-gray-500">Household:</span>
-                                        <div className="font-medium">{userHouseholds[0]?.name || 'Not specified'}</div>
+                                        <span className="text-slate-400">Household:</span>
+                                        <div className="font-medium text-slate-200">{userHouseholds[0]?.name || 'Not specified'}</div>
                                       </div>
                                       <div>
-                                        <span className="text-gray-500">Location:</span>
-                                        <div className="font-medium">
+                                        <span className="text-slate-400">Location:</span>
+                                        <div className="font-medium text-slate-200">
                                           {user?.district || 'Not specified'}
                                           {user?.state && `, ${user.state}`}
                                         </div>
                                       </div>
                                       <div>
-                                        <span className="text-gray-500">Contact:</span>
-                                        <div className="font-medium">
+                                        <span className="text-slate-400">Contact:</span>
+                                        <div className="font-medium text-slate-200">
                                           {acceptance.status === 'awarded' 
                                             ? (
                                                 <div className="space-y-1">
@@ -1233,7 +1233,7 @@ export default function StoragePage() {
                                                     <div>{user.phone}</div>
                                                   )}
                                                   {userHouseholds[0]?.address && (
-                                                    <div className="text-xs text-gray-600">Address: {userHouseholds[0].address}</div>
+                                                    <div className="text-xs text-slate-400">Address: {userHouseholds[0].address}</div>
                                                   )}
                                                 </div>
                                               )
@@ -1245,19 +1245,19 @@ export default function StoragePage() {
                                   </div>
                                 </CardContent>
                                 
-                                <CardFooter className="pt-3 border-t">
+                                <CardFooter className="pt-3 border-t border-slate-600/50">
                                   <div className="grid grid-cols-3 gap-4 w-full text-sm">
                                     <div>
-                                      <span className="text-gray-500">Energy Amount:</span>
-                                      <div className="font-semibold" data-testid={`text-amount-${acceptance.id}`}>{trade?.energyAmount || 0}</div>
+                                      <span className="text-slate-400">Energy Amount:</span>
+                                      <div className="font-semibold text-slate-200" data-testid={`text-amount-${acceptance.id}`}>{trade?.energyAmount || 0}</div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Price:</span>
-                                      <div className="font-semibold text-green-600" data-testid={`text-price-${acceptance.id}`}>{trade?.pricePerKwh || 0} /kwh</div>
+                                      <span className="text-slate-400">Price:</span>
+                                      <div className="font-semibold text-emerald-400" data-testid={`text-price-${acceptance.id}`}>{trade?.pricePerKwh || 0} /kwh</div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Status:</span>
-                                      <div className="flex items-center gap-1 font-medium">
+                                      <span className="text-slate-400">Status:</span>
+                                      <div className="flex items-center gap-1 font-medium text-slate-200">
                                         <div className={`w-2 h-2 rounded-full ${statusMeta.dotClass}`}></div>
                                         {statusMeta.label}
                                       </div>
