@@ -145,18 +145,18 @@ export default function LoginPage() {
                     Password
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                      className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                       {...register("password")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                      className="absolute right-3 top-3 text-blue-200 hover:text-white transition-colors duration-200"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
