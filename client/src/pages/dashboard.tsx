@@ -771,8 +771,8 @@ export default function Dashboard() {
 
       {/* Navigation Tabs - Positioned below hero section */}
       <div className="bg-gradient-to-r from-blue-900/40 via-blue-800/30 to-blue-900/40 border-b border-border shadow-sm">
-        <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="flex bg-gradient-to-r from-slate-900/50 via-slate-800/30 to-slate-900/50 rounded-xl p-1 backdrop-blur-sm border border-slate-700/30">
+        <div className="w-full">
+          <div className="flex bg-gradient-to-r from-slate-900/50 via-slate-800/30 to-slate-900/50 p-1 backdrop-blur-sm">
             <button
               onClick={() => {
                 setActiveTab('energy-dashboard');
