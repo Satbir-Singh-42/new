@@ -11,8 +11,6 @@
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
-    "@google/genai": "^1.16.0",
-    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-alert-dialog": "^1.1.7",
     "@radix-ui/react-avatar": "^1.1.4",
@@ -27,8 +25,7 @@
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-tabs": "^1.1.4",
     "@radix-ui/react-toast": "^1.2.7",
-    "@stripe/react-stripe-js": "^3.9.2",
-    "@stripe/stripe-js": "^7.9.0",
+ 
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-query": "^5.60.5",
@@ -62,7 +59,6 @@
     "express-session": "^1.18.1",
     "framer-motion": "^11.18.2",
     "html2canvas": "^1.4.1",
-    "jspdf": "^3.0.1",
     "lucide-react": "^0.453.0",
     "memoizee": "^0.4.17",
     "memorystore": "^1.6.7",
@@ -80,7 +76,6 @@
     "react-hook-form": "^7.55.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "stripe": "^18.5.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.15",
     "tailwindcss-animate": "^1.0.7",
@@ -88,7 +83,8 @@
     "vite": "^7.0.4",
     "wouter": "^3.3.5",
     "ws": "^8.18.3",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@replit/vite-plugin-cartographer": "^0.2.7",
