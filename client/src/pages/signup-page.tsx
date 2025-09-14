@@ -294,7 +294,7 @@ export default function SignupPage() {
                         id="username"
                         type="text"
                         placeholder="Choose a username"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                         {...register("username")}
                       />
                     </div>
@@ -317,7 +317,7 @@ export default function SignupPage() {
                         id="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                         {...register("email")}
                       />
                     </div>
@@ -340,7 +340,7 @@ export default function SignupPage() {
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                         {...register("password", {
                           onChange: handlePasswordChange,
                         })}
@@ -381,7 +381,7 @@ export default function SignupPage() {
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                         {...register("confirmPassword")}
                       />
                       <button
@@ -418,7 +418,7 @@ export default function SignupPage() {
                           id="phone"
                           type="tel"
                           placeholder="+91-98765-43210"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                           {...register("phone")}
                         />
                       </div>
@@ -442,7 +442,7 @@ export default function SignupPage() {
                             id="state"
                             type="text"
                             placeholder="Enter your state"
-                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                             {...register("state")}
                           />
                         </div>
@@ -465,7 +465,7 @@ export default function SignupPage() {
                             id="district"
                             type="text"
                             placeholder="Enter your district"
-                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                             {...register("district")}
                           />
                         </div>
@@ -489,7 +489,7 @@ export default function SignupPage() {
                           id="address"
                           type="text"
                           placeholder="123 Solar Nagar, City, State"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                           {...register("address")}
                         />
                       </div>
@@ -512,7 +512,7 @@ export default function SignupPage() {
                           id="householdName"
                           type="text"
                           placeholder="Smith Family Solar Home"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                           {...register("householdName")}
                         />
                       </div>
@@ -536,7 +536,7 @@ export default function SignupPage() {
                           id="solarCapacity"
                           type="number"
                           placeholder="8000"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                           {...register("solarCapacity")}
                         />
                       </div>
@@ -561,7 +561,7 @@ export default function SignupPage() {
                           type="number"
                           step="1"
                           placeholder="13"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
                           {...register("batteryCapacity")}
                         />
                       </div>
