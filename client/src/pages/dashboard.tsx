@@ -772,17 +772,17 @@ export default function Dashboard() {
       {/* Navigation Tabs - Positioned below hero section */}
       <div className="bg-card border-b border-border shadow-sm">
         <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="flex border-b border-border">
+          <div className="flex bg-gradient-to-r from-slate-900/50 via-slate-800/30 to-slate-900/50 rounded-xl p-1 backdrop-blur-sm border border-slate-700/30">
             <button
               onClick={() => {
                 setActiveTab('energy-dashboard');
                 window.history.pushState({}, '', '/?tab=energy-dashboard');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
+              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-all duration-300 text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 rounded-lg ${
                 activeTab === 'energy-dashboard'
-                  ? 'text-primary border-b-2 border-primary bg-primary/10'
-                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg transform scale-[1.02]'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
               }`}
             >
               <Home className="" size={16} />
@@ -797,10 +797,10 @@ export default function Dashboard() {
                 window.history.pushState({}, '', '/?tab=energy-trading');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
+              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-all duration-300 text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 rounded-lg ${
                 activeTab === 'energy-trading'
-                  ? 'text-primary border-b-2 border-primary bg-primary/10'
-                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg transform scale-[1.02]'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
               }`}
             >
               <TrendingUp className="" size={16} />
@@ -815,10 +815,10 @@ export default function Dashboard() {
                 window.history.pushState({}, '', '/?tab=simulation');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
+              className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-all duration-300 text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 rounded-lg ${
                 activeTab === 'simulation'
-                  ? 'text-primary border-b-2 border-primary bg-primary/10'
-                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg transform scale-[1.02]'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
               }`}
             >
               <Activity className="" size={16} />
@@ -1091,24 +1091,44 @@ export default function Dashboard() {
               </Card>
             </div>
             
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-4">Getting Started with SolarSense</h3>
+            <Card className="p-6 bg-gradient-to-br from-slate-900/60 via-blue-950/40 to-slate-800/60 border border-blue-500/20 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold mb-6 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Getting Started with SolarSense</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 border border-border rounded-lg">
-                  <h4 className="font-semibold mb-2">1. Register Your Household</h4>
-                  <p className="text-sm text-secondary-custom">Add your solar installation and battery details to join the energy trading network.</p>
+                <div className="p-4 bg-gradient-to-r from-blue-900/40 to-blue-800/30 rounded-xl border border-blue-500/20 hover:border-blue-400/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                      <User className="h-4 w-4 text-blue-400" />
+                    </div>
+                    <h4 className="font-semibold text-blue-200">1. Register Your Household</h4>
+                  </div>
+                  <p className="text-sm text-slate-300">Add your solar installation and battery details to join the energy trading network.</p>
                 </div>
-                <div className="p-4 border border-border rounded-lg">
-                  <h4 className="font-semibold mb-2">2. Monitor Energy Flow</h4>
-                  <p className="text-sm text-secondary-custom">Track your energy production, consumption, and battery levels in real-time.</p>
+                <div className="p-4 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/20 hover:border-emerald-400/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                      <Activity className="h-4 w-4 text-emerald-400" />
+                    </div>
+                    <h4 className="font-semibold text-emerald-200">2. Monitor Energy Flow</h4>
+                  </div>
+                  <p className="text-sm text-slate-300">Track your energy production, consumption, and battery levels in real-time.</p>
                 </div>
-                <div className="p-4 border border-border rounded-lg">
-                  <h4 className="font-semibold mb-2">3. Trade Energy</h4>
-                  <p className="text-sm text-secondary-custom">Buy and sell surplus energy with neighbors for optimal grid balance.</p>
+                <div className="p-4 bg-gradient-to-r from-purple-900/40 to-purple-800/30 rounded-xl border border-purple-500/20 hover:border-purple-400/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                      <ArrowRightLeft className="h-4 w-4 text-purple-400" />
+                    </div>
+                    <h4 className="font-semibold text-purple-200">3. Trade Energy</h4>
+                  </div>
+                  <p className="text-sm text-slate-300">Buy and sell surplus energy with neighbors for optimal grid balance.</p>
                 </div>
-                <div className="p-4 border border-border rounded-lg">
-                  <h4 className="font-semibold mb-2">4. AI Optimization</h4>
-                  <p className="text-sm text-secondary-custom">Let our AI optimize energy distribution and trading opportunities for you.</p>
+                <div className="p-4 bg-gradient-to-r from-violet-900/40 to-violet-800/30 rounded-xl border border-violet-500/20 hover:border-violet-400/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-violet-500/20 rounded-lg flex items-center justify-center">
+                      <Bot className="h-4 w-4 text-violet-400" />
+                    </div>
+                    <h4 className="font-semibold text-violet-200">4. AI Optimization</h4>
+                  </div>
+                  <p className="text-sm text-slate-300">Let our AI optimize energy distribution and trading opportunities for you.</p>
                 </div>
               </div>
             </Card>
@@ -1118,7 +1138,7 @@ export default function Dashboard() {
         {activeTab === 'energy-trading' && (
           <div className="space-y-6">
             {/* Enhanced Header Section */}
-            <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-100">
+            <div className="bg-gradient-to-br from-slate-900/60 via-blue-950/40 to-slate-800/60 rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-500/20 backdrop-blur-sm shadow-2xl">
               <div className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-0">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -1128,17 +1148,17 @@ export default function Dashboard() {
                   
                   {/* Market Stats */}
                   <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
-                    <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
+                    <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-900/40 to-blue-800/30 rounded-xl border border-blue-500/20">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-300">{energyOffers.length}</p>
-                      <p className="text-xs text-muted-foreground">Active Offers</p>
+                      <p className="text-xs text-blue-200">Active Offers</p>
                     </div>
-                    <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
+                    <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/20">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-emerald-300">{energyRequests.length}</p>
-                      <p className="text-xs text-muted-foreground">Energy Requests</p>
+                      <p className="text-xs text-emerald-200">Energy Requests</p>
                     </div>
-                    <div className="text-center p-3 sm:p-4 bg-white/50 rounded-lg">
+                    <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-purple-900/40 to-purple-800/30 rounded-xl border border-purple-500/20">
                       <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-300">{networkAnalytics?.trading?.averagePrice || "₹0"}</p>
-                      <p className="text-xs text-muted-foreground">Avg Price/kWh</p>
+                      <p className="text-xs text-purple-200">Avg Price/kWh</p>
                     </div>
                   </div>
                 </div>
@@ -1177,7 +1197,7 @@ export default function Dashboard() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-emerald-950/40 via-emerald-900/25 to-emerald-800/30 border border-emerald-500/20 backdrop-blur-sm">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-3 sm:gap-0">
                   <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                     <div className="p-1.5 sm:p-2 bg-emerald-500/15 rounded-full">
@@ -1211,7 +1231,7 @@ export default function Dashboard() {
                     </div>
                   ) : energyOffers.length > 0 ? (
                     energyOffers.map((item: any) => (
-                      <div key={item.trade.id} className="p-3 sm:p-4 border-2 border-green-200 rounded-xl hover:border-green-400 transition-all duration-200 hover:shadow-md bg-white">
+                      <div key={item.trade.id} className="p-3 sm:p-4 bg-gradient-to-r from-slate-800/50 to-slate-700/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-xl backdrop-blur-sm">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
                           <div className="flex-1 w-full sm:w-auto">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -1331,7 +1351,7 @@ export default function Dashboard() {
                 </div>
               </Card>
               
-              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+              <Card className="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-blue-950/40 via-blue-900/25 to-blue-800/30 border border-blue-500/20 backdrop-blur-sm">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-3 sm:gap-0">
                   <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
                     <div className="p-1.5 sm:p-2 bg-blue-500/15 rounded-full">
