@@ -1015,7 +1015,7 @@ export default function StoragePage() {
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-base text-emerald-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
+                              <div className="font-bold text-lg text-emerald-400">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
                                 {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
                                 {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
@@ -1031,14 +1031,8 @@ export default function StoragePage() {
                               </Badge>
                             )}
                             <div className="flex justify-between text-sm" data-testid={`mobile-details-${trade.id}`}>
-                              <span>
-                                <span className="text-slate-400">Amount:</span>
-                                <span className="font-medium text-slate-200 ml-1" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
-                              </span>
-                              <span>
-                                <span className="text-slate-400">Price:</span>
-                                <span className="font-semibold text-emerald-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</span>
-                              </span>
+                              <span className="font-medium text-slate-200" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
+                              <span className="font-semibold text-slate-400" data-testid={`text-price-mobile-${trade.id}`}>{formatTradePrice(trade.pricePerKwh)}/kWh</span>
                             </div>
                           </div>
                           
@@ -1046,7 +1040,7 @@ export default function StoragePage() {
                           <div className="hidden sm:block">
                             <div className="flex justify-between items-start gap-3 mb-4">
                               <div className="flex-1">
-                                <div className="font-medium text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                                <div className="font-bold text-xl text-emerald-400 mb-2">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                                 <div className="text-sm text-slate-400">
                                   Listed: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                                 </div>
@@ -1058,15 +1052,9 @@ export default function StoragePage() {
                                 </Badge>
                               </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                              <div>
-                                <span className="text-sm text-slate-400">Energy Amount:</span>
-                                <div className="font-medium text-base text-slate-200">{trade.energyAmount}</div>
-                              </div>
-                              <div>
-                                <span className="text-sm text-slate-400">Price:</span>
-                                <div className="font-semibold text-emerald-400 text-base">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
-                              </div>
+                            <div className="flex justify-between items-center mb-4">
+                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <div className="font-semibold text-slate-400">{formatTradePrice(trade.pricePerKwh)}/kWh</div>
                             </div>
                           </div>
                         </div>
@@ -1143,7 +1131,7 @@ export default function StoragePage() {
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-base text-blue-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
+                              <div className="font-bold text-lg text-blue-400">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                               <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
                                 {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
                                 {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
@@ -1159,14 +1147,8 @@ export default function StoragePage() {
                               </Badge>
                             )}
                             <div className="flex justify-between text-sm" data-testid={`mobile-details-${trade.id}`}>
-                              <span>
-                                <span className="text-slate-400">Amount:</span>
-                                <span className="font-medium text-slate-200 ml-1" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
-                              </span>
-                              <span>
-                                <span className="text-slate-400">Price:</span>
-                                <span className="font-semibold text-blue-400 ml-1" data-testid={`text-price-mobile-${trade.id}`}>{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</span>
-                              </span>
+                              <span className="font-medium text-slate-200" data-testid={`text-amount-mobile-${trade.id}`}>{formatEnergy(trade.energyAmount)}</span>
+                              <span className="font-semibold text-slate-400" data-testid={`text-price-mobile-${trade.id}`}>{formatTradePrice(trade.pricePerKwh)}/kWh</span>
                             </div>
                           </div>
                           
@@ -1174,7 +1156,7 @@ export default function StoragePage() {
                           <div className="hidden sm:block">
                             <div className="flex justify-between items-start gap-3 mb-4">
                               <div className="flex-1">
-                                <div className="font-medium text-lg text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                                <div className="font-bold text-xl text-blue-400 mb-2">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
                                 <div className="text-sm text-slate-400">
                                   Requested: {format(new Date(trade.createdAt), 'MMM dd, yyyy HH:mm')}
                                 </div>
@@ -1186,15 +1168,9 @@ export default function StoragePage() {
                                 </Badge>
                               </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4 mb-4">
-                              <div>
-                                <span className="text-sm text-slate-400">Energy Amount:</span>
-                                <div className="font-medium text-base text-slate-200">{trade.energyAmount}</div>
-                              </div>
-                              <div>
-                                <span className="text-sm text-slate-400">Price:</span>
-                                <div className="font-semibold text-blue-400 text-base">{formatTradeTotal(trade.energyAmount, trade.pricePerKwh)}</div>
-                              </div>
+                            <div className="flex justify-between items-center mb-4">
+                              <div className="font-medium text-base text-slate-200">{formatEnergy(trade.energyAmount)}</div>
+                              <div className="font-semibold text-slate-400">{formatTradePrice(trade.pricePerKwh)}/kWh</div>
                             </div>
                           </div>
                         </div>

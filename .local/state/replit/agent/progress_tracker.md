@@ -409,6 +409,10 @@
 [x] 630. Fixed code blocks and UI elements to use consistent dark theme colors
 [x] 631. Fixed storage page price display to show total price (₹450) instead of price per kWh (₹5/kwh)
 [x] 632. Updated both My Sell Listings and My Buy Requests sections to use formatTradeTotal function
+[x] 633. Restructured storage page layout to show total price prominently on top
+[x] 634. Added energy amount on left and per kWh price on right below total price
+[x] 635. Applied consistent three-piece layout to both mobile and desktop views
+[x] 636. Layout now shows: ₹450 (top), 5 kWh (left), ₹9/kWh (right) as requested
 
 **CURRENT SESSION - THEME CONSISTENCY FIX - September 14, 2025**
 [x] 627. Resolved cross-env dependency issue and restarted workflow successfully
