@@ -1632,10 +1632,10 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-blue-900 dark:bg-blue-900 border border-blue-600/50 dark:border-blue-500/50 rounded-xl shadow-2xl">
+        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-gradient-to-br from-slate-950/95 via-blue-950/90 to-slate-900/95 border border-blue-500/30 backdrop-blur-sm rounded-xl shadow-2xl">
           <DialogHeader className="pb-2">
             <DialogTitle className="flex items-center gap-2 text-lg font-bold text-white dark:text-white">
-              <Plus className="h-5 w-5 text-blue-500" />
+              <Plus className="h-5 w-5 text-blue-400" />
               Quick Trade
             </DialogTitle>
             <DialogDescription className="text-sm text-blue-200 dark:text-blue-200">
@@ -1647,14 +1647,14 @@ export default function Dashboard() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6 pt-2 sm:pt-4">
               
               {/* Compact Market Info */}
-              <div className="bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg border border-blue-200 dark:border-blue-800/50">
+              <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-slate-600/30">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-600 dark:text-slate-300">Market Rate:</span>
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">₹{currentMarketRate}/kWh</span>
+                  <span className="text-slate-300">Market Rate:</span>
+                  <span className="font-semibold text-blue-400">₹{currentMarketRate}/kWh</span>
                 </div>
                 <div className="flex items-center justify-between text-sm mt-1">
-                  <span className="text-slate-600 dark:text-slate-300">Range:</span>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">₹{minPrice}-₹{maxPrice}</span>
+                  <span className="text-slate-300">Range:</span>
+                  <span className="font-semibold text-emerald-400">₹{minPrice}-₹{maxPrice}</span>
                 </div>
               </div>
               <FormField
@@ -1662,7 +1662,7 @@ export default function Dashboard() {
                 name="tradeType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">Action Type</FormLabel>
+                    <FormLabel className="text-sm font-medium text-slate-200">Action Type</FormLabel>
                     <div className="grid grid-cols-2 gap-2">
                       <Button 
                         type="button"
@@ -1671,7 +1671,7 @@ export default function Dashboard() {
                         className={`h-16 p-2 transition-all ${
                           field.value === 'sell' 
                             ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                            : 'border-slate-300 dark:border-slate-600 hover:border-emerald-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                            : 'border-slate-600/50 hover:border-emerald-500 bg-slate-800/50 text-slate-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="option-have-energy"
@@ -1688,7 +1688,7 @@ export default function Dashboard() {
                         className={`h-16 p-2 transition-all ${
                           field.value === 'buy' 
                             ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                            : 'border-slate-300 dark:border-slate-600 hover:border-blue-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                            : 'border-slate-600/50 hover:border-blue-500 bg-slate-800/50 text-slate-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="option-need-energy"
@@ -1710,7 +1710,7 @@ export default function Dashboard() {
                   name="energyAmount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <FormLabel className="text-sm font-medium text-slate-200">
                         Amount (kWh)
                       </FormLabel>
                       <FormControl>
@@ -1721,7 +1721,7 @@ export default function Dashboard() {
                           min="1"
                           placeholder="5"
                           data-testid="input-energy-amount"
-                          className="h-9 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          className="h-9 bg-slate-800/70 border-slate-600/50 text-white placeholder:text-slate-400"
                           {...field}
                           onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                         />
@@ -1736,7 +1736,7 @@ export default function Dashboard() {
                   name="pricePerKwh"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <FormLabel className="text-sm font-medium text-slate-200">
                         Price (₹/kWh)
                       </FormLabel>
                       <FormControl>
@@ -1748,7 +1748,7 @@ export default function Dashboard() {
                           max="500"
                           placeholder="6.0"
                           data-testid="input-price-per-kwh"
-                          className="h-9 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          className="h-9 bg-slate-800/70 border-slate-600/50 text-white placeholder:text-slate-400"
                           {...field}
                           onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                         />
@@ -1766,7 +1766,7 @@ export default function Dashboard() {
                   variant="outline" 
                   size="sm" 
                   onClick={() => form.setValue('pricePerKwh', minPrice)}
-                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-blue-500 text-slate-700 dark:text-slate-300"
+                  className="h-8 text-xs bg-slate-800/50 border-slate-600/50 hover:border-blue-500 text-slate-300"
                   data-testid="button-price-low"
                 >
                   Low: ₹{Math.round(minPrice)}
@@ -1776,7 +1776,7 @@ export default function Dashboard() {
                   variant="outline" 
                   size="sm" 
                   onClick={() => form.setValue('pricePerKwh', currentMarketRate)}
-                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-emerald-500 text-slate-700 dark:text-slate-300"
+                  className="h-8 text-xs bg-slate-800/50 border-slate-600/50 hover:border-emerald-500 text-slate-300"
                   data-testid="button-price-market"
                 >
                   Market: ₹{Math.round(currentMarketRate)}
@@ -1786,7 +1786,7 @@ export default function Dashboard() {
                   variant="outline" 
                   size="sm" 
                   onClick={() => form.setValue('pricePerKwh', 9)}
-                  className="h-8 text-xs bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:border-purple-500 text-slate-700 dark:text-slate-300"
+                  className="h-8 text-xs bg-slate-800/50 border-slate-600/50 hover:border-purple-500 text-slate-300"
                   data-testid="button-price-high"
                 >
                   High: ₹9
@@ -1795,10 +1795,10 @@ export default function Dashboard() {
 
               {/* Total Display */}
               {form.watch('energyAmount') > 0 && form.watch('pricePerKwh') > 0 && (
-                <div className="bg-emerald-50 dark:bg-emerald-950/30 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800/50">
+                <div className="bg-gradient-to-r from-emerald-950/40 to-emerald-900/30 p-3 rounded-lg border border-emerald-500/20">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600 dark:text-slate-300">Total Value:</span>
-                    <span className="font-bold text-lg text-emerald-600 dark:text-emerald-400">
+                    <span className="text-sm text-slate-300">Total Value:</span>
+                    <span className="font-bold text-lg text-emerald-400">
                       ₹{Math.round((form.watch('energyAmount') || 0) * (form.watch('pricePerKwh') || 0))}
                     </span>
                   </div>
@@ -1811,7 +1811,7 @@ export default function Dashboard() {
                   variant="outline"
                   size="sm"
                   onClick={() => setShowCreateTradeDialog(false)}
-                  className="flex-1 h-10 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-red-500"
+                  className="flex-1 h-10 bg-slate-800/50 border-slate-600/50 text-slate-300 hover:border-red-500"
                   data-testid="button-cancel-trade"
                 >
                   Cancel
