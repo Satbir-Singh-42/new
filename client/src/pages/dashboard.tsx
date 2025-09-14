@@ -1311,7 +1311,7 @@ export default function Dashboard() {
                             <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-muted-foreground">
                               <div className="flex items-center gap-1">
                                 <MapPin className="h-4 w-4" />
-                                <span className="hidden sm:inline">Ludhiana, Punjab • Location based matching</span>
+                                <span className="hidden sm:inline">Ludhiana, Punjab</span>
                                 <span className="sm:hidden">Ludhiana</span>
                               </div>
                               <span className="hidden sm:inline">•</span>
@@ -1465,7 +1465,7 @@ export default function Dashboard() {
                             <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-muted-foreground">
                               <div className="flex items-center gap-1">
                                 <MapPin className="h-4 w-4" />
-                                <span className="hidden sm:inline">Ludhiana, Punjab • Location based matching</span>
+                                <span className="hidden sm:inline">Ludhiana, Punjab</span>
                                 <span className="sm:hidden">Ludhiana</span>
                               </div>
                               <span className="hidden sm:inline">•</span>
