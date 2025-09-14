@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertEnergyTradeSchema } from "@/../../shared/schema";
@@ -860,8 +861,15 @@ export default function Dashboard() {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/5 via-transparent to-purple-900/5 pointer-events-none rounded-lg"></div>
         <div className="relative z-10">
         {/* Content Sections */}
+        <AnimatePresence mode="wait">
         {activeTab === 'energy-dashboard' && (
-          <div className="space-y-6">
+          <motion.div 
+            key="energy-dashboard"
+            initial={{ opacity: 0, x: -20, y: 10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: 20, y: -10 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="space-y-6">
             {/* Real-time Market Overview */}
             <div className="bg-gradient-to-r from-slate-800/50 via-slate-700/30 to-slate-800/50 p-4 sm:p-6 rounded-xl border border-slate-600/30 backdrop-blur-sm">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
@@ -875,73 +883,116 @@ export default function Dashboard() {
             </div>
 
             {/* Key Performance Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-emerald-950/40 via-emerald-900/25 to-emerald-800/30 border-emerald-700/40 relative overflow-hidden backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent pointer-events-none"></div>
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-emerald-400 mb-1 truncate">Network Generation</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-emerald-200 truncate" data-testid="text-total-generation">
-                      {networkAnalytics?.network?.totalGenerationCapacity || "0 kW"}
-                    </p>
-                    <p className="text-xs text-emerald-300 truncate">Solar capacity online</p>
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.1
+                  }
+                }
+              }}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
+                  visible: { opacity: 1, y: 0, scale: 1 }
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <Card className="p-3 sm:p-4 bg-gradient-to-br from-emerald-950/40 via-emerald-900/25 to-emerald-800/30 border-emerald-700/40 relative overflow-hidden backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs sm:text-sm font-medium text-emerald-400 mb-1 truncate">Network Generation</h3>
+                      <p className="text-lg sm:text-2xl font-bold text-emerald-200 truncate" data-testid="text-total-generation">
+                        {networkAnalytics?.network?.totalGenerationCapacity || "0 kW"}
+                      </p>
+                      <p className="text-xs text-emerald-300 truncate">Solar capacity online</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-emerald-400/20">
+                      <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+                    </div>
                   </div>
-                  <div className="bg-gradient-to-br from-emerald-500/25 to-emerald-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-emerald-400/20">
-                    <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/40 via-blue-900/25 to-blue-800/30 border-blue-700/40 relative overflow-hidden backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent pointer-events-none"></div>
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Energy Trades</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-active-trades">
-                      {availableTrades.length || 0}
-                    </p>
-                    <p className="text-xs text-blue-300 truncate">Active exchanges</p>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
+                  visible: { opacity: 1, y: 0, scale: 1 }
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <Card className="p-3 sm:p-4 bg-gradient-to-br from-blue-950/40 via-blue-900/25 to-blue-800/30 border-blue-700/40 relative overflow-hidden backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs sm:text-sm font-medium text-blue-400 mb-1 truncate">Energy Trades</h3>
+                      <p className="text-lg sm:text-2xl font-bold text-blue-200 truncate" data-testid="text-active-trades">
+                        {availableTrades.length || 0}
+                      </p>
+                      <p className="text-xs text-blue-300 truncate">Active exchanges</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-blue-500/25 to-blue-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-blue-400/20">
+                      <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
+                    </div>
                   </div>
-                  <div className="bg-gradient-to-br from-blue-500/25 to-blue-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-blue-400/20">
-                    <ArrowRightLeft className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-950/40 via-purple-900/25 to-purple-800/30 border-purple-700/40 relative overflow-hidden backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none"></div>
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-purple-400 mb-1 truncate">Average Price</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-purple-200 truncate" data-testid="text-average-price">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
+                  visible: { opacity: 1, y: 0, scale: 1 }
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <Card className="p-3 sm:p-4 bg-gradient-to-br from-purple-950/40 via-purple-900/25 to-purple-800/30 border-purple-700/40 relative overflow-hidden backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-transparent pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs sm:text-sm font-medium text-purple-400 mb-1 truncate">Average Price</h3>
+                      <p className="text-lg sm:text-2xl font-bold text-purple-200 truncate" data-testid="text-average-price">
 {networkAnalytics?.trading?.averagePrice || "₹0"}/kWh
-                    </p>
-                    <p className="text-xs text-purple-300 truncate">Current market rate</p>
+                      </p>
+                      <p className="text-xs text-purple-300 truncate">Current market rate</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-500/25 to-purple-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-purple-400/20">
+                      <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
+                    </div>
                   </div>
-                  <div className="bg-gradient-to-br from-purple-500/25 to-purple-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-purple-400/20">
-                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
               
-              <Card className="p-3 sm:p-4 bg-gradient-to-br from-green-950/40 via-emerald-900/25 to-green-800/30 border-green-700/40 relative overflow-hidden backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none"></div>
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xs sm:text-sm font-medium text-green-400 mb-1 truncate">Carbon Saved</h3>
-                    <p className="text-lg sm:text-2xl font-bold text-green-200 truncate" data-testid="text-carbon-saved">
-                      {networkAnalytics?.trading?.carbonSaved ? 
-                        formatCarbonSavings(parseFloat(networkAnalytics.trading.carbonSaved.replace(/[^\d.]/g, ''))) : 
-                        "0 kg CO2"}
-                    </p>
-                    <p className="text-xs text-green-300 truncate">CO₂ avoided today</p>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: 0.95 },
+                  visible: { opacity: 1, y: 0, scale: 1 }
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <Card className="p-3 sm:p-4 bg-gradient-to-br from-green-950/40 via-emerald-900/25 to-green-800/30 border-green-700/40 relative overflow-hidden backdrop-blur-sm hover:scale-105 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-transparent pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xs sm:text-sm font-medium text-green-400 mb-1 truncate">Carbon Saved</h3>
+                      <p className="text-lg sm:text-2xl font-bold text-green-200 truncate" data-testid="text-carbon-saved">
+                        {networkAnalytics?.trading?.carbonSaved ? 
+                          formatCarbonSavings(parseFloat(networkAnalytics.trading.carbonSaved.replace(/[^\d.]/g, ''))) : 
+                          "0 kg CO2"}
+                      </p>
+                      <p className="text-xs text-green-300 truncate">CO₂ avoided today</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-500/25 to-green-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-green-400/20">
+                      <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
+                    </div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-500/25 to-green-600/20 p-1.5 sm:p-2 rounded-full flex-shrink-0 ml-2 backdrop-blur-sm border border-green-400/20">
-                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-green-400" />
-                  </div>
-                </div>
-              </Card>
-            </div>
+                </Card>
+              </motion.div>
+            </motion.div>
 
             {/* Live Market Data */}
             {marketLoading ? (
@@ -1204,11 +1255,17 @@ export default function Dashboard() {
                 </div>
               </div>
             </Card>
-          </div>
+          </motion.div>
         )}
         
         {activeTab === 'energy-trading' && (
-          <div className="space-y-6">
+          <motion.div 
+            key="energy-trading"
+            initial={{ opacity: 0, x: 20, y: 10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: -20, y: -10 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="space-y-6">
             {/* Enhanced Header Section */}
             <div className="bg-gradient-to-br from-slate-900/60 via-blue-950/40 to-slate-800/60 rounded-xl p-3 sm:p-4 lg:p-6 border border-blue-500/20 backdrop-blur-sm shadow-2xl">
               <div className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-0">
@@ -1639,14 +1696,21 @@ export default function Dashboard() {
                 </div>
               </Card>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {activeTab === 'simulation' && (
-          <div className="space-y-6">
+          <motion.div 
+            key="simulation"
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.98 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="space-y-6">
             <SimulationDashboard />
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
         
         </div> {/* Close relative z-10 div */}
       </main>
