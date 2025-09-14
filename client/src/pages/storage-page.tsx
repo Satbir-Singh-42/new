@@ -977,9 +977,9 @@ export default function StoragePage() {
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
                               <div className="font-medium text-base text-emerald-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
-                              <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
-                                {getStatusIcon(trade.status)}
-                                {trade.status}
+                              <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
+                                {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
+                                {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
                               </Badge>
                             </div>
                             <div className="text-xs text-slate-400 mb-2" data-testid={`text-date-mobile-${trade.id}`}>
@@ -1013,15 +1013,9 @@ export default function StoragePage() {
                                 </div>
                               </div>
                               <div className="flex flex-wrap items-center gap-2">
-                                {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
-                                  <Badge variant="secondary" className="flex items-center gap-1 text-xs">
-                                    <User className="h-3 w-3" />
-                                    {trade.acceptanceCount} applied
-                                  </Badge>
-                                )}
-                                <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
-                                  {getStatusIcon(trade.status)}
-                                  {trade.status}
+                                <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
+                                  {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
+                                  {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
                                 </Badge>
                               </div>
                             </div>
@@ -1039,17 +1033,29 @@ export default function StoragePage() {
                         </div>
                         {trade.status === 'pending' && (
                           <div className="flex flex-col sm:flex-row gap-2">
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() => handleEditTrade(trade)}
-                              disabled={trade.acceptanceCount !== undefined && trade.acceptanceCount > 0}
-                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
-                              data-testid="button-edit-trade"
-                            >
-                              <Edit2 className="h-3 w-3" />
-                              Edit
-                            </Button>
+                            {trade.acceptanceCount && trade.acceptanceCount > 0 ? (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => setActiveTab('applications')}
+                                className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-blue-600/50 hover:bg-blue-600 text-slate-200 border-blue-500"
+                                data-testid="button-view-applications"
+                              >
+                                <FileText className="h-3 w-3" />
+                                Applications
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => handleEditTrade(trade)}
+                                className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
+                                data-testid="button-edit-trade"
+                              >
+                                <Edit2 className="h-3 w-3" />
+                                Edit
+                              </Button>
+                            )}
                             <Button
                               variant="destructive"
                               size="sm"
@@ -1099,9 +1105,9 @@ export default function StoragePage() {
                           <div className="sm:hidden">
                             <div className="flex items-center justify-between mb-2">
                               <div className="font-medium text-base text-blue-400">{formatTotal(trade.energyAmount, trade.pricePerKwh)}</div>
-                              <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
-                                {getStatusIcon(trade.status)}
-                                {trade.status}
+                              <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs" data-testid={`status-badge-mobile-${trade.id}`}>
+                                {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
+                                {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
                               </Badge>
                             </div>
                             <div className="text-xs text-slate-400 mb-2" data-testid={`text-date-mobile-${trade.id}`}>
@@ -1135,15 +1141,9 @@ export default function StoragePage() {
                                 </div>
                               </div>
                               <div className="flex flex-wrap items-center gap-2">
-                                {trade.acceptanceCount !== undefined && trade.acceptanceCount > 0 && (
-                                  <Badge variant="secondary" className="flex items-center gap-1 text-xs">
-                                    <User className="h-3 w-3" />
-                                    {trade.acceptanceCount} applied
-                                  </Badge>
-                                )}
-                                <Badge variant={getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
-                                  {getStatusIcon(trade.status)}
-                                  {trade.status}
+                                <Badge variant={trade.acceptanceCount && trade.acceptanceCount > 0 ? "secondary" : getStatusBadgeVariant(trade.status)} className="flex items-center gap-1 text-xs">
+                                  {trade.acceptanceCount && trade.acceptanceCount > 0 ? <User className="h-3 w-3" /> : getStatusIcon(trade.status)}
+                                  {trade.acceptanceCount && trade.acceptanceCount > 0 ? `${trade.acceptanceCount} applied` : trade.status}
                                 </Badge>
                               </div>
                             </div>
@@ -1161,17 +1161,29 @@ export default function StoragePage() {
                         </div>
                         {trade.status === 'pending' && (
                           <div className="flex flex-col sm:flex-row gap-2">
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() => handleEditTrade(trade)}
-                              disabled={trade.acceptanceCount !== undefined && trade.acceptanceCount > 0}
-                              className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
-                              data-testid="button-edit-trade"
-                            >
-                              <Edit2 className="h-3 w-3" />
-                              Edit
-                            </Button>
+                            {trade.acceptanceCount && trade.acceptanceCount > 0 ? (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => setActiveTab('applications')}
+                                className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-blue-600/50 hover:bg-blue-600 text-slate-200 border-blue-500"
+                                data-testid="button-view-applications"
+                              >
+                                <FileText className="h-3 w-3" />
+                                Applications
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => handleEditTrade(trade)}
+                                className="flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto bg-slate-600/50 hover:bg-slate-600 text-slate-200 border-slate-500"
+                                data-testid="button-edit-trade"
+                              >
+                                <Edit2 className="h-3 w-3" />
+                                Edit
+                              </Button>
+                            )}
                             <Button
                               variant="destructive"
                               size="sm"
