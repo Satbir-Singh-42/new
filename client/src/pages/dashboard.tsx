@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin, Edit, ShoppingCart, Target } from "lucide-react";
+import { Home, Search, Menu, CloudSun, MessageCircle, Bot, X, HelpCircle, User, LogOut, Activity, TrendingUp, HomeIcon, RefreshCw, Zap, ArrowRightLeft, Plus, ExternalLink, Sun, Users, Battery, Gauge, Leaf, MapPin, Edit, ShoppingCart, Target, FileText } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -1390,14 +1390,15 @@ export default function Dashboard() {
                               </Button>
                             ) : (
                               <Button 
-                                size="sm" 
+                                size="default" 
                                 onClick={() => {
                                   setSelectedTradeForDetails(item);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-slate-800/60 text-slate-300 border-slate-600/50"
+                                className="w-full min-h-[44px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2.5"
                                 variant="outline"
                               >
+                                <FileText className="h-4 w-4 mr-2" />
                                 View Details
                               </Button>
                             )}
@@ -1544,14 +1545,15 @@ export default function Dashboard() {
                               </Button>
                             ) : (
                               <Button 
-                                size="sm" 
+                                size="default" 
                                 onClick={() => {
                                   setSelectedTradeForDetails(request);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-slate-800/60 text-slate-300 border-slate-600/50"
+                                className="w-full min-h-[44px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2.5"
                                 variant="outline"
                               >
+                                <FileText className="h-4 w-4 mr-2" />
                                 View Details
                               </Button>
                             )}

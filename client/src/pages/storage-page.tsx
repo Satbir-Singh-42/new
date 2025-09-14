@@ -1686,16 +1686,17 @@ export default function StoragePage() {
                                         })()}
                                         {canViewDetail(acceptance.status) && (
                                           <Button 
-                                            size="sm" 
+                                            size="default" 
                                             variant="outline" 
-                                            className="h-7 text-xs"
+                                            className="min-h-[40px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2"
                                             onClick={() => {
                                               setSelectedTradeDetail(acceptance);
                                               setIsDetailModalOpen(true);
                                             }}
                                             data-testid={`button-view-detail-${acceptance.id}`}
                                           >
-                                            View Detail
+                                            <FileText className="h-4 w-4 mr-2" />
+                                            View Details
                                           </Button>
                                         )}
                                       </div>
@@ -1834,16 +1835,17 @@ export default function StoragePage() {
                                       })()}
                                       {canViewDetail(application.acceptance.status) && (
                                         <Button 
-                                          size="sm" 
+                                          size="default" 
                                           variant="outline" 
-                                          className="h-7 text-xs"
+                                          className="min-h-[40px] bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-slate-700/80 hover:to-slate-600/80 text-slate-200 border-slate-500/50 hover:border-slate-400/70 transition-all duration-300 shadow-lg hover:shadow-xl font-medium px-4 py-2"
                                           onClick={() => {
                                             setSelectedTradeDetail(application);
                                             setIsDetailModalOpen(true);
                                           }}
                                           data-testid={`button-view-detail-trade-${application.acceptance.id}`}
                                         >
-                                          View Detail
+                                          <FileText className="h-4 w-4 mr-2" />
+                                          View Details
                                         </Button>
                                       )}
                                     </div>
