@@ -2117,7 +2117,7 @@ export default function StoragePage() {
 
         {/* Trade Detail Modal */}
         <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
-          <DialogContent className="p-4 sm:p-5 max-h-[70vh] overflow-y-auto sm:max-w-xl md:max-w-2xl bg-slate-900/95 border-slate-700/60">
+          <DialogContent className="w-full max-w-[min(100vw-24px,40rem)] sm:max-w-2xl p-4 sm:p-6 overflow-hidden bg-slate-900/95 border-slate-700/60">
             <DialogHeader className="pb-3 border-b border-slate-600/30">
               <DialogTitle className="flex items-center gap-2 text-lg font-semibold">
                 <FileText className="h-4 w-4 text-blue-400" />
@@ -2125,7 +2125,7 @@ export default function StoragePage() {
               </DialogTitle>
             </DialogHeader>
             {selectedTradeDetail && (
-              <div className="space-y-3">
+              <div className="max-h-[70vh] overflow-y-auto overflow-x-hidden space-y-3 min-w-0">
                 {(() => {
                   // Determine if this is from myApplicationResults or myTradeResults
                   const isMyApplication = selectedTradeDetail.tradeId;
@@ -2159,7 +2159,7 @@ export default function StoragePage() {
                             <Zap className="h-4 w-4 text-emerald-400" />
                             Trade Information
                           </h3>
-                          <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm min-w-0">
                             <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
                               <div className="text-xs text-slate-400">Energy</div>
                               <div className="font-medium text-slate-100">{formatEnergy(trade?.energyAmount || 0)}</div>
@@ -2186,24 +2186,24 @@ export default function StoragePage() {
                             Contact Details
                           </h3>
                           <div className="space-y-2 text-sm">
-                            <div className="flex justify-between py-1">
-                              <span className="text-blue-400">Name:</span>
-                              <span className="text-blue-100 font-medium truncate ml-2">{counterpartyName}</span>
+                            <div className="flex justify-between py-1 min-w-0">
+                              <span className="text-blue-400 flex-shrink-0">Name:</span>
+                              <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{counterpartyName}</span>
                             </div>
-                            <div className="flex justify-between py-1">
-                              <span className="text-blue-400">Location:</span>
-                              <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser?.district || 'N/A'}, {counterpartyUser?.state || 'N/A'}</span>
+                            <div className="flex justify-between py-1 min-w-0">
+                              <span className="text-blue-400 flex-shrink-0">Location:</span>
+                              <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{counterpartyUser?.district || 'N/A'}, {counterpartyUser?.state || 'N/A'}</span>
                             </div>
                             {counterpartyUser?.phone && (
-                              <div className="flex justify-between py-1">
-                                <span className="text-blue-400">Phone:</span>
-                                <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser.phone}</span>
+                              <div className="flex justify-between py-1 min-w-0">
+                                <span className="text-blue-400 flex-shrink-0">Phone:</span>
+                                <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{counterpartyUser.phone}</span>
                               </div>
                             )}
                             {counterpartyUser?.email && (
-                              <div className="flex justify-between py-1">
-                                <span className="text-blue-400">Email:</span>
-                                <span className="text-blue-100 font-medium truncate ml-2">{counterpartyUser.email}</span>
+                              <div className="flex justify-between py-1 min-w-0">
+                                <span className="text-blue-400 flex-shrink-0">Email:</span>
+                                <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{counterpartyUser.email}</span>
                               </div>
                             )}
                           </div>
@@ -2224,7 +2224,7 @@ export default function StoragePage() {
                             <Zap className="h-4 w-4 text-emerald-400" />
                             Trade Information
                           </h3>
-                          <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm min-w-0">
                             <div className="bg-slate-700/30 p-2 rounded border border-slate-600/30">
                               <div className="text-xs text-slate-400">Energy</div>
                               <div className="font-medium text-slate-100">{formatEnergy(trade?.energyAmount || 0)}</div>
@@ -2251,28 +2251,28 @@ export default function StoragePage() {
                             Applicant Details
                           </h3>
                           <div className="space-y-2 text-sm">
-                            <div className="flex justify-between py-1">
-                              <span className="text-blue-400">Name:</span>
-                              <span className="text-blue-100 font-medium truncate ml-2">{applicantUser?.username || applicantHousehold?.name}</span>
+                            <div className="flex justify-between py-1 min-w-0">
+                              <span className="text-blue-400 flex-shrink-0">Name:</span>
+                              <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{applicantUser?.username || applicantHousehold?.name}</span>
                             </div>
-                            <div className="flex justify-between py-1">
-                              <span className="text-blue-400">Household:</span>
-                              <span className="text-blue-100 font-medium truncate ml-2">{applicantHousehold?.name || 'N/A'}</span>
+                            <div className="flex justify-between py-1 min-w-0">
+                              <span className="text-blue-400 flex-shrink-0">Household:</span>
+                              <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{applicantHousehold?.name || 'N/A'}</span>
                             </div>
-                            <div className="flex justify-between py-1">
-                              <span className="text-blue-400">Location:</span>
-                              <span className="text-blue-100 font-medium truncate ml-2">{applicantUser?.district || 'N/A'}, {applicantUser?.state || 'N/A'}</span>
+                            <div className="flex justify-between py-1 min-w-0">
+                              <span className="text-blue-400 flex-shrink-0">Location:</span>
+                              <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{applicantUser?.district || 'N/A'}, {applicantUser?.state || 'N/A'}</span>
                             </div>
                             {applicantUser?.phone && (
-                              <div className="flex justify-between py-1">
-                                <span className="text-blue-400">Phone:</span>
-                                <span className="text-blue-100 font-medium truncate ml-2">{applicantUser.phone}</span>
+                              <div className="flex justify-between py-1 min-w-0">
+                                <span className="text-blue-400 flex-shrink-0">Phone:</span>
+                                <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{applicantUser.phone}</span>
                               </div>
                             )}
                             {applicantUser?.email && (
-                              <div className="flex justify-between py-1">
-                                <span className="text-blue-400">Email:</span>
-                                <span className="text-blue-100 font-medium truncate ml-2">{applicantUser.email}</span>
+                              <div className="flex justify-between py-1 min-w-0">
+                                <span className="text-blue-400 flex-shrink-0">Email:</span>
+                                <span className="text-blue-100 font-medium break-words ml-2 min-w-0">{applicantUser.email}</span>
                               </div>
                             )}
                           </div>
