@@ -23,6 +23,9 @@ import {
   UserPlus,
   Eye,
   EyeOff,
+  Phone,
+  Battery,
+  Zap,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -406,13 +409,16 @@ export default function SignupPage() {
                         className="text-sm font-medium text-primary-custom">
                         Phone Number <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="+91-98765-43210"
-                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                        {...register("phone")}
-                      />
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+91-98765-43210"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          {...register("phone")}
+                        />
+                      </div>
                       {errors.phone && (
                         <p className="text-sm text-red-600">
                           {errors.phone.message}
@@ -509,13 +515,16 @@ export default function SignupPage() {
                         Solar Capacity (Watts){" "}
                         <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="solarCapacity"
-                        type="number"
-                        placeholder="8000"
-                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                        {...register("solarCapacity")}
-                      />
+                      <div className="relative">
+                        <Zap className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="solarCapacity"
+                          type="number"
+                          placeholder="8000"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          {...register("solarCapacity")}
+                        />
+                      </div>
                       {errors.solarCapacity && (
                         <p className="text-sm text-red-600">
                           {errors.solarCapacity.message}
@@ -530,13 +539,17 @@ export default function SignupPage() {
                         Battery Storage (kWh){" "}
                         <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="batteryCapacity"
-                        type="number"
-                        placeholder="13.5"
-                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                        {...register("batteryCapacity")}
-                      />
+                      <div className="relative">
+                        <Battery className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="batteryCapacity"
+                          type="number"
+                          step="1"
+                          placeholder="13"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          {...register("batteryCapacity")}
+                        />
+                      </div>
                       {errors.batteryCapacity && (
                         <p className="text-sm text-red-600">
                           {errors.batteryCapacity.message}
