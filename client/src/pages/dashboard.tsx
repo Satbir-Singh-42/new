@@ -414,7 +414,7 @@ export default function Dashboard() {
     } else {
       return {
         text: "0 applied",
-        className: "bg-muted text-gray-600"
+        className: "bg-slate-500/10 text-slate-400"
       };
     }
   };
