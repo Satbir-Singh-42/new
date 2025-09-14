@@ -1632,13 +1632,13 @@ export default function Dashboard() {
       
       {/* Create Trade Dialog */}
       <Dialog open={showCreateTradeDialog} onOpenChange={setShowCreateTradeDialog}>
-        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl">
+        <DialogContent className="w-[calc(100vw-0.5rem)] sm:w-[90vw] max-w-md mx-auto my-1 sm:my-2 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-5 bg-blue-900 dark:bg-blue-900 border border-blue-600/50 dark:border-blue-500/50 rounded-xl shadow-2xl">
           <DialogHeader className="pb-2">
-            <DialogTitle className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
+            <DialogTitle className="flex items-center gap-2 text-lg font-bold text-white dark:text-white">
               <Plus className="h-5 w-5 text-blue-500" />
               Quick Trade
             </DialogTitle>
-            <DialogDescription className="text-sm text-slate-600 dark:text-slate-400">
+            <DialogDescription className="text-sm text-blue-200 dark:text-blue-200">
               Create a new energy trade with local households
             </DialogDescription>
           </DialogHeader>
