@@ -1392,8 +1392,8 @@ export default function StoragePage() {
                       !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance.status)
                     ).length > 0 && (
                       <div>
-                        <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-                          <ArrowLeft className="h-4 w-4" />
+                        <h3 className="font-medium text-slate-200 mb-3 flex items-center gap-2">
+                          <ArrowLeft className="h-4 w-4 text-emerald-400" />
                           Applications to My Trades ({tradeApplications.filter((application: any) => 
                             !['contacted', 'applicant_rejected', 'awarded', 'owner_rejected', 'withdrawn'].includes(application.acceptance.status)
                           ).length})
@@ -1405,12 +1405,12 @@ export default function StoragePage() {
                             const statusMeta = getApplicationStatusMeta(application.acceptance.status);
                             
                             return (
-                            <Card key={application.acceptance.id} className="overflow-hidden border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow duration-200" data-testid={`card-application-${application.acceptance.id}`}>
+                            <Card key={application.acceptance.id} className="overflow-hidden border-l-4 border-l-emerald-400 shadow-sm hover:shadow-md transition-shadow duration-200 bg-slate-800/50 border-slate-600/50" data-testid={`card-application-${application.acceptance.id}`}>
                               <CardHeader className="pb-3">
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
-                                    <Zap className="h-5 w-5 text-green-600" />
-                                    <h3 className="text-lg font-semibold text-gray-900" data-testid={`text-title-${application.acceptance.id}`}>
+                                    <Zap className="h-5 w-5 text-emerald-400" />
+                                    <h3 className="text-lg font-semibold text-slate-200" data-testid={`text-title-${application.acceptance.id}`}>
                                       Energy {application.trade?.tradeType === 'sell' ? 'Sale' : 'Purchase'}: {formatEnergy(application.trade?.energyAmount || 0)}
                                     </h3>
                                   </div>
@@ -1421,37 +1421,37 @@ export default function StoragePage() {
                                     </Badge>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                                <div className="flex items-center gap-1 text-sm text-slate-400 mt-1">
                                   Applied: {format(new Date(application.acceptance.acceptedAt), 'MMM dd, yyyy HH:mm')}
                                 </div>
                               </CardHeader>
 
                               <CardContent className="py-3">
                                 <div className="space-y-3">
-                                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                    <User className="h-4 w-4" />
+                                  <div className="flex items-center gap-2 text-sm font-medium text-slate-300">
+                                    <User className="h-4 w-4 text-emerald-400" />
                                     <span>Applicant Details</span>
                                   </div>
                                   
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                                     <div>
-                                      <span className="text-gray-500">Name:</span>
-                                      <div className="font-medium">{application.applicant?.username || 'User'}</div>
+                                      <span className="text-slate-400">Name:</span>
+                                      <div className="font-medium text-slate-200">{application.applicant?.username || 'User'}</div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Household:</span>
-                                      <div className="font-medium">{application.applicantHousehold?.name || 'Not specified'}</div>
+                                      <span className="text-slate-400">Household:</span>
+                                      <div className="font-medium text-slate-200">{application.applicantHousehold?.name || 'Not specified'}</div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Location:</span>
-                                      <div className="font-medium">
+                                      <span className="text-slate-400">Location:</span>
+                                      <div className="font-medium text-slate-200">
                                         {application.applicant?.district || 'Not specified'}
                                         {application.applicant?.state && `, ${application.applicant.state}`}
                                       </div>
                                     </div>
                                     <div>
-                                      <span className="text-gray-500">Contact:</span>
-                                      <div className="font-medium">
+                                      <span className="text-slate-400">Contact:</span>
+                                      <div className="font-medium text-slate-200">
                                         {application.acceptance.status === 'awarded' 
                                           ? (
                                               <div className="space-y-1">
@@ -1460,7 +1460,7 @@ export default function StoragePage() {
                                                   <div>{application.applicant.phone}</div>
                                                 )}
                                                 {application.applicantHousehold?.address && (
-                                                  <div className="text-xs text-gray-600">Address: {application.applicantHousehold.address}</div>
+                                                  <div className="text-xs text-slate-400">Address: {application.applicantHousehold.address}</div>
                                                 )}
                                               </div>
                                             )
@@ -1472,19 +1472,19 @@ export default function StoragePage() {
                                 </div>
                               </CardContent>
 
-                              <CardFooter className="pt-3 border-t">
+                              <CardFooter className="pt-3 border-t border-slate-600/50">
                                 <div className="grid grid-cols-3 gap-4 w-full text-sm">
                                   <div>
-                                    <span className="text-gray-500">Energy Amount:</span>
-                                    <div className="font-semibold" data-testid={`text-amount-${application.acceptance.id}`}>{application.trade?.energyAmount || 0}</div>
+                                    <span className="text-slate-400">Energy Amount:</span>
+                                    <div className="font-semibold text-slate-200" data-testid={`text-amount-${application.acceptance.id}`}>{application.trade?.energyAmount || 0}</div>
                                   </div>
                                   <div>
-                                    <span className="text-gray-500">Price:</span>
-                                    <div className="font-semibold text-green-600" data-testid={`text-price-${application.acceptance.id}`}>{application.trade?.pricePerKwh || 0} /kwh</div>
+                                    <span className="text-slate-400">Price:</span>
+                                    <div className="font-semibold text-emerald-400" data-testid={`text-price-${application.acceptance.id}`}>{application.trade?.pricePerKwh || 0} /kwh</div>
                                   </div>
                                   <div>
-                                    <span className="text-gray-500">Status:</span>
-                                    <div className="flex items-center gap-1 font-medium">
+                                    <span className="text-slate-400">Status:</span>
+                                    <div className="flex items-center gap-1 font-medium text-slate-200">
                                       <div className={`w-2 h-2 rounded-full ${statusMeta.dotClass}`}></div>
                                       {statusMeta.label}
                                     </div>
@@ -1502,7 +1502,7 @@ export default function StoragePage() {
                                       size="sm"
                                       onClick={() => declineApplicationMutation.mutate(application.acceptance.id)}
                                       disabled={declineApplicationMutation.isPending}
-                                      className="text-red-600 border-red-300 hover:bg-red-50 flex-1"
+                                      className="text-red-400 border-red-600/50 hover:bg-red-900/20 bg-slate-700/50 flex-1"
                                       data-testid="button-reject-application"
                                     >
                                       <X className="h-3 w-3 mr-1" />
@@ -1512,7 +1512,7 @@ export default function StoragePage() {
                                       size="sm"
                                       onClick={() => approveApplicationMutation.mutate(application.acceptance.id)}
                                       disabled={approveApplicationMutation.isPending}
-                                      className="bg-green-600 hover:bg-green-700 flex-1"
+                                      className="bg-emerald-600 hover:bg-emerald-700 flex-1"
                                       data-testid="button-approve-application"
                                     >
                                       <CheckCircle className="h-3 w-3 mr-1" />
@@ -1524,12 +1524,12 @@ export default function StoragePage() {
                               
                               {application.acceptance.status === 'awarded' && (
                                 <div className="px-6 pb-4">
-                                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-green-800">
+                                  <div className="bg-emerald-900/20 border border-emerald-600/50 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-emerald-400">
                                       <CheckCircle className="h-4 w-4" />
                                       <span className="font-medium">Application Approved</span>
                                     </div>
-                                    <p className="text-sm text-green-700 mt-1">
+                                    <p className="text-sm text-emerald-300 mt-1">
                                       You approved this application. Waiting for applicant to share contact or reject.
                                     </p>
                                   </div>
@@ -1538,12 +1538,12 @@ export default function StoragePage() {
                               
                               {application.acceptance.status === 'owner_rejected' && (
                                 <div className="px-6 pb-4">
-                                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                    <div className="flex items-center gap-2 text-red-800">
+                                  <div className="bg-red-900/20 border border-red-600/50 rounded-lg p-3">
+                                    <div className="flex items-center gap-2 text-red-400">
                                       <X className="h-4 w-4" />
                                       <span className="font-medium">Application Rejected</span>
                                     </div>
-                                    <p className="text-sm text-red-700 mt-1">
+                                    <p className="text-sm text-red-300 mt-1">
                                       You rejected this application. Trade remains available.
                                     </p>
                                   </div>
