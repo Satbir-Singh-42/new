@@ -26,6 +26,9 @@ import {
   Phone,
   Battery,
   Zap,
+  MapPin,
+  Building,
+  Home,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -433,13 +436,16 @@ export default function SignupPage() {
                           className="text-sm font-medium text-primary-custom">
                           State <span className="text-red-500">*</span>
                         </Label>
-                        <Input
-                          id="state"
-                          type="text"
-                          placeholder="Enter your state"
-                          className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                          {...register("state")}
-                        />
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="state"
+                            type="text"
+                            placeholder="Enter your state"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                            {...register("state")}
+                          />
+                        </div>
                         {errors.state && (
                           <p className="text-sm text-red-600">
                             {errors.state.message}
@@ -453,13 +459,16 @@ export default function SignupPage() {
                           className="text-sm font-medium text-primary-custom">
                           District <span className="text-red-500">*</span>
                         </Label>
-                        <Input
-                          id="district"
-                          type="text"
-                          placeholder="Enter your district"
-                          className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                          {...register("district")}
-                        />
+                        <div className="relative">
+                          <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="district"
+                            type="text"
+                            placeholder="Enter your district"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                            {...register("district")}
+                          />
+                        </div>
                         {errors.district && (
                           <p className="text-sm text-red-600">
                             {errors.district.message}
@@ -474,13 +483,16 @@ export default function SignupPage() {
                         className="text-sm font-medium text-primary-custom">
                         Physical Address <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="address"
-                        type="text"
-                        placeholder="123 Solar Nagar, City, State"
-                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                        {...register("address")}
-                      />
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="address"
+                          type="text"
+                          placeholder="123 Solar Nagar, City, State"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          {...register("address")}
+                        />
+                      </div>
                       {errors.address && (
                         <p className="text-sm text-red-600">
                           {errors.address.message}
@@ -494,13 +506,16 @@ export default function SignupPage() {
                         className="text-sm font-medium text-primary-custom">
                         Household Name <span className="text-red-500">*</span>
                       </Label>
-                      <Input
-                        id="householdName"
-                        type="text"
-                        placeholder="Smith Family Solar Home"
-                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
-                        {...register("householdName")}
-                      />
+                      <div className="relative">
+                        <Home className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="householdName"
+                          type="text"
+                          placeholder="Smith Family Solar Home"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          {...register("householdName")}
+                        />
+                      </div>
                       {errors.householdName && (
                         <p className="text-sm text-red-600">
                           {errors.householdName.message}
