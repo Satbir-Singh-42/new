@@ -548,25 +548,47 @@ export default function Dashboard() {
     return false;
   };
 
-  // Calculate market rate based on average of active trade prices
-  const calculateMarketRate = () => {
+  // Calculate market rates based on average of active trade prices - separate for selling and buying
+  const calculateMarketRates = () => {
     if (Array.isArray(energyTrades) && energyTrades.length > 0) {
       // Get all active (pending) trades with realistic pricing (filter out outliers)
       const activeTrades = (energyTrades as EnergyTrade[]).filter(trade => 
         trade.status === 'pending' && trade.pricePerKwh >= 3 && trade.pricePerKwh <= 20
       );
       
-      if (activeTrades.length > 0) {
-        // Calculate average price of realistic trades - already in rupees, rounded to integer
-        const totalPrice = activeTrades.reduce((sum, trade) => sum + Math.round(trade.pricePerKwh), 0);
-        const averagePrice = Math.round(totalPrice / activeTrades.length);
-        return averagePrice;
+      // Separate sell and buy trades
+      const sellTrades = activeTrades.filter(trade => trade.tradeType === 'sell');
+      const buyTrades = activeTrades.filter(trade => trade.tradeType === 'buy');
+      
+      // Calculate average selling rate
+      let averageSellingRate = 6; // Default
+      if (sellTrades.length > 0) {
+        const totalSellingPrice = sellTrades.reduce((sum, trade) => sum + Math.round(trade.pricePerKwh), 0);
+        averageSellingRate = Math.round(totalSellingPrice / sellTrades.length);
       }
+      
+      // Calculate average buying rate
+      let averageBuyingRate = 7; // Default slightly higher for buying
+      if (buyTrades.length > 0) {
+        const totalBuyingPrice = buyTrades.reduce((sum, trade) => sum + Math.round(trade.pricePerKwh), 0);
+        averageBuyingRate = Math.round(totalBuyingPrice / buyTrades.length);
+      }
+      
+      return {
+        selling: averageSellingRate,
+        buying: averageBuyingRate,
+        overall: Math.round((averageSellingRate + averageBuyingRate) / 2)
+      };
     }
-    return 6; // Default realistic rate when no active trades - integer only
+    return {
+      selling: 6, // Default selling rate
+      buying: 7,  // Default buying rate
+      overall: 6  // Default overall rate
+    };
   };
 
-  const currentMarketRate = calculateMarketRate();
+  const marketRates = calculateMarketRates();
+  const currentMarketRate = marketRates.overall;
   const minPrice = Math.max(3, Math.round(currentMarketRate * 0.7)); // Min 30% below market - integers only
   const maxPrice = 500; // Max ₹500 per kWh as requested by user
 
@@ -1650,7 +1672,9 @@ export default function Dashboard() {
               <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 p-3 rounded-lg border border-slate-600/30">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-300">Market Rate:</span>
-                  <span className="font-semibold text-blue-400">₹{currentMarketRate}/kWh</span>
+                  <span className="font-semibold text-blue-400">
+                    ₹{form.watch("tradeType") === "sell" ? marketRates.selling : form.watch("tradeType") === "buy" ? marketRates.buying : currentMarketRate}/kWh
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm mt-1">
                   <span className="text-slate-300">Range:</span>

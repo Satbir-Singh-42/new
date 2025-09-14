@@ -419,6 +419,10 @@
 [x] 638. Simplified dialog background from complex gradient to clean slate-900 for better aesthetics
 [x] 639. Updated dialog text from "Market Rate:" to "Average /kWh:" for clarity
 [x] 640. Reverted label back to "Market Rate:" as user preferred original label
+[x] 641. Modified calculateMarketRate function to calculate separate selling and buying rates from database
+[x] 642. Updated dialog to show dynamic rates - selling rate for sell trades, buying rate for buy trades
+[x] 643. Implemented database-driven pricing instead of hardcoded values
+[x] 644. Verified application working correctly with new market rate calculation system
 
 **CURRENT SESSION - FINAL MIGRATION COMPLETION - September 14, 2025**
 [x] 627. Resolved final cross-env dependency issue by installing missing package
