@@ -1194,7 +1194,7 @@ export default function Dashboard() {
                   <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                     <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Energy Trading Marketplace</h2>
                   </div>
-                  <p className="text-sm sm:text-base text-secondary-custom mb-3 sm:mb-4">Connect directly with neighbors to trade renewable energy. Smart matching, instant transfers, fair pricing.</p>
+                  <p className="text-sm sm:text-base text-slate-200 mb-3 sm:mb-4">Connect directly with neighbors to trade renewable energy. Smart matching, instant transfers, fair pricing.</p>
                   
                   {/* Market Stats */}
                   <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mt-4 sm:mt-6">
@@ -1213,7 +1213,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2 w-full lg:w-auto lg:flex-col">
-                  <Button onClick={() => setShowCreateTradeDialog(true)} data-testid="button-create-trade" className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-medium shadow-lg text-xs sm:text-sm px-3 py-2">
+                  <Button onClick={() => setShowCreateTradeDialog(true)} data-testid="button-create-trade" className="bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-lg text-xs sm:text-sm px-3 py-2">
                     <Plus className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Create Trade</span>
                     <span className="sm:hidden">Create</span>
