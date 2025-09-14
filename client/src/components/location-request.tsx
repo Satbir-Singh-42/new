@@ -71,28 +71,28 @@ export function LocationRequest({ onLocationGranted, onLocationDenied, isOpen }:
 
         <div className="space-y-3 sm:space-y-4">
           <div className="grid grid-cols-1 gap-2">
-            <div className="flex items-center gap-2 p-2 sm:p-3 bg-blue-50 dark:bg-blue-950/50 rounded-md">
+            <div className="flex items-center gap-2 p-2 sm:p-3 bg-blue-950/50 rounded-md">
               <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
               <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-sm font-medium text-blue-700 dark:text-blue-300">
+                <p className="text-xs sm:text-sm font-medium text-blue-300">
                   Local Energy Network
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2 sm:p-3 bg-green-50 dark:bg-green-950/50 rounded-md">
+            <div className="flex items-center gap-2 p-2 sm:p-3 bg-green-950/50 rounded-md">
               <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
               <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-sm font-medium text-green-700 dark:text-green-300">
+                <p className="text-xs sm:text-sm font-medium text-green-300">
                   Weather & Efficiency
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-2 sm:p-3 bg-purple-50 dark:bg-purple-950/50 rounded-md">
+            <div className="flex items-center gap-2 p-2 sm:p-3 bg-purple-950/50 rounded-md">
               <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-purple-500 flex-shrink-0" />
               <div className="min-w-0 flex-1">
-                <p className="text-xs sm:text-sm font-medium text-purple-700 dark:text-purple-300">
+                <p className="text-xs sm:text-sm font-medium text-purple-300">
                   Privacy Protected
                 </p>
               </div>
@@ -100,9 +100,9 @@ export function LocationRequest({ onLocationGranted, onLocationDenied, isOpen }:
           </div>
 
           {locationError && (
-            <Alert className="border-red-200 bg-red-50 dark:bg-red-950/50" data-testid="alert-location-error">
+            <Alert className="border-red-200 bg-red-950/50" data-testid="alert-location-error">
               <AlertCircle className="h-4 w-4 text-red-500" />
-              <AlertDescription className="text-red-700 dark:text-red-300">
+              <AlertDescription className="text-red-300">
                 {getErrorMessage(locationError)}
               </AlertDescription>
             </Alert>
