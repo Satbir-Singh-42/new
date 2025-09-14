@@ -289,12 +289,12 @@ export default function SignupPage() {
                       Username
                     </Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                       <Input
                         id="username"
                         type="text"
                         placeholder="Choose a username"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                         {...register("username")}
                       />
                     </div>
@@ -312,12 +312,12 @@ export default function SignupPage() {
                       Email Address
                     </Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                       <Input
                         id="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                        className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                         {...register("email")}
                       />
                     </div>
@@ -335,12 +335,12 @@ export default function SignupPage() {
                       Password
                     </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                         {...register("password", {
                           onChange: handlePasswordChange,
                         })}
@@ -348,7 +348,7 @@ export default function SignupPage() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground">
+                        className="absolute right-3 top-3 text-blue-200 hover:text-white transition-colors duration-200">
                         {showPassword ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -376,12 +376,12 @@ export default function SignupPage() {
                       Confirm Password
                     </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                       <Input
                         id="confirmPassword"
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password"
-                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                        className="pl-10 pr-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                         {...register("confirmPassword")}
                       />
                       <button
@@ -389,7 +389,7 @@ export default function SignupPage() {
                         onClick={() =>
                           setShowConfirmPassword(!showConfirmPassword)
                         }
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground">
+                        className="absolute right-3 top-3 text-blue-200 hover:text-white transition-colors duration-200">
                         {showConfirmPassword ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -413,12 +413,12 @@ export default function SignupPage() {
                         Phone Number <span className="text-red-500">*</span>
                       </Label>
                       <div className="relative">
-                        <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Phone className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                         <Input
                           id="phone"
                           type="tel"
                           placeholder="+91-98765-43210"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                           {...register("phone")}
                         />
                       </div>
@@ -437,12 +437,12 @@ export default function SignupPage() {
                           State <span className="text-red-500">*</span>
                         </Label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                           <Input
                             id="state"
                             type="text"
                             placeholder="Enter your state"
-                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                             {...register("state")}
                           />
                         </div>
@@ -460,12 +460,12 @@ export default function SignupPage() {
                           District <span className="text-red-500">*</span>
                         </Label>
                         <div className="relative">
-                          <Building className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Building className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                           <Input
                             id="district"
                             type="text"
                             placeholder="Enter your district"
-                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                            className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                             {...register("district")}
                           />
                         </div>
@@ -484,12 +484,12 @@ export default function SignupPage() {
                         Physical Address <span className="text-red-500">*</span>
                       </Label>
                       <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                         <Input
                           id="address"
                           type="text"
                           placeholder="123 Solar Nagar, City, State"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                           {...register("address")}
                         />
                       </div>
@@ -507,12 +507,12 @@ export default function SignupPage() {
                         Household Name <span className="text-red-500">*</span>
                       </Label>
                       <div className="relative">
-                        <Home className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Home className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                         <Input
                           id="householdName"
                           type="text"
                           placeholder="Smith Family Solar Home"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                           {...register("householdName")}
                         />
                       </div>
@@ -531,12 +531,12 @@ export default function SignupPage() {
                         <span className="text-red-500">*</span>
                       </Label>
                       <div className="relative">
-                        <Zap className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Zap className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                         <Input
                           id="solarCapacity"
                           type="number"
                           placeholder="8000"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                           {...register("solarCapacity")}
                         />
                       </div>
@@ -555,13 +555,13 @@ export default function SignupPage() {
                         <span className="text-red-500">*</span>
                       </Label>
                       <div className="relative">
-                        <Battery className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Battery className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                         <Input
                           id="batteryCapacity"
                           type="number"
                           step="1"
                           placeholder="13"
-                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all duration-200"
+                          className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                           {...register("batteryCapacity")}
                         />
                       </div>

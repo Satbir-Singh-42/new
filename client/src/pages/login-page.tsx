@@ -126,12 +126,12 @@ export default function LoginPage() {
                     Email Address
                   </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-blue-200" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="Enter your email"
-                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                      className="pl-10 h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-800 to-blue-700 border-blue-600 text-white placeholder:text-blue-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
                       {...register("email")}
                     />
                   </div>
