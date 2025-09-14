@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { formatTradePrice, formatTradeAmount, formatTradeTotal } from "@/lib/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -46,6 +46,10 @@ export default function StoragePage() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedTradeDetail, setSelectedTradeDetail] = useState<any>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  // Animation states
+  const [isMounted, setIsMounted] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   // Fetch energy trades
   const { data: energyTrades = [], isLoading, error, refetch } = useQuery<ExtendedEnergyTrade[]>({
@@ -156,6 +160,17 @@ export default function StoragePage() {
       })),
     [sortedTrades, userHouseholdIds, applicationCountMap]
   );
+
+  // Animation effects
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && !applicationsLoading && energyTrades.length > 0) {
+      setTimeout(() => setDataLoaded(true), 100);
+    }
+  }, [isLoading, applicationsLoading, energyTrades]);
 
   const myAllTrades = useMemo(() =>
     sortedTrades.filter(trade => isOwnTrade(trade)),
@@ -711,7 +726,9 @@ export default function StoragePage() {
   return (
     <div className="min-h-screen bg-slate-900">
       <Navbar currentPage="storage" />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
+      <div className={`max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20 transition-all duration-300 ease-out ${
+        isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+      }`}>
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
@@ -972,7 +989,7 @@ export default function StoragePage() {
           </TabsList>
 
           {/* My Sell Listings */}
-          <TabsContent value="my-listings">
+          <TabsContent value="my-listings" forceMount className="tab-panel" data-state={activeTab === 'my-listings' ? 'active' : 'inactive'}>
             <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-slate-200">
@@ -1100,7 +1117,7 @@ export default function StoragePage() {
           </TabsContent>
 
           {/* My Buy Requests */}
-          <TabsContent value="my-requests">
+          <TabsContent value="my-requests" forceMount className="tab-panel" data-state={activeTab === 'my-requests' ? 'active' : 'inactive'}>
             <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-slate-200">
@@ -1228,7 +1245,7 @@ export default function StoragePage() {
           </TabsContent>
 
           {/* Applications - Combined Tab */}
-          <TabsContent value="applications">
+          <TabsContent value="applications" forceMount className="tab-panel" data-state={activeTab === 'applications' ? 'active' : 'inactive'}>
             <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-slate-200">
@@ -1596,7 +1613,7 @@ export default function StoragePage() {
           </TabsContent>
 
           {/* Your Results */}
-          <TabsContent value="request-results">
+          <TabsContent value="request-results" forceMount className="tab-panel" data-state={activeTab === 'request-results' ? 'active' : 'inactive'}>
             <Card className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-slate-200">
