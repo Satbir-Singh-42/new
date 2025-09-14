@@ -992,87 +992,72 @@ export default function Dashboard() {
                   </div>
                 </Card>
 
-                <Card className="p-4 sm:p-6 bg-gradient-to-br from-sky-950/60 via-blue-900/40 to-indigo-950/60 border border-sky-400/30 backdrop-blur-sm shadow-2xl relative overflow-hidden">
-                  {/* Animated background elements */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-sky-400/5 via-blue-400/3 to-indigo-400/5 animate-pulse"></div>
-                  <div className="absolute top-2 right-2 w-12 h-12 bg-gradient-to-br from-yellow-400/20 to-orange-400/10 rounded-full blur-xl animate-bounce"></div>
-                  
-                  <div className="relative z-10">
-                    <h3 className="text-base sm:text-lg font-semibold mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <div className="p-2 bg-gradient-to-br from-sky-400/20 to-blue-500/20 rounded-full shadow-lg">
-                          <CloudSun className="h-5 w-5 text-sky-300 drop-shadow-sm" />
-                        </div>
-                        <span className="hidden sm:inline bg-gradient-to-r from-sky-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent font-bold">Weather Impact</span>
-                        <span className="sm:hidden bg-gradient-to-r from-sky-300 via-blue-300 to-indigo-300 bg-clip-text text-transparent font-bold">Weather</span>
+                <Card className="p-4 sm:p-6 bg-gradient-to-br from-sky-950/60 via-blue-900/40 to-indigo-950/60 border border-sky-400/30 backdrop-blur-sm shadow-xl">
+                  <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 sm:p-2 bg-sky-500/20 rounded-full">
+                        <CloudSun className="h-4 w-4 sm:h-5 sm:w-5 text-sky-400" />
                       </div>
-                      <span className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm text-green-300 px-3 py-1.5 rounded-full text-xs font-medium border border-green-400/30 shadow-sm">
-                        🌤️ Live Weather API
-                      </span>
-                    </h3>
+                      <span className="hidden sm:inline bg-gradient-to-r from-sky-400 to-blue-300 bg-clip-text text-transparent">Weather Impact</span>
+                      <span className="sm:hidden bg-gradient-to-r from-sky-400 to-blue-300 bg-clip-text text-transparent">Weather</span>
+                    </div>
+                    <span className="bg-green-900/30 text-green-400 px-2 py-1 rounded-full text-xs font-medium">
+                      Live Weather API
+                    </span>
+                  </h3>
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-sky-900/40 to-sky-800/30 rounded-xl border border-sky-500/30 hover:border-sky-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sky-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
+                          Current Conditions
+                        </p>
+                        <p className="text-xs sm:text-sm text-sky-300 truncate">Weather status</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg sm:text-xl font-bold text-sky-300 ml-2 capitalize" data-testid="text-weather-condition">
+                          {marketData?.weather?.condition?.replace('-', ' ') || "No data"}
+                        </p>
+                        {userLocation && (
+                          <p className="text-xs text-sky-400">
+                            {userLocation.city}, {userLocation.state}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                     
-                    <div className="space-y-3">
-                      <div className="group p-4 bg-gradient-to-r from-sky-800/30 via-sky-700/20 to-sky-800/30 rounded-2xl border border-sky-400/20 hover:border-sky-300/40 transition-all duration-300 hover:shadow-xl hover:shadow-sky-500/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <div className="w-3 h-3 bg-sky-400 rounded-full animate-pulse shadow-sm"></div>
-                            <span className="text-sky-200 text-sm sm:text-base font-medium">Current Conditions</span>
-                          </div>
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-right sm:text-left">
-                            <span className="font-bold text-sm sm:text-base text-sky-100 capitalize" data-testid="text-weather-condition">
-                              {marketData?.weather?.condition?.replace('-', ' ') || "No data"}
-                            </span>
-                            {userLocation && (
-                              <span className="bg-gradient-to-r from-blue-600/30 to-indigo-600/30 text-blue-200 px-2 py-1 rounded-lg text-xs backdrop-blur-sm border border-blue-400/20">
-                                📍 {userLocation.city}, {userLocation.state}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-orange-900/40 to-orange-800/30 rounded-xl border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-orange-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+                          Temperature
+                        </p>
+                        <p className="text-xs sm:text-sm text-orange-300 truncate">Current temp</p>
                       </div>
-                      
-                      <div className="group p-4 bg-gradient-to-r from-orange-900/30 via-red-900/20 to-orange-900/30 rounded-2xl border border-orange-400/20 hover:border-orange-300/40 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <div className="w-3 h-3 bg-orange-400 rounded-full animate-pulse shadow-sm"></div>
-                            <span className="text-orange-200 text-sm sm:text-base font-medium">🌡️ Temperature</span>
-                          </div>
-                          <span className="font-bold text-lg sm:text-xl text-orange-100" data-testid="text-temperature">
-                            {marketData?.weather?.temperature ? `${marketData.weather.temperature}°C` : "No data"}
-                          </span>
-                        </div>
+                      <div className="text-right">
+                        <p className="text-lg sm:text-xl font-bold text-orange-300 ml-2" data-testid="text-temperature">
+                          {marketData?.weather?.temperature ? `${marketData.weather.temperature}°C` : "No data"}
+                        </p>
                       </div>
-                      
-                      <div className="group p-4 bg-gradient-to-r from-emerald-900/30 via-green-900/20 to-emerald-900/30 rounded-2xl border border-emerald-400/20 hover:border-emerald-300/40 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/10">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse shadow-sm"></div>
-                            <span className="text-emerald-200 text-sm sm:text-base font-medium">☀️ Solar Efficiency</span>
-                          </div>
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-right sm:text-left">
-                            <span className={`font-bold text-lg sm:text-xl ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-gray-400' : 'text-emerald-200'}`} data-testid="text-solar-efficiency">
-                              {marketData?.weather?.efficiency !== undefined ? `${Math.round(marketData.weather.efficiency)}%` : "No data"}
-                            </span>
-                            {(marketData?.weather?.efficiency || 0) <= 0 && (
-                              <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded-full">
-                                🌙 Night - No Solar
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="mt-3">
-                          <div className="w-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 rounded-full h-2 overflow-hidden shadow-inner border border-slate-600/50">
-                            <div 
-                              className={`h-2 rounded-full transition-all duration-500 shadow-lg ${
-                                marketData?.weather?.efficiency === 0 ? 
-                                'bg-gradient-to-r from-gray-600 to-gray-500' : 
-                                'bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 shadow-yellow-400/50'
-                              }`}
-                              style={{ width: `${marketData?.weather?.efficiency || 0}%` }}
-                            ></div>
-                          </div>
-                        </div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-emerald-900/40 to-emerald-800/30 rounded-xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-lg backdrop-blur-sm">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-emerald-200 text-sm sm:text-base flex items-center gap-2">
+                          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                          Solar Efficiency
+                        </p>
+                        <p className="text-xs sm:text-sm text-emerald-300 truncate">Power generation rate</p>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-lg sm:text-xl font-bold ml-2 ${(marketData?.weather?.efficiency || 0) <= 0 ? 'text-gray-400' : 'text-emerald-300'}`} data-testid="text-solar-efficiency">
+                          {marketData?.weather?.efficiency !== undefined ? `${Math.round(marketData.weather.efficiency)}%` : "No data"}
+                        </p>
+                        {(marketData?.weather?.efficiency || 0) <= 0 && (
+                          <p className="text-xs text-gray-400">
+                            Night - No Solar
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
