@@ -81,6 +81,9 @@ interface NetworkAnalytics {
     averageDistance: string;
     networkEfficiency: string;
   };
+  equity?: {
+    fairDistributionScore: number;
+  };
 }
 
 export function SimulationDashboard() {
@@ -351,20 +354,20 @@ export function SimulationDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center px-4">
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 mb-2">
           ML Energy Trading Simulation
         </h2>
-        <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-4xl mx-auto">
+        <p className="text-sm sm:text-base lg:text-lg text-slate-400 max-w-4xl mx-auto">
           Experience real-time automatic energy flow management, weather adaptation, 
           and power outage response in our decentralized energy network
         </p>
       </div>
 
       {/* Control Panel */}
-      <Card>
+      <Card className="bg-slate-800/50 border-slate-600/50">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-slate-200">
+            <Settings className="h-5 w-5 text-emerald-400" />
             Live Demonstration Control Panel
           </CardTitle>
         </CardHeader>
@@ -425,7 +428,7 @@ export function SimulationDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {/* Weather Control */}
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-medium">Test Weather Adaptation</label>
+                <label className="text-xs sm:text-sm font-medium text-slate-300">Test Weather Adaptation</label>
                 <div className="flex flex-col gap-2">
                   <Select
                     value={selectedWeather}
@@ -458,7 +461,7 @@ export function SimulationDashboard() {
 
               {/* Outage Simulation */}
               <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-medium">Test Power Outage Response</label>
+                <label className="text-xs sm:text-sm font-medium text-slate-300">Test Power Outage Response</label>
                 <div className="flex">
                   <Button
                     onClick={triggerOutage}
@@ -485,7 +488,7 @@ export function SimulationDashboard() {
 
       {/* Live Status Display */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 gap-1">
+        <TabsList className="grid w-full grid-cols-4 gap-1 bg-slate-800/50 border-slate-600/50">
           <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 py-2">
             <span className="hidden sm:inline">Overview</span>
             <span className="sm:hidden">Stats</span>
@@ -506,58 +509,58 @@ export function SimulationDashboard() {
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <Card data-testid="card-total-households">
+            <Card data-testid="card-total-households" className="bg-slate-800/50 border-slate-600/50">
               <CardContent className="pt-4 sm:pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Total Households</p>
-                    <p className="text-lg sm:text-2xl font-bold" data-testid="text-total-households">
+                    <p className="text-xs sm:text-sm text-slate-400">Total Households</p>
+                    <p className="text-lg sm:text-2xl font-bold text-slate-200" data-testid="text-total-households">
                       {analytics?.network?.totalHouseholds || 0}
                     </p>
                   </div>
-                  <Activity className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+                  <Activity className="h-6 w-6 sm:h-8 sm:w-8 text-slate-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card data-testid="card-active-connections">
+            <Card data-testid="card-active-connections" className="bg-slate-800/50 border-slate-600/50">
               <CardContent className="pt-4 sm:pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Active Connections</p>
-                    <p className="text-lg sm:text-2xl font-bold text-green-600" data-testid="text-active-connections">
+                    <p className="text-xs sm:text-sm text-slate-400">Active Connections</p>
+                    <p className="text-lg sm:text-2xl font-bold text-emerald-400" data-testid="text-active-connections">
                       {analytics?.network?.activeHouseholds || 0}
                     </p>
                   </div>
-                  <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-500" />
+                  <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card data-testid="card-grid-stability">
+            <Card data-testid="card-grid-stability" className="bg-slate-800/50 border-slate-600/50">
               <CardContent className="pt-4 sm:pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Grid Stability</p>
-                    <p className="text-lg sm:text-2xl font-bold text-blue-600" data-testid="text-grid-stability">
+                    <p className="text-xs sm:text-sm text-slate-400">Grid Stability</p>
+                    <p className="text-lg sm:text-2xl font-bold text-blue-400" data-testid="text-grid-stability">
                       {optimization?.gridStability && typeof optimization.gridStability === 'number' ? `${Math.round(optimization.gridStability * 100)}%` : "N/A"}
                     </p>
                   </div>
-                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+                  <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card data-testid="card-storage-capacity">
+            <Card data-testid="card-storage-capacity" className="bg-slate-800/50 border-slate-600/50">
               <CardContent className="pt-4 sm:pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">Storage Capacity</p>
-                    <p className="text-lg sm:text-2xl font-bold" data-testid="text-storage-capacity">
+                    <p className="text-xs sm:text-sm text-slate-400">Storage Capacity</p>
+                    <p className="text-lg sm:text-2xl font-bold text-slate-200" data-testid="text-storage-capacity">
                       {analytics?.network?.totalStorageCapacity || "0 kWh"}
                     </p>
                   </div>
-                  <Battery className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+                  <Battery className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-400" />
                 </div>
               </CardContent>
             </Card>
@@ -566,9 +569,9 @@ export function SimulationDashboard() {
 
         <TabsContent value="weather" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card data-testid="card-current-weather">
+            <Card data-testid="card-current-weather" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
+                <CardTitle className="flex items-center gap-2 text-sm sm:text-base text-slate-200">
                   {getWeatherIcon(simulationStatus?.currentWeather?.condition || "sunny")}
                   <span className="hidden sm:inline">Current Weather Conditions</span>
                   <span className="sm:hidden">Weather</span>
@@ -577,22 +580,22 @@ export function SimulationDashboard() {
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Condition:</span>
+                    <span className="text-xs sm:text-sm text-slate-300">Condition:</span>
                     <Badge data-testid="badge-weather-condition" className="text-xs">
                       {simulationStatus?.currentWeather?.condition || "sunny"}
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Temperature:</span>
-                    <span className="text-xs sm:text-sm font-medium" data-testid="text-temperature">{simulationStatus?.currentWeather?.temperature || 25}°C</span>
+                    <span className="text-xs sm:text-sm text-slate-300">Temperature:</span>
+                    <span className="text-xs sm:text-sm font-medium text-slate-200" data-testid="text-temperature">{simulationStatus?.currentWeather?.temperature || 25}°C</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Cloud Cover:</span>
-                    <span className="text-xs sm:text-sm font-medium" data-testid="text-cloud-cover">{simulationStatus?.currentWeather?.cloudCover || 20}%</span>
+                    <span className="text-xs sm:text-sm text-slate-300">Cloud Cover:</span>
+                    <span className="text-xs sm:text-sm font-medium text-slate-200" data-testid="text-cloud-cover">{simulationStatus?.currentWeather?.cloudCover || 20}%</span>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-medium">Solar Generation Impact</label>
+                  <label className="text-xs sm:text-sm font-medium text-slate-300">Solar Generation Impact</label>
                   <Progress 
                     value={simulationStatus?.currentWeather?.condition === 'sunny' ? 95 : 
                            simulationStatus?.currentWeather?.condition === 'partly-cloudy' ? 75 :
@@ -603,7 +606,7 @@ export function SimulationDashboard() {
                     className="w-full h-2 sm:h-3" 
                     data-testid="progress-solar-impact"
                   />
-                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <div className="flex justify-between text-xs text-slate-400 mt-1">
                     <span>Impact: {simulationStatus?.currentWeather?.condition === 'sunny' ? '95%' : 
                                    simulationStatus?.currentWeather?.condition === 'partly-cloudy' ? '75%' :
                                    simulationStatus?.currentWeather?.condition === 'cloudy' ? '45%' :
@@ -616,9 +619,9 @@ export function SimulationDashboard() {
               </CardContent>
             </Card>
 
-            <Card data-testid="card-weather-adaptation">
+            <Card data-testid="card-weather-adaptation" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="text-sm sm:text-base">
+                <CardTitle className="text-sm sm:text-base text-slate-200">
                   <span className="hidden sm:inline">Weather Adaptation Strategy</span>
                   <span className="sm:hidden">Adaptation</span>
                 </CardTitle>
@@ -627,11 +630,11 @@ export function SimulationDashboard() {
                 <div className="space-y-2">
                   {optimization?.recommendations?.slice(0, 3).map((recommendation, index) => (
                     <div key={index} className="flex items-start gap-2" data-testid={`recommendation-${index}`}>
-                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm">{recommendation}</span>
+                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-slate-300">{recommendation}</span>
                     </div>
                   )) || (
-                    <p className="text-xs sm:text-sm text-muted-foreground">Loading weather adaptation strategies...</p>
+                    <p className="text-xs sm:text-sm text-slate-400">Loading weather adaptation strategies...</p>
                   )}
                 </div>
               </CardContent>
@@ -641,9 +644,9 @@ export function SimulationDashboard() {
 
         <TabsContent value="grid" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card data-testid="card-load-balancing">
+            <Card data-testid="card-load-balancing" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="text-sm sm:text-base">
+                <CardTitle className="text-sm sm:text-base text-slate-200">
                   <span className="hidden sm:inline">Automatic Load Balancing</span>
                   <span className="sm:hidden">Load Balance</span>
                 </CardTitle>
@@ -651,19 +654,19 @@ export function SimulationDashboard() {
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Network Efficiency:</span>
-                    <span className="font-mono text-xs sm:text-sm" data-testid="text-network-efficiency">
+                    <span className="text-xs sm:text-sm text-slate-300">Network Efficiency:</span>
+                    <span className="font-mono text-xs sm:text-sm text-slate-200" data-testid="text-network-efficiency">
                       {analytics?.efficiency?.networkEfficiency || "Loading..."}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Average Distance:</span>
-                    <span className="font-mono text-xs sm:text-sm" data-testid="text-avg-distance">
+                    <span className="text-xs sm:text-sm text-slate-300">Average Distance:</span>
+                    <span className="font-mono text-xs sm:text-sm text-slate-200" data-testid="text-avg-distance">
                       {analytics?.efficiency?.averageDistance || "0 km"}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Grid Load Status:</span>
+                    <span className="text-xs sm:text-sm text-slate-300">Grid Load Status:</span>
                     <Badge variant="default" data-testid="badge-grid-status" className="text-xs">
                       Optimized
                     </Badge>
@@ -672,9 +675,9 @@ export function SimulationDashboard() {
               </CardContent>
             </Card>
 
-            <Card data-testid="card-outage-response">
+            <Card data-testid="card-outage-response" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="text-sm sm:text-base">
+                <CardTitle className="text-sm sm:text-base text-slate-200">
                   <span className="hidden sm:inline">Outage Response System</span>
                   <span className="sm:hidden">Outage Response</span>
                 </CardTitle>
@@ -684,21 +687,21 @@ export function SimulationDashboard() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-red-500" />
-                      <span className="text-xs sm:text-sm font-medium" data-testid="text-active-outages">
+                      <span className="text-xs sm:text-sm font-medium text-slate-200" data-testid="text-active-outages">
                         {simulationStatus.activeOutages.length} households affected
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-slate-400">
                       Automatic energy redistribution in progress...
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
-                      <span className="text-xs sm:text-sm font-medium" data-testid="text-no-outages">All systems operational</span>
+                      <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400" />
+                      <span className="text-xs sm:text-sm font-medium text-slate-200" data-testid="text-no-outages">All systems operational</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-slate-400">
                       Network resilience system standing by
                     </p>
                   </div>
@@ -710,9 +713,9 @@ export function SimulationDashboard() {
 
         <TabsContent value="equity" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card data-testid="card-energy-security">
+            <Card data-testid="card-energy-security" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="text-sm sm:text-base">
+                <CardTitle className="text-sm sm:text-base text-slate-200">
                   <span className="hidden sm:inline">Energy Security Analysis</span>
                   <span className="sm:hidden">Energy Security</span>
                 </CardTitle>
@@ -720,24 +723,24 @@ export function SimulationDashboard() {
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Total Energy Traded:</span>
-                    <span className="font-mono text-xs sm:text-sm" data-testid="text-total-traded">
+                    <span className="text-xs sm:text-sm text-slate-300">Total Energy Traded:</span>
+                    <span className="font-mono text-xs sm:text-sm text-slate-200" data-testid="text-total-traded">
                       {analytics?.trading?.totalEnergyTraded ? 
                         formatEnergyTraded(parseFloat(analytics.trading.totalEnergyTraded.replace(/[^\d.]/g, ''))) : 
                         "Loading..."}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Carbon Saved:</span>
-                    <span className="font-mono text-xs sm:text-sm text-green-600" data-testid="text-carbon-saved">
+                    <span className="text-xs sm:text-sm text-slate-300">Carbon Saved:</span>
+                    <span className="font-mono text-xs sm:text-sm text-emerald-400" data-testid="text-carbon-saved">
                       {analytics?.trading?.carbonSaved ? 
                         formatCarbonSavings(parseFloat(analytics.trading.carbonSaved.replace(/[^\d.]/g, ''))) : 
                         "Loading..."}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm">Average Price:</span>
-                    <span className="font-mono text-xs sm:text-sm" data-testid="text-avg-price">
+                    <span className="text-xs sm:text-sm text-slate-300">Average Price:</span>
+                    <span className="font-mono text-xs sm:text-sm text-slate-200" data-testid="text-avg-price">
                       {analytics?.trading?.averagePrice || "₹0.00/kWh"}
                     </span>
                   </div>
@@ -745,9 +748,9 @@ export function SimulationDashboard() {
               </CardContent>
             </Card>
 
-            <Card data-testid="card-redistribution">
+            <Card data-testid="card-redistribution" className="bg-slate-800/50 border-slate-600/50">
               <CardHeader>
-                <CardTitle className="text-sm sm:text-base">
+                <CardTitle className="text-sm sm:text-base text-slate-200">
                   <span className="hidden sm:inline">Energy Redistribution</span>
                   <span className="sm:hidden">Redistribution</span>
                 </CardTitle>
@@ -755,13 +758,13 @@ export function SimulationDashboard() {
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
-                    <span className="text-xs sm:text-sm font-medium">
+                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
+                    <span className="text-xs sm:text-sm font-medium text-slate-200">
                       <span className="hidden sm:inline">Automatic Fair Distribution Active</span>
                       <span className="sm:hidden">Fair Distribution Active</span>
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-slate-400">
                     <span className="hidden sm:inline">System ensures equitable access to power across all households</span>
                     <span className="sm:hidden">Equitable power access system</span>
                   </p>
@@ -771,7 +774,7 @@ export function SimulationDashboard() {
                       className="w-full h-2 sm:h-3" 
                       data-testid="progress-equity-score"
                     />
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-slate-400 mt-1">
                       Fair Distribution Score: {analytics?.equity?.fairDistributionScore || 85}%
                     </p>
                   </div>
@@ -784,11 +787,11 @@ export function SimulationDashboard() {
 
       {/* Status Message */}
       {simulationStatus?.isRunning && (
-        <Card data-testid="card-network-health">
+        <Card data-testid="card-network-health" className="bg-slate-800/50 border-slate-600/50">
           <CardContent className="pt-4 sm:pt-6">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-              <span className="text-xs sm:text-sm font-medium" data-testid="text-network-health">
+              <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400" />
+              <span className="text-xs sm:text-sm font-medium text-slate-200" data-testid="text-network-health">
                 <span className="hidden sm:inline">Network automatically managing energy flow and preventing grid overload</span>
                 <span className="sm:hidden">Auto-managing energy flow and grid stability</span>
               </span>
