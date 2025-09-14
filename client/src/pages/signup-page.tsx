@@ -258,7 +258,7 @@ export default function SignupPage() {
 
           {/* Signup Form */}
           <div className="flex justify-center md:justify-start order-2 md:order-2 p-4">
-            <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl hover:border-primary/50 hover:bg-muted/90 cursor-pointer">
+            <Card className="w-full max-w-sm sm:max-w-md bg-muted backdrop-blur-sm border border-border shadow-2xl">
               <CardHeader className="space-y-1 text-center px-4 sm:px-6 py-4 sm:py-6">
                 <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
                   <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
@@ -410,7 +410,7 @@ export default function SignupPage() {
                         id="phone"
                         type="tel"
                         placeholder="+91-98765-43210"
-                        className="h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("phone")}
                       />
                       {errors.phone && (
@@ -431,7 +431,7 @@ export default function SignupPage() {
                           id="state"
                           type="text"
                           placeholder="Enter your state"
-                          className="h-10 sm:h-11 text-xs sm:text-sm bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                           {...register("state")}
                         />
                         {errors.state && (
@@ -451,7 +451,7 @@ export default function SignupPage() {
                           id="district"
                           type="text"
                           placeholder="Enter your district"
-                          className="h-10 sm:h-11 text-xs sm:text-sm bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                          className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                           {...register("district")}
                         />
                         {errors.district && (
@@ -472,7 +472,7 @@ export default function SignupPage() {
                         id="address"
                         type="text"
                         placeholder="123 Solar Nagar, City, State"
-                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("address")}
                       />
                       {errors.address && (
@@ -492,7 +492,7 @@ export default function SignupPage() {
                         id="householdName"
                         type="text"
                         placeholder="Smith Family Solar Home"
-                        className="h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("householdName")}
                       />
                       {errors.householdName && (
@@ -513,7 +513,7 @@ export default function SignupPage() {
                         id="solarCapacity"
                         type="number"
                         placeholder="8000"
-                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("solarCapacity")}
                       />
                       {errors.solarCapacity && (
@@ -534,7 +534,7 @@ export default function SignupPage() {
                         id="batteryCapacity"
                         type="number"
                         placeholder="13.5"
-                        className="h-12 sm:h-12 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
+                        className="pl-3 h-10 sm:h-11 text-sm sm:text-base bg-input border-border text-foreground focus:border-primary focus:ring-primary"
                         {...register("batteryCapacity")}
                       />
                       {errors.batteryCapacity && (
@@ -580,7 +580,7 @@ export default function SignupPage() {
                   <Button
                     type="submit"
                     disabled={registerMutation.isPending}
-                    className="w-full h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+                    className="w-full h-10 sm:h-11 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl touch-manipulation">
                     {registerMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
