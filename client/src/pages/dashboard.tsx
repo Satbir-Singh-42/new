@@ -1273,9 +1273,9 @@ export default function Dashboard() {
                   {tradesLoading ? (
                     <div className="space-y-3">
                       {[1,2,3].map(i => (
-                        <div key={i} className="p-4 border border-border rounded-lg animate-pulse">
-                          <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-                          <div className="h-3 bg-muted rounded w-1/2"></div>
+                        <div key={i} className="p-4 border border-slate-600/30 rounded-lg animate-pulse bg-slate-800/40">
+                          <div className="h-4 bg-slate-700/50 rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-slate-700/50 rounded w-1/2"></div>
                         </div>
                       ))}
                     </div>
@@ -1373,7 +1373,7 @@ export default function Dashboard() {
                                   setSelectedTradeForDetails(item);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-muted text-gray-600"
+                                className="w-full bg-slate-800/60 text-slate-300 border-slate-600/50"
                                 variant="outline"
                               >
                                 View Details
@@ -1427,15 +1427,15 @@ export default function Dashboard() {
                   {tradesLoading ? (
                     <div className="space-y-3">
                       {[1,2,3].map(i => (
-                        <div key={i} className="p-4 border border-border rounded-lg animate-pulse">
-                          <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-                          <div className="h-3 bg-muted rounded w-1/2"></div>
+                        <div key={i} className="p-4 border border-slate-600/30 rounded-lg animate-pulse bg-slate-800/40">
+                          <div className="h-4 bg-slate-700/50 rounded w-3/4 mb-2"></div>
+                          <div className="h-3 bg-slate-700/50 rounded w-1/2"></div>
                         </div>
                       ))}
                     </div>
                   ) : energyRequests.length > 0 ? (
                     energyRequests.map((request: {trade: EnergyTrade, household: any, user: any}) => (
-                      <div key={request.trade.id} className="p-3 sm:p-4 border-2 border-blue-200 rounded-xl hover:border-blue-400 transition-all duration-200 hover:shadow-md bg-white">
+                      <div key={request.trade.id} className="p-3 sm:p-4 border-2 border-blue-500/30 rounded-xl hover:border-blue-400/50 transition-all duration-200 hover:shadow-md bg-gradient-to-r from-slate-800/50 to-slate-700/30 backdrop-blur-sm">
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
                           <div className="flex-1 w-full sm:w-auto">
                             <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -1476,7 +1476,7 @@ export default function Dashboard() {
                             <div className="bg-blue-500/10 p-2 sm:p-3 rounded-lg mb-3">
                               <p className="text-xs sm:text-sm text-secondary-custom">Total willing to pay</p>
                               <p className="font-bold text-xl sm:text-2xl text-blue-400">{formatTradeTotal(request.trade.energyAmount, request.trade.pricePerKwh)}</p>
-                              <p className="text-xs text-gray-500">Price per kWh: {formatTradePrice(request.trade.pricePerKwh)}</p>
+                              <p className="text-xs text-blue-300">Price per kWh: {formatTradePrice(request.trade.pricePerKwh)}</p>
                             </div>
                             {isOwnTrade(request.trade) ? (
                               <div className="space-y-2">
@@ -1527,7 +1527,7 @@ export default function Dashboard() {
                                   setSelectedTradeForDetails(request);
                                   setShowContactDialog(true);
                                 }}
-                                className="w-full bg-muted text-gray-600"
+                                className="w-full bg-slate-800/60 text-slate-300 border-slate-600/50"
                                 variant="outline"
                               >
                                 View Details
@@ -1542,8 +1542,8 @@ export default function Dashboard() {
                       <div className="w-16 h-16 bg-blue-500/15 rounded-full flex items-center justify-center mx-auto mb-4">
                         <ArrowRightLeft className="h-8 w-8 text-blue-300" />
                       </div>
-                      <h4 className="font-semibold text-gray-700 mb-2">No Energy Requests</h4>
-                      <p className="text-sm text-gray-500 mb-4">Be the first to request clean energy!</p>
+                      <h4 className="font-semibold text-blue-200 mb-2">No Energy Requests</h4>
+                      <p className="text-sm text-blue-300 mb-4">Be the first to request clean energy!</p>
                       <Button onClick={() => {
                         form.setValue('tradeType', 'buy');
                         setShowCreateTradeDialog(true);
@@ -1650,12 +1650,12 @@ export default function Dashboard() {
                   💡 Smart Pricing Recommendation
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                  <div className="bg-white p-3 sm:p-4 rounded border">
-                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Current Market Rate</p>
+                  <div className="bg-slate-800/60 p-3 sm:p-4 rounded border border-slate-600/30">
+                    <p className="text-slate-300 text-xs sm:text-sm mb-1">Current Market Rate</p>
                     <p className="font-bold text-blue-400 text-base sm:text-lg">₹{currentMarketRate}/kWh</p>
                   </div>
-                  <div className="bg-white p-3 sm:p-4 rounded border">
-                    <p className="text-gray-600 text-xs sm:text-sm mb-1">Recommended Range</p>
+                  <div className="bg-slate-800/60 p-3 sm:p-4 rounded border border-slate-600/30">
+                    <p className="text-slate-300 text-xs sm:text-sm mb-1">Recommended Range</p>
                     <p className="font-bold text-emerald-400 text-base sm:text-lg">₹{minPrice} - ₹{maxPrice}/kWh</p>
                   </div>
                 </div>
@@ -1670,8 +1670,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
                           field.value === 'sell' 
-                            ? 'border-green-500 bg-emerald-500/10 text-green-900' 
-                            : 'border-border hover:border-gray-300'
+                            ? 'border-emerald-500 bg-emerald-500/20 text-emerald-200' 
+                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="option-have-energy"
@@ -1685,8 +1685,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 sm:p-5 rounded-lg border-2 cursor-pointer transition-all min-h-[80px] ${
                           field.value === 'buy' 
-                            ? 'border-blue-500 bg-blue-500/10 text-blue-900' 
-                            : 'border-border hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-500/20 text-blue-200' 
+                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="option-need-energy"
@@ -2040,8 +2040,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                           field.value === 'sell' 
-                            ? 'border-green-500 bg-emerald-500/10 text-green-900' 
-                            : 'border-border hover:border-gray-300'
+                            ? 'border-emerald-500 bg-emerald-500/20 text-emerald-200' 
+                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
                         }`}
                         onClick={() => field.onChange('sell')}
                         data-testid="edit-option-have-energy"
@@ -2055,8 +2055,8 @@ export default function Dashboard() {
                       <div 
                         className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                           field.value === 'buy' 
-                            ? 'border-blue-500 bg-blue-500/10 text-blue-900' 
-                            : 'border-border hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-500/20 text-blue-200' 
+                            : 'border-slate-600/50 hover:border-slate-500/70 text-slate-300'
                         }`}
                         onClick={() => field.onChange('buy')}
                         data-testid="edit-option-need-energy"
