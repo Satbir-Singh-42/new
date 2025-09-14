@@ -742,7 +742,7 @@ export default function StoragePage() {
               variant="outline"
               onClick={handleRefreshAll}
               disabled={isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading}
-              className="flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none"
+              className="flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none btn-smooth"
               data-testid="button-refresh"
             >
               <RefreshCw className={`mr-2 h-4 w-4 ${isLoading || availableTradesLoading || acceptancesLoading || applicationsLoading ? 'animate-spin' : ''}`} />
@@ -752,7 +752,7 @@ export default function StoragePage() {
             <Button
               variant="outline"
               onClick={() => setLocation('/?tab=energy-trading')}
-              className="flex items-center justify-center gap-2 min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 flex-1 sm:flex-none"
+              className="flex items-center justify-center gap-2 min-h-[44px] bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 flex-1 sm:flex-none btn-smooth"
               data-testid="button-trade-market"
             >
               <TrendingUp className="h-4 w-4" />
@@ -760,7 +760,7 @@ export default function StoragePage() {
             </Button>
             <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center gap-2 min-h-[44px] flex-1 sm:flex-none btn-smooth">
                   <Plus className="h-4 w-4" />
                   <span className="sm:inline">Create Trade</span>
                 </Button>
@@ -1009,8 +1009,8 @@ export default function StoragePage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {myListings.map((trade) => (
-                      <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
+                    {myListings.map((trade, index) => (
+                      <Card key={trade.id} className={`p-3 sm:p-4 bg-slate-700/50 border-slate-600/50 card-stagger ${dataLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`} style={{animationDelay: `${index * 50}ms`}}>
                         <div className="mb-4">
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
@@ -1137,8 +1137,8 @@ export default function StoragePage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {myRequests.map((trade) => (
-                      <Card key={trade.id} className="p-3 sm:p-4 bg-slate-700/50 border-slate-600/50">
+                    {myRequests.map((trade, index) => (
+                      <Card key={trade.id} className={`p-3 sm:p-4 bg-slate-700/50 border-slate-600/50 card-stagger ${dataLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`} style={{animationDelay: `${index * 50}ms`}}>
                         <div className="mb-4">
                           {/* Mobile compact layout */}
                           <div className="sm:hidden">
