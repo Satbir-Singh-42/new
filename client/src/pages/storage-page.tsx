@@ -2180,31 +2180,31 @@ export default function StoragePage() {
                             <User className="h-4 w-4" />
                             Trade Owner Contact Details
                           </h3>
-                          <div className="space-y-2 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
                               <span className="text-blue-300 font-medium">Name:</span>
-                              <div className="text-blue-200">{counterpartyName}</div>
+                              <div className="text-blue-200 mt-1 break-words">{counterpartyName}</div>
                             </div>
                             <div>
                               <span className="text-blue-300 font-medium">Location:</span>
-                              <div className="text-blue-200">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
+                              <div className="text-blue-200 mt-1 break-words">{counterpartyUser?.district || 'Location not available'}, {counterpartyUser?.state || 'State not available'}</div>
                             </div>
                             {counterpartyHousehold?.address && (
-                              <div>
+                              <div className="sm:col-span-2">
                                 <span className="text-blue-300 font-medium">Address:</span>
-                                <div className="text-blue-200">{counterpartyHousehold.address}</div>
+                                <div className="text-blue-200 mt-1 break-words">{counterpartyHousehold.address}</div>
                               </div>
                             )}
                             {counterpartyUser?.phone && (
                               <div>
                                 <span className="text-blue-300 font-medium">Phone:</span>
-                                <div className="text-blue-200">{counterpartyUser.phone}</div>
+                                <div className="text-blue-200 mt-1 break-words">{counterpartyUser.phone}</div>
                               </div>
                             )}
                             {counterpartyUser?.email && (
                               <div>
                                 <span className="text-blue-300 font-medium">Email:</span>
-                                <div className="text-blue-200">{counterpartyUser.email}</div>
+                                <div className="text-blue-200 mt-1 break-words">{counterpartyUser.email}</div>
                               </div>
                             )}
                           </div>
@@ -2248,35 +2248,35 @@ export default function StoragePage() {
                             <User className="h-4 w-4" />
                             Applicant Contact Details
                           </h3>
-                          <div className="space-y-2 text-sm">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                             <div>
                               <span className="text-blue-300 font-medium">Name:</span>
-                              <div className="text-blue-200">{applicantUser?.username || applicantHousehold?.name}</div>
+                              <div className="text-blue-200 mt-1 break-words">{applicantUser?.username || applicantHousehold?.name}</div>
                             </div>
                             <div>
                               <span className="text-blue-300 font-medium">Household:</span>
-                              <div className="text-blue-200">{applicantHousehold?.name || 'Household not available'}</div>
+                              <div className="text-blue-200 mt-1 break-words">{applicantHousehold?.name || 'Household not available'}</div>
                             </div>
                             <div>
                               <span className="text-blue-300 font-medium">Location:</span>
-                              <div className="text-blue-200">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
+                              <div className="text-blue-200 mt-1 break-words">{applicantUser?.district || 'District not available'}, {applicantUser?.state || 'State not available'}</div>
                             </div>
                             {applicantHousehold?.address && (
-                              <div>
+                              <div className="sm:col-span-2">
                                 <span className="text-blue-300 font-medium">Address:</span>
-                                <div className="text-blue-200">{applicantHousehold.address}</div>
+                                <div className="text-blue-200 mt-1 break-words">{applicantHousehold.address}</div>
                               </div>
                             )}
                             {applicantUser?.phone && (
                               <div>
                                 <span className="text-blue-300 font-medium">Phone:</span>
-                                <div className="text-blue-200">{applicantUser.phone}</div>
+                                <div className="text-blue-200 mt-1 break-words">{applicantUser.phone}</div>
                               </div>
                             )}
                             {applicantUser?.email && (
                               <div>
                                 <span className="text-blue-300 font-medium">Email:</span>
-                                <div className="text-blue-200">{applicantUser.email}</div>
+                                <div className="text-blue-200 mt-1 break-words">{applicantUser.email}</div>
                               </div>
                             )}
                           </div>
