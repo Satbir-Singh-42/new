@@ -1872,66 +1872,66 @@ export default function Dashboard() {
 
       {/* Trade Acceptance Dialog */}
       <Dialog open={showAcceptTradeDialog} onOpenChange={setShowAcceptTradeDialog}>
-        <DialogContent className="w-[95vw] max-w-lg mx-auto my-4 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-6">
+        <DialogContent className="w-[95vw] max-w-lg mx-auto my-4 max-h-[95vh] overflow-y-auto z-50 p-4 sm:p-6 bg-slate-900 border-slate-700">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl font-bold text-gray-800">
-              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-300" />
+            <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl font-bold text-slate-100">
+              <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
               Accept Energy Trade
             </DialogTitle>
           </DialogHeader>
           
           {acceptingTrade && (
             <div className="space-y-4 sm:space-y-6 pt-4">
-              <div className="bg-gradient-to-r from-green-50 to-blue-50 p-3 sm:p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold text-gray-800 mb-3 text-sm sm:text-base">
+              <div className="bg-gradient-to-r from-emerald-950/40 to-emerald-900/30 p-3 sm:p-4 rounded-lg border border-emerald-500/20">
+                <h4 className="font-semibold text-emerald-200 mb-3 text-sm sm:text-base">
                   {acceptingTrade.trade.tradeType === 'sell' ? '🌟 Accept Energy Offer' : '⚡ Fulfill Energy Request'}
                 </h4>
                 <div className="space-y-2 text-xs sm:text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Energy Amount:</span>
-                    <span className="font-semibold">{acceptingTrade.trade.energyAmount} kWh</span>
+                    <span className="text-slate-400">Energy Amount:</span>
+                    <span className="font-semibold text-slate-200">{acceptingTrade.trade.energyAmount} kWh</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Price per kWh:</span>
-                    <span className="font-semibold">{formatTradePrice(acceptingTrade.trade.pricePerKwh)}</span>
+                    <span className="text-slate-400">Price per kWh:</span>
+                    <span className="font-semibold text-slate-200">{formatTradePrice(acceptingTrade.trade.pricePerKwh)}</span>
                   </div>
-                  <div className="flex justify-between items-center border-t pt-2">
-                    <span className="text-gray-700 font-medium">Total Cost:</span>
-                    <span className="font-bold text-base sm:text-lg text-emerald-300">
+                  <div className="flex justify-between items-center border-t border-emerald-500/20 pt-2">
+                    <span className="text-slate-300 font-medium">Total Cost:</span>
+                    <span className="font-bold text-base sm:text-lg text-emerald-400">
                       {formatTradeTotal(acceptingTrade.trade.energyAmount, acceptingTrade.trade.pricePerKwh)}
                     </span>
                   </div>
                   <div className="flex justify-between items-start">
-                    <span className="text-gray-600 flex-shrink-0">
+                    <span className="text-slate-400 flex-shrink-0">
                       {acceptingTrade.trade.tradeType === 'sell' ? 'Seller:' : 'Buyer:'}
                     </span>
-                    <span className="font-medium text-right ml-2 break-words">
+                    <span className="font-medium text-right ml-2 break-words text-slate-200">
                       {acceptingTrade.trade.tradeType === 'sell' ? getHouseholdName(acceptingTrade, 'seller') : getHouseholdName(acceptingTrade, 'buyer')}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-blue-500/10 p-3 sm:p-4 rounded-lg border border-blue-200">
-                <h5 className="font-semibold text-blue-200 mb-3 flex items-center gap-2 text-sm sm:text-base">
+              <div className="bg-slate-800/50 p-3 sm:p-4 rounded-lg border border-slate-600/50">
+                <h5 className="font-semibold text-slate-200 mb-3 flex items-center gap-2 text-sm sm:text-base">
                   <Activity className="h-4 w-4" />
                   What happens next?
                 </h5>
-                <div className="space-y-2 text-xs sm:text-sm text-blue-400">
+                <div className="space-y-2 text-xs sm:text-sm text-slate-300">
                   <div className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span className="text-emerald-400 mt-0.5">•</span>
                     <span>Your contact information will be shared with the other party</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span className="text-emerald-400 mt-0.5">•</span>
                     <span>You'll receive their contact details for energy transfer coordination</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span className="text-emerald-400 mt-0.5">•</span>
                     <span>SolarSense facilitates secure peer-to-peer energy exchange</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span className="text-emerald-400 mt-0.5">•</span>
                     <span>Trade completion is tracked for network transparency</span>
                   </div>
                 </div>
@@ -1941,7 +1941,7 @@ export default function Dashboard() {
                 <Button
                   onClick={() => setShowAcceptTradeDialog(false)}
                   variant="outline"
-                  className="w-full sm:flex-1 order-2 sm:order-1 text-red-600"
+                  className="w-full sm:flex-1 order-2 sm:order-1 bg-slate-800/50 border-slate-600/50 text-slate-300 hover:border-red-500"
                   data-testid="button-cancel-accept"
                 >
                   Cancel
@@ -1949,7 +1949,7 @@ export default function Dashboard() {
                 <Button
                   onClick={confirmAcceptTrade}
                   disabled={acceptTradeMutation.isPending}
-                  className="w-full sm:flex-1 bg-green-600 hover:bg-green-700 text-white order-1 sm:order-2"
+                  className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 text-white order-1 sm:order-2"
                   data-testid="button-confirm-accept"
                 >
                   {acceptTradeMutation.isPending ? 'Processing...' : 
