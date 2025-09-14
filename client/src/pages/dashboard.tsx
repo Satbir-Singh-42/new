@@ -770,7 +770,7 @@ export default function Dashboard() {
       </section>
 
       {/* Navigation Tabs - Positioned below hero section */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="bg-card border-b border-border shadow-sm">
         <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex border-b border-border">
             <button
@@ -781,8 +781,8 @@ export default function Dashboard() {
               }}
               className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
                 activeTab === 'energy-dashboard'
-                  ? 'text-primary border-b-2 border-primary bg-blue-50'
-                  : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
+                  ? 'text-primary border-b-2 border-primary bg-primary/10'
+                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
               }`}
             >
               <Home className="" size={16} />
@@ -799,8 +799,8 @@ export default function Dashboard() {
               }}
               className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
                 activeTab === 'energy-trading'
-                  ? 'text-primary border-b-2 border-primary bg-blue-50'
-                  : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
+                  ? 'text-primary border-b-2 border-primary bg-primary/10'
+                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
               }`}
             >
               <TrendingUp className="" size={16} />
@@ -817,8 +817,8 @@ export default function Dashboard() {
               }}
               className={`flex-1 py-3 sm:py-4 px-3 sm:px-4 md:px-6 text-center font-medium transition-colors text-sm sm:text-base flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2 ${
                 activeTab === 'simulation'
-                  ? 'text-primary border-b-2 border-primary bg-blue-50'
-                  : 'text-secondary-custom hover:text-primary hover:bg-gray-50'
+                  ? 'text-primary border-b-2 border-primary bg-primary/10'
+                  : 'text-secondary-custom hover:text-primary hover:bg-muted'
               }`}
             >
               <Activity className="" size={16} />
