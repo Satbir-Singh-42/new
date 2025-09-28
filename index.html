@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Player Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+    }
+
+    header {
+      background: #1c2128;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 20px 0 10px;
+    }
+
+    .search-box {
+      margin: 15px auto;
+      padding: 12px;
+      width: 300px;
+      border-radius: 10px;
+      border: none;
+      font-size: 18px;
+      background: #161b22;
+      color: #e6edf3;
+      display: block;
+    }
+
+    .reset-btn {
+      margin: 10px auto;
+      display: block;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #238636;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: #161b22;
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: center;
+      padding: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .card img[data-src] {
+      opacity: 0;
+    }
+
+    .card img.loaded {
+      opacity: 1;
+    }
+
+    .card-title {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .restore-btn {
+      margin-top: 8px;
+      padding: 6px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .restore-btn:hover {
+      background: #0056b3;
+    }
+
+    #viewer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    #viewer img {
+      width: auto;
+      height: 100vh;
+      object-fit: contain;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #actionButtons {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 1100;
+    }
+
+    #actionButtons button {
+      padding: 14px 32px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease-in-out;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    #actionButtons button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Specific Buttons */
+    #soldBtn {
+      background: linear-gradient(135deg, #28a745, #218838);
+      color: #fff;
+    }
+
+    #unsoldBtn {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      color: #fff;
+    }
+
+    #closeBtn {
+      background: linear-gradient(135deg, #6c757d, #5a6268);
+      color: #fff;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+      }
+
+      .search-box {
+        width: 90%;
+        max-width: 300px;
+      }
+
+      #viewer {
+        justify-content: flex-start;
+        padding: 20px 10px 100px;
+        /* reserve space for buttons */
+        box-sizing: border-box;
+      }
+
+      #viewer img {
+        width: 100%;
+        height: auto;
+        max-height: 70vh;
+        /* leave room for buttons */
+        margin: auto 0;
+      }
+
+      #actionButtons {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        justify-content: center;
+        gap: 10px;
+        width: 90%;
+        z-index: 2000;
+      }
+
+      #actionButtons button {
+        flex: 1;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+
+      /* Touch-friendly buttons */
+      button {
+        min-height: 44px;
+        /* Minimum touch target size */
+      }
+
+      .restore-btn {
+        padding: 10px 16px;
+        min-height: 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      #viewer img {
+        max-height: 65vh;
+        /* slightly smaller for tiny screens */
+      }
+
+      #actionButtons {
+        flex-direction: column;
+        gap: 10px;
+        width: 90%;
+      }
+
+      #actionButtons button {
+        width: 100%;
+        padding: 14px 16px;
+      }
+    }
+
+    /* Prevent body scroll when viewer is open */
+    body.viewer-open {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Loading animation */
+    @keyframes pulse {
+      0% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 0.8;
+      }
+
+      100% {
+        opacity: 0.6;
+      }
+    }
+
+    .card img:not([src]) {
+      background: #2d3748;
+      animation: pulse 1.5s infinite;
+      min-height: 150px;
+    }
+
+    /* Enhanced loading states */
+    .card img[data-src] {
+      background: linear-gradient(45deg, #2d3748, #4a5568);
+      animation: shimmer 2s infinite;
+      min-height: 150px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200px 0;
+      }
+
+      100% {
+        background-position: 200px 0;
+      }
+    }
+
+    .card img.loading {
+      filter: blur(2px);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    #viewer img {
+      transition: opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    #viewer img.loading {
+      opacity: 0.5;
+      filter: blur(3px);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Player Dashboard</h1>
+    <input type="search" id="search" class="search-box" placeholder="Search players...">
+    <button class="reset-btn" onclick="resetView()">Reset View</button>
+  </header>
+  <main>
+    <h2>Active Players</h2>
+    <div class="grid" id="gallery">
+
+      <div class="card" data-name="1viratkohli" data-number="1"
+        onclick="openViewer('full_pngs/1 Virat Kohli.png', this)">
+        <img data-src="full_pngs/1 Virat Kohli.png" alt="Player 1 Virat Kohli" loading="lazy">
+        <div class="card-title">Player 1 Virat Kohli</div>
+      </div>
+
+      <div class="card" data-name="2suryakumaryadav" data-number="2"
+        onclick="openViewer('full_pngs/2 Suryakumar Yadav.png', this)">
+        <img data-src="full_pngs/2 Suryakumar Yadav.png" alt="Player 2 Suryakumar Yadav" loading="lazy">
+        <div class="card-title">Player 2 Suryakumar Yadav</div>
+      </div>
+
+      <div class="card" data-name="3shubmangill" data-number="3"
+        onclick="openViewer('full_pngs/3 Shubman Gill.png', this)">
+        <img data-src="full_pngs/3 Shubman Gill.png" alt="Player 3 Shubman Gill" loading="lazy">
+        <div class="card-title">Player 3 Shubman Gill</div>
+      </div>
+
+      <div class="card" data-name="4yashasvijaiswal" data-number="4"
+        onclick="openViewer('full_pngs/4 Yashasvi Jaiswal.png', this)">
+        <img data-src="full_pngs/4 Yashasvi Jaiswal.png" alt="Player 4 Yashasvi Jaiswal" loading="lazy">
+        <div class="card-title">Player 4 Yashasvi Jaiswal</div>
+      </div>
+
+      <div class="card" data-name="5rinkusingh" data-number="5"
+        onclick="openViewer('full_pngs/5 Rinku Singh.png', this)">
+        <img data-src="full_pngs/5 Rinku Singh.png" alt="Player 5 Rinku Singh" loading="lazy">
+        <div class="card-title">Player 5 Rinku Singh</div>
+      </div>
+
+      <div class="card" data-name="6harrybrook" data-number="6"
+        onclick="openViewer('full_pngs/6 Harry Brook.png', this)">
+        <img data-src="full_pngs/6 Harry Brook.png" alt="Player 6 Harry Brook" loading="lazy">
+        <div class="card-title">Player 6 Harry Brook</div>
+      </div>
+
+      <div class="card" data-name="7travishead" data-number="7"
+        onclick="openViewer('full_pngs/7 Travis Head.png', this)">
+        <img data-src="full_pngs/7 Travis Head.png" alt="Player 7 Travis Head" loading="lazy">
+        <div class="card-title">Player 7 Travis Head</div>
+      </div>
+
+      <div class="card" data-name="8aidenmarkram" data-number="8"
+        onclick="openViewer('full_pngs/8 Aiden Markram.png', this)">
+        <img data-src="full_pngs/8 Aiden Markram.png" alt="Player 8 Aiden Markram" loading="lazy">
+        <div class="card-title">Player 8 Aiden Markram</div>
+      </div>
+
+      <div class="card" data-name="9shreyasiyer" data-number="9"
+        onclick="openViewer('full_pngs/9 Shreyas Iyer.png', this)">
+        <img data-src="full_pngs/9 Shreyas Iyer.png" alt="Player 9 Shreyas Iyer" loading="lazy">
+        <div class="card-title">Player 9 Shreyas Iyer</div>
+      </div>
+
+      <div class="card" data-name="10willjacks" data-number="10"
+        onclick="openViewer('full_pngs/10 Will Jacks.png', this)">
+        <img data-src="full_pngs/10 Will Jacks.png" alt="Player 10 Will Jacks" loading="lazy">
+        <div class="card-title">Player 10 Will Jacks</div>
+      </div>
+
+      <div class="card" data-name="11prithvishaw" data-number="11"
+        onclick="openViewer('full_pngs/11 Prithvi Shaw.png', this)">
+        <img data-src="full_pngs/11 Prithvi Shaw.png" alt="Player 11 Prithvi Shaw" loading="lazy">
+        <div class="card-title">Player 11 Prithvi Shaw</div>
+      </div>
+
+      <div class="card" data-name="12ruturajgaikwad" data-number="12"
+        onclick="openViewer('full_pngs/12 Ruturaj Gaikwad.png', this)">
+        <img data-src="full_pngs/12 Ruturaj Gaikwad.png" alt="Player 12 Ruturaj Gaikwad" loading="lazy">
+        <div class="card-title">Player 12 Ruturaj Gaikwad</div>
+      </div>
+
+      <div class="card" data-name="13devduttpadikkal" data-number="13"
+        onclick="openViewer('full_pngs/13 Devdutt Padikkal.png', this)">
+        <img data-src="full_pngs/13 Devdutt Padikkal.png" alt="Player 13 Devdutt Padikkal" loading="lazy">
+        <div class="card-title">Player 13 Devdutt Padikkal</div>
+      </div>
+
+      <div class="card" data-name="14saisudharsan" data-number="14"
+        onclick="openViewer('full_pngs/14 Sai Sudharsan.png', this)">
+        <img data-src="full_pngs/14 Sai Sudharsan.png" alt="Player 14 Sai Sudharsan" loading="lazy">
+        <div class="card-title">Player 14 Sai Sudharsan</div>
+      </div>
+
+      <div class="card" data-name="15tilakvarma" data-number="15"
+        onclick="openViewer('full_pngs/15 Tilak Varma.png', this)">
+        <img data-src="full_pngs/15 Tilak Varma.png" alt="Player 15 Tilak Varma" loading="lazy">
+        <div class="card-title">Player 15 Tilak Varma</div>
+      </div>
+
+      <div class="card" data-name="16davidwarner" data-number="16"
+        onclick="openViewer('full_pngs/16 David Warner.png', this)">
+        <img data-src="full_pngs/16 David Warner.png" alt="Player 16 David Warner" loading="lazy">
+        <div class="card-title">Player 16 David Warner</div>
+      </div>
+
+      <div class="card" data-name="17fafduplessis" data-number="17"
+        onclick="openViewer('full_pngs/17 Faf du Plessis.png', this)">
+        <img data-src="full_pngs/17 Faf du Plessis.png" alt="Player 17 Faf du Plessis" loading="lazy">
+        <div class="card-title">Player 17 Faf du Plessis</div>
+      </div>
+
+      <div class="card" data-name="18rohitsharma" data-number="18"
+        onclick="openViewer('full_pngs/18 Rohit Sharma.png', this)">
+        <img data-src="full_pngs/18 Rohit Sharma.png" alt="Player 18 Rohit Sharma" loading="lazy">
+        <div class="card-title">Player 18 Rohit Sharma</div>
+      </div>
+
+      <div class="card" data-name="19stevesmith" data-number="19"
+        onclick="openViewer('full_pngs/19 Steve Smith.png', this)">
+        <img data-src="full_pngs/19 Steve Smith.png" alt="Player 19 Steve Smith" loading="lazy">
+        <div class="card-title">Player 19 Steve Smith</div>
+      </div>
+
+      <div class="card" data-name="20alexhales" data-number="20"
+        onclick="openViewer('full_pngs/20 Alex Hales.png', this)">
+        <img data-src="full_pngs/20 Alex Hales.png" alt="Player 20 Alex Hales" loading="lazy">
+        <div class="card-title">Player 20 Alex Hales</div>
+      </div>
+
+      <div class="card" data-name="21jonnybairstow" data-number="21"
+        onclick="openViewer('full_pngs/21 Jonny Bairstow.png', this)">
+        <img data-src="full_pngs/21 Jonny Bairstow.png" alt="Player 21 Jonny Bairstow" loading="lazy">
+        <div class="card-title">Player 21 Jonny Bairstow</div>
+      </div>
+
+      <div class="card" data-name="22kanewilliamson" data-number="22"
+        onclick="openViewer('full_pngs/22 Kane Williamson.png', this)">
+        <img data-src="full_pngs/22 Kane Williamson.png" alt="Player 22 Kane Williamson" loading="lazy">
+        <div class="card-title">Player 22 Kane Williamson</div>
+      </div>
+
+      <div class="card" data-name="23rahultripathi" data-number="23"
+        onclick="openViewer('full_pngs/23 Rahul Tripathi.png', this)">
+        <img data-src="full_pngs/23 Rahul Tripathi.png" alt="Player 23 Rahul Tripathi" loading="lazy">
+        <div class="card-title">Player 23 Rahul Tripathi</div>
+      </div>
+
+      <div class="card" data-name="24shaihope" data-number="24"
+        onclick="openViewer('full_pngs/24 Shai Hope.png', this)">
+        <img data-src="full_pngs/24 Shai Hope.png" alt="Player 24 Shai Hope" loading="lazy">
+        <div class="card-title">Player 24 Shai Hope</div>
+      </div>
+
+      <div class="card" data-name="25rovmanpowell" data-number="25"
+        onclick="openViewer('full_pngs/25 Rovman Powell.png', this)">
+        <img data-src="full_pngs/25 Rovman Powell.png" alt="Player 25 Rovman Powell" loading="lazy">
+        <div class="card-title">Player 25 Rovman Powell</div>
+      </div>
+
+      <div class="card" data-name="26nehalwadhera" data-number="26"
+        onclick="openViewer('full_pngs/26 Nehal Wadhera.png', this)">
+        <img data-src="full_pngs/26 Nehal Wadhera.png" alt="Player 26 Nehal Wadhera" loading="lazy">
+        <div class="card-title">Player 26 Nehal Wadhera</div>
+      </div>
+
+      <div class="card" data-name="27rileerossouw" data-number="27"
+        onclick="openViewer('full_pngs/27 Rilee Rossouw.png', this)">
+        <img data-src="full_pngs/27 Rilee Rossouw.png" alt="Player 27 Rilee Rossouw" loading="lazy">
+        <div class="card-title">Player 27 Rilee Rossouw</div>
+      </div>
+
+      <div class="card" data-name="28joeroot" data-number="28" onclick="openViewer('full_pngs/28 Joe Root.png', this)">
+        <img data-src="full_pngs/28 Joe Root.png" alt="Player 28 Joe Root" loading="lazy">
+        <div class="card-title">Player 28 Joe Root</div>
+      </div>
+
+      <div class="card" data-name="29manishpandey" data-number="29"
+        onclick="openViewer('full_pngs/29 Manish Pandey.png', this)">
+        <img data-src="full_pngs/29 Manish Pandey.png" alt="Player 29 Manish Pandey" loading="lazy">
+        <div class="card-title">Player 29 Manish Pandey</div>
+      </div>
+
+      <div class="card" data-name="30mayankagarwal" data-number="30"
+        onclick="openViewer('full_pngs/30 Mayank Agarwal.png', this)">
+        <img data-src="full_pngs/30 Mayank Agarwal.png" alt="Player 30 Mayank Agarwal" loading="lazy">
+        <div class="card-title">Player 30 Mayank Agarwal</div>
+      </div>
+
+      <div class="card" data-name="31sarfarazkhan" data-number="31"
+        onclick="openViewer('full_pngs/31 Sarfaraz Khan.png', this)">
+        <img data-src="full_pngs/31 Sarfaraz Khan.png" alt="Player 31 Sarfaraz Khan" loading="lazy">
+        <div class="card-title">Player 31 Sarfaraz Khan</div>
+      </div>
+
+      <div class="card" data-name="32nitishrana" data-number="32"
+        onclick="openViewer('full_pngs/32 Nitish Rana.png', this)">
+        <img data-src="full_pngs/32 Nitish Rana.png" alt="Player 32 Nitish Rana" loading="lazy">
+        <div class="card-title">Player 32 Nitish Rana</div>
+      </div>
+
+      <div class="card" data-name="33rachinravindra" data-number="33"
+        onclick="openViewer('full_pngs/33 Rachin Ravindra.png', this)">
+        <img data-src="full_pngs/33 Rachin Ravindra.png" alt="Player 33 Rachin Ravindra" loading="lazy">
+        <div class="card-title">Player 33 Rachin Ravindra</div>
+      </div>
+
+      <div class="card" data-name="34colinmunro" data-number="34"
+        onclick="openViewer('full_pngs/34 Colin Munro.png', this)">
+        <img data-src="full_pngs/34 Colin Munro.png" alt="Player 34 Colin Munro" loading="lazy">
+        <div class="card-title">Player 34 Colin Munro</div>
+      </div>
+
+      <div class="card" data-name="35karunnair" data-number="35"
+        onclick="openViewer('full_pngs/35 Karun Nair.png', this)">
+        <img data-src="full_pngs/35 Karun Nair.png" alt="Player 35 Karun Nair" loading="lazy">
+        <div class="card-title">Player 35 Karun Nair</div>
+      </div>
+
+      <div class="card" data-name="36ajinkyarahane" data-number="36"
+        onclick="openViewer('full_pngs/36 Ajinkya Rahane.png', this)">
+        <img data-src="full_pngs/36 Ajinkya Rahane.png" alt="Player 36 Ajinkya Rahane" loading="lazy">
+        <div class="card-title">Player 36 Ajinkya Rahane</div>
+      </div>
+
+      <div class="card" data-name="37mananvohra" data-number="37"
+        onclick="openViewer('full_pngs/37 Manan Vohra.png', this)">
+        <img data-src="full_pngs/37 Manan Vohra.png" alt="Player 37 Manan Vohra" loading="lazy">
+        <div class="card-title">Player 37 Manan Vohra</div>
+      </div>
+
+      <div class="card" data-name="38evinlewis" data-number="38"
+        onclick="openViewer('full_pngs/38 Evin Lewis.png', this)">
+        <img data-src="full_pngs/38 Evin Lewis.png" alt="Player 38 Evin Lewis" loading="lazy">
+        <div class="card-title">Player 38 Evin Lewis</div>
+      </div>
+
+      <div class="card" data-name="39anmolpreetsingh" data-number="39"
+        onclick="openViewer('full_pngs/39 Anmolpreet Singh.png', this)">
+        <img data-src="full_pngs/39 Anmolpreet Singh.png" alt="Player 39 Anmolpreet Singh" loading="lazy">
+        <div class="card-title">Player 39 Anmolpreet Singh</div>
+      </div>
+
+      <div class="card" data-name="40angkrishraghuvanshi" data-number="40"
+        onclick="openViewer('full_pngs/40 Angkrish Raghuvanshi.png', this)">
+        <img data-src="full_pngs/40 Angkrish Raghuvanshi.png" alt="Player 40 Angkrish Raghuvanshi" loading="lazy">
+        <div class="card-title">Player 40 Angkrish Raghuvanshi</div>
+      </div>
+
+      <div class="card" data-name="41rashidkhan" data-number="41"
+        onclick="openViewer('full_pngs/41 Rashid Khan.png', this)">
+        <img data-src="full_pngs/41 Rashid Khan.png" alt="Player 41 Rashid Khan" loading="lazy">
+        <div class="card-title">Player 41 Rashid Khan</div>
+      </div>
+
+      <div class="card" data-name="42jaspritbumrah" data-number="42"
+        onclick="openViewer('full_pngs/42 Jasprit Bumrah.png', this)">
+        <img data-src="full_pngs/42 Jasprit Bumrah.png" alt="Player 42 Jasprit Bumrah" loading="lazy">
+        <div class="card-title">Player 42 Jasprit Bumrah</div>
+      </div>
+
+      <div class="card" data-name="43jofraarcher" data-number="43"
+        onclick="openViewer('full_pngs/43 Jofra Archer.png', this)">
+        <img data-src="full_pngs/43 Jofra Archer.png" alt="Player 43 Jofra Archer" loading="lazy">
+        <div class="card-title">Player 43 Jofra Archer</div>
+      </div>
+
+      <div class="card" data-name="44patcummins" data-number="44"
+        onclick="openViewer('full_pngs/44 Pat Cummins.png', this)">
+        <img data-src="full_pngs/44 Pat Cummins.png" alt="Player 44 Pat Cummins" loading="lazy">
+        <div class="card-title">Player 44 Pat Cummins</div>
+      </div>
+
+      <div class="card" data-name="45mitchellstarc" data-number="45"
+        onclick="openViewer('full_pngs/45 Mitchell Starc.png', this)">
+        <img data-src="full_pngs/45 Mitchell Starc.png" alt="Player 45 Mitchell Starc" loading="lazy">
+        <div class="card-title">Player 45 Mitchell Starc</div>
+      </div>
+
+      <div class="card" data-name="46yuzvendrachahal" data-number="46"
+        onclick="openViewer('full_pngs/46 Yuzvendra Chahal.png', this)">
+        <img data-src="full_pngs/46 Yuzvendra Chahal.png" alt="Player 46 Yuzvendra Chahal" loading="lazy">
+        <div class="card-title">Player 46 Yuzvendra Chahal</div>
+      </div>
+
+      <div class="card" data-name="47kagisorabada" data-number="47"
+        onclick="openViewer('full_pngs/47 Kagiso Rabada.png', this)">
+        <img data-src="full_pngs/47 Kagiso Rabada.png" alt="Player 47 Kagiso Rabada" loading="lazy">
+        <div class="card-title">Player 47 Kagiso Rabada</div>
+      </div>
+
+      <div class="card" data-name="48arshdeepsingh" data-number="48"
+        onclick="openViewer('full_pngs/48 Arshdeep Singh.png', this)">
+        <img data-src="full_pngs/48 Arshdeep Singh.png" alt="Player 48 Arshdeep Singh" loading="lazy">
+        <div class="card-title">Player 48 Arshdeep Singh</div>
+      </div>
+
+      <div class="card" data-name="49trentboult" data-number="49"
+        onclick="openViewer('full_pngs/49 Trent Boult.png', this)">
+        <img data-src="full_pngs/49 Trent Boult.png" alt="Player 49 Trent Boult" loading="lazy">
+        <div class="card-title">Player 49 Trent Boult</div>
+      </div>
+
+      <div class="card" data-name="50mohammedshami" data-number="50"
+        onclick="openViewer('full_pngs/50 Mohammed Shami.png', this)">
+        <img data-src="full_pngs/50 Mohammed Shami.png" alt="Player 50 Mohammed Shami" loading="lazy">
+        <div class="card-title">Player 50 Mohammed Shami</div>
+      </div>
+
+      <div class="card" data-name="51bhuvneshwarkumar" data-number="51"
+        onclick="openViewer('full_pngs/51 Bhuvneshwar Kumar.png', this)">
+        <img data-src="full_pngs/51 Bhuvneshwar Kumar.png" alt="Player 51 Bhuvneshwar Kumar" loading="lazy">
+        <div class="card-title">Player 51 Bhuvneshwar Kumar</div>
+      </div>
+
+      <div class="card" data-name="52deepakchahar" data-number="52"
+        onclick="openViewer('full_pngs/52 Deepak Chahar.png', this)">
+        <img data-src="full_pngs/52 Deepak Chahar.png" alt="Player 52 Deepak Chahar" loading="lazy">
+        <div class="card-title">Player 52 Deepak Chahar</div>
+      </div>
+
+      <div class="card" data-name="53ravibishnoi" data-number="53"
+        onclick="openViewer('full_pngs/53 Ravi Bishnoi.png', this)">
+        <img data-src="full_pngs/53 Ravi Bishnoi.png" alt="Player 53 Ravi Bishnoi" loading="lazy">
+        <div class="card-title">Player 53 Ravi Bishnoi</div>
+      </div>
+
+      <div class="card" data-name="54joshhazlewood" data-number="54"
+        onclick="openViewer('full_pngs/54 Josh Hazlewood.png', this)">
+        <img data-src="full_pngs/54 Josh Hazlewood.png" alt="Player 54 Josh Hazlewood" loading="lazy">
+        <div class="card-title">Player 54 Josh Hazlewood</div>
+      </div>
+
+      <div class="card" data-name="55markwood" data-number="55"
+        onclick="openViewer('full_pngs/55 Mark Wood.png', this)">
+        <img data-src="full_pngs/55 Mark Wood.png" alt="Player 55 Mark Wood" loading="lazy">
+        <div class="card-title">Player 55 Mark Wood</div>
+      </div>
+
+      <div class="card" data-name="56aveshkhan" data-number="56"
+        onclick="openViewer('full_pngs/56 Avesh Khan.png', this)">
+        <img data-src="full_pngs/56 Avesh Khan.png" alt="Player 56 Avesh Khan" loading="lazy">
+        <div class="card-title">Player 56 Avesh Khan</div>
+      </div>
+
+      <div class="card" data-name="57kuldeepyadav" data-number="57"
+        onclick="openViewer('full_pngs/57 Kuldeep Yadav.png', this)">
+        <img data-src="full_pngs/57 Kuldeep Yadav.png" alt="Player 57 Kuldeep Yadav" loading="lazy">
+        <div class="card-title">Player 57 Kuldeep Yadav</div>
+      </div>
+
+      <div class="card" data-name="58umranmalik" data-number="58"
+        onclick="openViewer('full_pngs/58 Umran Malik.png', this)">
+        <img data-src="full_pngs/58 Umran Malik.png" alt="Player 58 Umran Malik" loading="lazy">
+        <div class="card-title">Player 58 Umran Malik</div>
+      </div>
+
+      <div class="card" data-name="59shardulthakur" data-number="59"
+        onclick="openViewer('full_pngs/59 Shardul Thakur.png', this)">
+        <img data-src="full_pngs/59 Shardul Thakur.png" alt="Player 59 Shardul Thakur" loading="lazy">
+        <div class="card-title">Player 59 Shardul Thakur</div>
+      </div>
+
+      <div class="card" data-name="60tnatarajan" data-number="60"
+        onclick="openViewer('full_pngs/60 T Natarajan.png', this)">
+        <img data-src="full_pngs/60 T Natarajan.png" alt="Player 60 T Natarajan" loading="lazy">
+        <div class="card-title">Player 60 T Natarajan</div>
+      </div>
+
+      <div class="card" data-name="61maheeshtheekshana" data-number="61"
+        onclick="openViewer('full_pngs/61 Maheesh Theekshana.png', this)">
+        <img data-src="full_pngs/61 Maheesh Theekshana.png" alt="Player 61 Maheesh Theekshana" loading="lazy">
+        <div class="card-title">Player 61 Maheesh Theekshana</div>
+      </div>
+
+      <div class="card" data-name="62adamzampa" data-number="62"
+        onclick="openViewer('full_pngs/62 Adam Zampa.png', this)">
+        <img data-src="full_pngs/62 Adam Zampa.png" alt="Player 62 Adam Zampa" loading="lazy">
+        <div class="card-title">Player 62 Adam Zampa</div>
+      </div>
+
+      <div class="card" data-name="63mohammadsiraj" data-number="63"
+        onclick="openViewer('full_pngs/63 Mohammad Siraj.png', this)">
+        <img data-src="full_pngs/63 Mohammad Siraj.png" alt="Player 63 Mohammad Siraj" loading="lazy">
+        <div class="card-title">Player 63 Mohammad Siraj</div>
+      </div>
+
+      <div class="card" data-name="64varunchakravarthy" data-number="64"
+        onclick="openViewer('full_pngs/64 Varun Chakravarthy.png', this)">
+        <img data-src="full_pngs/64 Varun Chakravarthy.png" alt="Player 64 Varun Chakravarthy" loading="lazy">
+        <div class="card-title">Player 64 Varun Chakravarthy</div>
+      </div>
+
+      <div class="card" data-name="65sandeepsharma" data-number="65"
+        onclick="openViewer('full_pngs/65 Sandeep Sharma.png', this)">
+        <img data-src="full_pngs/65 Sandeep Sharma.png" alt="Player 65 Sandeep Sharma" loading="lazy">
+        <div class="card-title">Player 65 Sandeep Sharma</div>
+      </div>
+
+      <div class="card" data-name="66umeshyadav" data-number="66"
+        onclick="openViewer('full_pngs/66 Umesh Yadav.png', this)">
+        <img data-src="full_pngs/66 Umesh Yadav.png" alt="Player 66 Umesh Yadav" loading="lazy">
+        <div class="card-title">Player 66 Umesh Yadav</div>
+      </div>
+
+      <div class="card" data-name="67jaydevunadkat" data-number="67"
+        onclick="openViewer('full_pngs/67 Jaydev Unadkat.png', this)">
+        <img data-src="full_pngs/67 Jaydev Unadkat.png" alt="Player 67 Jaydev Unadkat" loading="lazy">
+        <div class="card-title">Player 67 Jaydev Unadkat</div>
+      </div>
+
+      <div class="card" data-name="68mayankmarkande" data-number="68"
+        onclick="openViewer('full_pngs/68 Mayank Markande.png', this)">
+        <img data-src="full_pngs/68 Mayank Markande.png" alt="Player 68 Mayank Markande" loading="lazy">
+        <div class="card-title">Player 68 Mayank Markande</div>
+      </div>
+
+      <div class="card" data-name="69prasidhkrishna" data-number="69"
+        onclick="openViewer('full_pngs/69 Prasidh Krishna.png', this)">
+        <img data-src="full_pngs/69 Prasidh Krishna.png" alt="Player 69 Prasidh Krishna" loading="lazy">
+        <div class="card-title">Player 69 Prasidh Krishna</div>
+      </div>
+
+      <div class="card" data-name="70chetansakariya" data-number="70"
+        onclick="openViewer('full_pngs/70 Chetan Sakariya.png', this)">
+        <img data-src="full_pngs/70 Chetan Sakariya.png" alt="Player 70 Chetan Sakariya" loading="lazy">
+        <div class="card-title">Player 70 Chetan Sakariya</div>
+      </div>
+
+      <div class="card" data-name="71harshalpatel" data-number="71"
+        onclick="openViewer('full_pngs/71 Harshal Patel.png', this)">
+        <img data-src="full_pngs/71 Harshal Patel.png" alt="Player 71 Harshal Patel" loading="lazy">
+        <div class="card-title">Player 71 Harshal Patel</div>
+      </div>
+
+      <div class="card" data-name="72mukeshkumar" data-number="72"
+        onclick="openViewer('full_pngs/72 Mukesh Kumar.png', this)">
+        <img data-src="full_pngs/72 Mukesh Kumar.png" alt="Player 72 Mukesh Kumar" loading="lazy">
+        <div class="card-title">Player 72 Mukesh Kumar</div>
+      </div>
+
+      <div class="card" data-name="73rsaikishore" data-number="73"
+        onclick="openViewer('full_pngs/73 R Sai Kishore.png', this)">
+        <img data-src="full_pngs/73 R Sai Kishore.png" alt="Player 73 R Sai Kishore" loading="lazy">
+        <div class="card-title">Player 73 R Sai Kishore</div>
+      </div>
+
+      <div class="card" data-name="74khaleelahmed" data-number="74"
+        onclick="openViewer('full_pngs/74 Khaleel Ahmed.png', this)">
+        <img data-src="full_pngs/74 Khaleel Ahmed.png" alt="Player 74 Khaleel Ahmed" loading="lazy">
+        <div class="card-title">Player 74 Khaleel Ahmed</div>
+      </div>
+
+      <div class="card" data-name="75yashdayal" data-number="75"
+        onclick="openViewer('full_pngs/75 Yash Dayal.png', this)">
+        <img data-src="full_pngs/75 Yash Dayal.png" alt="Player 75 Yash Dayal" loading="lazy">
+        <div class="card-title">Player 75 Yash Dayal</div>
+      </div>
+
+      <div class="card" data-name="76mohsinkhan" data-number="76"
+        onclick="openViewer('full_pngs/76 Mohsin Khan.png', this)">
+        <img data-src="full_pngs/76 Mohsin Khan.png" alt="Player 76 Mohsin Khan" loading="lazy">
+        <div class="card-title">Player 76 Mohsin Khan</div>
+      </div>
+
+      <div class="card" data-name="77shamsmulani" data-number="77"
+        onclick="openViewer('full_pngs/77 Shams Mulani.png', this)">
+        <img data-src="full_pngs/77 Shams Mulani.png" alt="Player 77 Shams Mulani" loading="lazy">
+        <div class="card-title">Player 77 Shams Mulani</div>
+      </div>
+
+      <div class="card" data-name="78matheeshapathirana" data-number="78"
+        onclick="openViewer('full_pngs/78 Matheesha Pathirana.png', this)">
+        <img data-src="full_pngs/78 Matheesha Pathirana.png" alt="Player 78 Matheesha Pathirana" loading="lazy">
+        <div class="card-title">Player 78 Matheesha Pathirana</div>
+      </div>
+
+      <div class="card" data-name="79rajvardhanhangargekar" data-number="79"
+        onclick="openViewer('full_pngs/79 Rajvardhan Hangargekar.png', this)">
+        <img data-src="full_pngs/79 Rajvardhan Hangargekar.png" alt="Player 79 Rajvardhan Hangargekar" loading="lazy">
+        <div class="card-title">Player 79 Rajvardhan Hangargekar</div>
+      </div>
+
+      <div class="card" data-name="80tushardeshpande" data-number="80"
+        onclick="openViewer('full_pngs/80 Tushar Deshpande.png', this)">
+        <img data-src="full_pngs/80 Tushar Deshpande.png" alt="Player 80 Tushar Deshpande" loading="lazy">
+        <div class="card-title">Player 80 Tushar Deshpande</div>
+      </div>
+
+      <div class="card" data-name="81hardikpandya" data-number="81"
+        onclick="openViewer('full_pngs/81 Hardik Pandya.png', this)">
+        <img data-src="full_pngs/81 Hardik Pandya.png" alt="Player 81 Hardik Pandya" loading="lazy">
+        <div class="card-title">Player 81 Hardik Pandya</div>
+      </div>
+
+      <div class="card" data-name="82andrerussell" data-number="82"
+        onclick="openViewer('full_pngs/82 Andre Russell.png', this)">
+        <img data-src="full_pngs/82 Andre Russell.png" alt="Player 82 Andre Russell" loading="lazy">
+        <div class="card-title">Player 82 Andre Russell</div>
+      </div>
+
+      <div class="card" data-name="83benstokes" data-number="83"
+        onclick="openViewer('full_pngs/83 Ben Stokes.png', this)">
+        <img data-src="full_pngs/83 Ben Stokes.png" alt="Player 83 Ben Stokes" loading="lazy">
+        <div class="card-title">Player 83 Ben Stokes</div>
+      </div>
+
+      <div class="card" data-name="84ravindrajadeja" data-number="84"
+        onclick="openViewer('full_pngs/84 Ravindra Jadeja.png', this)">
+        <img data-src="full_pngs/84 Ravindra Jadeja.png" alt="Player 84 Ravindra Jadeja" loading="lazy">
+        <div class="card-title">Player 84 Ravindra Jadeja</div>
+      </div>
+
+      <div class="card" data-name="85glennmaxwell" data-number="85"
+        onclick="openViewer('full_pngs/85 Glenn Maxwell.png', this)">
+        <img data-src="full_pngs/85 Glenn Maxwell.png" alt="Player 85 Glenn Maxwell" loading="lazy">
+        <div class="card-title">Player 85 Glenn Maxwell</div>
+      </div>
+
+      <div class="card" data-name="86marcusstoinis" data-number="86"
+        onclick="openViewer('full_pngs/86 Marcus Stoinis.png', this)">
+        <img data-src="full_pngs/86 Marcus Stoinis.png" alt="Player 86 Marcus Stoinis" loading="lazy">
+        <div class="card-title">Player 86 Marcus Stoinis</div>
+      </div>
+
+      <div class="card" data-name="87liamlivingstone" data-number="87"
+        onclick="openViewer('full_pngs/87 Liam Livingstone.png', this)">
+        <img data-src="full_pngs/87 Liam Livingstone.png" alt="Player 87 Liam Livingstone" loading="lazy">
+        <div class="card-title">Player 87 Liam Livingstone</div>
+      </div>
+
+      <div class="card" data-name="88shivamdube" data-number="88"
+        onclick="openViewer('full_pngs/88 Shivam Dube.png', this)">
+        <img data-src="full_pngs/88 Shivam Dube.png" alt="Player 88 Shivam Dube" loading="lazy">
+        <div class="card-title">Player 88 Shivam Dube</div>
+      </div>
+
+      <div class="card" data-name="89washingtonsundar" data-number="89"
+        onclick="openViewer('full_pngs/89 Washington Sundar.png', this)">
+        <img data-src="full_pngs/89 Washington Sundar.png" alt="Player 89 Washington Sundar" loading="lazy">
+        <div class="card-title">Player 89 Washington Sundar</div>
+      </div>
+
+      <div class="card" data-name="90waninduhasaranga" data-number="90"
+        onclick="openViewer('full_pngs/90 Wanindu Hasaranga.png', this)">
+        <img data-src="full_pngs/90 Wanindu Hasaranga.png" alt="Player 90 Wanindu Hasaranga" loading="lazy">
+        <div class="card-title">Player 90 Wanindu Hasaranga</div>
+      </div>
+
+      <div class="card" data-name="91samcurran" data-number="91"
+        onclick="openViewer('full_pngs/91 Sam Curran.png', this)">
+        <img data-src="full_pngs/91 Sam Curran.png" alt="Player 91 Sam Curran" loading="lazy">
+        <div class="card-title">Player 91 Sam Curran</div>
+      </div>
+
+      <div class="card" data-name="92camerongreen" data-number="92"
+        onclick="openViewer('full_pngs/92 Cameron Green.png', this)">
+        <img data-src="full_pngs/92 Cameron Green.png" alt="Player 92 Cameron Green" loading="lazy">
+        <div class="card-title">Player 92 Cameron Green</div>
+      </div>
+
+      <div class="card" data-name="93abhisheksharma" data-number="93"
+        onclick="openViewer('full_pngs/93 Abhishek Sharma.png', this)">
+        <img data-src="full_pngs/93 Abhishek Sharma.png" alt="Player 93 Abhishek Sharma" loading="lazy">
+        <div class="card-title">Player 93 Abhishek Sharma</div>
+      </div>
+
+      <div class="card" data-name="94shakibalhasan" data-number="94"
+        onclick="openViewer('full_pngs/94 Shakib Al Hasan.png', this)">
+        <img data-src="full_pngs/94 Shakib Al Hasan.png" alt="Player 94 Shakib Al Hasan" loading="lazy">
+        <div class="card-title">Player 94 Shakib Al Hasan</div>
+      </div>
+
+      <div class="card" data-name="95moeenali" data-number="95"
+        onclick="openViewer('full_pngs/95 Moeen Ali.png', this)">
+        <img data-src="full_pngs/95 Moeen Ali.png" alt="Player 95 Moeen Ali" loading="lazy">
+        <div class="card-title">Player 95 Moeen Ali</div>
+      </div>
+
+      <div class="card" data-name="96axarpatel" data-number="96"
+        onclick="openViewer('full_pngs/96 Axar Patel.png', this)">
+        <img data-src="full_pngs/96 Axar Patel.png" alt="Player 96 Axar Patel" loading="lazy">
+        <div class="card-title">Player 96 Axar Patel</div>
+      </div>
+
+      <div class="card" data-name="97riyanparag" data-number="97"
+        onclick="openViewer('full_pngs/97 Riyan Parag.png', this)">
+        <img data-src="full_pngs/97 Riyan Parag.png" alt="Player 97 Riyan Parag" loading="lazy">
+        <div class="card-title">Player 97 Riyan Parag</div>
+      </div>
+
+      <div class="card" data-name="98rahultewatia" data-number="98"
+        onclick="openViewer('full_pngs/98 Rahul Tewatia.png', this)">
+        <img data-src="full_pngs/98 Rahul Tewatia.png" alt="Player 98 Rahul Tewatia" loading="lazy">
+        <div class="card-title">Player 98 Rahul Tewatia</div>
+      </div>
+
+      <div class="card" data-name="99deepakhooda" data-number="99"
+        onclick="openViewer('full_pngs/99 Deepak Hooda.png', this)">
+        <img data-src="full_pngs/99 Deepak Hooda.png" alt="Player 99 Deepak Hooda" loading="lazy">
+        <div class="card-title">Player 99 Deepak Hooda</div>
+      </div>
+
+      <div class="card" data-name="100mahipallomror" data-number="100"
+        onclick="openViewer('full_pngs/100 Mahipal Lomror.png', this)">
+        <img data-src="full_pngs/100 Mahipal Lomror.png" alt="Player 100 Mahipal Lomror" loading="lazy">
+        <div class="card-title">Player 100 Mahipal Lomror</div>
+      </div>
+
+      <div class="card" data-name="101venkateshiyer" data-number="101"
+        onclick="openViewer('full_pngs/101 Venkatesh Iyer.png', this)">
+        <img data-src="full_pngs/101 Venkatesh Iyer.png" alt="Player 101 Venkatesh Iyer" loading="lazy">
+        <div class="card-title">Player 101 Venkatesh Iyer</div>
+      </div>
+
+      <div class="card" data-name="102krunalpandya" data-number="102"
+        onclick="openViewer('full_pngs/102 Krunal Pandya.png', this)">
+        <img data-src="full_pngs/102 Krunal Pandya.png" alt="Player 102 Krunal Pandya" loading="lazy">
+        <div class="card-title">Player 102 Krunal Pandya</div>
+      </div>
+
+      <div class="card" data-name="103rostonchase" data-number="103"
+        onclick="openViewer('full_pngs/103 Roston Chase.png', this)">
+        <img data-src="full_pngs/103 Roston Chase.png" alt="Player 103 Roston Chase" loading="lazy">
+        <div class="card-title">Player 103 Roston Chase</div>
+      </div>
+
+      <div class="card" data-name="104dasunshanaka" data-number="104"
+        onclick="openViewer('full_pngs/104 Dasun Shanaka.png', this)">
+        <img data-src="full_pngs/104 Dasun Shanaka.png" alt="Player 104 Dasun Shanaka" loading="lazy">
+        <div class="card-title">Player 104 Dasun Shanaka</div>
+      </div>
+
+      <div class="card" data-name="105shahbazahmed" data-number="105"
+        onclick="openViewer('full_pngs/105 Shahbaz Ahmed.png', this)">
+        <img data-src="full_pngs/105 Shahbaz Ahmed.png" alt="Player 105 Shahbaz Ahmed" loading="lazy">
+        <div class="card-title">Player 105 Shahbaz Ahmed</div>
+      </div>
+
+      <div class="card" data-name="106rishabhpant" data-number="106"
+        onclick="openViewer('full_pngs/106 Rishabh Pant.png', this)">
+        <img data-src="full_pngs/106 Rishabh Pant.png" alt="Player 106 Rishabh Pant" loading="lazy">
+        <div class="card-title">Player 106 Rishabh Pant</div>
+      </div>
+
+      <div class="card" data-name="107ishankishan" data-number="107"
+        onclick="openViewer('full_pngs/107 Ishan Kishan.png', this)">
+        <img data-src="full_pngs/107 Ishan Kishan.png" alt="Player 107 Ishan Kishan" loading="lazy">
+        <div class="card-title">Player 107 Ishan Kishan</div>
+      </div>
+
+      <div class="card" data-name="108klrahul" data-number="108"
+        onclick="openViewer('full_pngs/108 KL Rahul.png', this)">
+        <img data-src="full_pngs/108 KL Rahul.png" alt="Player 108 KL Rahul" loading="lazy">
+        <div class="card-title">Player 108 KL Rahul</div>
+      </div>
+
+      <div class="card" data-name="109sanjusamson" data-number="109"
+        onclick="openViewer('full_pngs/109 Sanju Samson.png', this)">
+        <img data-src="full_pngs/109 Sanju Samson.png" alt="Player 109 Sanju Samson" loading="lazy">
+        <div class="card-title">Player 109 Sanju Samson</div>
+      </div>
+
+      <div class="card" data-name="110quintondekock" data-number="110"
+        onclick="openViewer('full_pngs/110 Quinton de Kock.png', this)">
+        <img data-src="full_pngs/110 Quinton de Kock.png" alt="Player 110 Quinton de Kock" loading="lazy">
+        <div class="card-title">Player 110 Quinton de Kock</div>
+      </div>
+
+      <div class="card" data-name="111josbuttler" data-number="111"
+        onclick="openViewer('full_pngs/111 Jos Buttler.png', this)">
+        <img data-src="full_pngs/111 Jos Buttler.png" alt="Player 111 Jos Buttler" loading="lazy">
+        <div class="card-title">Player 111 Jos Buttler</div>
+      </div>
+
+      <div class="card" data-name="112nicholaspooran" data-number="112"
+        onclick="openViewer('full_pngs/112 Nicholas Pooran.png', this)">
+        <img data-src="full_pngs/112 Nicholas Pooran.png" alt="Player 112 Nicholas Pooran" loading="lazy">
+        <div class="card-title">Player 112 Nicholas Pooran</div>
+      </div>
+
+      <div class="card" data-name="113philsalt" data-number="113"
+        onclick="openViewer('full_pngs/113 Phil Salt.png', this)">
+        <img data-src="full_pngs/113 Phil Salt.png" alt="Player 113 Phil Salt" loading="lazy">
+        <div class="card-title">Player 113 Phil Salt</div>
+      </div>
+
+      <div class="card" data-name="114heinrichklaasen" data-number="114"
+        onclick="openViewer('full_pngs/114 Heinrich Klaasen.png', this)">
+        <img data-src="full_pngs/114 Heinrich Klaasen.png" alt="Player 114 Heinrich Klaasen" loading="lazy">
+        <div class="card-title">Player 114 Heinrich Klaasen</div>
+      </div>
+
+      <div class="card" data-name="115rahmanullahgurbaz" data-number="115"
+        onclick="openViewer('full_pngs/115 Rahmanullah Gurbaz.png', this)">
+        <img data-src="full_pngs/115 Rahmanullah Gurbaz.png" alt="Player 115 Rahmanullah Gurbaz" loading="lazy">
+        <div class="card-title">Player 115 Rahmanullah Gurbaz</div>
+      </div>
+
+      <div class="card" data-name="116msdhoni" data-number="116"
+        onclick="openViewer('full_pngs/116 MS Dhoni.png', this)">
+        <img data-src="full_pngs/116 MS Dhoni.png" alt="Player 116 MS Dhoni" loading="lazy">
+        <div class="card-title">Player 116 MS Dhoni</div>
+      </div>
+
+      <div class="card" data-name="117jiteshsharma" data-number="117"
+        onclick="openViewer('full_pngs/117 Jitesh Sharma.png', this)">
+        <img data-src="full_pngs/117 Jitesh Sharma.png" alt="Player 117 Jitesh Sharma" loading="lazy">
+        <div class="card-title">Player 117 Jitesh Sharma</div>
+      </div>
+
+      <div class="card" data-name="118prabhsimransingh" data-number="118"
+        onclick="openViewer('full_pngs/118 Prabhsimran Singh.png', this)">
+        <img data-src="full_pngs/118 Prabhsimran Singh.png" alt="Player 118 Prabhsimran Singh" loading="lazy">
+        <div class="card-title">Player 118 Prabhsimran Singh</div>
+      </div>
+
+      <div class="card" data-name="119sherfanerutherford" data-number="119"
+        onclick="openViewer('full_pngs/119 Sherfane Rutherford.png', this)">
+        <img data-src="full_pngs/119 Sherfane Rutherford.png" alt="Player 119 Sherfane Rutherford" loading="lazy">
+        <div class="card-title">Player 119 Sherfane Rutherford</div>
+      </div>
+
+      <div class="card" data-name="120devonconway" data-number="120"
+        onclick="openViewer('full_pngs/120 Devon Conway.png', this)">
+        <img data-src="full_pngs/120 Devon Conway.png" alt="Player 120 Devon Conway" loading="lazy">
+        <div class="card-title">Player 120 Devon Conway</div>
+      </div>
+
+      <div class="card" data-name="121littondas" data-number="121"
+        onclick="openViewer('full_pngs/121 Litton Das.png', this)">
+        <img data-src="full_pngs/121 Litton Das.png" alt="Player 121 Litton Das" loading="lazy">
+        <div class="card-title">Player 121 Litton Das</div>
+      </div>
+
+      <div class="card" data-name="122anujrawat" data-number="122"
+        onclick="openViewer('full_pngs/122 Anuj Rawat.png', this)">
+        <img data-src="full_pngs/122 Anuj Rawat.png" alt="Player 122 Anuj Rawat" loading="lazy">
+        <div class="card-title">Player 122 Anuj Rawat</div>
+      </div>
+
+      <div class="card" data-name="123dineshkarthik" data-number="123"
+        onclick="openViewer('full_pngs/123 Dinesh Karthik.png', this)">
+        <img data-src="full_pngs/123 Dinesh Karthik.png" alt="Player 123 Dinesh Karthik" loading="lazy">
+        <div class="card-title">Player 123 Dinesh Karthik</div>
+      </div>
+
+      <div class="card" data-name="124ksbharat" data-number="124"
+        onclick="openViewer('full_pngs/124 KS Bharat.png', this)">
+        <img data-src="full_pngs/124 KS Bharat.png" alt="Player 124 KS Bharat" loading="lazy">
+        <div class="card-title">Player 124 KS Bharat</div>
+      </div>
+
+      <div class="card" data-name="125vishnuvinod" data-number="125"
+        onclick="openViewer('full_pngs/125 Vishnu Vinod.png', this)">
+        <img data-src="full_pngs/125 Vishnu Vinod.png" alt="Player 125 Vishnu Vinod" loading="lazy">
+        <div class="card-title">Player 125 Vishnu Vinod</div>
+      </div>
+
+      <div class="card" data-name="126njagadeesan" data-number="126"
+        onclick="openViewer('full_pngs/126 N Jagadeesan.png', this)">
+        <img data-src="full_pngs/126 N Jagadeesan.png" alt="Player 126 N Jagadeesan" loading="lazy">
+        <div class="card-title">Player 126 N Jagadeesan</div>
+      </div>
+
+      <div class="card" data-name="127sambillings" data-number="127"
+        onclick="openViewer('full_pngs/127 Sam Billings.png', this)">
+        <img data-src="full_pngs/127 Sam Billings.png" alt="Player 127 Sam Billings" loading="lazy">
+        <div class="card-title">Player 127 Sam Billings</div>
+      </div>
+
+    </div>
+    <h2>Sold Players</h2>
+    <div class="grid" id="soldGallery"></div>
+  </main>
+
+  <div id="viewer">
+    <img id="previewImage" src="">
+    <div id="actionButtons">
+      <button id="soldBtn" onclick="markSold()">Sold</button>
+      <button id="unsoldBtn" onclick="nextPlayer()">Unsold</button>
+      <button id="closeBtn" onclick="closeViewer()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function normalize(str) {
+      return str?.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+
+    // --- Enhanced Image Loading System ---
+    const imageCache = new Set();
+
+    function loadImage(img, dataSrc, showLoading = false) {
+      if (!dataSrc || img.src) return;
+
+      // Don't reload if already cached successfully
+      if (imageCache.has(dataSrc) && img.classList.contains('loaded')) return;
+
+      if (showLoading) {
+        img.style.opacity = '0.5';
+        img.style.filter = 'blur(2px)';
+        img.classList.add('loading');
+      }
+
+      img.src = dataSrc;
+      img.removeAttribute('data-src');
+
+      img.onload = function () {
+        imageCache.add(dataSrc); // Only cache on successful load
+        this.classList.add('loaded');
+        this.classList.remove('loading');
+        this.style.opacity = '1';
+        this.style.filter = 'none';
+        this.style.transition = 'all 0.3s ease';
+      };
+
+      img.onerror = function () {
+        this.classList.remove('loading');
+        this.style.opacity = '0.3';
+        this.style.filter = 'none';
+        // Allow retry by not caching failed loads
+      };
+    }
+
+    function loadVisibleImages() {
+      const cards = document.querySelectorAll('#gallery .card, #soldGallery .card');
+      const viewportHeight = window.innerHeight;
+
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const img = card.querySelector('img');
+        const dataSrc = img.getAttribute('data-src');
+
+        // More aggressive loading - 3x viewport height
+        if (dataSrc && rect.top < viewportHeight * 3 && rect.bottom > -viewportHeight * 2) {
+          loadImage(img, dataSrc);
+        }
+      });
+    }
+
+    // Priority load first 20 images immediately
+    function loadPriorityImages() {
+      const firstCards = document.querySelectorAll('#gallery .card');
+      Array.from(firstCards).slice(0, 20).forEach(card => {
+        const img = card.querySelector('img');
+        const dataSrc = img.getAttribute('data-src');
+        if (dataSrc) {
+          loadImage(img, dataSrc);
+        }
+      });
+    }
+
+    // Preload on hover for instant viewing
+    function addHoverPreloading() {
+      document.querySelectorAll('#gallery .card, #soldGallery .card').forEach(card => {
+        card.addEventListener('mouseenter', function () {
+          const img = this.querySelector('img');
+          const dataSrc = img.getAttribute('data-src');
+          if (dataSrc) {
+            loadImage(img, dataSrc, true);
+          }
+        });
+      });
+    }
+
+    // --- Save & Load State (Persistence) ---
+    function saveState() {
+      const state = {
+        active: Array.from(document.querySelectorAll('#gallery .card')).map(card => card.outerHTML),
+        sold: Array.from(document.querySelectorAll('#soldGallery .card')).map(card => card.outerHTML)
+      };
+      localStorage.setItem("playerDashboardState", JSON.stringify(state));
+    }
+
+    function loadState() {
+      const saved = JSON.parse(localStorage.getItem("playerDashboardState") || "{}");
+
+      if (saved.active) {
+        document.getElementById('gallery').innerHTML = saved.active.join('');
+        // Reattach event listeners for active cards
+        document.querySelectorAll('#gallery .card').forEach(card => {
+          const img = card.querySelector('img');
+          const src = img.src || img.getAttribute('data-src');
+          card.onclick = function () { openViewer(src, this); };
+        });
+      }
+
+      if (saved.sold) {
+        document.getElementById('soldGallery').innerHTML = saved.sold.join('');
+        // Reattach event listeners for sold cards
+        document.querySelectorAll('#soldGallery .card .restore-btn').forEach(btn => {
+          btn.onclick = function (e) { restorePlayer(this, e); };
+        });
+      }
+
+      // Load visible images after state is loaded
+      setTimeout(loadVisibleImages, 100);
+    }
+
+    function resetView() {
+      localStorage.removeItem("playerDashboardState");
+      location.reload();
+    }
+
+    function openViewer(src, clickedElement) {
+      if (clickedElement.closest('#soldGallery')) return; // Don't open sold players
+
+      const viewer = document.getElementById('viewer');
+      const img = document.getElementById('previewImage');
+
+      // Enhanced loading with immediate feedback
+      img.classList.add('loading');
+      img.style.opacity = 0.5;
+      img.style.filter = 'blur(3px)';
+
+      viewer.style.display = 'flex';
+      document.body.classList.add('viewer-open');
+
+      // Preload image for instant display
+      const preloader = new Image();
+      preloader.onload = () => {
+        img.src = preloader.src;
+        img.classList.remove('loading');
+        img.style.opacity = 1;
+        img.style.filter = 'none';
+      };
+      preloader.onerror = () => {
+        img.src = src; // Fallback
+        img.classList.remove('loading');
+        img.style.opacity = 1;
+        img.style.filter = 'none';
+      };
+      preloader.src = src;
+
+      // Fullscreen only for desktop
+      if (!/Mobi|Android/i.test(navigator.userAgent)) {
+        if (viewer.requestFullscreen) {
+          viewer.requestFullscreen().catch(() => { });
+        }
+      }
+
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+      const card = clickedElement.closest('.card');
+      if (card) {
+        card.classList.add('active');
+        // Preload adjacent images for faster navigation
+        setTimeout(() => preloadAdjacentImages(card), 100);
+      }
+    }
+
+    function preloadAdjacentImages(currentCard) {
+      const allCards = Array.from(document.querySelectorAll('#gallery .card'));
+      const currentIndex = allCards.indexOf(currentCard);
+
+      // Preload next 3 and previous 3 images for instant navigation
+      for (let i = Math.max(0, currentIndex - 3); i <= Math.min(allCards.length - 1, currentIndex + 3); i++) {
+        if (i !== currentIndex) {
+          const card = allCards[i];
+          const img = card.querySelector('img');
+          const dataSrc = img.getAttribute('data-src');
+          if (dataSrc) {
+            loadImage(img, dataSrc);
+          }
+        }
+      }
+    }
+
+    function closeViewer() {
+      const viewer = document.getElementById('viewer');
+      viewer.style.display = 'none';
+      document.getElementById('previewImage').src = '';
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+
+      // Remove class from body to re-enable scrolling
+      document.body.classList.remove('viewer-open');
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
+
+    function markSold() {
+      const current = document.querySelector('.card.active');
+      if (current && current.parentElement.id === 'gallery') {
+        const currentNumber = parseInt(current.dataset.number);
+
+        // Create a copy for the sold gallery
+        const soldCard = current.cloneNode(true);
+        soldCard.classList.add('sold');
+        soldCard.onclick = null; // Remove click handler
+
+        // Add restore button
+        soldCard.innerHTML += '<button class="restore-btn" onclick="restorePlayer(this, event)">Restore</button>';
+
+        // Add to sold gallery
+        document.getElementById('soldGallery').appendChild(soldCard);
+
+        // Remove the original card from active gallery
+        current.remove();
+
+        // Reattach restore button event
+        soldCard.querySelector('.restore-btn').onclick = function (e) { restorePlayer(this, e); };
+
+        saveState();
+
+        // Find the next player by number, not by position in DOM
+        nextPlayerAfterNumber(currentNumber);
+      }
+    }
+
+    function nextPlayerAfterNumber(currentNumber) {
+      const activeCards = Array.from(document.querySelectorAll('#gallery .card'));
+
+      // Sort cards by their number
+      const sortedCards = activeCards.sort((a, b) => {
+        return parseInt(a.dataset.number) - parseInt(b.dataset.number);
+      });
+
+      // Find the next card with a higher number
+      const nextCard = sortedCards.find(card => parseInt(card.dataset.number) > currentNumber);
+
+      if (nextCard) {
+        nextCard.classList.add('active');
+        const imgSrc = nextCard.querySelector('img').src || nextCard.querySelector('img').getAttribute('data-src');
+        openViewer(imgSrc, nextCard);
+      } else if (sortedCards.length > 0) {
+        // If no higher number found, go to the first card
+        sortedCards[0].classList.add('active');
+        const imgSrc = sortedCards[0].querySelector('img').src || sortedCards[0].querySelector('img').getAttribute('data-src');
+        openViewer(imgSrc, sortedCards[0]);
+      } else {
+        // If no cards left, close the viewer
+        closeViewer();
+      }
+    }
+
+    function restorePlayer(btn, event) {
+      if (event) event.stopPropagation(); // Prevent fullscreen trigger
+
+      const card = btn.closest('.card');
+      const cardName = card.dataset.name;
+      const cardNumber = parseInt(card.dataset.number);
+      const imgElement = card.querySelector('img');
+      const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+      const cardTitle = card.querySelector('.card-title').textContent;
+
+      // Remove from sold gallery
+      card.remove();
+
+      // Create a new card for the active gallery
+      const newCard = document.createElement('div');
+      newCard.className = 'card';
+      newCard.dataset.name = cardName;
+      newCard.dataset.number = cardNumber;
+
+      if (imgElement.src) {
+        newCard.innerHTML = `
+        <img src="${imgSrc}" alt="Preview">
+        <div class="card-title">${cardTitle}</div>
+      `;
+      } else {
+        newCard.innerHTML = `
+        <img data-src="${imgSrc}" alt="Preview">
+        <div class="card-title">${cardTitle}</div>
+      `;
+      }
+
+      newCard.onclick = function () { openViewer(imgSrc, this); };
+
+      // Add to active gallery in correct position (numerical order)
+      const gallery = document.getElementById('gallery');
+      const activeCards = Array.from(gallery.querySelectorAll('.card'));
+
+      let inserted = false;
+      for (let i = 0; i < activeCards.length; i++) {
+        const otherCardNumber = parseInt(activeCards[i].dataset.number);
+        if (cardNumber < otherCardNumber) {
+          gallery.insertBefore(newCard, activeCards[i]);
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted) gallery.appendChild(newCard);
+
+      saveState();
+    }
+
+    function nextPlayer() {
+      const activeCards = Array.from(document.querySelectorAll('#gallery .card'));
+      const current = activeCards.findIndex(c => c.classList.contains('active'));
+
+      if (current < activeCards.length - 1) {
+        activeCards[current]?.classList.remove('active');
+        activeCards[current + 1]?.classList.add('active');
+        const imgElement = activeCards[current + 1].querySelector('img');
+        const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+        openViewer(imgSrc, activeCards[current + 1]);
+      } else {
+        closeViewer();
+      }
+    }
+
+    document.getElementById('search').addEventListener('input', function () {
+      const term = normalize(this.value);
+
+      // Filter active players
+      document.querySelectorAll('#gallery .card').forEach(card => {
+        card.style.display = card.dataset.name.includes(term) ? '' : 'none';
+      });
+
+      // Filter sold players
+      document.querySelectorAll('#soldGallery .card').forEach(card => {
+        card.style.display = card.dataset.name.includes(term) ? '' : 'none';
+      });
+
+      // Load images for visible search results
+      setTimeout(loadVisibleImages, 100);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      const viewer = document.getElementById('viewer');
+      if (viewer.style.display === 'none') return;
+
+      const activeCards = Array.from(document.querySelectorAll('#gallery .card'));
+      const current = activeCards.findIndex(c => c.classList.contains('active'));
+
+      if (e.key === 'ArrowRight' && current < activeCards.length - 1) {
+        activeCards[current]?.classList.remove('active');
+        activeCards[current + 1]?.classList.add('active');
+        const imgElement = activeCards[current + 1].querySelector('img');
+        const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+        openViewer(imgSrc, activeCards[current + 1]);
+      }
+
+      if (e.key === 'ArrowLeft' && current > 0) {
+        activeCards[current]?.classList.remove('active');
+        activeCards[current - 1]?.classList.add('active');
+        const imgElement = activeCards[current - 1].querySelector('img');
+        const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+        openViewer(imgSrc, activeCards[current - 1]);
+      }
+
+      if (e.key === 'Escape') {
+        closeViewer();
+      }
+    });
+
+    // Touch swipe support for mobile
+    let touchStartX = 0;
+    document.getElementById('viewer').addEventListener('touchstart', function (e) {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    document.getElementById('viewer').addEventListener('touchend', function (e) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      const viewer = document.getElementById('viewer');
+
+      if (viewer.style.display === 'flex' && Math.abs(diff) > 50) {
+        if (diff > 0) {
+          // Swipe left - next player
+          const activeCards = Array.from(document.querySelectorAll('#gallery .card'));
+          const current = activeCards.findIndex(c => c.classList.contains('active'));
+
+          if (current < activeCards.length - 1) {
+            activeCards[current]?.classList.remove('active');
+            activeCards[current + 1]?.classList.add('active');
+            const imgElement = activeCards[current + 1].querySelector('img');
+            const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+            openViewer(imgSrc, activeCards[current + 1]);
+          }
+        } else {
+          // Swipe right - previous player
+          const activeCards = Array.from(document.querySelectorAll('#gallery .card'));
+          const current = activeCards.findIndex(c => c.classList.contains('active'));
+
+          if (current > 0) {
+            activeCards[current]?.classList.remove('active');
+            activeCards[current - 1]?.classList.add('active');
+            const imgElement = activeCards[current - 1].querySelector('img');
+            const imgSrc = imgElement.src || imgElement.getAttribute('data-src');
+            openViewer(imgSrc, activeCards[current - 1]);
+          }
+        }
+      }
+    });
+
+    // Enhanced Intersection Observer for aggressive lazy loading
+    function initIntersectionObserver() {
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target.querySelector('img');
+              const dataSrc = img.getAttribute('data-src');
+              if (dataSrc) {
+                loadImage(img, dataSrc);
+              }
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          rootMargin: '500px 0px', // Much more aggressive - 500px before viewport
+          threshold: [0, 0.25, 0.5, 0.75, 1.0]
+        });
+
+        // Observe all cards
+        document.querySelectorAll('.card').forEach(card => {
+          observer.observe(card);
+        });
+      } else {
+        // Fallback for browsers without IntersectionObserver with throttling
+        let scrollTimeout;
+        const throttledLoad = () => {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(loadVisibleImages, 100);
+        };
+        window.addEventListener('scroll', throttledLoad, { passive: true });
+        window.addEventListener('resize', throttledLoad, { passive: true });
+        loadVisibleImages(); // Load initial visible images
+      }
+    }
+
+    // --- Load state on startup ---
+    document.addEventListener('DOMContentLoaded', function () {
+      loadState();
+
+      // Load priority images immediately
+      setTimeout(() => {
+        loadPriorityImages();
+        console.log('Priority images loaded');
+      }, 100);
+
+      // Initialize intersection observer
+      setTimeout(() => {
+        initIntersectionObserver();
+        console.log('Intersection observer initialized');
+      }, 200);
+
+      // Add hover preloading after a short delay
+      setTimeout(() => {
+        addHoverPreloading();
+        console.log('Hover preloading enabled');
+      }, 300);
+
+      // Preload next batch after initial load
+      setTimeout(() => {
+        const cards = document.querySelectorAll('#gallery .card');
+        Array.from(cards).slice(20, 50).forEach(card => {
+          const img = card.querySelector('img');
+          const dataSrc = img.getAttribute('data-src');
+          if (dataSrc) {
+            loadImage(img, dataSrc);
+          }
+        });
+        console.log('Second batch preloaded');
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
