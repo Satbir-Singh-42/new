@@ -1,5 +1,6 @@
 import Papa from 'papaparse';
 import { getTeamLogo as getTeamLogoFromAssets } from '@/assets/teamLogos';
+import { getTeamLogo as getBrandingLogo, getTeamBorderColor as getBrandingBorderColor, getTeamGradient as getBrandingGradient } from '@/config/teamBranding';
 
 // Convert Google Sheets URL to CSV export URL
 const SHEET_ID = '1fyX373d3bUhnBGoZuM_eQxy991hSajyZjIuVgByg-7g';
@@ -438,68 +439,29 @@ class GoogleSheetsService {
   }
 
   getTeamLogo(teamName: string): string {
-    // First try to get logo from the new asset mapping
+    // First try to get logo from the asset mapping (for custom uploaded logos)
     const logoUrl = getTeamLogoFromAssets(teamName);
     if (logoUrl) {
       return logoUrl;
     }
     
-    // Fallback to existing hardcoded logos for teams not in the asset mapping
-    const legacyLogoMap: { [key: string]: string } = {
-      'Mumbai Indians': '/images/teams/mi.png',
-      'Lucknow Giants': '/images/teams/lg.png',
-    };
+    // Use centralized branding configuration
+    const logo = getBrandingLogo(teamName);
     
-    if (legacyLogoMap[teamName]) {
-      return legacyLogoMap[teamName];
+    // If logo is the default placeholder, generate team initials
+    if (logo === '??') {
+      return teamName.split(' ').map(word => word[0]).join('').toUpperCase();
     }
     
-    // Final fallback to team initials
-    return teamName.split(' ').map(word => word[0]).join('').toUpperCase();
+    return logo;
   }
 
   getTeamBorderColor(teamName: string): string {
-    const borderMap: { [key: string]: string } = {
-      'Mumbai Indians': 'border-[#045093]',
-      'Lucknow Giants': 'border-[#0097A7]',
-      'Bangalore Tigers': 'border-[#DA1212]',
-      'Kolkata Riders': 'border-[#3E1F47]',
-      'Sunrisers Hyderabad': 'border-[#F26522]',
-      'Delhi Capitals': 'border-[#004C97]',
-      'Chennai Strikers': 'border-[#F9CD00]',
-      'Ahmedabad Giants': 'border-[#0B132B]',
-      'Punjab Kings': 'border-[#C8102E]',
-      'Rajasthan Royals': 'border-[#EA1A8C]',
-      'Indore Titans': 'border-[#0074D9]',
-      'Goa Gladiators': 'border-[#00BCD4]',
-      'Gujarat Titans': 'border-[#0A1931]',
-      'Pune Panthers': 'border-[#5E35B1]',
-      'Kanpur Knights': 'border-[#424242]',
-    };
-    
-    return borderMap[teamName] || 'border-[#666666]';
+    return getBrandingBorderColor(teamName);
   }
 
   getTeamGradient(teamName: string): string {
-    const gradientMap: { [key: string]: string } = {
-      'Mumbai Indians': 'bg-[linear-gradient(135deg,rgba(4,80,147,0.95)_0%,rgba(2,50,93,0.85)_45%,rgba(1,30,70,0.9)_100%)]',
-      'Lucknow Giants': 'bg-[linear-gradient(135deg,rgba(0,151,167,0.95)_0%,rgba(0,120,135,0.85)_45%,rgba(0,90,110,0.9)_100%)]',
-      'Bangalore Tigers': 'bg-[linear-gradient(135deg,rgba(218,18,18,0.95)_0%,rgba(180,15,15,0.85)_45%,rgba(140,10,10,0.9)_100%)]',
-      'Kolkata Riders': 'bg-[linear-gradient(135deg,rgba(62,31,71,0.95)_0%,rgba(45,20,55,0.85)_45%,rgba(30,15,40,0.9)_100%)]',
-      'Sunrisers Hyderabad': 'bg-[linear-gradient(135deg,rgba(242,101,34,0.95)_0%,rgba(200,80,25,0.85)_45%,rgba(160,65,20,0.9)_100%)]',
-      'Delhi Capitals': 'bg-[linear-gradient(135deg,rgba(0,76,151,0.95)_0%,rgba(0,60,120,0.85)_45%,rgba(0,45,95,0.9)_100%)]',
-      'Chennai Strikers': 'bg-[linear-gradient(135deg,rgba(249,205,0,0.95)_0%,rgba(200,165,0,0.85)_45%,rgba(160,130,0,0.9)_100%)]',
-      'Ahmedabad Giants': 'bg-[linear-gradient(135deg,rgba(11,19,43,0.95)_0%,rgba(8,15,35,0.85)_45%,rgba(5,10,25,0.9)_100%)]',
-      'Punjab Kings': 'bg-[linear-gradient(135deg,rgba(200,16,46,0.95)_0%,rgba(160,10,35,0.85)_45%,rgba(120,8,25,0.9)_100%)]',
-      'Rajasthan Royals': 'bg-[linear-gradient(135deg,rgba(234,26,140,0.95)_0%,rgba(190,20,115,0.85)_45%,rgba(150,15,90,0.9)_100%)]',
-      'Indore Titans': 'bg-[linear-gradient(135deg,rgba(0,116,217,0.95)_0%,rgba(0,90,170,0.85)_45%,rgba(0,70,130,0.9)_100%)]',
-      'Goa Gladiators': 'bg-[linear-gradient(135deg,rgba(0,188,212,0.95)_0%,rgba(0,150,170,0.85)_45%,rgba(0,120,140,0.9)_100%)]',
-      'Gujarat Titans': 'bg-[linear-gradient(135deg,rgba(10,25,49,0.95)_0%,rgba(7,20,40,0.85)_45%,rgba(5,15,30,0.9)_100%)]',
-      'Pune Panthers': 'bg-[linear-gradient(135deg,rgba(94,53,177,0.95)_0%,rgba(75,40,140,0.85)_45%,rgba(60,30,110,0.9)_100%)]',
-      'Kanpur Knights': 'bg-[linear-gradient(135deg,rgba(66,66,66,0.95)_0%,rgba(50,50,50,0.85)_45%,rgba(35,35,35,0.9)_100%)]',
-    };
-    
-    return gradientMap[teamName] || 'bg-[linear-gradient(135deg,rgba(100,100,100,0.95)_0%,rgba(60,60,60,0.85)_45%,rgba(40,40,40,0.9)_100%)]';
+    return getBrandingGradient(teamName);
   }
 }
 
