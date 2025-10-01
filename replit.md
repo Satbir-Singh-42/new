@@ -51,7 +51,6 @@ Preferred communication style: Simple, everyday language.
 ### Development and Deployment
 - **Development Server**: Vite dev server with Express API integration
 - **Build Process**: Vite for frontend build, esbuild for backend bundling
-- **Environment**: Replit-optimized with development plugins and error overlays
 - **Code Quality**: TypeScript strict mode with comprehensive type checking
 
 ## External Dependencies
@@ -78,7 +77,6 @@ Preferred communication style: Simple, everyday language.
 - **Validation**: Zod for runtime type checking and schema validation
 
 ### Development Tools
-- **Replit Integration**: Custom Vite plugins for development banner and cartographer
 - **Error Handling**: Runtime error overlay for development debugging
 - **Session Management**: connect-pg-simple for PostgreSQL session storage
 

@@ -24,7 +24,7 @@ export const PlayerAuctionSection = (): JSX.Element => {
       <div className="flex flex-col items-center gap-8 relative z-10 w-full max-w-4xl">
         <header className="flex flex-col items-center">
           <h1 className="text-center [font-family:'Work_Sans',Helvetica] font-bold text-[34px] leading-[40.8px] tracking-[0]">
-            <span className="text-white">TATA IPL 2025 </span>
+            <span className="text-white"> IPL 2025 </span>
             <span className="text-[#fe6804]">Player Auction</span>
           </h1>
         </header>
@@ -33,8 +33,7 @@ export const PlayerAuctionSection = (): JSX.Element => {
           {teamCards.map((team) => (
             <Card key={team.id} className="aspect-square border-0 shadow-lg">
               <CardContent
-                className={`${team.color} h-full flex items-center justify-center p-0 rounded-lg`}
-              >
+                className={`${team.color} h-full flex items-center justify-center p-0 rounded-lg`}>
                 <div className="w-8 h-8 bg-white rounded-full opacity-80"></div>
               </CardContent>
             </Card>
