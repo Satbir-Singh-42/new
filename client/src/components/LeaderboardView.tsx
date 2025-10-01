@@ -8,7 +8,7 @@ interface LeaderboardViewProps {
   leaderboard: TeamStats[];
 }
 
-type SortField = 'rank' | 'teamName' | 'totalSpent' | 'fundsRemaining' | 'playersCount' | 'totalPoints';
+type SortField = 'rank' | 'teamName' | 'totalSpent' | 'fundsRemaining' | 'playersCount' | 'overseasCount' | 'totalPoints';
 type SortDirection = 'asc' | 'desc';
 
 // Create a component to display team logo or abbreviation
@@ -91,6 +91,10 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ leaderboard })
         case 'playersCount':
           aValue = a.playersCount;
           bValue = b.playersCount;
+          break;
+        case 'overseasCount':
+          aValue = a.overseasCount;
+          bValue = b.overseasCount;
           break;
         case 'totalPoints':
           aValue = a.totalPoints;
@@ -188,6 +192,15 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ leaderboard })
                 </th>
                 <th 
                   className="p-3 md:p-4 text-center text-gray-300 text-sm font-semibold cursor-pointer hover:bg-[#2a3441] transition-colors"
+                  onClick={() => handleSort('overseasCount')}
+                >
+                  <div className="flex items-center justify-center">
+                    Foreign Players
+                    {getSortIcon('overseasCount')}
+                  </div>
+                </th>
+                <th 
+                  className="p-3 md:p-4 text-center text-gray-300 text-sm font-semibold cursor-pointer hover:bg-[#2a3441] transition-colors"
                   onClick={() => handleSort('totalPoints')}
                 >
                   <div className="flex items-center justify-center">
@@ -246,6 +259,9 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ leaderboard })
                     </td>
                     <td className="p-3 md:p-4 text-center text-white font-medium text-sm md:text-base">
                       {team.playersCount}
+                    </td>
+                    <td className="p-3 md:p-4 text-center text-purple-400 font-medium text-sm md:text-base">
+                      {team.overseasCount}
                     </td>
                     <td className="p-3 md:p-4 text-center text-yellow-400 font-semibold text-sm md:text-base">
                       {team.totalPoints}
