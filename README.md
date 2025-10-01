@@ -2,7 +2,6 @@
 
 A modern, real-time web application for tracking and visualizing IPL (Indian Premier League) 2025 player auction data. Built with cutting-edge web technologies, it provides live auction results, team statistics, and comprehensive player information through direct Google Sheets integration.
 
-![IPL Auction Dashboard](attached_assets/1920w%20light_1758935519817.png)
 
 ## ✨ Features
 
@@ -51,7 +50,6 @@ A modern, real-time web application for tracking and visualizing IPL (Indian Pre
 - **Node.js + Express** - Development server with static file serving for production
 - **TSX** - Fast TypeScript execution for development
 - **ESBuild** - Fast JavaScript bundler for production builds
-- **Replit** - Cloud development environment with built-in hosting
 
 ## 📊 Data Sources
 
@@ -84,7 +82,7 @@ The application integrates with three Google Sheets:
 
 ### Prerequisites
 
-- Node.js 18+ (Node.js 20 recommended for Replit)
+- Node.js 18+
 - npm package manager
 - Google Sheets with publicly accessible data (CSV export enabled)
 
@@ -112,38 +110,6 @@ npm run dev
 4. **Open your browser**
    Navigate to `http://localhost:5000`
 
-### Replit Deployment
-
-This application is optimized for Replit:
-
-1. **Import from GitHub** - Use Replit's GitHub import feature
-2. **Automatic Setup** - Dependencies install automatically
-3. **Run Configuration** - Workflow pre-configured to run on port 5000
-4. **Host Settings** - Configured with `allowedHosts: true` for Replit's proxy environment
-5. **One-Click Deploy** - Use Replit's publish feature for production deployment
-
-**Important Replit Settings**:
-- Server runs on `0.0.0.0:5000` (required for Replit proxy)
-- Workflow: `npm run dev` with webview output type
-- No additional environment variables needed
-
-## 🌐 Deployment Options
-
-### Deploy on Replit (Recommended)
-
-The application is fully optimized for Replit:
-
-1. Import project from GitHub
-2. Click "Run" to start the workflow
-3. Use "Publish" button to deploy to production
-4. Share your live URL with others
-
-**Benefits**:
-- ✅ Zero configuration required
-- ✅ Automatic HTTPS and custom domains
-- ✅ Built-in environment management
-- ✅ One-click deployment
-- ✅ Real-time collaboration
 
 ### Deploy to Vercel (Static Site)
 
@@ -274,11 +240,6 @@ The dashboard features four main sections accessible via navigation tabs:
 
 ### Key Features Explained
 
-#### Circular Rank Indicators
-- Ranks display in circular badges with orange-to-red gradient
-- Visual hierarchy for quick team position identification
-- Responsive design scales on mobile devices
-
 #### Foreign Players Column
 - Tracks overseas player count per team
 - Important for IPL rules compliance (max 4 foreign players)
@@ -323,7 +284,7 @@ npm run check        # Full TypeScript type checking
 npm run dev
 ```
 
-Server starts on `http://localhost:5000` (or `0.0.0.0:5000` on Replit)
+Server starts on `http://localhost:5000`
 
 2. **Make your changes**
    - Hot module replacement (HMR) enabled
@@ -431,24 +392,6 @@ Failed to load resource: the server responded with a status of 400
 - Check that data parsing includes `overseasCount` field
 - Verify column is added to LeaderboardView component
 
-#### 5. Port Already in Use (Replit)
-
-```
-Error: listen EADDRINUSE: address already in use :::5000
-```
-
-**Solution**:
-- Stop existing workflow in Replit
-- Click "Stop" button then "Run" again
-- Port 5000 is required for Replit's proxy
-
-#### 6. Vite Not Connecting
-
-**Solution (Replit)**:
-- Verify `allowedHosts: true` in `vite.config.ts`
-- Check server is bound to `0.0.0.0:5000`
-- Restart the workflow
-- Clear browser cache
 
 ### Performance Optimization
 
@@ -508,13 +451,6 @@ No environment variables required for basic functionality.
 NODE_ENV=production
 PORT=5000              # Server port (default: 5000)
 ```
-
-#### Replit Environment
-
-Automatically configured:
-- `REPL_ID` - Unique repl identifier
-- `REPL_SLUG` - Repl URL slug
-- `REPLIT_DOMAINS` - Custom domain configuration
 
 ## 📊 Data Flow
 
@@ -612,34 +548,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 The Indian Premier League (IPL) 2025 promises to be the most exciting season yet. This dashboard provides real-time insights into the player auction process, helping fans, analysts, and team management track the dynamic world of cricket's premier T20 league.
 
-### IPL Auction Rules
-
-- **Team Budget**: ₹100 crore per team
-- **Squad Size**: Minimum 18, Maximum 25 players
-- **Foreign Players**: Maximum 8 in squad, 4 in playing XI
-- **Auction Format**: Live bidding with base price categories
-- **Player Categories**: Capped/Uncapped, Indian/Overseas
 
 ## 🚀 Live Demo
 
-- **Replit**: Optimized for one-click deployment and hosting
 - **Vercel**: Fast static site deployment
 - **Render**: Traditional Node.js hosting
-
-## 🎯 Future Enhancements
-
-Planned features for future releases:
-
-- [ ] Player comparison tool
-- [ ] Historical auction data
-- [ ] Advanced analytics dashboard
-- [ ] Team composition analyzer
-- [ ] Budget simulation tool
-- [ ] Mobile native app
-- [ ] Real-time auction notifications
-- [ ] Social media integration
-- [ ] Export reports (PDF/Excel)
-- [ ] Admin panel for data management
 
 ## 📞 Support
 
@@ -655,16 +568,13 @@ For support, questions, or bug reports:
 
 **Powered by**: React • TypeScript • Vite • Tailwind CSS • Google Sheets
 
-**Optimized for**: Replit • Vercel • Modern Browsers
+**Optimized for**: Vercel • Modern Browsers
 
 ---
 
 ### Credits
 
 - **IPL**: Indian Premier League brand and cricket data
-- **ISTE**: Logo and branding
 - **shadcn/ui**: Beautiful component library
-- **TanStack**: Powerful data management tools
-- **Replit**: Cloud development and hosting platform
 
 For questions or feedback, please open an issue on GitHub.
