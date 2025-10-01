@@ -236,7 +236,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ leaderboard })
                     }`}
                   >
                     <td className="p-3 md:p-4 text-center">
-                      <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm">
+                      <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-sm">
                         {rank}
                       </div>
                     </td>
