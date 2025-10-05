@@ -113,6 +113,7 @@ export const TeamDashboard = () => {
             onClick={async () => {
               setIsRefreshing(true);
               try {
+                googleSheetsService.clearCache();
                 refreshAllData();
                 // Also refresh the team-specific sold players data
                 if (teamConfig?.id) {

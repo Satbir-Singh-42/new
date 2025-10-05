@@ -438,6 +438,14 @@ class GoogleSheetsService {
     }
   }
 
+  clearCache(): void {
+    this.playerDataCache = null;
+    this.teamStatsCache = null;
+    this.playerCacheTimestamp = 0;
+    this.teamCacheTimestamp = 0;
+    console.log('Cache cleared - next fetch will get fresh data');
+  }
+
   getTeamLogo(teamName: string): string {
     // First try to get logo from the asset mapping (for custom uploaded logos)
     const logoUrl = getTeamLogoFromAssets(teamName);
