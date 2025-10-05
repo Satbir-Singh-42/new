@@ -87,6 +87,19 @@ export const TeamDashboard = () => {
   const teamGradient = googleSheetsService.getTeamGradient(teamConfig.name);
   const teamBorderColor = googleSheetsService.getTeamBorderColor(teamConfig.name);
   const startingBudget = 100000; // TODO: Make this dynamic from Teams & Budget sheet
+  
+  // Constants for player limits
+  const MAX_PLAYERS = 15;
+  const MAX_OVERSEAS = 7;
+  const MIN_PLAYERS = 11;
+  
+  // Calculate current counts
+  const currentPlayers = teamStat?.playersCount || 0;
+  const currentOverseas = teamStat?.overseasCount || 0;
+  
+  // Check if limits are exceeded
+  const playersExceeded = currentPlayers > MAX_PLAYERS;
+  const overseasExceeded = currentOverseas > MAX_OVERSEAS;
 
   return (
     <motion.div 
@@ -200,34 +213,55 @@ export const TeamDashboard = () => {
 
         {/* Team Composition */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors">
+          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${playersExceeded ? 'ring-2 ring-red-500' : ''}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
                 <p className="text-gray-300 text-xs md:text-sm">Total Players</p>
-                <p data-testid="text-total-players" className="text-xl md:text-2xl font-bold text-wwwiplt-2-0comwhite">{teamStat?.playersCount || 0}/15</p>
-                <p className="text-xs text-gray-400">Need {Math.max(0, 11 - (teamStat?.playersCount || 0))} more for eligibility</p>
+                <p data-testid="text-total-players" className={`text-xl md:text-2xl font-bold ${playersExceeded ? 'text-red-400' : 'text-wwwiplt-2-0comwhite'}`}>
+                  {currentPlayers}/{MAX_PLAYERS}
+                </p>
+                {playersExceeded ? (
+                  <p className="text-xs text-red-400 font-semibold">Limit exceeded!</p>
+                ) : currentPlayers >= MAX_PLAYERS ? (
+                  <p className="text-xs text-yellow-400">Squad full</p>
+                ) : (
+                  <p className="text-xs text-gray-400">
+                    {currentPlayers < MIN_PLAYERS 
+                      ? `Need ${MIN_PLAYERS - currentPlayers} more for eligibility`
+                      : `Can add ${MAX_PLAYERS - currentPlayers} more`
+                    }
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors">
+          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${overseasExceeded ? 'ring-2 ring-red-500' : ''}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
                 <p className="text-gray-300 text-xs md:text-sm">Foreign Players</p>
-                <p data-testid="text-foreign-players" className="text-xl md:text-2xl font-bold text-wwwiplt-2-0comwhite">{teamStat?.overseasCount || 0}/7</p>
-                <p className="text-xs text-gray-400">Can add {Math.max(0, 7 - (teamStat?.overseasCount || 0))} more</p>
+                <p data-testid="text-foreign-players" className={`text-xl md:text-2xl font-bold ${overseasExceeded ? 'text-red-400' : 'text-wwwiplt-2-0comwhite'}`}>
+                  {currentOverseas}/{MAX_OVERSEAS}
+                </p>
+                {overseasExceeded ? (
+                  <p className="text-xs text-red-400 font-semibold">Limit exceeded!</p>
+                ) : currentOverseas >= MAX_OVERSEAS ? (
+                  <p className="text-xs text-yellow-400">Foreign quota full</p>
+                ) : (
+                  <p className="text-xs text-gray-400">Can add {MAX_OVERSEAS - currentOverseas} more</p>
+                )}
               </div>
             </CardContent>
           </Card>
 
-          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${(teamStat?.playersCount || 0) >= 11 ? 'ring-2 ring-green-400/30' : 'ring-2 ring-red-400/30'}`}>
+          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${currentPlayers >= MIN_PLAYERS ? 'ring-2 ring-green-400/30' : 'ring-2 ring-red-400/30'}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
                 <p className="text-gray-300 text-xs md:text-sm">Squad Status</p>
-                <p data-testid="text-squad-status" className={`text-lg md:text-xl font-bold ${(teamStat?.playersCount || 0) >= 11 ? 'text-green-400' : 'text-red-400'}`}>
-                  {(teamStat?.playersCount || 0) >= 11 ? 'Eligible' : 'Not Eligible'}
+                <p data-testid="text-squad-status" className={`text-lg md:text-xl font-bold ${currentPlayers >= MIN_PLAYERS ? 'text-green-400' : 'text-red-400'}`}>
+                  {currentPlayers >= MIN_PLAYERS ? 'Eligible' : 'Not Eligible'}
                 </p>
-                <p className="text-xs text-gray-400">Min: 11 players required</p>
+                <p className="text-xs text-gray-400">Min: {MIN_PLAYERS} players required</p>
               </div>
             </CardContent>
           </Card>

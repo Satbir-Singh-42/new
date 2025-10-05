@@ -12,3 +12,4 @@
 [x] 12. Final migration verification - all dependencies installed and application running successfully
 [x] 13. Updated cache duration from 60 seconds to 5 seconds - data now refreshes every 5 seconds
 [x] 14. Fixed refresh button - added clearCache() method and updated button to bypass cache for instant fresh data
+[x] 15. Added player limit validation - teams properly display max 15 players and 7 foreign players with visual warnings if limits exceeded
