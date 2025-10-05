@@ -13,4 +13,3 @@
 [x] 13. Updated cache duration from 60 seconds to 5 seconds - data now refreshes every 5 seconds
 [x] 14. Fixed refresh button - added clearCache() method and updated button to bypass cache for instant fresh data
 [x] 15. Added player limit validation - teams properly display max 15 players and 7 foreign players with visual warnings if limits exceeded
-[x] 16. Created centralized tournament rules configuration - max squad size (15), max foreign players (7), and qualifying teams (8) now easily manageable in one config file; budget and min players come from Google Sheet
