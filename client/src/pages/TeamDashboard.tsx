@@ -12,8 +12,6 @@ import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { 
   getMaxSquadSize, 
   getMaxForeignPlayers, 
-  getMinSquadSize, 
-  getStartingBudget,
   getTeamsQualifying 
 } from '@/config/tournamentRules';
 
@@ -97,9 +95,11 @@ export const TeamDashboard = () => {
   // Get tournament configuration
   const MAX_PLAYERS = getMaxSquadSize();
   const MAX_OVERSEAS = getMaxForeignPlayers();
-  const MIN_PLAYERS = getMinSquadSize();
-  const startingBudget = getStartingBudget();
   const QUALIFYING_TEAMS = getTeamsQualifying();
+  
+  // These come from the Google Sheet
+  const startingBudget = 100000; // From Teams & Budget sheet
+  const MIN_PLAYERS = 11; // From Teams & Budget sheet
   
   // Calculate current counts
   const currentPlayers = teamStat?.playersCount || 0;

@@ -103,8 +103,8 @@ Location: `client/src/config/tournamentRules.ts`
 Centralized configuration for tournament rules and limits:
 - **MAX_SQUAD_SIZE**: Maximum players per team (default: 15)
 - **MAX_FOREIGN_PLAYERS**: Maximum foreign players per team (default: 7)
-- **MIN_SQUAD_SIZE**: Minimum players required for eligibility (default: 11)
 - **TEAMS_QUALIFYING**: Number of teams that qualify (default: 8)
-- **STARTING_BUDGET**: Starting budget for each team (default: 100,000)
 
-To modify tournament rules, edit the `TOURNAMENT_CONFIG` object in this file. All changes will automatically apply across the entire application.
+To modify these tournament rules, edit the `TOURNAMENT_CONFIG` object in this file. All changes will automatically apply across the entire application.
+
+Note: Starting budget and minimum squad size for eligibility are managed through the Google Sheets data source.
