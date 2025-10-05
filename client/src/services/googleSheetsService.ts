@@ -50,6 +50,7 @@ export interface TeamStats {
   overseasCount: number;
   fundsRemaining: number;
   totalPoints: number;
+  startingBudget: number;
 }
 
 class GoogleSheetsService {
@@ -329,6 +330,8 @@ class GoogleSheetsService {
         const totalPlayers = parseInt(totalPlayerKey ? row[totalPlayerKey] || '0' : '0') || 0;
         const foreignPlayers = parseInt(foreignPlayersKey ? row[foreignPlayersKey] || '0' : '0') || 0;
         
+        const startingBudget = totalSpent + remainingBudget;
+        
         return {
           teamId: this.getTeamId(teamName),
           teamName: teamName,
@@ -336,7 +339,8 @@ class GoogleSheetsService {
           playersCount: totalPlayers,
           overseasCount: foreignPlayers,
           fundsRemaining: remainingBudget,
-          totalPoints: 0  // Will be calculated after getting player data
+          totalPoints: 0,  // Will be calculated after getting player data
+          startingBudget: startingBudget
         };
       }).filter(team => team.teamName);
       
