@@ -19,3 +19,4 @@
 [x] 19. Verified application is working - IPL 2025 Player Auction loads successfully and fetches data from Google Sheets
 [x] 20. Migration completed - all tasks done and application fully functional
 [x] 21. Made squad configuration details easily editable - created shared/config.ts with all auction rules and limits centralized
+[x] 22. Removed default starting budget from config - starting budget is now fetched only from Google Sheet

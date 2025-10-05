@@ -87,7 +87,7 @@ export const TeamDashboard = () => {
   const teamPlayers = soldPlayers || [];
   const teamGradient = googleSheetsService.getTeamGradient(teamConfig.name);
   const teamBorderColor = googleSheetsService.getTeamBorderColor(teamConfig.name);
-  const startingBudget = teamStat?.startingBudget || AUCTION_CONFIG.defaultStartingBudget;
+  const startingBudget = teamStat?.startingBudget || 100000;
   
   // Player limits from config (easily editable in shared/config.ts)
   const MAX_PLAYERS = AUCTION_CONFIG.maxPlayers;

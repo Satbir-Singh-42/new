@@ -14,9 +14,6 @@ export const AUCTION_CONFIG = {
   // Qualification Rules
   teamsQualifying: 8,       // Number of teams that advance to playoffs
   
-  // Budget Settings
-  defaultStartingBudget: 100000,  // Default budget if not specified in sheet
-  
   // Display Text (customize these as needed)
   squadSizeLabel: "Squad Size: Max {max} players",
   qualificationLabel: "🏆 Qualification: Top {count} teams advance",
