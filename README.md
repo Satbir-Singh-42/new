@@ -461,6 +461,107 @@ Error: listen EADDRINUSE: address already in use :::5000
 
 ## 🔧 Configuration
 
+### Application Settings
+
+The application provides centralized configuration files for easy customization:
+
+#### 1. **Auction Rules** (`shared/config.ts`)
+
+Edit auction parameters in the `AUCTION_CONFIG` object:
+
+```typescript
+export const AUCTION_CONFIG = {
+  maxPlayers: 15,           // Maximum players per team
+  minPlayers: 11,           // Minimum players required for eligibility
+  maxOverseasPlayers: 7,    // Maximum foreign/overseas players per team
+  teamsQualifying: 8,       // Number of teams that advance to playoffs
+  
+  // Customizable display text
+  squadSizeLabel: "Squad Size: Max {max} players",
+  qualificationLabel: "🏆 Qualification: Top {count} teams advance",
+  minPlayersLabel: "Min: {min} players required",
+};
+```
+
+**Changes automatically apply to**:
+- Team dashboard validation
+- Squad status calculations
+- Display text across all pages
+
+#### 2. **Dashboard Colors** (`shared/config.ts`)
+
+Customize stat card colors in the `DASHBOARD_COLORS` object:
+
+```typescript
+export const DASHBOARD_COLORS = {
+  card: {
+    background: "bg-[#0f1629]",           // Dark navy background
+    border: "border-[#1a2332]",           // Subtle border
+    borderHover: "hover:border-[#2a3441]", // Lighter border on hover
+  },
+  
+  stats: {
+    currentRank: {
+      borderHover: "hover:border-orange-400/30",
+      text: "text-orange-400",
+    },
+    totalSpent: {
+      borderHover: "hover:border-green-400/30",
+      text: "text-green-400",
+    },
+    // ... more stat-specific colors
+  },
+  
+  text: {
+    label: "text-gray-300",
+    primary: "text-wwwiplt-2-0comwhite",
+    warning: "text-yellow-400",
+    error: "text-red-400",
+    success: "text-green-400",
+  },
+};
+```
+
+**Important**: Use Tailwind CSS class format (`text-color-shade`) to avoid conflicts.
+
+#### 3. **Team Branding** (`client/src/config/teamBranding.ts`)
+
+Add or update team colors and logos:
+
+```typescript
+export const TEAM_BRANDING: Record<string, TeamBranding> = {
+  'Team Name': {
+    logo: '/images/teams/logo.png',  // or 'TN' for abbreviation
+    borderColor: 'border-[#FF5733]',
+    bgGradient: 'bg-[linear-gradient(135deg,rgba(255,87,51,0.95)_0%,rgba(200,70,40,0.85)_45%,rgba(150,50,30,0.9)_100%)]',
+  },
+  // ... more teams
+};
+```
+
+**Color Guidelines**:
+- Use `border-[#HEXCOLOR]` format for borders
+- Use `bg-[linear-gradient(...)]` with RGBA values for gradients
+- Gradient pattern: 135deg angle, three stops at 0%, 45%, 100%
+- Opacity values: 0.95 (start), 0.85 (middle), 0.9 (end)
+
+#### 4. **Team Card Styling** (`shared/config.ts`)
+
+Customize overview page card appearance in `TEAM_CARD_CONFIG`:
+
+```typescript
+export const TEAM_CARD_CONFIG = {
+  container: {
+    base: "h-full min-w-0 flex flex-col items-center gap-6 p-3 rounded-3xl...",
+    hover: "hover:ring-2 hover:ring-white/20",
+  },
+  logo: {
+    container: "flex w-20 h-20 items-center justify-center...",
+  },
+  // ... more card styling options
+};
+```
+
 ### Google Sheets Setup
 
 #### Required Sheet Structure

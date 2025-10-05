@@ -9,7 +9,7 @@ import { useIPLData } from '@/hooks/useIPLData';
 import { LoadingPage } from '@/components/LoadingPage';
 import { googleSheetsService, type Team } from '@/services/googleSheetsService';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
-import { AUCTION_CONFIG, getConfigText } from '@shared/config';
+import { AUCTION_CONFIG, getConfigText, DASHBOARD_COLORS } from '@shared/config';
 
 // Team Logo component
 const TeamLogo = ({ logo, name, className = "" }: { logo: string; name: string; className?: string }) => {
@@ -164,49 +164,49 @@ export const TeamDashboard = () => {
 
         {/* Team Statistics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors">
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.startingBudget.border} ${DASHBOARD_COLORS.stats.startingBudget.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Starting Budget</p>
-                <p data-testid="text-starting-budget" className="text-lg md:text-2xl font-bold text-wwwiplt-2-0comwhite">{formatCurrency(startingBudget)}</p>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Starting Budget</p>
+                <p data-testid="text-starting-budget" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.startingBudget.text}`}>{formatCurrency(startingBudget)}</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-orange-400/30 transition-colors">
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.currentRank.border} ${DASHBOARD_COLORS.stats.currentRank.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Current Rank</p>
-                <p data-testid="text-current-rank" className="text-lg md:text-2xl font-bold text-orange-400">
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Current Rank</p>
+                <p data-testid="text-current-rank" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.currentRank.text}`}>
                   {teamRank ? `#${teamRank}` : '--'}
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-green-400/30 transition-colors">
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.totalSpent.border} ${DASHBOARD_COLORS.stats.totalSpent.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Total Spent</p>
-                <p data-testid="text-total-spent" className="text-lg md:text-2xl font-bold text-green-400">{teamStat ? formatCurrency(teamStat.totalSpent) : formatCurrency(0)}</p>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Total Spent</p>
+                <p data-testid="text-total-spent" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.totalSpent.text}`}>{teamStat ? formatCurrency(teamStat.totalSpent) : formatCurrency(0)}</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-blue-400/30 transition-colors">
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.remainingBudget.border} ${DASHBOARD_COLORS.stats.remainingBudget.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Remaining Budget</p>
-                <p data-testid="text-remaining-budget" className="text-lg md:text-2xl font-bold text-blue-400">{teamStat ? formatCurrency(teamStat.fundsRemaining) : formatCurrency(startingBudget)}</p>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Remaining Budget</p>
+                <p data-testid="text-remaining-budget" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.remainingBudget.text}`}>{teamStat ? formatCurrency(teamStat.fundsRemaining) : formatCurrency(startingBudget)}</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#0f1629] border-[#1a2332] hover:border-yellow-400/30 transition-colors">
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.teamPoints.border} ${DASHBOARD_COLORS.stats.teamPoints.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Team Points</p>
-                <p data-testid="text-team-points" className="text-lg md:text-2xl font-bold text-yellow-400">{teamStat?.totalPoints || 0}</p>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Team Points</p>
+                <p data-testid="text-team-points" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.teamPoints.text}`}>{teamStat?.totalPoints || 0}</p>
               </div>
             </CardContent>
           </Card>
@@ -214,19 +214,19 @@ export const TeamDashboard = () => {
 
         {/* Team Composition */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${playersExceeded ? 'ring-2 ring-red-500' : ''}`}>
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.card.border} ${DASHBOARD_COLORS.card.borderHover} transition-colors ${playersExceeded ? DASHBOARD_COLORS.status.exceeded : ''}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Total Players</p>
-                <p data-testid="text-total-players" className={`text-xl md:text-2xl font-bold ${playersExceeded ? 'text-red-400' : 'text-wwwiplt-2-0comwhite'}`}>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Total Players</p>
+                <p data-testid="text-total-players" className={`text-xl md:text-2xl font-bold ${playersExceeded ? DASHBOARD_COLORS.text.error : DASHBOARD_COLORS.text.primary}`}>
                   {currentPlayers}/{MAX_PLAYERS}
                 </p>
                 {playersExceeded ? (
-                  <p className="text-xs text-red-400 font-semibold">Limit exceeded!</p>
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.error} font-semibold`}>Limit exceeded!</p>
                 ) : currentPlayers >= MAX_PLAYERS ? (
-                  <p className="text-xs text-yellow-400">Squad full</p>
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.warning}`}>Squad full</p>
                 ) : (
-                  <p className="text-xs text-gray-400">
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.info}`}>
                     {currentPlayers < MIN_PLAYERS 
                       ? `Need ${MIN_PLAYERS - currentPlayers} more for eligibility`
                       : `Can add ${MAX_PLAYERS - currentPlayers} more`
@@ -237,32 +237,32 @@ export const TeamDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${overseasExceeded ? 'ring-2 ring-red-500' : ''}`}>
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.card.border} ${DASHBOARD_COLORS.card.borderHover} transition-colors ${overseasExceeded ? DASHBOARD_COLORS.status.exceeded : ''}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Foreign Players</p>
-                <p data-testid="text-foreign-players" className={`text-xl md:text-2xl font-bold ${overseasExceeded ? 'text-red-400' : 'text-wwwiplt-2-0comwhite'}`}>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Foreign Players</p>
+                <p data-testid="text-foreign-players" className={`text-xl md:text-2xl font-bold ${overseasExceeded ? DASHBOARD_COLORS.text.error : DASHBOARD_COLORS.text.primary}`}>
                   {currentOverseas}/{MAX_OVERSEAS}
                 </p>
                 {overseasExceeded ? (
-                  <p className="text-xs text-red-400 font-semibold">Limit exceeded!</p>
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.error} font-semibold`}>Limit exceeded!</p>
                 ) : currentOverseas >= MAX_OVERSEAS ? (
-                  <p className="text-xs text-yellow-400">Foreign quota full</p>
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.warning}`}>Foreign quota full</p>
                 ) : (
-                  <p className="text-xs text-gray-400">Can add {MAX_OVERSEAS - currentOverseas} more</p>
+                  <p className={`text-xs ${DASHBOARD_COLORS.text.info}`}>Can add {MAX_OVERSEAS - currentOverseas} more</p>
                 )}
               </div>
             </CardContent>
           </Card>
 
-          <Card className={`bg-[#0f1629] border-[#1a2332] hover:border-[#2a3441] transition-colors ${currentPlayers >= MIN_PLAYERS ? 'ring-2 ring-green-400/30' : 'ring-2 ring-red-400/30'}`}>
+          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.card.border} ${DASHBOARD_COLORS.card.borderHover} transition-colors ${currentPlayers >= MIN_PLAYERS ? DASHBOARD_COLORS.status.eligible : DASHBOARD_COLORS.status.notEligible}`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
-                <p className="text-gray-300 text-xs md:text-sm">Squad Status</p>
-                <p data-testid="text-squad-status" className={`text-lg md:text-xl font-bold ${currentPlayers >= MIN_PLAYERS ? 'text-green-400' : 'text-red-400'}`}>
+                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Squad Status</p>
+                <p data-testid="text-squad-status" className={`text-lg md:text-xl font-bold ${currentPlayers >= MIN_PLAYERS ? DASHBOARD_COLORS.text.success : DASHBOARD_COLORS.text.error}`}>
                   {currentPlayers >= MIN_PLAYERS ? 'Eligible' : 'Not Eligible'}
                 </p>
-                <p className="text-xs text-gray-400">{getConfigText.minPlayers()}</p>
+                <p className={`text-xs ${DASHBOARD_COLORS.text.info}`}>{getConfigText.minPlayers()}</p>
               </div>
             </CardContent>
           </Card>
@@ -271,9 +271,9 @@ export const TeamDashboard = () => {
         {/* Players Table */}
         <div className="space-y-4">
           {loadingPlayers ? (
-            <Card className="bg-[#0f1629] border-[#1a2332]">
+            <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.card.border}`}>
               <CardContent className="p-6">
-                <div className="text-center text-gray-300">Loading team players...</div>
+                <div className={`text-center ${DASHBOARD_COLORS.text.label}`}>Loading team players...</div>
               </CardContent>
             </Card>
           ) : (

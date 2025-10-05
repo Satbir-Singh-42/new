@@ -21,3 +21,5 @@
 [x] 21. Made squad configuration details easily editable - created shared/config.ts with all auction rules and limits centralized
 [x] 22. Removed default starting budget from config - starting budget is now fetched only from Google Sheet
 [x] 23. Made team cards easily updatable with centralized styling config - added TEAM_CARD_CONFIG to prevent color/gradient conflicts
+[x] 24. Centralized dashboard colors - all TeamDashboard stat card colors now configured in DASHBOARD_COLORS
+[x] 25. Updated README with comprehensive configuration documentation - includes auction rules, colors, team branding, and styling guides

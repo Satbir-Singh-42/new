@@ -60,6 +60,67 @@ export const TEAM_CARD_CONFIG = {
 };
 
 /**
+ * Team Dashboard Colors Configuration
+ * 
+ * Centralized color scheme for the team dashboard stat cards.
+ * All colors use Tailwind CSS classes and hex values for consistency.
+ */
+export const DASHBOARD_COLORS = {
+  // Card backgrounds and borders
+  card: {
+    background: "bg-[#0f1629]",           // Dark navy background
+    border: "border-[#1a2332]",           // Subtle border
+    borderHover: "hover:border-[#2a3441]", // Lighter border on hover
+  },
+  
+  // Stat-specific colors
+  stats: {
+    startingBudget: {
+      border: "border-[#1a2332]",
+      borderHover: "hover:border-[#2a3441]",
+      text: "text-wwwiplt-2-0comwhite",
+    },
+    currentRank: {
+      border: "border-[#1a2332]",
+      borderHover: "hover:border-orange-400/30",
+      text: "text-orange-400",
+    },
+    totalSpent: {
+      border: "border-[#1a2332]",
+      borderHover: "hover:border-green-400/30",
+      text: "text-green-400",
+    },
+    remainingBudget: {
+      border: "border-[#1a2332]",
+      borderHover: "hover:border-blue-400/30",
+      text: "text-blue-400",
+    },
+    teamPoints: {
+      border: "border-[#1a2332]",
+      borderHover: "hover:border-yellow-400/30",
+      text: "text-yellow-400",
+    },
+  },
+  
+  // Text colors
+  text: {
+    label: "text-gray-300",
+    primary: "text-wwwiplt-2-0comwhite",
+    warning: "text-yellow-400",
+    error: "text-red-400",
+    success: "text-green-400",
+    info: "text-gray-400",
+  },
+  
+  // Status indicators
+  status: {
+    exceeded: "ring-2 ring-red-500",
+    eligible: "ring-2 ring-green-400/30",
+    notEligible: "ring-2 ring-red-400/30",
+  },
+};
+
+/**
  * Helper function to get formatted config text
  */
 export const getConfigText = {
