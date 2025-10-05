@@ -57,7 +57,7 @@ class GoogleSheetsService {
   private teamStatsCache: TeamStats[] | null = null;
   private playerCacheTimestamp: number = 0;
   private teamCacheTimestamp: number = 0;
-  private readonly CACHE_DURATION = 60000; // 60 seconds
+  private readonly CACHE_DURATION = 5000; // 5 seconds
 
   private async fetchCSVData(identifier: string = '0', sheetName: string = 'Unknown', useSheetName: boolean = false): Promise<any[]> {
     try {
