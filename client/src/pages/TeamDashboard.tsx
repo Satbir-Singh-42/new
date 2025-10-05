@@ -9,6 +9,13 @@ import { useIPLData } from '@/hooks/useIPLData';
 import { LoadingPage } from '@/components/LoadingPage';
 import { googleSheetsService, type Team } from '@/services/googleSheetsService';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
+import { 
+  getMaxSquadSize, 
+  getMaxForeignPlayers, 
+  getMinSquadSize, 
+  getStartingBudget,
+  getTeamsQualifying 
+} from '@/config/tournamentRules';
 
 // Team Logo component
 const TeamLogo = ({ logo, name, className = "" }: { logo: string; name: string; className?: string }) => {
@@ -86,12 +93,13 @@ export const TeamDashboard = () => {
   const teamPlayers = soldPlayers || [];
   const teamGradient = googleSheetsService.getTeamGradient(teamConfig.name);
   const teamBorderColor = googleSheetsService.getTeamBorderColor(teamConfig.name);
-  const startingBudget = 100000; // TODO: Make this dynamic from Teams & Budget sheet
   
-  // Constants for player limits
-  const MAX_PLAYERS = 15;
-  const MAX_OVERSEAS = 7;
-  const MIN_PLAYERS = 11;
+  // Get tournament configuration
+  const MAX_PLAYERS = getMaxSquadSize();
+  const MAX_OVERSEAS = getMaxForeignPlayers();
+  const MIN_PLAYERS = getMinSquadSize();
+  const startingBudget = getStartingBudget();
+  const QUALIFYING_TEAMS = getTeamsQualifying();
   
   // Calculate current counts
   const currentPlayers = teamStat?.playersCount || 0;
@@ -153,8 +161,8 @@ export const TeamDashboard = () => {
               <div className="text-center sm:text-left flex-1">
                 <h1 data-testid="text-team-name" className="text-xl md:text-3xl font-bold text-white mb-2">{teamConfig.name}</h1>
                 <div className="text-white/90 space-y-1">
-                  <p className="text-sm md:text-base font-medium">Squad Size: Max 15 players</p>
-                  <p className="text-xs md:text-sm text-yellow-300 font-medium">🏆 Qualification: Top 8 teams advance</p>
+                  <p className="text-sm md:text-base font-medium">Squad Size: Max {MAX_PLAYERS} players</p>
+                  <p className="text-xs md:text-sm text-yellow-300 font-medium">🏆 Qualification: Top {QUALIFYING_TEAMS} teams advance</p>
                 </div>
               </div>
             </div>

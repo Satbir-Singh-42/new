@@ -84,3 +84,27 @@ Preferred communication style: Simple, everyday language.
 - **Google Sheets**: Direct CSV export integration for real-time auction data
 - **Font Services**: Google Fonts for typography (Work Sans, DM Sans, Fira Code)
 - **Asset Management**: Static asset handling for team logos and branding
+
+## Configuration Management
+
+### Team Branding Configuration
+Location: `client/src/config/teamBranding.ts`
+
+Centralized configuration for team visual identity:
+- **Team Logos**: Emoji or image URLs for each team
+- **Border Colors**: Team-specific border colors for cards and UI elements
+- **Background Gradients**: Custom gradient classes for team branding
+
+To modify team branding, edit the `TEAM_BRANDING` object in this file.
+
+### Tournament Rules Configuration
+Location: `client/src/config/tournamentRules.ts`
+
+Centralized configuration for tournament rules and limits:
+- **MAX_SQUAD_SIZE**: Maximum players per team (default: 15)
+- **MAX_FOREIGN_PLAYERS**: Maximum foreign players per team (default: 7)
+- **MIN_SQUAD_SIZE**: Minimum players required for eligibility (default: 11)
+- **TEAMS_QUALIFYING**: Number of teams that qualify (default: 8)
+- **STARTING_BUDGET**: Starting budget for each team (default: 100,000)
+
+To modify tournament rules, edit the `TOURNAMENT_CONFIG` object in this file. All changes will automatically apply across the entire application.
