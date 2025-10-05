@@ -9,6 +9,7 @@ import { useIPLData } from '@/hooks/useIPLData';
 import { LoadingPage } from '@/components/LoadingPage';
 import { googleSheetsService, type Team } from '@/services/googleSheetsService';
 import { ArrowLeft, RefreshCw } from 'lucide-react';
+import { AUCTION_CONFIG, getConfigText } from '@shared/config';
 
 // Team Logo component
 const TeamLogo = ({ logo, name, className = "" }: { logo: string; name: string; className?: string }) => {
@@ -86,12 +87,12 @@ export const TeamDashboard = () => {
   const teamPlayers = soldPlayers || [];
   const teamGradient = googleSheetsService.getTeamGradient(teamConfig.name);
   const teamBorderColor = googleSheetsService.getTeamBorderColor(teamConfig.name);
-  const startingBudget = teamStat?.startingBudget || 100000;
+  const startingBudget = teamStat?.startingBudget || AUCTION_CONFIG.defaultStartingBudget;
   
-  // Constants for player limits
-  const MAX_PLAYERS = 15;
-  const MAX_OVERSEAS = 7;
-  const MIN_PLAYERS = 11;
+  // Player limits from config (easily editable in shared/config.ts)
+  const MAX_PLAYERS = AUCTION_CONFIG.maxPlayers;
+  const MAX_OVERSEAS = AUCTION_CONFIG.maxOverseasPlayers;
+  const MIN_PLAYERS = AUCTION_CONFIG.minPlayers;
   
   // Calculate current counts
   const currentPlayers = teamStat?.playersCount || 0;
@@ -153,8 +154,8 @@ export const TeamDashboard = () => {
               <div className="text-center sm:text-left flex-1">
                 <h1 data-testid="text-team-name" className="text-xl md:text-3xl font-bold text-white mb-2">{teamConfig.name}</h1>
                 <div className="text-white/90 space-y-1">
-                  <p className="text-sm md:text-base font-medium">Squad Size: Max 15 players</p>
-                  <p className="text-xs md:text-sm text-yellow-300 font-medium">🏆 Qualification: Top 8 teams advance</p>
+                  <p className="text-sm md:text-base font-medium">{getConfigText.squadSize()}</p>
+                  <p className="text-xs md:text-sm text-yellow-300 font-medium">{getConfigText.qualification()}</p>
                 </div>
               </div>
             </div>
@@ -261,7 +262,7 @@ export const TeamDashboard = () => {
                 <p data-testid="text-squad-status" className={`text-lg md:text-xl font-bold ${currentPlayers >= MIN_PLAYERS ? 'text-green-400' : 'text-red-400'}`}>
                   {currentPlayers >= MIN_PLAYERS ? 'Eligible' : 'Not Eligible'}
                 </p>
-                <p className="text-xs text-gray-400">Min: {MIN_PLAYERS} players required</p>
+                <p className="text-xs text-gray-400">{getConfigText.minPlayers()}</p>
               </div>
             </CardContent>
           </Card>
