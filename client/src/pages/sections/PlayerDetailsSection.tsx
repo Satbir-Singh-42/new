@@ -8,6 +8,7 @@ import { PlayerTable } from "@/components/PlayerTable";
 import { LeaderboardView } from "@/components/LeaderboardView";
 import { LoadingPage } from "@/components/LoadingPage";
 import { googleSheetsService, type Team } from "@/services/googleSheetsService";
+import { TEAM_CARD_CONFIG } from "@shared/config";
 
 const navigationTabs = [
   { id: "overview", label: "OVERVIEW", active: true },
@@ -193,32 +194,32 @@ export const PlayerDetailsSection = (): JSX.Element => {
                     }}
                     whileTap={{ scale: 0.98 }}>
                     <Card
-                      className={`h-full min-w-0 flex flex-col items-center gap-6 p-3 rounded-3xl overflow-hidden border-2 border-solid ${teamConfig.borderColor} ${teamConfig.bgGradient} cursor-pointer hover:ring-2 hover:ring-white/20 transition-all duration-200`}
+                      className={`${TEAM_CARD_CONFIG.container.base} ${TEAM_CARD_CONFIG.container.hover} ${teamConfig.borderColor} ${teamConfig.bgGradient}`}
                       onClick={() => handleTeamClick(teamConfig.id)}>
                       <div className="flex flex-col items-center gap-2">
-                        <div className="flex w-20 h-20 items-center justify-center rounded-full overflow-hidden border-2 border-white/20">
+                        <div className={TEAM_CARD_CONFIG.logo.container}>
                           <TeamLogo
                             logo={teamConfig.logo}
                             name={teamConfig.name}
                           />
                         </div>
-                        <div className="text-center">
-                          <span className="[font-family:'Work_Sans',Helvetica] font-semibold text-white text-sm tracking-[0] leading-5">
+                        <div className={TEAM_CARD_CONFIG.teamName.container}>
+                          <span className={TEAM_CARD_CONFIG.teamName.text}>
                             {teamConfig.name}
                           </span>
                         </div>
                       </div>
 
-                      <CardContent className="flex flex-col items-start w-full bg-wwwiplt20comblack-3 p-0 flex-1">
-                        <div className="flex flex-col items-start pb-3 w-full border-b border-solid border-[#ffffff1a]">
+                      <CardContent className={`flex flex-col items-start w-full ${TEAM_CARD_CONFIG.content.background} ${TEAM_CARD_CONFIG.content.padding} flex-1`}>
+                        <div className={`flex flex-col items-start pb-3 w-full border-b border-solid ${TEAM_CARD_CONFIG.stats.divider}`}>
                           <div className="flex flex-col items-center py-2 w-full">
-                            <span className="[font-family:'Work_Sans',Helvetica] font-normal text-wwwiplt-2-0comwhite text-sm text-center tracking-[0] leading-6">
+                            <span className={TEAM_CARD_CONFIG.stats.label}>
                               Funds Remaining
                             </span>
                           </div>
 
                           <div className="flex flex-col items-center w-full">
-                            <span className="[font-family:'Work_Sans',Helvetica] font-bold text-wwwiplt-2-0comwhite text-lg text-center tracking-[0] leading-7">
+                            <span className={TEAM_CARD_CONFIG.stats.value}>
                               {teamStat
                                 ? formatCurrency(teamStat.fundsRemaining)
                                 : "₹0"}
@@ -227,15 +228,15 @@ export const PlayerDetailsSection = (): JSX.Element => {
                         </div>
 
                         <div className="flex items-stretch justify-center w-full flex-1">
-                          <div className="pr-2 border-r border-solid border-[#ffffff1a] flex flex-col justify-between flex-1">
+                          <div className={`pr-2 border-r border-solid ${TEAM_CARD_CONFIG.stats.divider} flex flex-col justify-between flex-1`}>
                             <div className="flex flex-col items-center py-2 w-full">
-                              <span className="[font-family:'Work_Sans',Helvetica] font-normal text-wwwiplt-2-0comwhite text-sm text-center tracking-[0] leading-6">
+                              <span className={TEAM_CARD_CONFIG.stats.label}>
                                 Overseas Players
                               </span>
                             </div>
 
                             <div className="flex flex-col items-center w-full">
-                              <span className="[font-family:'Work_Sans',Helvetica] font-bold text-wwwiplt-2-0comwhite text-lg text-center tracking-[0] leading-7">
+                              <span className={TEAM_CARD_CONFIG.stats.value}>
                                 {teamStat?.overseasCount || 0}
                               </span>
                             </div>
@@ -243,13 +244,13 @@ export const PlayerDetailsSection = (): JSX.Element => {
 
                           <div className="pl-2 flex flex-col justify-between flex-1">
                             <div className="flex flex-col items-center py-2 w-full">
-                              <span className="[font-family:'Work_Sans',Helvetica] font-normal text-wwwiplt-2-0comwhite text-sm text-center tracking-[0] leading-6">
+                              <span className={TEAM_CARD_CONFIG.stats.label}>
                                 Total Players
                               </span>
                             </div>
 
                             <div className="flex flex-col items-center w-full">
-                              <span className="[font-family:'Work_Sans',Helvetica] font-bold text-wwwiplt-2-0comwhite text-lg text-center tracking-[0] leading-7">
+                              <span className={TEAM_CARD_CONFIG.stats.value}>
                                 {teamStat?.playersCount || 0}
                               </span>
                             </div>

@@ -3,14 +3,20 @@
  * 
  * This file contains all team visual configurations including:
  * - Team logos (images or abbreviations)
- * - Border colors (Tailwind CSS classes)
- * - Background gradients (Tailwind CSS classes)
+ * - Border colors (Tailwind CSS with hex values to avoid conflicts)
+ * - Background gradients (CSS linear-gradient with RGBA for proper transparency)
+ * 
+ * IMPORTANT: Color Guidelines
+ * - Use border-[#HEXCOLOR] format for border colors (e.g., border-[#045093])
+ * - Use bg-[linear-gradient(...)] for gradients with RGBA values for transparency
+ * - Gradients use 135deg angle and three color stops at 0%, 45%, and 100%
+ * - Opacity values: 0.95 (start), 0.85 (middle), 0.9 (end) for consistent appearance
  * 
  * To add a new team:
  * 1. Add an entry to the TEAM_BRANDING object with the exact team name from Google Sheets
- * 2. Specify the logo (file path or abbreviation letters)
- * 3. Add border color as a Tailwind class
- * 4. Add background gradient
+ * 2. Specify the logo (file path or abbreviation letters like 'NT')
+ * 3. Add border color: border-[#HEXCOLOR]
+ * 4. Add background gradient following the pattern below
  * 
  * Example:
  * 'New Team Name': {
