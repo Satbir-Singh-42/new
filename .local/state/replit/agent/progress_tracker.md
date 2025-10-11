@@ -57,3 +57,4 @@
 [x] 57. Restarted workflow successfully - application now running on port 5000
 [x] 58. Migration completed successfully - all tasks done and application fully operational
 [x] 59. Enhanced PlayerDetailsModal desktop responsiveness - increased max-width to 600px (xl) and 700px (2xl), scaled player image to 208px/224px, increased padding, text sizes, and gaps for better desktop viewing
+[x] 60. Fixed Dialog base component restriction - removed w-full max-w-lg (512px) constraint that was preventing modal from scaling properly on desktop screens
