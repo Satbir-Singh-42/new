@@ -162,17 +162,19 @@ export const TeamDashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Team Statistics Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
-          <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.startingBudget.border} ${DASHBOARD_COLORS.stats.startingBudget.borderHover} transition-colors`}>
-            <CardContent className="p-3 md:p-4">
-              <div className="text-center space-y-2">
-                <p className={`${DASHBOARD_COLORS.text.label} text-xs md:text-sm`}>Starting Budget</p>
-                <p data-testid="text-starting-budget" className={`text-lg md:text-2xl font-bold ${DASHBOARD_COLORS.stats.startingBudget.text}`}>{formatCurrency(startingBudget)}</p>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Team Statistics */}
+        {/* Starting Budget - Full Width */}
+        <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.startingBudget.border} ${DASHBOARD_COLORS.stats.startingBudget.borderHover} transition-colors`}>
+          <CardContent className="p-4 md:p-6">
+            <div className="text-center space-y-2">
+              <p className={`${DASHBOARD_COLORS.text.label} text-sm md:text-base`}>Starting Budget</p>
+              <p data-testid="text-starting-budget" className={`text-2xl md:text-4xl font-bold ${DASHBOARD_COLORS.stats.startingBudget.text}`}>{formatCurrency(startingBudget)}</p>
+            </div>
+          </CardContent>
+        </Card>
 
+        {/* Other Stats - 4 Column Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           <Card className={`${DASHBOARD_COLORS.card.background} ${DASHBOARD_COLORS.stats.currentRank.border} ${DASHBOARD_COLORS.stats.currentRank.borderHover} transition-colors`}>
             <CardContent className="p-3 md:p-4">
               <div className="text-center space-y-2">
