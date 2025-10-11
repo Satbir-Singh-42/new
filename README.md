@@ -28,7 +28,6 @@ A modern, real-time web application for tracking and visualizing IPL (Indian Pre
 ## 🛠️ Technology Stack
 
 ### Frontend
-
 - **React 18** - Modern React with hooks and concurrent features
 - **TypeScript** - Type-safe development with strict mode
 - **Vite** - Lightning-fast build tool and development server
@@ -40,22 +39,18 @@ A modern, real-time web application for tracking and visualizing IPL (Indian Pre
 - **Lucide React** - Beautiful icons for UI elements
 
 ### Data Management
-
 - **Google Sheets Integration** - Primary data source for real-time auction information
 - **Papa Parse** - Efficient CSV parsing for Google Sheets data
 - **TanStack Query Caching** - Advanced client-side data caching with 60-second refresh intervals
-- **google-spreadsheet** - Official Google Sheets API client for data fetching
 
-### Development & Deployment
-
-- **Node.js + Express** - Development server with static file serving for production
+### Backend
+- **Node.js + Express** - Development and production server
 - **TSX** - Fast TypeScript execution for development
 - **ESBuild** - Fast JavaScript bundler for production builds
-- **Replit** - Cloud development environment with built-in hosting
 
 ## 📊 Data Sources
 
-The application integrates with three Google Sheets:
+The application integrates with Google Sheets to fetch three types of data:
 
 ### 1. Teams & Budget Sheet
 - Team names and identifiers
@@ -71,6 +66,7 @@ The application integrates with three Google Sheets:
 - Base prices and categories
 - Player roles and specializations
 - Team assignments (if sold)
+- Player images and statistics
 
 ### 3. Auctioneer Sheet
 - Live auction results
@@ -78,33 +74,29 @@ The application integrates with three Google Sheets:
 - Player status (sold/unsold)
 - Real-time updates during auction
 
-**Note**: The application expects 400 errors during sheet fetching as it tries multiple sheet identifiers to find the correct data source. This is normal behavior.
+**Note**: The application expects some 400 errors during sheet fetching as it tries multiple sheet identifiers to find the correct data source. This is normal behavior and doesn't affect functionality.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- Node.js 18+ (Node.js 20 recommended for Replit)
+- Node.js 18+ (Node.js 20 recommended)
 - npm package manager
 - Google Sheets with publicly accessible data (CSV export enabled)
 
 ### Installation
 
 1. **Clone the repository**
-
 ```bash
 git clone <repository-url>
 cd ipl-auction-dashboard
 ```
 
 2. **Install dependencies**
-
 ```bash
 npm install
 ```
 
 3. **Start the development server**
-
 ```bash
 npm run dev
 ```
@@ -127,52 +119,6 @@ This application is optimized for Replit:
 - Workflow: `npm run dev` with webview output type
 - No additional environment variables needed
 
-## 🌐 Deployment Options
-
-### Deploy on Replit (Recommended)
-
-The application is fully optimized for Replit:
-
-1. Import project from GitHub
-2. Click "Run" to start the workflow
-3. Use "Publish" button to deploy to production
-4. Share your live URL with others
-
-**Benefits**:
-- ✅ Zero configuration required
-- ✅ Automatic HTTPS and custom domains
-- ✅ Built-in environment management
-- ✅ One-click deployment
-- ✅ Real-time collaboration
-
-### Deploy to Vercel (Static Site)
-
-For static site deployment:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=<your-repo-url>)
-
-**Manual Deployment:**
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Login: `vercel login`
-3. Deploy: `vercel --prod`
-
-### Deploy to Render (Node.js Server)
-
-For traditional Node.js hosting:
-
-**Build Command:**
-
-```bash
-npm install; npm run build
-```
-
-**Start Command:**
-
-```bash
-node start-production.js
-```
-
 ## 📁 Project Structure
 
 ```
@@ -182,43 +128,29 @@ node start-production.js
 │   │   │   ├── ui/         # shadcn/ui component library
 │   │   │   ├── LeaderboardView.tsx    # Leaderboard with rankings
 │   │   │   ├── PlayerCard.tsx         # Player display cards
+│   │   │   ├── PlayerDetailsModal.tsx # Player detail modal
 │   │   │   ├── TeamCard.tsx           # Team overview cards
 │   │   │   └── ...
 │   │   ├── hooks/          # Custom React hooks
-│   │   │   └── use-toast.ts           # Toast notification hook
 │   │   ├── lib/            # Utility libraries
-│   │   │   ├── queryClient.ts         # TanStack Query configuration
-│   │   │   └── utils.ts               # Utility functions
 │   │   ├── pages/          # Page components and sections
-│   │   │   ├── sections/   # Page section components
-│   │   │   │   ├── PlayerDetailsSection.tsx   # Player details view
-│   │   │   │   ├── TeamOverviewSection.tsx    # Team cards view
-│   │   │   │   └── ...
-│   │   │   └── HomePage.tsx           # Main homepage
 │   │   ├── services/       # Google Sheets integration
-│   │   │   └── googleSheetsService.ts # Data fetching service
-│   │   ├── assets/         # Static assets
-│   │   │   └── teamLogos/  # Team logo images
 │   │   └── App.tsx         # Main app component with routing
 │   ├── public/             # Public static files
-│   │   └── favicon.ico     # ISTE logo favicon
 │   └── index.html          # HTML entry point
 ├── server/                 # Backend server
-│   ├── index.ts            # Express server (dev + production)
+│   ├── index.ts            # Express server
 │   ├── routes.ts           # API route definitions
 │   ├── storage.ts          # Storage interface
 │   └── vite.ts             # Vite dev server integration
 ├── shared/                 # Shared TypeScript types
-│   └── schema.ts           # Data schemas and types
+│   ├── schema.ts           # Data schemas and types
+│   └── config.ts           # Application configuration
 ├── attached_assets/        # Project assets
-│   ├── iste-logo.png      # ISTE logo
-│   └── background images   # IPL themed backgrounds
-├── start-production.js     # Production server launcher
 ├── package.json           # Dependencies and scripts
 ├── vite.config.ts         # Vite build configuration
 ├── tsconfig.json          # TypeScript configuration
-├── tailwind.config.ts     # Tailwind CSS theming
-└── README.md              # This file
+└── tailwind.config.ts     # Tailwind CSS theming
 ```
 
 ## 🎮 Usage Guide
@@ -238,12 +170,7 @@ The dashboard features four main sections accessible via navigation tabs:
 #### 2. **SOLD PLAYERS**
 - Complete list of all purchased players
 - Filter by team using dropdown
-- Sortable columns:
-  - Player name
-  - Team assignment
-  - Sold amount
-  - Base price
-  - Nationality
+- Sortable columns (name, team, sold amount, base price, nationality)
 - Search functionality
 - Real-time status updates
 
@@ -256,47 +183,27 @@ The dashboard features four main sections accessible via navigation tabs:
 
 #### 4. **LEADERBOARD**
 - Complete team rankings table
-- **Circular rank indicators** (1, 2, 3, etc.) with gradient styling
-- Sortable columns:
-  - Rank (calculated dynamically)
-  - Team Name
-  - Total Spent
-  - Remaining Budget
-  - Total Players
-  - **Foreign Players** (overseas count)
-  - Total Team Points
-- Multi-level ranking system:
-  1. Total Team Points (primary)
-  2. Funds Remaining (secondary)
-  3. Team Name alphabetical (tertiary)
+- **Circular rank indicators** with gradient styling
+- Sortable columns (Rank, Team, Total Spent, Budget, Players, Foreign Players, Points)
+- Multi-level ranking system based on points, budget, and team name
 - Color-coded data for easy reading
 - Updates every 60 seconds
 
 ### Key Features Explained
 
-#### Circular Rank Indicators
-- Ranks display in circular badges with orange-to-red gradient
-- Visual hierarchy for quick team position identification
-- Responsive design scales on mobile devices
-
-#### Foreign Players Column
-- Tracks overseas player count per team
-- Important for IPL rules compliance (max 4 foreign players)
-- Purple color coding for distinction
-- Sortable for strategic analysis
+#### Player Details Modal
+- Click any player card to view detailed information
+- Shows player image or initials fallback
+- Displays age, matches, base price, and points
+- Shows sold price and team (if purchased)
+- Overseas player indicator
+- **Enhanced close button** - White, fully visible, and easy to click
 
 #### Smart Data Caching
 - Initial data fetch from Google Sheets
 - 60-second client-side cache
 - Automatic background refresh
-- "Returning cached data" logs indicate efficient caching
 - Minimal API calls for performance
-
-#### Team Logos
-- Custom team logo support
-- Automatic fallback to team initials
-- Stored in `client/src/assets/teamLogos/`
-- Optimized for fast loading
 
 ## 🛠️ Development
 
@@ -310,19 +217,14 @@ npm run check        # Run TypeScript type checking
 # Production
 npm run build        # Build frontend + backend for production
 npm run start        # Start production server
-
-# Code Quality
-npm run check        # Full TypeScript type checking
 ```
 
 ### Development Workflow
 
 1. **Start the development server**
-
 ```bash
 npm run dev
 ```
-
 Server starts on `http://localhost:5000` (or `0.0.0.0:5000` on Replit)
 
 2. **Make your changes**
@@ -331,23 +233,14 @@ Server starts on `http://localhost:5000` (or `0.0.0.0:5000` on Replit)
    - TypeScript errors shown in terminal
 
 3. **Run type checking**
-
 ```bash
 npm run check
 ```
 
-4. **Test with real data**
-   - Update Google Sheets URLs in `googleSheetsService.ts`
-   - Data refreshes every 60 seconds automatically
-   - Check browser console for fetch logs
-
-5. **Build for production**
-
+4. **Build for production**
 ```bash
 npm run build
 ```
-
-Creates optimized build in `dist/` directory
 
 ### Code Style Guidelines
 
@@ -358,209 +251,40 @@ Creates optimized build in `dist/` directory
 - **Data Fetching** - Direct Google Sheets integration via frontend services
 - **File Organization** - Feature-based organization with shared components
 
-### Adding New Features
-
-#### Add a New Team Logo
-
-1. Place logo image in `client/src/assets/teamLogos/`
-2. Update `teamLogos` object in `LeaderboardView.tsx`:
-
-```typescript
-const teamLogos: Record<string, string> = {
-  "Team Name": "/teamLogos/team-logo.png",
-  // ... other teams
-};
-```
-
-#### Add a New Data Column
-
-1. Update data types in `shared/schema.ts`
-2. Modify Google Sheets service parsing in `googleSheetsService.ts`
-3. Add column to relevant component (LeaderboardView, PlayerCard, etc.)
-4. Update sorting logic if sortable
-
-#### Customize Theme Colors
-
-Edit `client/src/index.css`:
-
-```css
-:root {
-  --background: hsl(222, 47%, 11%);
-  --primary: hsl(20, 100%, 50%);
-  /* ... customize other colors */
-}
-```
-
 ## 🔍 Troubleshooting
 
 ### Common Issues
 
 #### 1. Google Sheets 400 Errors (EXPECTED BEHAVIOR)
-
 ```
 Failed to load resource: the server responded with a status of 400
 ```
-
 **This is normal!** The service tries multiple sheet identifiers (GIDs) to find the correct data. These 400 errors are expected and don't affect functionality.
 
-**Verify it's working**:
-- Check for "Successfully parsed X rows" logs
-- Data should load after a few 400 errors
-- Teams and players should display correctly
-
 #### 2. Data Not Refreshing
-
 **Solution**:
 - Check browser console for fetch errors
 - Verify Google Sheets are publicly accessible
 - Clear browser cache and reload
-- Check network tab for CSV request status
 - Ensure sheet permissions allow public CSV export
 
-#### 3. Circular Ranks Not Displaying
-
-**Solution**:
-- Clear browser cache (Ctrl+Shift+R or Cmd+Shift+R)
-- Check that `rounded-full` class is present in LeaderboardView.tsx
-- Verify Tailwind CSS is compiling correctly
-
-#### 4. Foreign Players Column Missing
-
-**Solution**:
-- Ensure Google Sheets "Teams & Budget" has "Foreign Players" column
-- Check that data parsing includes `overseasCount` field
-- Verify column is added to LeaderboardView component
-
-#### 5. Port Already in Use (Replit)
-
+#### 3. Port Already in Use (Replit)
 ```
 Error: listen EADDRINUSE: address already in use :::5000
 ```
-
 **Solution**:
 - Stop existing workflow in Replit
 - Click "Stop" button then "Run" again
 - Port 5000 is required for Replit's proxy
 
-#### 6. Vite Not Connecting
-
+#### 4. Vite Not Connecting
 **Solution (Replit)**:
 - Verify `allowedHosts: true` in `vite.config.ts`
 - Check server is bound to `0.0.0.0:5000`
 - Restart the workflow
 - Clear browser cache
 
-### Performance Optimization
-
-- **Caching**: 60-second client-side cache reduces API calls
-- **Bundle Splitting**: Automatic code splitting via Vite
-- **Image Optimization**: Optimized team logos and assets
-- **Sheet Structure**: Keep sheets clean with proper headers
-- **Query Optimization**: TanStack Query prevents redundant fetches
-- **Lazy Loading**: Components load on-demand for faster initial render
-
 ## 🔧 Configuration
-
-### Application Settings
-
-The application provides centralized configuration files for easy customization:
-
-#### 1. **Auction Rules** (`shared/config.ts`)
-
-Edit auction parameters in the `AUCTION_CONFIG` object:
-
-```typescript
-export const AUCTION_CONFIG = {
-  maxPlayers: 15,           // Maximum players per team
-  minPlayers: 11,           // Minimum players required for eligibility
-  maxOverseasPlayers: 7,    // Maximum foreign/overseas players per team
-  teamsQualifying: 8,       // Number of teams that advance to playoffs
-  
-  // Customizable display text
-  squadSizeLabel: "Squad Size: Max {max} players",
-  qualificationLabel: "🏆 Qualification: Top {count} teams advance",
-  minPlayersLabel: "Min: {min} players required",
-};
-```
-
-**Changes automatically apply to**:
-- Team dashboard validation
-- Squad status calculations
-- Display text across all pages
-
-#### 2. **Dashboard Colors** (`shared/config.ts`)
-
-Customize stat card colors in the `DASHBOARD_COLORS` object:
-
-```typescript
-export const DASHBOARD_COLORS = {
-  card: {
-    background: "bg-[#0f1629]",           // Dark navy background
-    border: "border-[#1a2332]",           // Subtle border
-    borderHover: "hover:border-[#2a3441]", // Lighter border on hover
-  },
-  
-  stats: {
-    currentRank: {
-      borderHover: "hover:border-orange-400/30",
-      text: "text-orange-400",
-    },
-    totalSpent: {
-      borderHover: "hover:border-green-400/30",
-      text: "text-green-400",
-    },
-    // ... more stat-specific colors
-  },
-  
-  text: {
-    label: "text-gray-300",
-    primary: "text-wwwiplt-2-0comwhite",
-    warning: "text-yellow-400",
-    error: "text-red-400",
-    success: "text-green-400",
-  },
-};
-```
-
-**Important**: Use Tailwind CSS class format (`text-color-shade`) to avoid conflicts.
-
-#### 3. **Team Branding** (`client/src/config/teamBranding.ts`)
-
-Add or update team colors and logos:
-
-```typescript
-export const TEAM_BRANDING: Record<string, TeamBranding> = {
-  'Team Name': {
-    logo: '/images/teams/logo.png',  // or 'TN' for abbreviation
-    borderColor: 'border-[#FF5733]',
-    bgGradient: 'bg-[linear-gradient(135deg,rgba(255,87,51,0.95)_0%,rgba(200,70,40,0.85)_45%,rgba(150,50,30,0.9)_100%)]',
-  },
-  // ... more teams
-};
-```
-
-**Color Guidelines**:
-- Use `border-[#HEXCOLOR]` format for borders
-- Use `bg-[linear-gradient(...)]` with RGBA values for gradients
-- Gradient pattern: 135deg angle, three stops at 0%, 45%, 100%
-- Opacity values: 0.95 (start), 0.85 (middle), 0.9 (end)
-
-#### 4. **Team Card Styling** (`shared/config.ts`)
-
-Customize overview page card appearance in `TEAM_CARD_CONFIG`:
-
-```typescript
-export const TEAM_CARD_CONFIG = {
-  container: {
-    base: "h-full min-w-0 flex flex-col items-center gap-6 p-3 rounded-3xl...",
-    hover: "hover:ring-2 hover:ring-white/20",
-  },
-  logo: {
-    container: "flex w-20 h-20 items-center justify-center...",
-  },
-  // ... more card styling options
-};
-```
 
 ### Google Sheets Setup
 
@@ -582,6 +306,8 @@ export const TEAM_CARD_CONFIG = {
 - Role
 - Nationality
 - Team (if sold)
+- Images (optional)
+- Age, Matches, Points
 
 **Auctioneer Sheet** columns:
 - Player Name
@@ -595,27 +321,20 @@ export const TEAM_CARD_CONFIG = {
 2. Set to "Anyone with the link can view"
 3. Copy sheet URL
 4. Extract spreadsheet ID from URL
-5. Update in `googleSheetsService.ts`
+5. Update in `client/src/services/googleSheetsService.ts`
 
-### Environment Variables
+### Application Settings
 
-#### Development (Optional)
+The application provides centralized configuration in `shared/config.ts`:
 
-No environment variables required for basic functionality.
-
-#### Production (Optional)
-
-```env
-NODE_ENV=production
-PORT=5000              # Server port (default: 5000)
+```typescript
+export const AUCTION_CONFIG = {
+  maxPlayers: 15,           // Maximum players per team
+  minPlayers: 11,           // Minimum players required
+  maxOverseasPlayers: 7,    // Maximum foreign players per team
+  teamsQualifying: 8,       // Number of teams advancing to playoffs
+};
 ```
-
-#### Replit Environment
-
-Automatically configured:
-- `REPL_ID` - Unique repl identifier
-- `REPL_SLUG` - Repl URL slug
-- `REPLIT_DOMAINS` - Custom domain configuration
 
 ## 📊 Data Flow
 
@@ -646,29 +365,22 @@ User Interface
 ## 🎨 Design Features
 
 ### Color Palette
-
 - **Background**: Dark blue gradient (`#0a0e1a` to `#1a1f3a`)
 - **Primary**: Orange (`#ff8c00`) for IPL branding
 - **Accent**: Red gradient for ranks and highlights
 - **Text**: White with varied opacity for hierarchy
-- **Data Colors**:
-  - Green: Spent amounts
-  - Blue: Remaining budget
-  - Yellow: Total points
-  - Purple: Foreign players
+- **Close Button**: White, fully visible for accessibility
 
 ### Typography
-
 - **Headers**: Bold, large sizes for prominence
 - **Data**: Medium weight for readability
 - **Labels**: Smaller, gray for secondary information
 
 ### Animations
-
 - **Framer Motion**: Smooth page transitions
 - **Hover Effects**: Interactive feedback on all clickable elements
 - **Loading States**: Skeleton screens during data fetch
-- **Transitions**: Smooth color and transform transitions
+- **Modal Animations**: Smooth open/close transitions
 
 ## 🤝 Contributing
 
@@ -696,18 +408,9 @@ We welcome contributions! Here's how:
    - Reference any related issues
    - Include screenshots if UI changes
 
-### Contribution Guidelines
-
-- Use TypeScript for all new code
-- Follow existing component patterns
-- Add comments for complex logic
-- Test with real Google Sheets data
-- Ensure responsive design
-- No console.log statements in production code
-
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 🏏 About IPL 2025
 
@@ -721,51 +424,36 @@ The Indian Premier League (IPL) 2025 promises to be the most exciting season yet
 - **Auction Format**: Live bidding with base price categories
 - **Player Categories**: Capped/Uncapped, Indian/Overseas
 
-## 🚀 Live Demo
+## 🚀 Deployment
 
-- **Replit**: Optimized for one-click deployment and hosting
+### Deploy on Replit (Recommended)
+
+The application is fully optimized for Replit:
+
+1. Import project from GitHub
+2. Click "Run" to start the workflow
+3. Use "Publish" button to deploy to production
+4. Share your live URL with others
+
+**Benefits**:
+- ✅ Zero configuration required
+- ✅ Automatic HTTPS and custom domains
+- ✅ Built-in environment management
+- ✅ One-click deployment
+- ✅ Real-time collaboration
+
+### Other Deployment Options
+
 - **Vercel**: Fast static site deployment
 - **Render**: Traditional Node.js hosting
+- **Netlify**: Static site with serverless functions
 
-## 🎯 Future Enhancements
+## 🙏 Acknowledgments
 
-Planned features for future releases:
-
-- [ ] Player comparison tool
-- [ ] Historical auction data
-- [ ] Advanced analytics dashboard
-- [ ] Team composition analyzer
-- [ ] Budget simulation tool
-- [ ] Mobile native app
-- [ ] Real-time auction notifications
-- [ ] Social media integration
-- [ ] Export reports (PDF/Excel)
-- [ ] Admin panel for data management
-
-## 📞 Support
-
-For support, questions, or bug reports:
-
-- **GitHub Issues**: Open an issue with detailed description
-- **Documentation**: Check this README thoroughly
-- **Community**: Share on cricket forums and communities
+- ISTE for branding and logo
+- IPL for the exciting cricket league
+- Open source community for amazing tools and libraries
 
 ---
 
-**Built with ❤️ for cricket fans worldwide**
-
-**Powered by**: React • TypeScript • Vite • Tailwind CSS • Google Sheets
-
-**Optimized for**: Replit • Vercel • Modern Browsers
-
----
-
-### Credits
-
-- **IPL**: Indian Premier League brand and cricket data
-- **ISTE**: Logo and branding
-- **shadcn/ui**: Beautiful component library
-- **TanStack**: Powerful data management tools
-- **Replit**: Cloud development and hosting platform
-
-For questions or feedback, please open an issue on GitHub.
+Built with ❤️ for cricket fans everywhere
