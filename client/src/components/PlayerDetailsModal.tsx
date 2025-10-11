@@ -28,7 +28,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[280px] sm:w-[320px] md:w-[400px] lg:w-[480px] xl:w-[600px] 2xl:w-[700px] max-h-[95vh] sm:max-h-[90vh] mx-auto bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden p-0 shadow-2xl">
+      <DialogContent className="w-[280px] sm:w-[320px] md:w-[500px] lg:w-[600px] xl:w-[750px] 2xl:w-[850px] max-h-[95vh] sm:max-h-[90vh] mx-auto bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden p-0 shadow-2xl">
         {/* Header */}
         <DialogHeader className="sr-only">
           <DialogTitle>{player.name} Details</DialogTitle>

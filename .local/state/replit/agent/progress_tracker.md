@@ -61,3 +61,4 @@
 [x] 61. Fixed modal width responsiveness - replaced w-[95vw] with max-width constraints with fixed responsive widths (280px→320px→400px→480px→600px→700px) for proper desktop scaling
 [x] 62. Made modal content fit within screen - removed overflow/scrolling by reducing padding (p-5), spacing (space-y-3), player image (144px), card padding (p-2/p-3), gaps (gap-2/3), and text sizes to fit content within viewport
 [x] 63. Redesigned player modal layout - player image on left (224px on desktop), stats on right with Age/Matches on same line, then Base Price and Points stacked, matching provided design reference
+[x] 64. Increased desktop modal width - MD: 500px, LG: 600px, XL: 750px, 2XL: 850px for better side-by-side layout while keeping mobile widths unchanged (280px/320px)
