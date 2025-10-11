@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { getTeamLogo, getTeamBorderColor, getTeamGradient } from '@shared/config';
+import { getTeamLogo, getTeamBorderColor, getTeamGradient } from '@/config/teamBranding';
 
 // Convert Google Sheets URL to CSV export URL
 const SHEET_ID = '1fyX373d3bUhnBGoZuM_eQxy991hSajyZjIuVgByg-7g';
