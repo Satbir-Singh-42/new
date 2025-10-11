@@ -52,22 +52,22 @@ export const DASHBOARD_COLORS = {
     },
     currentRank: {
       border: "border-[#1a2332]",
-      borderHover: "hover:border-orange-400/60 hover:shadow-lg hover:shadow-orange-400/20",
+      borderHover: "hover:border-orange-400/70 hover:shadow-lg hover:shadow-orange-400/30",
       text: "text-white",
     },
     totalSpent: {
       border: "border-[#1a2332]",
-      borderHover: "hover:border-green-400/30",
+      borderHover: "hover:border-green-400/70 hover:shadow-lg hover:shadow-green-400/30",
       text: "text-green-400",
     },
     remainingBudget: {
       border: "border-[#1a2332]",
-      borderHover: "hover:border-blue-400/30",
+      borderHover: "hover:border-blue-400/70 hover:shadow-lg hover:shadow-blue-400/30",
       text: "text-blue-400",
     },
     teamPoints: {
       border: "border-[#1a2332]",
-      borderHover: "hover:border-yellow-400/30",
+      borderHover: "hover:border-yellow-400/70 hover:shadow-lg hover:shadow-yellow-400/30",
       text: "text-yellow-400",
     },
   },
