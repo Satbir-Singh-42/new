@@ -37,24 +37,24 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
         
         {/* Player Details Content */}
-        <div className="flex flex-col p-4 sm:p-5 md:p-6 xl:p-6">
+        <div className="flex flex-col p-5 sm:p-6 md:p-8">
           {/* Player Name and Info - Centered */}
           <motion.div 
-            className="text-center mb-4 sm:mb-5"
+            className="text-center mb-6 md:mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl font-bold text-white mb-2" data-testid="text-player-name">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3" data-testid="text-player-name">
               {player.name}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-white/80" data-testid="text-player-info">
+            <p className="text-lg sm:text-xl md:text-2xl text-white/80" data-testid="text-player-info">
               {player.nation} - {player.role}
             </p>
           </motion.div>
 
           {/* Two Column Layout: Image Left, Stats Right */}
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 items-center md:items-start">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 lg:gap-10 items-center md:items-center">
             
             {/* Player Image - Left Side */}
             <motion.div 
@@ -63,7 +63,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-52 lg:h-52 xl:w-56 xl:h-56 overflow-hidden bg-white/5">
+              <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 overflow-hidden bg-white/5 border-2 border-white/10">
                 {hasImage ? (
                   <img
                     src={player.images}
@@ -76,7 +76,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
                     }}
                   />
                 ) : null}
-                <div className={`${hasImage ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-white/5 text-white/70 font-bold text-3xl sm:text-4xl md:text-5xl`}>
+                <div className={`${hasImage ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-white/5 text-white/70 font-bold text-4xl sm:text-5xl md:text-6xl`}>
                   {player.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
                 </div>
               </div>
@@ -84,35 +84,35 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
             {/* Stats - Right Side */}
             <motion.div 
-              className="flex-1 flex flex-col justify-center space-y-3 sm:space-y-4 w-full md:w-auto text-center md:text-right"
+              className="flex-1 flex flex-col justify-center space-y-5 md:space-y-6 w-full md:w-auto text-center md:text-left"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}
             >
               {/* Age and Matches - Same Line */}
-              <div className="flex justify-center md:justify-end gap-6 md:gap-8">
+              <div className="flex justify-center md:justify-start gap-8 md:gap-12 flex-wrap">
                 <div>
-                  <p className="text-white text-xl sm:text-2xl md:text-3xl font-semibold">
-                    Age: <span className="font-bold">{player.age || 'N/A'}</span>
+                  <p className="text-white text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold">
+                    Age: {player.age || 'N/A'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-white text-xl sm:text-2xl md:text-3xl font-semibold">
-                    Matches: <span className="font-bold">{player.t20Matches || 'N/A'}</span>
+                  <p className="text-white text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold">
+                    Matches: {player.t20Matches || 'N/A'}
                   </p>
                 </div>
               </div>
 
-              {/* Base Price - Centered */}
+              {/* Base Price */}
               <div>
-                <p className="text-white text-2xl sm:text-3xl md:text-4xl font-bold" data-testid="text-base-price">
+                <p className="text-white text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold" data-testid="text-base-price">
                   Base Price: {formatCurrency(player.basePrice)}
                 </p>
               </div>
 
-              {/* Points - Centered */}
+              {/* Points */}
               <div>
-                <p className="text-white text-2xl sm:text-3xl md:text-4xl font-bold" data-testid="text-points">
+                <p className="text-white text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold" data-testid="text-points">
                   Points: {player.points || 0}
                 </p>
               </div>
@@ -120,10 +120,10 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
               {/* Sold Price if applicable */}
               {player.status === 'sold' && player.soldPrice > 0 && (
                 <div className="mt-2">
-                  <p className="text-emerald-400 text-xl sm:text-2xl md:text-3xl font-bold" data-testid="text-sold-price">
+                  <p className="text-emerald-400 text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold" data-testid="text-sold-price">
                     Sold for: ₹{formatCurrency(player.soldPrice)}
                   </p>
-                  <p className="text-emerald-300/80 text-base sm:text-lg mt-1" data-testid="text-team">
+                  <p className="text-emerald-300/80 text-lg sm:text-xl md:text-xl mt-2" data-testid="text-team">
                     {player.team}
                   </p>
                 </div>
@@ -131,8 +131,8 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
               {/* Overseas indicator */}
               {player.overseas && (
-                <div className="flex justify-center md:justify-end mt-2">
-                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <div className="flex justify-center md:justify-start mt-2">
+                  <span className="inline-flex items-center px-5 py-2 rounded-full text-sm sm:text-base font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                     Overseas Player
                   </span>
                 </div>
