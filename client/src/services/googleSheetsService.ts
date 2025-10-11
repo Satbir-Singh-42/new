@@ -1,6 +1,5 @@
 import Papa from 'papaparse';
-import { getTeamLogo as getTeamLogoFromAssets } from '@/assets/teamLogos';
-import { getTeamLogo as getBrandingLogo, getTeamBorderColor as getBrandingBorderColor, getTeamGradient as getBrandingGradient } from '@/config/teamBranding';
+import { getTeamLogo, getTeamBorderColor, getTeamGradient } from '@shared/config';
 
 // Convert Google Sheets URL to CSV export URL
 const SHEET_ID = '1fyX373d3bUhnBGoZuM_eQxy991hSajyZjIuVgByg-7g';
@@ -452,13 +451,13 @@ class GoogleSheetsService {
 
   getTeamLogo(teamName: string): string {
     // First try to get logo from the asset mapping (for custom uploaded logos)
-    const logoUrl = getTeamLogoFromAssets(teamName);
+    const logoUrl = getTeamLogo(teamName);
     if (logoUrl) {
       return logoUrl;
     }
     
     // Use centralized branding configuration
-    const logo = getBrandingLogo(teamName);
+    const logo = getTeamLogo(teamName);
     
     // If logo is the default placeholder, generate team initials
     if (logo === '??') {
@@ -469,11 +468,11 @@ class GoogleSheetsService {
   }
 
   getTeamBorderColor(teamName: string): string {
-    return getBrandingBorderColor(teamName);
+    return getTeamBorderColor(teamName);
   }
 
   getTeamGradient(teamName: string): string {
-    return getBrandingGradient(teamName);
+    return getTeamGradient(teamName);
   }
 }
 
