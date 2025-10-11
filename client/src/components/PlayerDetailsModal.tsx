@@ -28,7 +28,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[520px] max-h-[95vh] sm:max-h-[90vh] mx-auto bg-gradient-to-br from-slate-800/95 via-slate-700/90 to-slate-600/85 border-slate-600/50 backdrop-blur-md rounded-xl sm:rounded-2xl overflow-hidden p-0">
+      <DialogContent className="w-[95vw] max-w-[280px] sm:max-w-[320px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[520px] max-h-[95vh] sm:max-h-[90vh] mx-auto bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden p-0 shadow-2xl">
         {/* Header */}
         <DialogHeader className="sr-only">
           <DialogTitle>{player.name} Details</DialogTitle>
@@ -37,7 +37,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
         
         {/* Player Details Content */}
-        <div className="flex flex-col max-h-full overflow-y-auto p-3 sm:p-4 md:p-5 lg:p-6 text-center space-y-3 sm:space-y-4">
+        <div className="flex flex-col max-h-full overflow-y-auto p-4 sm:p-5 md:p-6 lg:p-7 text-center space-y-4 sm:space-y-5">
           {/* Player Name */}
           <motion.div 
             className="flex-shrink-0"
@@ -45,13 +45,13 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
           >
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white" data-testid="text-player-name">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white" data-testid="text-player-name">
               {player.name}
             </h2>
             
             {/* Country and Role */}
-            <p className="text-sm sm:text-base md:text-lg text-white/90 mt-1" data-testid="text-player-info">
-              {player.nation} - {player.role}
+            <p className="text-sm sm:text-base md:text-lg text-white/60 mt-2" data-testid="text-player-info">
+              {player.nation} • {player.role}
             </p>
           </motion.div>
 
@@ -62,7 +62,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <div className="relative w-24 h-24 xs:w-28 xs:h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 overflow-hidden rounded-lg bg-slate-700 border-2 border-white/20">
+            <div className="relative w-28 h-28 xs:w-32 xs:h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 overflow-hidden rounded-full bg-white/5 border border-white/10">
               {hasImage ? (
                 <img
                   src={player.images}
@@ -76,7 +76,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
                   }}
                 />
               ) : null}
-              <div className={`${hasImage ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-slate-700 text-white font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl`}>
+              <div className={`${hasImage ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-white/5 text-white/70 font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl`}>
                 {player.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)}
               </div>
             </div>
@@ -84,43 +84,43 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
           {/* Stats Grid */}
           <motion.div 
-            className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 bg-slate-800/30 rounded-lg p-2 sm:p-3"
+            className="grid grid-cols-2 gap-3 sm:gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
           >
             {/* Age */}
-            <div className="text-center">
-              <p className="text-white/60 text-xs sm:text-sm uppercase tracking-wide">Age</p>
-              <p className="text-white text-sm sm:text-base md:text-lg font-semibold">{player.age || 'N/A'}</p>
+            <div className="text-center bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+              <p className="text-white/50 text-xs sm:text-sm uppercase tracking-wider font-medium">Age</p>
+              <p className="text-white text-lg sm:text-xl md:text-2xl font-bold mt-1">{player.age || 'N/A'}</p>
             </div>
             
             {/* Matches */}
-            <div className="text-center">
-              <p className="text-white/60 text-xs sm:text-sm uppercase tracking-wide">Matches</p>
-              <p className="text-white text-sm sm:text-base md:text-lg font-semibold">{player.t20Matches || 'N/A'}</p>
+            <div className="text-center bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+              <p className="text-white/50 text-xs sm:text-sm uppercase tracking-wider font-medium">Matches</p>
+              <p className="text-white text-lg sm:text-xl md:text-2xl font-bold mt-1">{player.t20Matches || 'N/A'}</p>
             </div>
           </motion.div>
 
           {/* Price and Points Grid */}
           <motion.div 
-            className="grid grid-cols-2 gap-2 sm:gap-3"
+            className="grid grid-cols-2 gap-3 sm:gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.4 }}
           >
             {/* Base Price */}
-            <div className="bg-slate-800/30 rounded-lg p-2 sm:p-3 text-center">
-              <p className="text-white/60 text-xs sm:text-sm uppercase tracking-wide">Base Price</p>
-              <p className="text-white text-sm sm:text-base md:text-lg font-bold" data-testid="text-base-price">
+            <div className="bg-white/5 rounded-xl p-3 sm:p-4 text-center border border-white/10">
+              <p className="text-white/50 text-xs sm:text-sm uppercase tracking-wider font-medium">Base Price</p>
+              <p className="text-white text-lg sm:text-xl md:text-2xl font-bold mt-1" data-testid="text-base-price">
                 ₹{formatCurrency(player.basePrice)}
               </p>
             </div>
 
             {/* Points */}
-            <div className="bg-slate-800/30 rounded-lg p-2 sm:p-3 text-center">
-              <p className="text-white/60 text-xs sm:text-sm uppercase tracking-wide">Points</p>
-              <p className="text-white text-sm sm:text-base md:text-lg font-bold" data-testid="text-points">
+            <div className="bg-white/5 rounded-xl p-3 sm:p-4 text-center border border-white/10">
+              <p className="text-white/50 text-xs sm:text-sm uppercase tracking-wider font-medium">Points</p>
+              <p className="text-white text-lg sm:text-xl md:text-2xl font-bold mt-1" data-testid="text-points">
                 {player.points || 0}
               </p>
             </div>
@@ -128,12 +128,12 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
 
           {/* Final Bid Price if sold */}
           {player.status === 'sold' && player.soldPrice > 0 && (
-            <div className="bg-green-600/20 rounded-lg border border-green-500/30 p-2 sm:p-3 text-center">
-              <p className="text-green-400 text-sm sm:text-base md:text-lg font-semibold" data-testid="text-sold-price">
+            <div className="bg-emerald-500/10 rounded-xl border border-emerald-500/20 p-4 sm:p-5 text-center">
+              <p className="text-emerald-400 text-base sm:text-lg md:text-xl font-bold mb-1" data-testid="text-sold-price">
                 Sold for: ₹{formatCurrency(player.soldPrice)}
               </p>
-              <p className="text-green-300 text-xs sm:text-sm" data-testid="text-team">
-                Team: {player.team}
+              <p className="text-emerald-300/80 text-sm sm:text-base" data-testid="text-team">
+                {player.team}
               </p>
             </div>
           )}
@@ -141,7 +141,7 @@ export const PlayerDetailsModal: React.FC<PlayerDetailsModalProps> = ({
           {/* Overseas indicator */}
           {player.overseas && (
             <div className="flex justify-center">
-              <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-600/20 text-blue-400 border border-blue-500/30">
+              <span className="inline-flex items-center px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                 Overseas Player
               </span>
             </div>
