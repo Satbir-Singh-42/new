@@ -1,3 +1,7 @@
+// Import attached logos using relative paths
+import MILogoImg from '../../../attached_assets/MI_1760175027380.jpg';
+import LSGLogoImg from '../../../attached_assets/LSG_1760175027380.png';
+
 // Team logo paths from organized public directory
 const AGLogo = '/images/teams/ag.png';
 const CSLogo = '/images/teams/csk.jpg';
@@ -13,6 +17,8 @@ const PPLogo = '/images/teams/pp.png';
 const RCBLogo = '/images/teams/rcb.jpg';
 const SHLogo = '/images/teams/srh.webp';
 const RRLogo = '/images/teams/rr.png';
+const MILogo = MILogoImg;
+const LSGLogo = LSGLogoImg;
 
 // Team logo mapping by team code/short name
 const logosByCode: Record<string, string> = {
@@ -32,8 +38,8 @@ const logosByCode: Record<string, string> = {
   'sh': SHLogo,
   'srh': SHLogo,
   'rr': RRLogo,
-  'mi': '/images/teams/mi.png', // Mumbai Indians
-  'lg': '/images/teams/lg.png', // Lucknow Giants
+  'mi': MILogo, // Mumbai Indians
+  'lg': LSGLogo, // Lucknow Giants (LSG)
 };
 
 // Team logo mapping by full team name
@@ -103,12 +109,14 @@ const logosByName: Record<string, string> = {
   'rajasthanroyals': RRLogo,
   
   // Mumbai Indians variants
-  'mumbai indians': '/images/teams/mi.png',
-  'mumbaiindians': '/images/teams/mi.png',
+  'mumbai indians': MILogo,
+  'mumbaiindians': MILogo,
   
   // Lucknow Giants variants
-  'lucknow giants': '/images/teams/lg.png',
-  'lucknowgiants': '/images/teams/lg.png',
+  'lucknow giants': LSGLogo,
+  'lucknowgiants': LSGLogo,
+  'lucknow super giants': LSGLogo,
+  'lucknowsupergiants': LSGLogo,
 };
 
 // Token-based synonyms for flexible matching
@@ -249,4 +257,6 @@ export {
   RCBLogo,
   SHLogo,
   RRLogo,
+  MILogo,
+  LSGLogo,
 };
