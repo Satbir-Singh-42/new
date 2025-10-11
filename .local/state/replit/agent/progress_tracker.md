@@ -44,3 +44,7 @@
 [x] 44. Updated all imports to use teamBranding.ts for team configuration
 [x] 45. Configuration now managed through 2 files: teamBranding.ts (teams) and shared/config.ts (app settings)
 [x] 46. Verified application working properly with branding file
+[x] 47. Cleaned up codebase - removed unused teamLogos.ts file
+[x] 48. Removed 34 unused shadcn UI components (accordion, alert-dialog, alert, etc.)
+[x] 49. Cleaned up attached_assets folder - removed 4 old logo files (now in public/images/teams/)
+[x] 50. Verified application still works perfectly after cleanup - all features functional
