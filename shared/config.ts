@@ -52,7 +52,7 @@ export const DASHBOARD_COLORS = {
     },
     currentRank: {
       border: "border-[#1a2332]",
-      borderHover: "hover:border-orange-400/30",
+      borderHover: "hover:border-orange-400/60 hover:shadow-lg hover:shadow-orange-400/20",
       text: "text-white",
     },
     totalSpent: {
