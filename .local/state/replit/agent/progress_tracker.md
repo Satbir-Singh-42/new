@@ -27,3 +27,4 @@
 [x] 27. Restarted workflow successfully - application now running on port 5000 and fetching Google Sheets data
 [x] 28. Verified application is fully functional - IPL 2025 Player Auction loads with all data
 [x] 29. Replaced Mumbai Indians and Lucknow Giants logos with new attached images - updated teamLogos.ts to use relative imports from attached_assets folder
+[x] 30. Fixed Current Rank visibility issue - changed text color from invalid class to white for better visibility on dark background

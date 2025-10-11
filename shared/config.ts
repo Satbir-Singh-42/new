@@ -78,12 +78,12 @@ export const DASHBOARD_COLORS = {
     startingBudget: {
       border: "border-[#1a2332]",
       borderHover: "hover:border-[#2a3441]",
-      text: "text-wwwiplt-2-0comwhite",
+      text: "text-white",
     },
     currentRank: {
       border: "border-[#1a2332]",
       borderHover: "hover:border-orange-400/30",
-      text: "text-orange-400",
+      text: "text-white",
     },
     totalSpent: {
       border: "border-[#1a2332]",
@@ -105,7 +105,7 @@ export const DASHBOARD_COLORS = {
   // Text colors
   text: {
     label: "text-gray-300",
-    primary: "text-wwwiplt-2-0comwhite",
+    primary: "text-white",
     warning: "text-yellow-400",
     error: "text-red-400",
     success: "text-green-400",
