@@ -56,3 +56,4 @@
 [x] 56. Reinstalled tsx dependency to resolve workflow startup issue
 [x] 57. Restarted workflow successfully - application now running on port 5000
 [x] 58. Migration completed successfully - all tasks done and application fully operational
+[x] 59. Enhanced PlayerDetailsModal desktop responsiveness - increased max-width to 600px (xl) and 700px (2xl), scaled player image to 208px/224px, increased padding, text sizes, and gaps for better desktop viewing
