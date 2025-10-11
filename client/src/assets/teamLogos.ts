@@ -1,8 +1,4 @@
-// Import attached logos using relative paths
-import MILogoImg from '../../../attached_assets/MI_1760175027380.jpg';
-import LSGLogoImg from '../../../attached_assets/LSG_1760175027380.png';
-
-// Team logo paths from organized public directory
+// All team logo paths from organized public directory
 const AGLogo = '/images/teams/ag.png';
 const CSLogo = '/images/teams/csk.jpg';
 const DCLogo = '/images/teams/dc.jpg';
@@ -17,8 +13,8 @@ const PPLogo = '/images/teams/pp.png';
 const RCBLogo = '/images/teams/rcb.jpg';
 const SHLogo = '/images/teams/srh.webp';
 const RRLogo = '/images/teams/rr.png';
-const MILogo = MILogoImg;
-const LSGLogo = LSGLogoImg;
+const MILogo = '/images/teams/mi.jpg';
+const LSGLogo = '/images/teams/lsg.png';
 
 // Team logo mapping by team code/short name
 const logosByCode: Record<string, string> = {
